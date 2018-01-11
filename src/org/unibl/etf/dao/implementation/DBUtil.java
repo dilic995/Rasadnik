@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.unibl.etf.util.ConnectionPool;
+
 
 public class DBUtil
 {
@@ -57,8 +59,15 @@ public class DBUtil
 
   protected static Connection getConnection()
   {
-    // get connection using jndi or some other mechanism
-    return null;
+	  ConnectionPool cp = null;
+	  
+	  try {
+		  return cp.getInstance().checkOut();
+	  } catch (SQLException e) {
+		  e.printStackTrace();
+	  }
+	  
+	  return null;
   }
 
   protected static String getQuestionMarks(int size)

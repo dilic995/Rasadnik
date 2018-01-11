@@ -3,19 +3,32 @@ package org.unibl.etf.dto;
 
 public class Employee
 {
-  private int employeeId;
+  private Integer employeeId;
   private String firstName;
   private String lastName;
+  
+  
 
-  //
+  public Employee() {
+	super();
+}
+
+public Employee(Integer employeeId, String firstName, String lastName) {
+	super();
+	this.employeeId = employeeId;
+	this.firstName = firstName;
+	this.lastName = lastName;
+}
+
+//
   // getters / setters
   //
-  public int getEmployeeId()
+  public Integer getEmployeeId()
   {
     return this.employeeId;
   }
 
-  public void setEmployeeId(int employeeId)
+  public void setEmployeeId(Integer employeeId)
   {
     this.employeeId = employeeId;
   }
