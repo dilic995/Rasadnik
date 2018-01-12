@@ -6,19 +6,19 @@ import java.math.BigDecimal;
 
 public class Transaction
 {
-  private int transactionId;
+  private Integer transactionId;
   private BigDecimal amount;
-  private byte type;
+  private Boolean type;
 
   //
   // getters / setters
   //
-  public int getTransactionId()
+  public Integer getTransactionId()
   {
     return this.transactionId;
   }
 
-  public void setTransactionId(int transactionId)
+  public void setTransactionId(Integer transactionId)
   {
     this.transactionId = transactionId;
   }
@@ -33,12 +33,12 @@ public class Transaction
     this.amount = amount;
   }
 
-  public byte getType()
+  public Boolean getType()
   {
     return this.type;
   }
 
-  public void setType(byte type)
+  public void setType(Boolean type)
   {
     this.type = type;
   }
@@ -86,7 +86,7 @@ public class Transaction
 
     result = (29 * result) + transactionId;
     result = (29 * result) + amount.hashCode();
-    result = (29 * result) + (int) type;
+    result = (29 * result) + type.hashCode();
 
     return result;
   }

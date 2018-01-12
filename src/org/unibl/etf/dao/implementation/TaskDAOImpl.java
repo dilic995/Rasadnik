@@ -2,7 +2,10 @@
 package org.unibl.etf.dao.implementation;
 
 import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.TaskDAO;
+import org.unibl.etf.dto.PlantMaintanceActivity;
+import org.unibl.etf.dto.Region;
 import org.unibl.etf.dto.Task;
 
 import java.sql.Connection;
@@ -15,509 +18,402 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-
-public class TaskDAOImpl implements TaskDAO
-{
-  //
-  // static data
-  //
-  protected static List pkColumns = new ArrayList();
-  protected static List stdColumns = new ArrayList();
-  protected static List allColumns = new ArrayList();
-  protected static String tableName = "task";
-
-  static
-  {
-    pkColumns.add("task_id");
-    stdColumns.add("date_from");
-    stdColumns.add("date_to");
-    stdColumns.add("done");
-    stdColumns.add("region_id");
-    stdColumns.add("plant_maintance_activity_id");
-    allColumns.addAll(pkColumns);
-    allColumns.addAll(stdColumns);
-  }
-
-  //
-  // data
-  //
-  protected Connection conn = null;
-
-  //
-  // construction
-  //
-  public TaskDAOImpl()
-  {
-    this(null);
-  }
-
-  public TaskDAOImpl(Connection conn)
-  {
-    this.conn = conn;
-  }
-
-  //
-  // CRUD methods
-  //
-  public Task getByPrimaryKey(int taskId) throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    try
-    {
-      int pos = 1;
-      ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns, pkColumns));
-      DBUtil.bind(ps, pos++, taskId);
-      rs = ps.executeQuery();
-
-      if (rs.next())
-      {
-        return fromResultSet(rs);
-      }
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs);
-    }
-
-    return null;
-  }
-
-  public long selectCount() throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    try
-    {
-      ps = getConn().prepareStatement("select count(*) from " + tableName);
-      rs = ps.executeQuery();
-
-      if (rs.next())
-      {
-        return rs.getLong(1);
-      }
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs);
-    }
-
-    return 0;
-  }
-
-  public long selectCount(String whereStatement, Object[] bindVariables)
-    throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    if (!whereStatement.trim().toUpperCase().startsWith("WHERE"))
-    {
-      whereStatement = " WHERE " + whereStatement;
-    }
-    else if (whereStatement.startsWith(" ") == false)
-    {
-      whereStatement = " " + whereStatement;
-    }
-
-    try
-    {
-      ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement);
-
-      for (int i = 0; i < bindVariables.length; i++)
-        DBUtil.bind(ps, i + 1, bindVariables[i]);
-
-      rs = ps.executeQuery();
-
-      if (rs.next())
-      {
-        return rs.getLong(1);
-      }
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs);
-    }
-
-    return 0;
-  }
-
-  public List selectAll() throws DAOException
-  {
-    List ret = new ArrayList();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns));
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs);
-    }
-
-    return ret;
-  }
-
-  public List select(String whereStatement, Object[] bindVariables)
-    throws DAOException
-  {
-    List ret = new ArrayList();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    if (!whereStatement.trim().toUpperCase().startsWith("WHERE"))
-    {
-      whereStatement = " WHERE " + whereStatement;
-    }
-    else if (whereStatement.startsWith(" ") == false)
-    {
-      whereStatement = " " + whereStatement;
-    }
-
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement);
-
-      for (int i = 0; i < bindVariables.length; i++)
-        DBUtil.bind(ps, i + 1, bindVariables[i]);
-
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException("Error in select(), table = " + tableName, e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs);
-    }
-
-    return ret;
-  }
-
-  public int update(Task obj) throws DAOException
-  {
-    PreparedStatement ps = null;
-    int pos = 1;
-
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.update(tableName, stdColumns, pkColumns));
-      pos = bindStdColumns(ps, obj, pos);
-      bindPrimaryKey(ps, obj, pos);
-
-      int rowCount = ps.executeUpdate();
-
-      if (rowCount != 1)
-      {
-        throw new DAOException("Error updating " + obj.getClass() + " in " + tableName +
-          ", affected rows = " + rowCount);
-      }
-
-      return rowCount;
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, null);
-    }
-  }
-
-  public int insert(Task obj) throws DAOException
-  {
-    PreparedStatement ps = null;
-    int pos = 1;
-
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
-      pos = bindPrimaryKey(ps, obj, pos);
-      bindStdColumns(ps, obj, pos);
-
-      int rowCount = ps.executeUpdate();
-
-      if (rowCount != 1)
-      {
-        throw new DAOException("Error inserting " + obj.getClass() + " in " + tableName +
-          ", affected rows = " + rowCount);
-      }
-
-      return rowCount;
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, null);
-    }
-  }
-
-  public int delete(Task obj) throws DAOException
-  {
-    PreparedStatement ps = null;
-
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.delete(tableName, pkColumns));
-      bindPrimaryKey(ps, obj, 1);
-
-      int rowCount = ps.executeUpdate();
-
-      if (rowCount != 1)
-      {
-        throw new DAOException("Error deleting " + obj.getClass() + " in " + tableName +
-          ", affected rows = " + rowCount);
-      }
-
-      return rowCount;
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, null);
-    }
-  }
-
-  //
-  // finders
-  //
-  public List getByDateFrom(Date dateFrom) throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    List ret = new ArrayList();
-
-    try
-    {
-      if (null == dateFrom)
-      {
-        ps = getConn()
-               .prepareStatement(DBUtil.selectNull(tableName, allColumns,
-              Arrays.asList(new String[]{ "date_from" })));
-      }
-      else
-      {
-        ps = getConn()
-               .prepareStatement(DBUtil.select(tableName, allColumns,
-              Arrays.asList(new String[]{ "date_from" })));
-        DBUtil.bind(ps, 1, dateFrom);
-      }
-
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs);
-    }
-
-    return ret;
-  }
-
-  public List getByDateTo(Date dateTo) throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    List ret = new ArrayList();
-
-    try
-    {
-      if (null == dateTo)
-      {
-        ps = getConn()
-               .prepareStatement(DBUtil.selectNull(tableName, allColumns,
-              Arrays.asList(new String[]{ "date_to" })));
-      }
-      else
-      {
-        ps = getConn()
-               .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "date_to" })));
-        DBUtil.bind(ps, 1, dateTo);
-      }
-
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs);
-    }
-
-    return ret;
-  }
-
-  public List getByDone(byte done) throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    List ret = new ArrayList();
-
-    try
-    {
-      ps = getConn()
-             .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "done" })));
-      DBUtil.bind(ps, 1, done);
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs);
-    }
-
-    return ret;
-  }
-
-  public List getByRegionId(int regionId) throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    List ret = new ArrayList();
-
-    try
-    {
-      ps = getConn()
-             .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "region_id" })));
-      DBUtil.bind(ps, 1, regionId);
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs);
-    }
-
-    return ret;
-  }
-
-  public List getByPlantMaintanceActivityId(int plantMaintanceActivityId)
-    throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    List ret = new ArrayList();
-
-    try
-    {
-      ps = getConn()
-             .prepareStatement(DBUtil.select(tableName, allColumns,
-            Arrays.asList(new String[]{ "plant_maintance_activity_id" })));
-      DBUtil.bind(ps, 1, plantMaintanceActivityId);
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs);
-    }
-
-    return ret;
-  }
-
-  //
-  // helpers
-  //
-  protected int bindPrimaryKey(PreparedStatement ps, Task obj, int pos)
-    throws SQLException
-  {
-    DBUtil.bind(ps, pos++, obj.getTaskId());
-
-    return pos;
-  }
-
-  protected int bindStdColumns(PreparedStatement ps, Task obj, int pos)
-    throws SQLException
-  {
-    DBUtil.bind(ps, pos++, obj.getDateFrom());
-    DBUtil.bind(ps, pos++, obj.getDateTo());
-    DBUtil.bind(ps, pos++, obj.getDone());
-    DBUtil.bind(ps, pos++, obj.getRegionId());
-    DBUtil.bind(ps, pos++, obj.getPlantMaintanceActivityId());
-
-    return pos;
-  }
-
-  protected Task fromResultSet(ResultSet rs) throws SQLException
-  {
-    Task obj = new Task();
-
-    obj.setTaskId(DBUtil.getInt(rs, "task_id"));
-    obj.setDateFrom(DBUtil.getDate(rs, "date_from"));
-    obj.setDateTo(DBUtil.getDate(rs, "date_to"));
-    obj.setDone(DBUtil.getByte(rs, "done"));
-    obj.setRegionId(DBUtil.getInt(rs, "region_id"));
-    obj.setPlantMaintanceActivityId(DBUtil.getInt(rs, "plant_maintance_activity_id"));
-
-    return obj;
-  }
-
-  protected Connection getConn()
-  {
-    return (conn == null) ? DBUtil.getConnection() : conn;
-  }
+public class TaskDAOImpl implements TaskDAO {
+	//
+	// static data
+	//
+	protected static List<String> pkColumns = new ArrayList<>();
+	protected static List<String> stdColumns = new ArrayList<>();
+	protected static List<String> allColumns = new ArrayList<>();
+	protected static String tableName = "task";
+
+	static {
+		pkColumns.add("task_id");
+		stdColumns.add("date_from");
+		stdColumns.add("date_to");
+		stdColumns.add("done");
+		stdColumns.add("region_id");
+		stdColumns.add("plant_maintance_activity_id");
+		allColumns.addAll(pkColumns);
+		allColumns.addAll(stdColumns);
+	}
+
+	//
+	// data
+	//
+	protected Connection conn = null;
+
+	//
+	// construction
+	//
+	public TaskDAOImpl() {
+		this(null);
+	}
+
+	public TaskDAOImpl(Connection conn) {
+		this.conn = conn;
+	}
+
+	//
+	// CRUD methods
+	//
+	public Task getByPrimaryKey(Integer taskId) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			int pos = 1;
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns, pkColumns));
+			DBUtil.bind(ps, pos++, taskId);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return fromResultSet(rs);
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return null;
+	}
+
+	public Long selectCount() throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = getConn().prepareStatement("select count(*) from " + tableName);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return rs.getLong(1);
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return 0L;
+	}
+
+	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		if (!whereStatement.trim().toUpperCase().startsWith("WHERE")) {
+			whereStatement = " WHERE " + whereStatement;
+		} else if (whereStatement.startsWith(" ") == false) {
+			whereStatement = " " + whereStatement;
+		}
+
+		try {
+			ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement);
+
+			for (int i = 0; i < bindVariables.length; i++)
+				DBUtil.bind(ps, i + 1, bindVariables[i]);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return rs.getLong(1);
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return 0L;
+	}
+
+	public List<Task> selectAll() throws DAOException {
+		List<Task> ret = new ArrayList<>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns));
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	public List<Task> select(String whereStatement, Object[] bindVariables) throws DAOException {
+		List<Task> ret = new ArrayList<>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		if (!whereStatement.trim().toUpperCase().startsWith("WHERE")) {
+			whereStatement = " WHERE " + whereStatement;
+		} else if (whereStatement.startsWith(" ") == false) {
+			whereStatement = " " + whereStatement;
+		}
+
+		try {
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement);
+
+			for (int i = 0; i < bindVariables.length; i++)
+				DBUtil.bind(ps, i + 1, bindVariables[i]);
+
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException("Error in select(), table = " + tableName, e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	public Integer update(Task obj) throws DAOException {
+		PreparedStatement ps = null;
+		int pos = 1;
+
+		try {
+			ps = getConn().prepareStatement(DBUtil.update(tableName, stdColumns, pkColumns));
+			pos = bindStdColumns(ps, obj, pos);
+			bindPrimaryKey(ps, obj, pos);
+
+			int rowCount = ps.executeUpdate();
+
+			if (rowCount != 1) {
+				throw new DAOException(
+						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			}
+
+			return rowCount;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, null, conn);
+		}
+	}
+
+	public Integer insert(Task obj) throws DAOException {
+		PreparedStatement ps = null;
+		int pos = 1;
+
+		try {
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			pos = bindPrimaryKey(ps, obj, pos);
+			bindStdColumns(ps, obj, pos);
+
+			int rowCount = ps.executeUpdate();
+
+			if (rowCount != 1) {
+				throw new DAOException(
+						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			}
+
+			return rowCount;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, null, conn);
+		}
+	}
+
+	public Integer delete(Task obj) throws DAOException {
+		PreparedStatement ps = null;
+
+		try {
+			ps = getConn().prepareStatement(DBUtil.delete(tableName, pkColumns));
+			bindPrimaryKey(ps, obj, 1);
+
+			int rowCount = ps.executeUpdate();
+
+			if (rowCount != 1) {
+				throw new DAOException(
+						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			}
+
+			return rowCount;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, null, conn);
+		}
+	}
+
+	//
+	// finders
+	//
+	public List<Task> getByDateFrom(Date dateFrom) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Task> ret = new ArrayList<>();
+
+		try {
+			if (null == dateFrom) {
+				ps = getConn().prepareStatement(
+						DBUtil.selectNull(tableName, allColumns, Arrays.asList(new String[] { "date_from" })));
+			} else {
+				ps = getConn().prepareStatement(
+						DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "date_from" })));
+				DBUtil.bind(ps, 1, dateFrom);
+			}
+
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	public List<Task> getByDateTo(Date dateTo) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Task> ret = new ArrayList<>();
+
+		try {
+			if (null == dateTo) {
+				ps = getConn().prepareStatement(
+						DBUtil.selectNull(tableName, allColumns, Arrays.asList(new String[] { "date_to" })));
+			} else {
+				ps = getConn().prepareStatement(
+						DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "date_to" })));
+				DBUtil.bind(ps, 1, dateTo);
+			}
+
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	public List<Task> getByDone(Boolean done) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Task> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "done" })));
+			DBUtil.bind(ps, 1, done);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	public List<Task> getByRegionId(Region regionId) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Task> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(
+					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "region_id" })));
+			DBUtil.bind(ps, 1, regionId.getRegionId());
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	public List<Task> getByPlantMaintanceActivityId(PlantMaintanceActivity plantMaintanceActivityId)
+			throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Task> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns,
+					Arrays.asList(new String[] { "plant_maintance_activity_id" })));
+			DBUtil.bind(ps, 1, plantMaintanceActivityId.getPlantMaintanceActivityId());
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	//
+	// helpers
+	//
+	protected int bindPrimaryKey(PreparedStatement ps, Task obj, int pos) throws SQLException {
+		DBUtil.bind(ps, pos++, obj.getTaskId());
+
+		return pos;
+	}
+
+	protected int bindStdColumns(PreparedStatement ps, Task obj, int pos) throws SQLException {
+		DBUtil.bind(ps, pos++, obj.getDateFrom());
+		DBUtil.bind(ps, pos++, obj.getDateTo());
+		DBUtil.bind(ps, pos++, obj.getDone());
+		DBUtil.bind(ps, pos++, obj.getRegionId().getRegionId());
+		DBUtil.bind(ps, pos++, obj.getPlantMaintanceActivityId().getPlantMaintanceActivityId());
+
+		return pos;
+	}
+
+	protected Task fromResultSet(ResultSet rs) throws SQLException {
+		Task obj = new Task();
+
+		obj.setTaskId(DBUtil.getInt(rs, "task_id"));
+		obj.setDateFrom(DBUtil.getDate(rs, "date_from"));
+		obj.setDateTo(DBUtil.getDate(rs, "date_to"));
+		obj.setDone(DBUtil.getBoolean(rs, "done"));
+		try {
+			obj.setRegionId(DAOFactory.getInstance().getRegionDAO().getByPrimaryKey(DBUtil.getInt(rs, "region_id")));
+
+			obj.setPlantMaintanceActivityId(DAOFactory.getInstance().getPlantMaintanceActivityDAO()
+					.getByPrimaryKey(DBUtil.getInt(rs, "plant_maintance_activity_id")));
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return obj;
+	}
+
+	protected Connection getConn() {
+		return (conn == null) ? DBUtil.getConnection() : conn;
+	}
 }

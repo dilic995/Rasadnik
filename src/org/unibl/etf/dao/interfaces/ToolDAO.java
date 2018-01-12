@@ -9,26 +9,26 @@ import java.util.List;
 public interface ToolDAO
 {
   // CRUD methods
-  public Tool getByPrimaryKey(int toolId) throws DAOException;
+  public Tool getByPrimaryKey(Integer toolId) throws DAOException;
 
-  public List selectAll() throws DAOException;
+  public List<Tool> selectAll() throws DAOException;
 
-  public List select(String whereStatement, Object[] bindVariables)
+  public List<Tool> select(String whereStatement, Object[] bindVariables)
     throws DAOException;
 
-  public long selectCount() throws DAOException;
+  public Long selectCount() throws DAOException;
 
-  public long selectCount(String whereStatement, Object[] bindVariables)
+  public Long selectCount(String whereStatement, Object[] bindVariables)
     throws DAOException;
 
-  public int update(Tool obj) throws DAOException;
+  public Integer update(Tool obj) throws DAOException;
 
-  public int insert(Tool obj) throws DAOException;
+  public Integer insert(Tool obj) throws DAOException;
 
-  public int delete(Tool obj) throws DAOException;
+  public Integer delete(Tool obj) throws DAOException;
 
   // Finders
-  public List getByToolName(String toolName) throws DAOException;
+  public List<Tool> getByToolName(String toolName) throws DAOException;
 
-  public List getByCount(int count) throws DAOException;
+  public List<Tool> getByCount(int count) throws DAOException;
 }

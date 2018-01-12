@@ -2,7 +2,9 @@
 package org.unibl.etf.dao.implementation;
 
 import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.RegionDAO;
+import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.Region;
 
 import java.sql.Connection;
@@ -20,9 +22,9 @@ public class RegionDAOImpl implements RegionDAO
   //
   // static data
   //
-  protected static List pkColumns = new ArrayList();
-  protected static List stdColumns = new ArrayList();
-  protected static List allColumns = new ArrayList();
+  protected static List<String> pkColumns = new ArrayList<>();
+  protected static List<String> stdColumns = new ArrayList<>();
+  protected static List<String> allColumns = new ArrayList<>();
   protected static String tableName = "region";
 
   static
@@ -55,7 +57,7 @@ public class RegionDAOImpl implements RegionDAO
   //
   // CRUD methods
   //
-  public Region getByPrimaryKey(int regionId) throws DAOException
+  public Region getByPrimaryKey(Integer regionId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -78,13 +80,13 @@ public class RegionDAOImpl implements RegionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return null;
   }
 
-  public long selectCount() throws DAOException
+  public Long selectCount() throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -105,13 +107,13 @@ public class RegionDAOImpl implements RegionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return Long.valueOf(0);
   }
 
-  public long selectCount(String whereStatement, Object[] bindVariables)
+  public Long selectCount(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
     PreparedStatement ps = null;
@@ -146,15 +148,15 @@ public class RegionDAOImpl implements RegionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return Long.valueOf(0);
   }
 
-  public List selectAll() throws DAOException
+  public List<Region> selectAll() throws DAOException
   {
-    List ret = new ArrayList();
+    List<Region> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -172,16 +174,16 @@ public class RegionDAOImpl implements RegionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List select(String whereStatement, Object[] bindVariables)
+  public List<Region> select(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
-    List ret = new ArrayList();
+    List<Region> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -212,13 +214,13 @@ public class RegionDAOImpl implements RegionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public int update(Region obj) throws DAOException
+  public Integer update(Region obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -245,11 +247,11 @@ public class RegionDAOImpl implements RegionDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int insert(Region obj) throws DAOException
+  public Integer insert(Region obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -276,11 +278,11 @@ public class RegionDAOImpl implements RegionDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int delete(Region obj) throws DAOException
+  public Integer delete(Region obj) throws DAOException
   {
     PreparedStatement ps = null;
 
@@ -305,18 +307,18 @@ public class RegionDAOImpl implements RegionDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
   //
   // finders
   //
-  public List getByNumberOfPlants(int numberOfPlants) throws DAOException
+  public List<Region> getByNumberOfPlants(Integer numberOfPlants) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<Region> ret = new ArrayList<>();
 
     try
     {
@@ -335,23 +337,23 @@ public class RegionDAOImpl implements RegionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List getByBasisId(int basisId) throws DAOException
+  public List<Region> getByBasis(Basis basis) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<Region> ret = new ArrayList<>();
 
     try
     {
       ps = getConn()
              .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "basis_id" })));
-      DBUtil.bind(ps, 1, basisId);
+      DBUtil.bind(ps, 1, basis.getBasisId());
       rs = ps.executeQuery();
 
       while (rs.next())
@@ -363,7 +365,7 @@ public class RegionDAOImpl implements RegionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
@@ -384,7 +386,7 @@ public class RegionDAOImpl implements RegionDAO
     throws SQLException
   {
     DBUtil.bind(ps, pos++, obj.getNumberOfPlants());
-    DBUtil.bind(ps, pos++, obj.getBasisId());
+    DBUtil.bind(ps, pos++, obj.getBasis().getBasisId());
 
     return pos;
   }
@@ -395,7 +397,12 @@ public class RegionDAOImpl implements RegionDAO
 
     obj.setRegionId(DBUtil.getInt(rs, "region_id"));
     obj.setNumberOfPlants(DBUtil.getInt(rs, "number_of_plants"));
-    obj.setBasisId(DBUtil.getInt(rs, "basis_id"));
+    try {
+		obj.setBasis(DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(DBUtil.getInt(rs, "basis_id")));
+	} catch (DAOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 
     return obj;
   }

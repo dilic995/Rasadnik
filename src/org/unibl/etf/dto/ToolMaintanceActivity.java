@@ -4,25 +4,37 @@ package org.unibl.etf.dto;
 import java.math.BigDecimal;
 
 import java.sql.Clob;
+import java.util.Date;
 
 
 public class ToolMaintanceActivity
 {
-  private ToolMaintanceActivityId id;
   private Clob description;
   private BigDecimal amount;
+  private Date date;
+  private ToolItem toolItemId;
 
   //
   // getters / setters
   //
-  public ToolMaintanceActivityId getId()
+  public Date getDate()
   {
-    return this.id;
+    return this.date;
   }
 
-  public void setId(ToolMaintanceActivityId id)
+  public void setDate(Date date)
   {
-    this.id = id;
+    this.date = date;
+  }
+
+  public ToolItem getToolItemId()
+  {
+    return this.toolItemId;
+  }
+
+  public void setToolItemId(ToolItem toolItemId)
+  {
+    this.toolItemId = toolItemId;
   }
 
   public Clob getDescription()
@@ -45,60 +57,60 @@ public class ToolMaintanceActivity
     this.amount = amount;
   }
 
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-    {
-      return true;
-    }
+  
 
-    if (null == obj)
-    {
-      return false;
-    }
 
-    if (obj instanceof ToolMaintanceActivity == false)
-    {
-      return false;
-    }
 
-    ToolMaintanceActivity other = (ToolMaintanceActivity) obj;
+  @Override
+public int hashCode() {
+	final int prime = 1;
+	int result = 29;
+	result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+	result = prime * result + ((date == null) ? 0 : date.hashCode());
+	result = prime * result + ((description == null) ? 0 : description.hashCode());
+	result = prime * result + ((toolItemId == null) ? 0 : toolItemId.hashCode());
+	return result;
+}
 
-    if (false == id.equals(other.id))
-    {
-      return false;
-    }
+@Override
+public boolean equals(Object obj) {
+	if (this == obj)
+		return true;
+	if (obj == null)
+		return false;
+	if (getClass() != obj.getClass())
+		return false;
+	ToolMaintanceActivity other = (ToolMaintanceActivity) obj;
+	if (amount == null) {
+		if (other.amount != null)
+			return false;
+	} else if (!amount.equals(other.amount))
+		return false;
+	if (date == null) {
+		if (other.date != null)
+			return false;
+	} else if (!date.equals(other.date))
+		return false;
+	if (description == null) {
+		if (other.description != null)
+			return false;
+	} else if (!description.equals(other.description))
+		return false;
+	if (toolItemId == null) {
+		if (other.toolItemId != null)
+			return false;
+	} else if (!toolItemId.equals(other.toolItemId))
+		return false;
+	return true;
+}
 
-    if (false == description.equals(other.description))
-    {
-      return false;
-    }
-
-    if (false == amount.equals(other.amount))
-    {
-      return false;
-    }
-
-    return true;
-  }
-
-  public int hashCode()
-  {
-    int result = 29;
-
-    result = (29 * result) + id.hashCode();
-    result = (29 * result) + description.hashCode();
-    result = (29 * result) + amount.hashCode();
-
-    return result;
-  }
-
-  public String toString()
+public String toString()
   {
     StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("ToolMaintanceActivity")
                                                                .append("(");
 
-    buffer.append("[").append("id").append("=").append(id).append("]");
+    buffer.append("[").append("date").append("=").append(date).append("]");
+    buffer.append("[").append("toolItemId").append("=").append(toolItemId).append("]");
     buffer.append("[").append("description").append("=").append(description).append("]");
     buffer.append("[").append("amount").append("=").append(amount).append("]");
 

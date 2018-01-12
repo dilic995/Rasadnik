@@ -2,9 +2,12 @@
 package org.unibl.etf.dao.implementation;
 
 import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.PricelistHasPlantDAO;
+import org.unibl.etf.dto.Plant;
+import org.unibl.etf.dto.Pricelist;
 import org.unibl.etf.dto.PricelistHasPlant;
-import org.unibl.etf.dto.PricelistHasPlantId;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,9 +24,9 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
   //
   // static data
   //
-  protected static List pkColumns = new ArrayList();
-  protected static List stdColumns = new ArrayList();
-  protected static List allColumns = new ArrayList();
+  protected static List<String> pkColumns = new ArrayList<>();
+  protected static List<String> stdColumns = new ArrayList<>();
+  protected static List<String> allColumns = new ArrayList<>();
   protected static String tableName = "pricelist_has_plant";
 
   static
@@ -55,7 +58,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
   //
   // CRUD methods
   //
-  public PricelistHasPlant getByPrimaryKey(PricelistHasPlantId id)
+  public PricelistHasPlant getByPrimaryKey(Pricelist idPricelist,Plant idPlant)
     throws DAOException
   {
     PreparedStatement ps = null;
@@ -65,8 +68,8 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     {
       int pos = 1;
       ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns, pkColumns));
-      DBUtil.bind(ps, pos++, id.getPricelistId());
-      DBUtil.bind(ps, pos++, id.getPlantId());
+      DBUtil.bind(ps, pos++, idPricelist.getPricelistId());
+      DBUtil.bind(ps, pos++, idPlant.getPlantId());
       rs = ps.executeQuery();
 
       if (rs.next())
@@ -80,13 +83,13 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return null;
   }
 
-  public long selectCount() throws DAOException
+  public Long selectCount() throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -107,13 +110,13 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return 0L;
   }
 
-  public long selectCount(String whereStatement, Object[] bindVariables)
+  public Long selectCount(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
     PreparedStatement ps = null;
@@ -148,15 +151,15 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return 0L;
   }
 
-  public List selectAll() throws DAOException
+  public List<PricelistHasPlant> selectAll() throws DAOException
   {
-    List ret = new ArrayList();
+    List<PricelistHasPlant> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -174,16 +177,16 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List select(String whereStatement, Object[] bindVariables)
+  public List<PricelistHasPlant> select(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
-    List ret = new ArrayList();
+    List<PricelistHasPlant> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -214,13 +217,13 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public int update(PricelistHasPlant obj) throws DAOException
+  public Integer update(PricelistHasPlant obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -247,11 +250,11 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int insert(PricelistHasPlant obj) throws DAOException
+  public Integer insert(PricelistHasPlant obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -278,11 +281,11 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int delete(PricelistHasPlant obj) throws DAOException
+  public Integer delete(PricelistHasPlant obj) throws DAOException
   {
     PreparedStatement ps = null;
 
@@ -307,25 +310,25 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
   //
   // finders
   //
-  public List getByPricelistId(int pricelistId) throws DAOException
+  public List<PricelistHasPlant> getByPricelistId(Pricelist pricelistId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<PricelistHasPlant> ret = new ArrayList<>();
 
     try
     {
       ps = getConn()
              .prepareStatement(DBUtil.select(tableName, allColumns,
             Arrays.asList(new String[]{ "pricelist_id" })));
-      DBUtil.bind(ps, 1, pricelistId);
+      DBUtil.bind(ps, 1, pricelistId.getPricelistId());
       rs = ps.executeQuery();
 
       while (rs.next())
@@ -337,23 +340,23 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List getByPlantId(int plantId) throws DAOException
+  public List<PricelistHasPlant> getByPlantId(Plant plantId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<PricelistHasPlant> ret = new ArrayList<>();
 
     try
     {
       ps = getConn()
              .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "plant_id" })));
-      DBUtil.bind(ps, 1, plantId);
+      DBUtil.bind(ps, 1, plantId.getPlantId());
       rs = ps.executeQuery();
 
       while (rs.next())
@@ -365,7 +368,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
@@ -377,8 +380,8 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
   protected int bindPrimaryKey(PreparedStatement ps, PricelistHasPlant obj, int pos)
     throws SQLException
   {
-    DBUtil.bind(ps, pos++, obj.getId().getPricelistId());
-    DBUtil.bind(ps, pos++, obj.getId().getPlantId());
+    DBUtil.bind(ps, pos++, obj.getPricelistId().getPricelistId());
+    DBUtil.bind(ps, pos++, obj.getPlantId().getPlantId());
 
     return pos;
   }
@@ -389,22 +392,18 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO
     return pos;
   }
 
-  protected PricelistHasPlant fromResultSet(ResultSet rs)
-    throws SQLException
+  protected PricelistHasPlant fromResultSet(ResultSet rs) throws SQLException
   {
     PricelistHasPlant obj = new PricelistHasPlant();
 
-    obj.setId(getId(rs));
-
-    return obj;
-  }
-
-  protected PricelistHasPlantId getId(ResultSet rs) throws SQLException
-  {
-    PricelistHasPlantId obj = new PricelistHasPlantId();
-
-    obj.setPricelistId(DBUtil.getInt(rs, "pricelist_id"));
-    obj.setPlantId(DBUtil.getInt(rs, "plant_id"));
+   
+    try {
+    	 obj.setPricelistId(DAOFactory.getInstance().getPricelistDAO().getByPrimaryKey(DBUtil.getInt(rs, "pricelist_id")));
+		obj.setPlantId(DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(DBUtil.getInt(rs, "plant_id")));
+	} catch (DAOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 
     return obj;
   }

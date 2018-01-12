@@ -8,21 +8,21 @@ import java.util.Date;
 
 public class Sale
 {
-  private int saleId;
+  private Integer saleId;
   private Date date;
   private BigDecimal amount;
-  private byte paidOff;
-  private int customerId;
+  private Boolean paidOff;
+  private Customer customerId;
 
   //
   // getters / setters
   //
-  public int getSaleId()
+  public Integer getSaleId()
   {
     return this.saleId;
   }
 
-  public void setSaleId(int saleId)
+  public void setSaleId(Integer saleId)
   {
     this.saleId = saleId;
   }
@@ -47,22 +47,22 @@ public class Sale
     this.amount = amount;
   }
 
-  public byte getPaidOff()
+  public Boolean getPaidOff()
   {
     return this.paidOff;
   }
 
-  public void setPaidOff(byte paidOff)
+  public void setPaidOff(Boolean paidOff)
   {
     this.paidOff = paidOff;
   }
 
-  public int getCustomerId()
+  public Customer getCustomerId()
   {
     return this.customerId;
   }
 
-  public void setCustomerId(int customerId)
+  public void setCustomerId(Customer customerId)
   {
     this.customerId = customerId;
   }
@@ -121,8 +121,8 @@ public class Sale
     result = (29 * result) + saleId;
     result = (29 * result) + date.hashCode();
     result = (29 * result) + amount.hashCode();
-    result = (29 * result) + (int) paidOff;
-    result = (29 * result) + customerId;
+    result = (29 * result) + paidOff.hashCode();
+    result = (29 * result) + customerId.hashCode();
 
     return result;
   }

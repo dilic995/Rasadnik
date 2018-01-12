@@ -2,7 +2,10 @@
 package org.unibl.etf.dao.implementation;
 
 import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.ToolItemDAO;
+import org.unibl.etf.dto.Condition;
+import org.unibl.etf.dto.Tool;
 import org.unibl.etf.dto.ToolItem;
 
 import java.sql.Connection;
@@ -21,9 +24,9 @@ public class ToolItemDAOImpl implements ToolItemDAO
   //
   // static data
   //
-  protected static List pkColumns = new ArrayList();
-  protected static List stdColumns = new ArrayList();
-  protected static List allColumns = new ArrayList();
+  protected static List<String> pkColumns = new ArrayList<>();
+  protected static List<String> stdColumns = new ArrayList<>();
+  protected static List<String>allColumns = new ArrayList<>();
   protected static String tableName = "tool_item";
 
   static
@@ -58,7 +61,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
   //
   // CRUD methods
   //
-  public ToolItem getByPrimaryKey(int toolItemId) throws DAOException
+  public ToolItem getByPrimaryKey(Integer toolItemId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -81,13 +84,13 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return null;
   }
 
-  public long selectCount() throws DAOException
+  public Long selectCount() throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -108,13 +111,13 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return Long.valueOf(0);
   }
 
-  public long selectCount(String whereStatement, Object[] bindVariables)
+  public Long selectCount(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
     PreparedStatement ps = null;
@@ -149,15 +152,15 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return 0L;
   }
 
-  public List selectAll() throws DAOException
+  public List<ToolItem> selectAll() throws DAOException
   {
-    List ret = new ArrayList();
+    List<ToolItem> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -175,16 +178,16 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List select(String whereStatement, Object[] bindVariables)
+  public List<ToolItem> select(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
-    List ret = new ArrayList();
+    List<ToolItem> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -215,13 +218,13 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public int update(ToolItem obj) throws DAOException
+  public Integer update(ToolItem obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -248,11 +251,11 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int insert(ToolItem obj) throws DAOException
+  public Integer insert(ToolItem obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -279,11 +282,11 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int delete(ToolItem obj) throws DAOException
+  public Integer delete(ToolItem obj) throws DAOException
   {
     PreparedStatement ps = null;
 
@@ -308,19 +311,19 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
   //
   // finders
   //
-  public List getByNextServiceDate(Date nextServiceDate)
+  public List<ToolItem> getByNextServiceDate(Date nextServiceDate)
     throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<ToolItem> ret = new ArrayList<>();
 
     try
     {
@@ -349,17 +352,17 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List getByIsMachine(byte isMachine) throws DAOException
+  public List<ToolItem> getByIsMachine(Boolean isMachine) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<ToolItem> ret = new ArrayList<>();
 
     try
     {
@@ -378,23 +381,23 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List getByToolId(int toolId) throws DAOException
+  public List<ToolItem> getByToolId(Tool toolId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<ToolItem> ret = new ArrayList<>();
 
     try
     {
       ps = getConn()
              .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "tool_id" })));
-      DBUtil.bind(ps, 1, toolId);
+      DBUtil.bind(ps, 1, toolId.getToolId());
       rs = ps.executeQuery();
 
       while (rs.next())
@@ -406,17 +409,17 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List getByConditionId(int conditionId) throws DAOException
+  public List<ToolItem> getByConditionId(Condition conditionId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<ToolItem> ret = new ArrayList<>();
 
     try
     {
@@ -435,7 +438,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
@@ -457,8 +460,8 @@ public class ToolItemDAOImpl implements ToolItemDAO
   {
     DBUtil.bind(ps, pos++, obj.getNextServiceDate());
     DBUtil.bind(ps, pos++, obj.getIsMachine());
-    DBUtil.bind(ps, pos++, obj.getToolId());
-    DBUtil.bind(ps, pos++, obj.getConditionId());
+    DBUtil.bind(ps, pos++, obj.getToolId().getToolId());
+    DBUtil.bind(ps, pos++, obj.getConditionId().getConditionId());
 
     return pos;
   }
@@ -469,10 +472,15 @@ public class ToolItemDAOImpl implements ToolItemDAO
 
     obj.setToolItemId(DBUtil.getInt(rs, "tool_item_id"));
     obj.setNextServiceDate(DBUtil.getDate(rs, "next_service_date"));
-    obj.setIsMachine(DBUtil.getByte(rs, "is_machine"));
-    obj.setToolId(DBUtil.getInt(rs, "tool_id"));
-    obj.setConditionId(DBUtil.getInt(rs, "condition_id"));
-
+    obj.setIsMachine(DBUtil.getBooleanObject(rs, "is_machine"));
+    try {
+		obj.setToolId(DAOFactory.getInstance().getToolDAO().getByPrimaryKey(DBUtil.getInt(rs, "tool_id")));
+	
+    obj.setConditionId(DAOFactory.getInstance().getConditionDAO().getByPrimaryKey(DBUtil.getInt(rs, "condition_id")));
+    } catch (DAOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     return obj;
   }
 
@@ -480,4 +488,6 @@ public class ToolItemDAOImpl implements ToolItemDAO
   {
     return (conn == null) ? DBUtil.getConnection() : conn;
   }
+
+
 }

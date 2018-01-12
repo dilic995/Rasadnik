@@ -11,27 +11,27 @@ import java.util.List;
 public interface TransactionDAO
 {
   // CRUD methods
-  public Transaction getByPrimaryKey(int transactionId)
+  public Transaction getByPrimaryKey(Integer transactionId)
     throws DAOException;
 
-  public List selectAll() throws DAOException;
+  public List<Transaction> selectAll() throws DAOException;
 
-  public List select(String whereStatement, Object[] bindVariables)
+  public List<Transaction> select(String whereStatement, Object[] bindVariables)
     throws DAOException;
 
-  public long selectCount() throws DAOException;
+  public Long selectCount() throws DAOException;
 
-  public long selectCount(String whereStatement, Object[] bindVariables)
+  public Long selectCount(String whereStatement, Object[] bindVariables)
     throws DAOException;
 
-  public int update(Transaction obj) throws DAOException;
+  public Integer update(Transaction obj) throws DAOException;
 
-  public int insert(Transaction obj) throws DAOException;
+  public Integer insert(Transaction obj) throws DAOException;
 
-  public int delete(Transaction obj) throws DAOException;
+  public Integer delete(Transaction obj) throws DAOException;
 
   // Finders
-  public List getByAmount(BigDecimal amount) throws DAOException;
+  public List<Transaction> getByAmount(BigDecimal amount) throws DAOException;
 
-  public List getByType(byte type) throws DAOException;
+  public List<Transaction> getByType(Boolean type) throws DAOException;
 }

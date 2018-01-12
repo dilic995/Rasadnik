@@ -6,21 +6,21 @@ import java.util.Date;
 
 public class ToolItem
 {
-  private int toolItemId;
+  private Integer toolItemId;
   private Date nextServiceDate;
-  private byte isMachine;
-  private int toolId;
-  private int conditionId;
+  private Boolean isMachine;
+  private Tool toolId;
+  private Condition conditionId;
 
   //
   // getters / setters
   //
-  public int getToolItemId()
+  public Integer getToolItemId()
   {
     return this.toolItemId;
   }
 
-  public void setToolItemId(int toolItemId)
+  public void setToolItemId(Integer toolItemId)
   {
     this.toolItemId = toolItemId;
   }
@@ -35,32 +35,32 @@ public class ToolItem
     this.nextServiceDate = nextServiceDate;
   }
 
-  public byte getIsMachine()
+  public Boolean getIsMachine()
   {
     return this.isMachine;
   }
 
-  public void setIsMachine(byte isMachine)
+  public void setIsMachine(Boolean isMachine)
   {
     this.isMachine = isMachine;
   }
 
-  public int getToolId()
+  public Tool getToolId()
   {
     return this.toolId;
   }
 
-  public void setToolId(int toolId)
+  public void setToolId(Tool toolId)
   {
     this.toolId = toolId;
   }
 
-  public int getConditionId()
+  public Condition getConditionId()
   {
     return this.conditionId;
   }
 
-  public void setConditionId(int conditionId)
+  public void setConditionId(Condition conditionId)
   {
     this.conditionId = conditionId;
   }
@@ -118,9 +118,9 @@ public class ToolItem
 
     result = (29 * result) + toolItemId;
     result = (29 * result) + nextServiceDate.hashCode();
-    result = (29 * result) + (int) isMachine;
-    result = (29 * result) + toolId;
-    result = (29 * result) + conditionId;
+    result = (29 * result) + isMachine.hashCode();
+    result = (29 * result) + toolId.hashCode();
+    result = (29 * result) + conditionId.hashCode();
 
     return result;
   }

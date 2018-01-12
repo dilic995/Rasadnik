@@ -3,30 +3,51 @@ package org.unibl.etf.dto;
 
 public class SaleItem
 {
-  private SaleItemId id;
-  private int count;
+  private Integer count;
+
+  public Integer getCount() {
+	return count;
+}
+
+public void setCount(Integer count) {
+	this.count = count;
+}
+
+private Pricelist pricelistId;
+  private Plant plantId;
+  private Sale saleId;
 
   //
   // getters / setters
   //
-  public SaleItemId getId()
+  public Pricelist getPricelistId()
   {
-    return this.id;
+    return this.pricelistId;
   }
 
-  public void setId(SaleItemId id)
+  public void setPricelistId(Pricelist pricelistId)
   {
-    this.id = id;
+    this.pricelistId = pricelistId;
   }
 
-  public int getCount()
+  public Plant getPlantId()
   {
-    return this.count;
+    return this.plantId;
   }
 
-  public void setCount(int count)
+  public void setPlantId(Plant plantId)
   {
-    this.count = count;
+    this.plantId = plantId;
+  }
+
+  public Sale getSaleId()
+  {
+    return this.saleId;
+  }
+
+  public void setSaleId(Sale saleId)
+  {
+    this.saleId = saleId;
   }
 
   public boolean equals(Object obj)
@@ -48,12 +69,17 @@ public class SaleItem
 
     SaleItem other = (SaleItem) obj;
 
-    if (false == id.equals(other.id))
+    if (pricelistId != other.pricelistId)
     {
       return false;
     }
 
-    if (count != other.count)
+    if (plantId != other.plantId)
+    {
+      return false;
+    }
+
+    if (saleId != other.saleId)
     {
       return false;
     }
@@ -65,8 +91,9 @@ public class SaleItem
   {
     int result = 29;
 
-    result = (29 * result) + id.hashCode();
-    result = (29 * result) + count;
+    result = (29 * result) + pricelistId.hashCode();
+    result = (29 * result) + plantId.hashCode();
+    result = (29 * result) + saleId.hashCode();
 
     return result;
   }
@@ -75,9 +102,12 @@ public class SaleItem
   {
     StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("SaleItem").append("(");
 
-    buffer.append("[").append("id").append("=").append(id).append("]");
+    buffer.append("[").append("pricelistId").append("=").append(pricelistId).append("]");
+    buffer.append("[").append("plantId").append("=").append(plantId).append("]");
+    buffer.append("[").append("saleId").append("=").append(saleId).append("]");
     buffer.append("[").append("count").append("=").append(count).append("]");
 
     return buffer.append(")").toString();
   }
+  
 }

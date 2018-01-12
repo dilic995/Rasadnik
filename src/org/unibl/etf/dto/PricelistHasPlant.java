@@ -3,19 +3,31 @@ package org.unibl.etf.dto;
 
 public class PricelistHasPlant
 {
-  private PricelistHasPlantId id;
+ 
+  private Pricelist pricelistId;
+  private Plant plantId;
 
   //
   // getters / setters
   //
-  public PricelistHasPlantId getId()
+  public Pricelist getPricelistId()
   {
-    return this.id;
+    return this.pricelistId;
   }
 
-  public void setId(PricelistHasPlantId id)
+  public void setPricelistId(Pricelist pricelistId)
   {
-    this.id = id;
+    this.pricelistId = pricelistId;
+  }
+
+  public Plant getPlantId()
+  {
+    return this.plantId;
+  }
+
+  public void setPlantId(Plant plantId)
+  {
+    this.plantId = plantId;
   }
 
   public boolean equals(Object obj)
@@ -37,7 +49,12 @@ public class PricelistHasPlant
 
     PricelistHasPlant other = (PricelistHasPlant) obj;
 
-    if (false == id.equals(other.id))
+    if (pricelistId != other.pricelistId)
+    {
+      return false;
+    }
+
+    if (plantId != other.plantId)
     {
       return false;
     }
@@ -49,7 +66,8 @@ public class PricelistHasPlant
   {
     int result = 29;
 
-    result = (29 * result) + id.hashCode();
+    result = (29 * result) + pricelistId.hashCode();
+    result = (29 * result) + plantId.hashCode();
 
     return result;
   }
@@ -59,7 +77,8 @@ public class PricelistHasPlant
     StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("PricelistHasPlant")
                                                                .append("(");
 
-    buffer.append("[").append("id").append("=").append(id).append("]");
+    buffer.append("[").append("pricelistId").append("=").append(pricelistId).append("]");
+    buffer.append("[").append("plantId").append("=").append(plantId).append("]");
 
     return buffer.append(")").toString();
   }

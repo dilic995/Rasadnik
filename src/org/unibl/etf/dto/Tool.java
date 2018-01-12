@@ -3,19 +3,19 @@ package org.unibl.etf.dto;
 
 public class Tool
 {
-  private int toolId;
+  private Integer toolId;
   private String toolName;
-  private int count;
+  private Integer count;
 
   //
   // getters / setters
   //
-  public int getToolId()
+  public Integer getToolId()
   {
     return this.toolId;
   }
 
-  public void setToolId(int toolId)
+  public void setToolId(Integer toolId)
   {
     this.toolId = toolId;
   }
@@ -30,12 +30,12 @@ public class Tool
     this.toolName = toolName;
   }
 
-  public int getCount()
+  public Integer getCount()
   {
     return this.count;
   }
 
-  public void setCount(int count)
+  public void setCount(Integer count)
   {
     this.count = count;
   }

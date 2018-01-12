@@ -20,9 +20,9 @@ public class ToolDAOImpl implements ToolDAO
   //
   // static data
   //
-  protected static List pkColumns = new ArrayList();
-  protected static List stdColumns = new ArrayList();
-  protected static List allColumns = new ArrayList();
+  protected static List<String> pkColumns = new ArrayList<>();
+  protected static List<String> stdColumns = new ArrayList<>();
+  protected static List<String> allColumns = new ArrayList<>();
   protected static String tableName = "tool";
 
   static
@@ -55,7 +55,7 @@ public class ToolDAOImpl implements ToolDAO
   //
   // CRUD methods
   //
-  public Tool getByPrimaryKey(int toolId) throws DAOException
+  public Tool getByPrimaryKey(Integer toolId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -78,13 +78,13 @@ public class ToolDAOImpl implements ToolDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return null;
   }
 
-  public long selectCount() throws DAOException
+  public Long selectCount() throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -105,13 +105,13 @@ public class ToolDAOImpl implements ToolDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return Long.valueOf(0);
   }
 
-  public long selectCount(String whereStatement, Object[] bindVariables)
+  public Long selectCount(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
     PreparedStatement ps = null;
@@ -146,15 +146,15 @@ public class ToolDAOImpl implements ToolDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return Long.valueOf(0);
   }
 
-  public List selectAll() throws DAOException
+  public List<Tool> selectAll() throws DAOException
   {
-    List ret = new ArrayList();
+    List<Tool> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -172,16 +172,16 @@ public class ToolDAOImpl implements ToolDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List select(String whereStatement, Object[] bindVariables)
+  public List<Tool> select(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
-    List ret = new ArrayList();
+    List<Tool> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -212,13 +212,13 @@ public class ToolDAOImpl implements ToolDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public int update(Tool obj) throws DAOException
+  public Integer update(Tool obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -245,11 +245,11 @@ public class ToolDAOImpl implements ToolDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int insert(Tool obj) throws DAOException
+  public Integer insert(Tool obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -276,11 +276,11 @@ public class ToolDAOImpl implements ToolDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int delete(Tool obj) throws DAOException
+  public Integer delete(Tool obj) throws DAOException
   {
     PreparedStatement ps = null;
 
@@ -305,18 +305,18 @@ public class ToolDAOImpl implements ToolDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
   //
   // finders
   //
-  public List getByToolName(String toolName) throws DAOException
+  public List<Tool> getByToolName(String toolName) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<Tool> ret = new ArrayList<>();
 
     try
     {
@@ -345,17 +345,17 @@ public class ToolDAOImpl implements ToolDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List getByCount(int count) throws DAOException
+  public List<Tool> getByCount(int count) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<Tool> ret = new ArrayList<>();
 
     try
     {
@@ -373,7 +373,7 @@ public class ToolDAOImpl implements ToolDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;

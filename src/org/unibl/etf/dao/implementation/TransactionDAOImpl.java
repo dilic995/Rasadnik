@@ -22,9 +22,9 @@ public class TransactionDAOImpl implements TransactionDAO
   //
   // static data
   //
-  protected static List pkColumns = new ArrayList();
-  protected static List stdColumns = new ArrayList();
-  protected static List allColumns = new ArrayList();
+  protected static List<String> pkColumns = new ArrayList<>();
+  protected static List<String> stdColumns = new ArrayList<>();
+  protected static List<String> allColumns = new ArrayList<>();
   protected static String tableName = "transaction";
 
   static
@@ -57,7 +57,7 @@ public class TransactionDAOImpl implements TransactionDAO
   //
   // CRUD methods
   //
-  public Transaction getByPrimaryKey(int transactionId)
+  public Transaction getByPrimaryKey(Integer transactionId)
     throws DAOException
   {
     PreparedStatement ps = null;
@@ -81,13 +81,13 @@ public class TransactionDAOImpl implements TransactionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return null;
   }
 
-  public long selectCount() throws DAOException
+  public Long selectCount() throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -108,13 +108,13 @@ public class TransactionDAOImpl implements TransactionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return 0L;
   }
 
-  public long selectCount(String whereStatement, Object[] bindVariables)
+  public Long selectCount(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
     PreparedStatement ps = null;
@@ -149,15 +149,15 @@ public class TransactionDAOImpl implements TransactionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return 0L;
   }
 
-  public List selectAll() throws DAOException
+  public List<Transaction> selectAll() throws DAOException
   {
-    List ret = new ArrayList();
+    List<Transaction> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -175,16 +175,16 @@ public class TransactionDAOImpl implements TransactionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List select(String whereStatement, Object[] bindVariables)
+  public List<Transaction> select(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
-    List ret = new ArrayList();
+    List<Transaction> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -215,13 +215,13 @@ public class TransactionDAOImpl implements TransactionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public int update(Transaction obj) throws DAOException
+  public Integer update(Transaction obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -248,11 +248,11 @@ public class TransactionDAOImpl implements TransactionDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int insert(Transaction obj) throws DAOException
+  public Integer insert(Transaction obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -279,11 +279,11 @@ public class TransactionDAOImpl implements TransactionDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int delete(Transaction obj) throws DAOException
+  public Integer delete(Transaction obj) throws DAOException
   {
     PreparedStatement ps = null;
 
@@ -308,18 +308,18 @@ public class TransactionDAOImpl implements TransactionDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
   //
   // finders
   //
-  public List getByAmount(BigDecimal amount) throws DAOException
+  public List<Transaction> getByAmount(BigDecimal amount) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<Transaction> ret = new ArrayList<>();
 
     try
     {
@@ -347,17 +347,17 @@ public class TransactionDAOImpl implements TransactionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List getByType(byte type) throws DAOException
+  public List<Transaction> getByType(Boolean type) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<Transaction> ret = new ArrayList<>();
 
     try
     {
@@ -375,7 +375,7 @@ public class TransactionDAOImpl implements TransactionDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
@@ -407,7 +407,7 @@ public class TransactionDAOImpl implements TransactionDAO
 
     obj.setTransactionId(DBUtil.getInt(rs, "transaction_id"));
     obj.setAmount(DBUtil.getBigDecimal(rs, "amount"));
-    obj.setType(DBUtil.getByte(rs, "type"));
+    obj.setType(DBUtil.getBoolean(rs, "type"));
 
     return obj;
   }

@@ -6,22 +6,22 @@ import java.util.Date;
 
 public class Task
 {
-  private int taskId;
+  private Integer taskId;
   private Date dateFrom;
   private Date dateTo;
-  private byte done;
-  private int regionId;
-  private int plantMaintanceActivityId;
+  private Boolean done;
+  private Region regionId;
+  private PlantMaintanceActivity plantMaintanceActivityId;
 
   //
   // getters / setters
   //
-  public int getTaskId()
+  public Integer getTaskId()
   {
     return this.taskId;
   }
 
-  public void setTaskId(int taskId)
+  public void setTaskId(Integer taskId)
   {
     this.taskId = taskId;
   }
@@ -46,32 +46,32 @@ public class Task
     this.dateTo = dateTo;
   }
 
-  public byte getDone()
+  public Boolean getDone()
   {
     return this.done;
   }
 
-  public void setDone(byte done)
+  public void setDone(Boolean done)
   {
     this.done = done;
   }
 
-  public int getRegionId()
+  public Region getRegionId()
   {
     return this.regionId;
   }
 
-  public void setRegionId(int regionId)
+  public void setRegionId(Region regionId)
   {
     this.regionId = regionId;
   }
 
-  public int getPlantMaintanceActivityId()
+  public PlantMaintanceActivity getPlantMaintanceActivityId()
   {
     return this.plantMaintanceActivityId;
   }
 
-  public void setPlantMaintanceActivityId(int plantMaintanceActivityId)
+  public void setPlantMaintanceActivityId(PlantMaintanceActivity plantMaintanceActivityId)
   {
     this.plantMaintanceActivityId = plantMaintanceActivityId;
   }
@@ -135,9 +135,9 @@ public class Task
     result = (29 * result) + taskId;
     result = (29 * result) + dateFrom.hashCode();
     result = (29 * result) + dateTo.hashCode();
-    result = (29 * result) + (int) done;
-    result = (29 * result) + regionId;
-    result = (29 * result) + plantMaintanceActivityId;
+    result = (29 * result) + done.hashCode();
+    result = (29 * result) + regionId.hashCode();
+    result = (29 * result) + plantMaintanceActivityId.hashCode();
 
     return result;
   }
