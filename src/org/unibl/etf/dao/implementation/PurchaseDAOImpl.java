@@ -2,7 +2,9 @@
 package org.unibl.etf.dao.implementation;
 
 import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.PurchaseDAO;
+import org.unibl.etf.dto.Customer;
 import org.unibl.etf.dto.Purchase;
 
 import java.math.BigDecimal;
@@ -462,7 +464,7 @@ public class PurchaseDAOImpl implements PurchaseDAO
     return ret;
   }
 
-  public List<Purchase> getByCustomerId(Integer customerId) throws DAOException
+  public List<Purchase> getByCustomerId(Customer customerId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -473,7 +475,7 @@ public class PurchaseDAOImpl implements PurchaseDAO
       ps = getConn()
              .prepareStatement(DBUtil.select(tableName, allColumns,
             Arrays.asList(new String[]{ "customer_id" })));
-      DBUtil.bind(ps, 1, customerId);
+      DBUtil.bind(ps, 1, customerId.getCustomerId());
       rs = ps.executeQuery();
 
       while (rs.next())
@@ -510,7 +512,7 @@ public class PurchaseDAOImpl implements PurchaseDAO
     DBUtil.bind(ps, pos++, obj.getDescription());
     DBUtil.bind(ps, pos++, obj.getPrice());
     DBUtil.bind(ps, pos++, obj.getPaidOff());
-    DBUtil.bind(ps, pos++, obj.getCustomerId());
+    DBUtil.bind(ps, pos++, obj.getCustomerId().getCustomerId());
 
     return pos;
   }
@@ -524,7 +526,12 @@ public class PurchaseDAOImpl implements PurchaseDAO
     obj.setDescription(DBUtil.getClob(rs, "description"));
     obj.setPrice(DBUtil.getBigDecimal(rs, "price"));
     obj.setPaidOff(DBUtil.getBooleanObject(rs, "paid_off"));
-    obj.setCustomerId(DBUtil.getInt(rs, "customer_id"));
+    try {
+		obj.setCustomerId(DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(DBUtil.getInt(rs, "customer_id")));
+	} catch (DAOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 
     return obj;
   }

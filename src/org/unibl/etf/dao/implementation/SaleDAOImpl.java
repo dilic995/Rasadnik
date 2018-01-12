@@ -2,7 +2,9 @@
 package org.unibl.etf.dao.implementation;
 
 import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.SaleDAO;
+import org.unibl.etf.dto.Customer;
 import org.unibl.etf.dto.Sale;
 
 import java.math.BigDecimal;
@@ -23,9 +25,9 @@ public class SaleDAOImpl implements SaleDAO
   //
   // static data
   //
-  protected static List pkColumns = new ArrayList();
-  protected static List stdColumns = new ArrayList();
-  protected static List allColumns = new ArrayList();
+  protected static List<String> pkColumns = new ArrayList<>();
+  protected static List<String> stdColumns = new ArrayList<>();
+  protected static List<String> allColumns = new ArrayList<>();
   protected static String tableName = "sale";
 
   static
@@ -60,7 +62,7 @@ public class SaleDAOImpl implements SaleDAO
   //
   // CRUD methods
   //
-  public Sale getByPrimaryKey(int saleId) throws DAOException
+  public Sale getByPrimaryKey(Integer saleId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -83,13 +85,13 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return null;
   }
 
-  public long selectCount() throws DAOException
+  public Long selectCount() throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -110,13 +112,13 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return Long.valueOf(0);
   }
 
-  public long selectCount(String whereStatement, Object[] bindVariables)
+  public Long selectCount(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
     PreparedStatement ps = null;
@@ -151,15 +153,15 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
-    return 0;
+    return Long.valueOf(0);
   }
 
-  public List selectAll() throws DAOException
+  public List<Sale> selectAll() throws DAOException
   {
-    List ret = new ArrayList();
+    List<Sale> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -177,16 +179,16 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List select(String whereStatement, Object[] bindVariables)
+  public List<Sale> select(String whereStatement, Object[] bindVariables)
     throws DAOException
   {
-    List ret = new ArrayList();
+    List<Sale> ret = new ArrayList<>();
     PreparedStatement ps = null;
     ResultSet rs = null;
 
@@ -217,13 +219,13 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public int update(Sale obj) throws DAOException
+  public Integer update(Sale obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -250,11 +252,11 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int insert(Sale obj) throws DAOException
+  public Integer insert(Sale obj) throws DAOException
   {
     PreparedStatement ps = null;
     int pos = 1;
@@ -281,11 +283,11 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
-  public int delete(Sale obj) throws DAOException
+  public Integer delete(Sale obj) throws DAOException
   {
     PreparedStatement ps = null;
 
@@ -310,18 +312,18 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, null);
+      DBUtil.close(ps, null,conn);
     }
   }
 
   //
   // finders
   //
-  public List getByDate(Date date) throws DAOException
+  public List<Sale> getByDate(Date date) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<Sale> ret = new ArrayList<>();
 
     try
     {
@@ -349,17 +351,17 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List getByAmount(BigDecimal amount) throws DAOException
+  public List<Sale> getByAmount(BigDecimal amount) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<Sale> ret = new ArrayList<>();
 
     try
     {
@@ -387,17 +389,17 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List getByPaidOff(byte paidOff) throws DAOException
+  public List<Sale> getByPaidOff(Boolean paidOff) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<Sale> ret = new ArrayList<>();
 
     try
     {
@@ -415,24 +417,24 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
   }
 
-  public List getByCustomerId(int customerId) throws DAOException
+  public List<Sale> getByCustomer(Customer customerId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
-    List ret = new ArrayList();
+    List<Sale> ret = new ArrayList<>();
 
     try
     {
       ps = getConn()
              .prepareStatement(DBUtil.select(tableName, allColumns,
             Arrays.asList(new String[]{ "customer_id" })));
-      DBUtil.bind(ps, 1, customerId);
+      DBUtil.bind(ps, 1, customerId.getCustomerId());
       rs = ps.executeQuery();
 
       while (rs.next())
@@ -444,7 +446,7 @@ public class SaleDAOImpl implements SaleDAO
     }
     finally
     {
-      DBUtil.close(ps, rs);
+      DBUtil.close(ps, rs,conn);
     }
 
     return ret;
@@ -467,7 +469,7 @@ public class SaleDAOImpl implements SaleDAO
     DBUtil.bind(ps, pos++, obj.getDate());
     DBUtil.bind(ps, pos++, obj.getAmount());
     DBUtil.bind(ps, pos++, obj.getPaidOff());
-    DBUtil.bind(ps, pos++, obj.getCustomerId());
+    DBUtil.bind(ps, pos++, obj.getCustomerId().getCustomerId());
 
     return pos;
   }
@@ -479,8 +481,13 @@ public class SaleDAOImpl implements SaleDAO
     obj.setSaleId(DBUtil.getInt(rs, "sale_id"));
     obj.setDate(DBUtil.getDate(rs, "date"));
     obj.setAmount(DBUtil.getBigDecimal(rs, "amount"));
-    obj.setPaidOff(DBUtil.getByte(rs, "paid_off"));
-    obj.setCustomerId(DBUtil.getInt(rs, "customer_id"));
+    obj.setPaidOff(DBUtil.getBooleanObject(rs, "paid_off"));
+    try {
+		obj.setCustomerId(DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(DBUtil.getInt(rs, "customer_id")));
+	} catch (DAOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 
     return obj;
   }

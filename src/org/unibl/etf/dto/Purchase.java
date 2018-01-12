@@ -12,10 +12,10 @@ public class Purchase
 {
   private Integer purchaseId;
   private Date date;
-  private Clob description;
+  private Clob description;//treba raspraviti da li Clob ili string
   private BigDecimal price;
   private Boolean paidOff;
-  private Integer customerId;
+  private Customer customerId;
 
   //
   // getters / setters
@@ -70,12 +70,12 @@ public class Purchase
     this.paidOff = paidOff;
   }
 
-  public Integer getCustomerId()
+  public Customer getCustomerId()
   {
     return this.customerId;
   }
 
-  public void setCustomerId(Integer customerId)
+  public void setCustomerId(Customer customerId)
   {
     this.customerId = customerId;
   }
@@ -140,7 +140,8 @@ public class Purchase
     result = (29 * result) + date.hashCode();
     result = (29 * result) + description.hashCode();
     result = (29 * result) + price.hashCode();
-    result = (29 * result) + customerId;
+    result = (29 * result) + paidOff.hashCode();
+    result = (29 * result) + customerId.hashCode();
 
     return result;
   }

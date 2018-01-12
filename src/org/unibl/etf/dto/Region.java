@@ -3,41 +3,41 @@ package org.unibl.etf.dto;
 
 public class Region
 {
-  private int regionId;
-  private int numberOfPlants;
-  private int basisId;
+  private Integer regionId;
+  private Integer numberOfPlants;
+  private Basis basis;
 
   //
   // getters / setters
   //
-  public int getRegionId()
+  public Integer getRegionId()
   {
     return this.regionId;
   }
 
-  public void setRegionId(int regionId)
+  public void setRegionId(Integer regionId)
   {
     this.regionId = regionId;
   }
 
-  public int getNumberOfPlants()
+  public Integer getNumberOfPlants()
   {
     return this.numberOfPlants;
   }
 
-  public void setNumberOfPlants(int numberOfPlants)
+  public void setNumberOfPlants(Integer numberOfPlants)
   {
     this.numberOfPlants = numberOfPlants;
   }
 
-  public int getBasisId()
+  public Basis getBasis()
   {
-    return this.basisId;
+    return this.basis;
   }
 
-  public void setBasisId(int basisId)
+  public void setBasis(Basis basis)
   {
-    this.basisId = basisId;
+    this.basis = basis;
   }
 
   public boolean equals(Object obj)
@@ -69,7 +69,7 @@ public class Region
       return false;
     }
 
-    if (basisId != other.basisId)
+    if (basis != other.basis)
     {
       return false;
     }
@@ -83,7 +83,7 @@ public class Region
 
     result = (29 * result) + regionId;
     result = (29 * result) + numberOfPlants;
-    result = (29 * result) + basisId;
+    result = (29 * result) + basis.hashCode();
 
     return result;
   }
@@ -94,7 +94,7 @@ public class Region
 
     buffer.append("[").append("regionId").append("=").append(regionId).append("]");
     buffer.append("[").append("numberOfPlants").append("=").append(numberOfPlants).append("]");
-    buffer.append("[").append("basisId").append("=").append(basisId).append("]");
+    buffer.append("[").append("basisId").append("=").append(basis).append("]");
 
     return buffer.append(")").toString();
   }
