@@ -10,12 +10,12 @@ import java.util.Date;
 
 public class Purchase
 {
-  private int purchaseId;
+  private Integer purchaseId;
   private Date date;
   private Clob description;
   private BigDecimal price;
-  private byte paidOff;
-  private int customerId;
+  private Boolean paidOff;
+  private Integer customerId;
 
   //
   // getters / setters
@@ -60,22 +60,22 @@ public class Purchase
     this.price = price;
   }
 
-  public byte getPaidOff()
+  public Boolean getPaidOff()
   {
     return this.paidOff;
   }
 
-  public void setPaidOff(byte paidOff)
+  public void setPaidOff(Boolean paidOff)
   {
     this.paidOff = paidOff;
   }
 
-  public int getCustomerId()
+  public Integer getCustomerId()
   {
     return this.customerId;
   }
 
-  public void setCustomerId(int customerId)
+  public void setCustomerId(Integer customerId)
   {
     this.customerId = customerId;
   }
@@ -140,7 +140,6 @@ public class Purchase
     result = (29 * result) + date.hashCode();
     result = (29 * result) + description.hashCode();
     result = (29 * result) + price.hashCode();
-    result = (29 * result) + (int) paidOff;
     result = (29 * result) + customerId;
 
     return result;

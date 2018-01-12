@@ -14,32 +14,32 @@ import java.util.List;
 public interface PurchaseDAO
 {
   // CRUD methods
-  public Purchase getByPrimaryKey(int purchaseId) throws DAOException;
+  public Purchase getByPrimaryKey(Integer purchaseId) throws DAOException;
 
-  public List selectAll() throws DAOException;
+  public List<Purchase> selectAll() throws DAOException;
 
-  public List select(String whereStatement, Object[] bindVariables)
+  public List<Purchase> select(String whereStatement, Object[] bindVariables)
     throws DAOException;
 
-  public long selectCount() throws DAOException;
+  public Long selectCount() throws DAOException;
 
-  public long selectCount(String whereStatement, Object[] bindVariables)
+  public Long selectCount(String whereStatement, Object[] bindVariables)
     throws DAOException;
 
-  public int update(Purchase obj) throws DAOException;
+  public Integer update(Purchase obj) throws DAOException;
 
-  public int insert(Purchase obj) throws DAOException;
+  public Integer insert(Purchase obj) throws DAOException;
 
-  public int delete(Purchase obj) throws DAOException;
+  public Integer delete(Purchase obj) throws DAOException;
 
   // Finders
-  public List getByDate(Date date) throws DAOException;
+  public List<Purchase> getByDate(Date date) throws DAOException;
 
-  public List getByDescription(Clob description) throws DAOException;
+  public List<Purchase> getByDescription(Clob description) throws DAOException;
 
-  public List getByPrice(BigDecimal price) throws DAOException;
+  public List<Purchase> getByPrice(BigDecimal price) throws DAOException;
 
-  public List getByPaidOff(byte paidOff) throws DAOException;
+  public List<Purchase> getByPaidOff(Boolean paidOff) throws DAOException;
 
-  public List getByCustomerId(int customerId) throws DAOException;
+  public List<Purchase> getByCustomerId(Integer customerId) throws DAOException;
 }
