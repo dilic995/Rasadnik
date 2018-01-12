@@ -1,5 +1,7 @@
 package org.unibl.etf.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,8 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
+import java.util.Properties;
+
 
 public class ConnectionPool {
 	private String jdbcURL;
@@ -49,23 +51,32 @@ public class ConnectionPool {
 	}
 
 	private void readConfiguration() {
-		System.out.println(System.getProperty("user.dir"));
+		/*System.out.println(System.getProperty("user.dir"));
 		ResourceBundle bundle = PropertyResourceBundle
-				.getBundle("./resources/ConnectionPool.properties");
-		jdbcURL = bundle.getString("jdbcURL");
-		username = bundle.getString("username");
-		password = bundle.getString("password");
+		
+				.getBundle("resources.config.properties");*/
+		try {
+		InputStream in = this.getClass().getResourceAsStream("/org/unibl/etf/util/config.properties");
+		Properties bundle=new Properties();
+		
+			bundle.load(in);
+		
+		jdbcURL = bundle.getProperty("jdbcURL");
+		username = bundle.getProperty("username");
+		password = bundle.getProperty("password");
 		preconnectCount = 0;
 		maxIdleConnections = 10;
 		maxConnections = 10;
-		try {
+		
 			preconnectCount = Integer.parseInt(bundle
-					.getString("preconnectCount"));
+					.getProperty("preconnectCount"));
 			maxIdleConnections = Integer.parseInt(bundle
-					.getString("maxIdleConnections"));
+					.getProperty("maxIdleConnections"));
 			maxConnections = Integer.parseInt(bundle
-					.getString("maxConnections"));
-		} catch (Exception e) {
+					.getProperty("maxConnections"));
+		
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
