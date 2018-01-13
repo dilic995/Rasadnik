@@ -7,7 +7,7 @@ delimiter $$
 create trigger update_transaction_after_insert_purchase after insert on purchase for each row
 begin
 	if (new.paid_off=true) then
-		insert into transaction values (null, new.price, true); -- false je in, a true je out
+		insert into transaction values (null, new.price, true, new.purchase_id); -- false je in, a true je out
 	end if;
 end$$
 delimiter ;
@@ -17,7 +17,7 @@ delimiter $$
 create trigger update_transaction_after_insert_sale after insert on sale for each row
 begin
 	if (new.paid_off=true) then
-		insert into transaction values (null, new.price, false); -- false je in, a true je out
+		insert into transaction values (null, new.price, false, new.sale_id); -- false je in, a true je out
 	end if;
 end$$
 delimiter ;
@@ -27,7 +27,7 @@ delimiter $$
 create trigger update_transaction_after_update_purchase after update on purchase for each row
 begin
 	if (old.paid_off=false AND new.paid_off=true) then
-		insert into transaction values (null, new.price, true); -- false je in, a true je out
+		insert into transaction values (null, new.price, true, new.purchase_id); -- false je in, a true je out
 	end if;
 end$$
 delimiter ;
@@ -37,7 +37,7 @@ delimiter $$
 create trigger update_transaction_after_update_sale after update on sale for each row
 begin
 	if (old.paid_off=false AND new.paid_off=true) then
-		insert into transaction values (null, new.price, false); -- false je in, a true je out
+		insert into transaction values (null, new.price, false, new.sale_id); -- false je in, a true je out
 	end if;
 end$$
 delimiter ;
@@ -61,25 +61,5 @@ begin
 		set next_service_date = date_add(next_service_date, interval 1 year)
 		where ti.tool_item_id = new.tool_item_id;
 	end if;
-end$$
-delimiter ;
-
-drop trigger if exists update_pricelist;
-delimiter $$
-create trigger update_pricelist before insert on pricelist for each row
-begin
-	update pricelist p
-	set active = false
-	where active = true;
-end$$
-delimiter ;
-
-drop trigger if exists update_price_height_ratio;
-delimiter $$
-create trigger update_price_height_ratio before insert on price_height_ratio for each row
-begin
-	update price_height_ratio phr
-	set active = false
-	where active = true AND plant_id=new.plant_id;
 end$$
 delimiter ;
