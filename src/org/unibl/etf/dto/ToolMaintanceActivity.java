@@ -12,10 +12,21 @@ public class ToolMaintanceActivity {
 	private Date date;
 	private ToolItem toolItem;
 	private Integer toolItemId;
+	private Boolean upToDateService;
+	
+
+	
 
 	//
 	// getters / setters
 	//
+	public Boolean getUpToDateService() {
+		return upToDateService;
+	}
+
+	public void setUpToDateService(Boolean upToDateService) {
+		this.upToDateService = upToDateService;
+	}
 	public Date getDate() {
 		return this.date;
 	}

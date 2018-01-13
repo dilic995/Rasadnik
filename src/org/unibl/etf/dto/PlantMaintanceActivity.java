@@ -3,7 +3,6 @@ package org.unibl.etf.dto;
 public class PlantMaintanceActivity {
 	private Integer plantMaintanceActivityId;
 	private String activity;
-	private Boolean plant;
 
 	//
 	// getters / setters
@@ -22,14 +21,6 @@ public class PlantMaintanceActivity {
 
 	public void setActivity(String activity) {
 		this.activity = activity;
-	}
-
-	public Boolean getPlant() {
-		return this.plant;
-	}
-
-	public void setPlant(Boolean plant) {
-		this.plant = plant;
 	}
 
 	@Override
@@ -63,7 +54,6 @@ public class PlantMaintanceActivity {
 
 		buffer.append("[").append("plantMaintanceActivityId").append("=").append(plantMaintanceActivityId).append("]");
 		buffer.append("[").append("activity").append("=").append(activity).append("]");
-		buffer.append("[").append("plant").append("=").append(plant).append("]");
 
 		return buffer.append(")").toString();
 	}

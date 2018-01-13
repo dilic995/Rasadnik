@@ -25,7 +25,6 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 	static {
 		pkColumns.add("plant_maintance_activity_id");
 		stdColumns.add("activity");
-		stdColumns.add("plant");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -272,28 +271,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 		return ret;
 	}
 
-	public List<PlantMaintanceActivity> getByPlant(Boolean plant) throws DAOException {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		List<PlantMaintanceActivity> ret = new ArrayList<>();
-
-		try {
-			ps = getConn()
-					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "plant" })));
-			DBUtil.bind(ps, 1, plant);
-			rs = ps.executeQuery();
-
-			while (rs.next())
-				ret.add(fromResultSet(rs));
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		} finally {
-			DBUtil.close(ps, rs, conn);
-		}
-
-		return ret;
-	}
-
+	
 	//
 	// helpers
 	//
@@ -305,7 +283,6 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 
 	protected int bindStdColumns(PreparedStatement ps, PlantMaintanceActivity obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getActivity());
-		DBUtil.bind(ps, pos++, obj.getPlant());
 
 		return pos;
 	}
@@ -315,7 +292,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 
 		obj.setPlantMaintanceActivityId(DBUtil.getInt(rs, "plant_maintance_activity_id"));
 		obj.setActivity(DBUtil.getString(rs, "activity"));
-		obj.setPlant(DBUtil.getBoolean(rs, "plant"));
+	
 
 		return obj;
 	}

@@ -33,6 +33,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		pkColumns.add("tool_item_id");
 		stdColumns.add("description");
 		stdColumns.add("amount");
+		stdColumns.add("up_to_date_service");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -351,6 +352,33 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 
 		return ret;
 	}
+	public List<ToolMaintanceActivity> getByUpToDateService(Boolean upToDateService) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<ToolMaintanceActivity> ret = new ArrayList<>();
+
+		try {
+			if (null == upToDateService) {
+				ps = getConn().prepareStatement(
+						DBUtil.selectNull(tableName, allColumns, Arrays.asList(new String[] { "up_to_date_service" })));
+			} else {
+				ps = getConn().prepareStatement(
+						DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "up_to_date_service" })));
+				DBUtil.bind(ps, 1,upToDateService);
+			}
+
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -365,6 +393,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 	protected int bindStdColumns(PreparedStatement ps, ToolMaintanceActivity obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getDescription());
 		DBUtil.bind(ps, pos++, obj.getAmount());
+		DBUtil.bind(ps, pos++, obj.getUpToDateService());
 
 		return pos;
 	}
@@ -383,6 +412,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		}
 		obj.setDescription(DBUtil.getClob(rs, "description"));
 		obj.setAmount(DBUtil.getBigDecimal(rs, "amount"));
+		obj.setUpToDateService(DBUtil.getBooleanObject(rs, "up_to_date_service"));
 
 		return obj;
 	}

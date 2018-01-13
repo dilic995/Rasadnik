@@ -41,4 +41,6 @@ public interface ToolMaintanceActivityDAO
   public List<ToolMaintanceActivity> getByDescription(Clob description) throws DAOException;
 
   public List<ToolMaintanceActivity> getByAmount(BigDecimal amount) throws DAOException;
+  
+  public List<ToolMaintanceActivity> getByUpToDateService(Boolean upToDateService) throws DAOException;
 }
