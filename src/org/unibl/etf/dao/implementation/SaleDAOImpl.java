@@ -4,7 +4,6 @@ package org.unibl.etf.dao.implementation;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.SaleDAO;
-import org.unibl.etf.dto.Customer;
 import org.unibl.etf.dto.Sale;
 
 import java.math.BigDecimal;
