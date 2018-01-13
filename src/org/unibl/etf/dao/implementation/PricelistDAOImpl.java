@@ -302,7 +302,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		return ret;
 	}
 
-	public List<Pricelist> getByActive(byte active) throws DAOException {
+	public List<Pricelist> getByActive(Boolean active) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Pricelist> ret = new ArrayList<>();

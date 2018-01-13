@@ -28,7 +28,7 @@ public interface PriceHeightRatioDAO {
 	// Finders
 	public List<PriceHeightRatio> getByDateFrom(Date dateFrom) throws DAOException;
 
-	public List<PriceHeightRatio> getByPlantId(int plantId) throws DAOException;
+	public List<PriceHeightRatio> getByPlantId(Integer plantId) throws DAOException;
 
 	public List<PriceHeightRatio> getByHeightMin(BigDecimal heightMin) throws DAOException;
 
@@ -36,5 +36,5 @@ public interface PriceHeightRatioDAO {
 
 	public List<PriceHeightRatio> getByPrice(BigDecimal price) throws DAOException;
 
-	public List<PriceHeightRatio> getByActive(byte active) throws DAOException;
+	public List<PriceHeightRatio> getByActive(Boolean active) throws DAOException;
 }

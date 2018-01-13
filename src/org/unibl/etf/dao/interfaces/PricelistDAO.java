@@ -28,5 +28,5 @@ public interface PricelistDAO {
 
 	public List<Pricelist> getByDateTo(Date dateTo) throws DAOException;
 
-	public List<Pricelist> getByActive(byte active) throws DAOException;
+	public List<Pricelist> getByActive(Boolean active) throws DAOException;
 }

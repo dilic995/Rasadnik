@@ -277,7 +277,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public List<Basis> getByProduced(int produced) throws DAOException {
+	public List<Basis> getByProduced(Integer produced) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Basis> ret = new ArrayList<>();
@@ -299,7 +299,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public List<Basis> getByTakeARoot(int takeARoot) throws DAOException {
+	public List<Basis> getByTakeARoot(Integer takeARoot) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Basis> ret = new ArrayList<>();
@@ -321,7 +321,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public List<Basis> getByActive(byte active) throws DAOException {
+	public List<Basis> getByActive(Boolean active) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Basis> ret = new ArrayList<>();
@@ -343,7 +343,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public List<Basis> getByPlantId(int plantId) throws DAOException {
+	public List<Basis> getByPlantId(Integer plantId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Basis> ret = new ArrayList<>();

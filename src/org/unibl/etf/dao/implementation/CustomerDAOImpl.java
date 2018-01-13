@@ -330,7 +330,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return ret;
 	}
 
-	public List<Customer> getByIsSupplier(byte isSupplier) throws DAOException {
+	public List<Customer> getByIsSupplier(Boolean isSupplier) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Customer> ret = new ArrayList<>();

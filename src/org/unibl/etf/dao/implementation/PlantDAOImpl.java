@@ -361,7 +361,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return ret;
 	}
 
-	public List<Plant> getByOwned(byte owned) throws DAOException {
+	public List<Plant> getByOwned(Boolean owned) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Plant> ret = new ArrayList<>();

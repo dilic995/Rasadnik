@@ -275,7 +275,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 		return ret;
 	}
 
-	public List<EmployeeHasTask> getByTaskId(int taskId) throws DAOException {
+	public List<EmployeeHasTask> getByTaskId(Integer taskId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<EmployeeHasTask> ret = new ArrayList<>();
@@ -297,7 +297,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 		return ret;
 	}
 
-	public List<EmployeeHasTask> getByEmployeeId(int employeeId) throws DAOException {
+	public List<EmployeeHasTask> getByEmployeeId(Integer employeeId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<EmployeeHasTask> ret = new ArrayList<>();
@@ -347,7 +347,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 		return ret;
 	}
 
-	public List<EmployeeHasTask> getByHours(int hours) throws DAOException {
+	public List<EmployeeHasTask> getByHours(Integer hours) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<EmployeeHasTask> ret = new ArrayList<>();
@@ -369,7 +369,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 		return ret;
 	}
 
-	public List<EmployeeHasTask> getByPaidOff(byte paidOff) throws DAOException {
+	public List<EmployeeHasTask> getByPaidOff(Boolean paidOff) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<EmployeeHasTask> ret = new ArrayList<>();

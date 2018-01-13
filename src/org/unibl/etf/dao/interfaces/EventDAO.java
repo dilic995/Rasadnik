@@ -32,5 +32,5 @@ public interface EventDAO {
 
 	public List<Event> getByDate(Date date) throws DAOException;
 
-	public List<Event> getByDone(byte done) throws DAOException;
+	public List<Event> getByDone(Boolean done) throws DAOException;
 }

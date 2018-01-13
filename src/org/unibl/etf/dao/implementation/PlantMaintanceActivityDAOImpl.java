@@ -272,7 +272,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 		return ret;
 	}
 
-	public List<PlantMaintanceActivity> getByPlant(byte plant) throws DAOException {
+	public List<PlantMaintanceActivity> getByPlant(Boolean plant) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<PlantMaintanceActivity> ret = new ArrayList<>();

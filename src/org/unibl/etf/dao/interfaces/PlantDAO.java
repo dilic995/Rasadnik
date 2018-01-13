@@ -34,5 +34,5 @@ public interface PlantDAO {
 
 	public List<Plant> getByImage(Blob image) throws DAOException;
 
-	public List<Plant> getByOwned(byte owned) throws DAOException;
+	public List<Plant> getByOwned(Boolean owned) throws DAOException;
 }

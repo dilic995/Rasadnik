@@ -29,5 +29,5 @@ public interface CustomerDAO {
 
 	public List<Customer> getByAddress(String address) throws DAOException;
 
-	public List<Customer> getByIsSupplier(byte isSupplier) throws DAOException;
+	public List<Customer> getByIsSupplier(Boolean isSupplier) throws DAOException;
 }

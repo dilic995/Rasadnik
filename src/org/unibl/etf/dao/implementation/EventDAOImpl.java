@@ -332,7 +332,7 @@ public class EventDAOImpl implements EventDAO {
 		return ret;
 	}
 
-	public List<Event> getByDone(byte done) throws DAOException {
+	public List<Event> getByDone(Boolean done) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Event> ret = new ArrayList<>();

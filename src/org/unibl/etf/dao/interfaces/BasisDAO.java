@@ -26,11 +26,11 @@ public interface BasisDAO {
 	// Finders
 	public List<Basis> getByPlantingDate(Date plantingDate) throws DAOException;
 
-	public List<Basis> getByProduced(int produced) throws DAOException;
+	public List<Basis> getByProduced(Integer produced) throws DAOException;
 
-	public List<Basis> getByTakeARoot(int takeARoot) throws DAOException;
+	public List<Basis> getByTakeARoot(Integer takeARoot) throws DAOException;
 
-	public List<Basis> getByActive(byte active) throws DAOException;
+	public List<Basis> getByActive(Boolean active) throws DAOException;
 
-	public List<Basis> getByPlantId(int plantId) throws DAOException;
+	public List<Basis> getByPlantId(Integer plantId) throws DAOException;
 }

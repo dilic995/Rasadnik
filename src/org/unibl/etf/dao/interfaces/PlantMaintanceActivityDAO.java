@@ -25,5 +25,5 @@ public interface PlantMaintanceActivityDAO {
 	// Finders
 	public List<PlantMaintanceActivity> getByActivity(String activity) throws DAOException;
 
-	public List<PlantMaintanceActivity> getByPlant(byte plant) throws DAOException;
+	public List<PlantMaintanceActivity> getByPlant(Boolean plant) throws DAOException;
 }

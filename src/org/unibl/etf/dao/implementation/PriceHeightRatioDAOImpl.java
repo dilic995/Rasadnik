@@ -274,7 +274,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return ret;
 	}
 
-	public List<PriceHeightRatio> getByPlantId(int plantId) throws DAOException {
+	public List<PriceHeightRatio> getByPlantId(Integer plantId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<PriceHeightRatio> ret = new ArrayList<>();
@@ -380,7 +380,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return ret;
 	}
 
-	public List<PriceHeightRatio> getByActive(byte active) throws DAOException {
+	public List<PriceHeightRatio> getByActive(Boolean active) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<PriceHeightRatio> ret = new ArrayList<>();
