@@ -98,7 +98,7 @@ public class SaleItem {
 		this.saleId = saleId;
 		sale=null;
 	}
-		
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

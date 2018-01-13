@@ -7,7 +7,7 @@ import org.unibl.etf.dto.Pricelist;
 
 public interface PricelistDAO {
 	// CRUD methods
-	public Pricelist getByPrimaryKey(int pricelistId) throws DAOException;
+	public Pricelist getByPrimaryKey(Integer pricelistId) throws DAOException;
 
 	public List<Pricelist> selectAll() throws DAOException;
 

@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.ToolMaintanceActivityDAO;
 import org.unibl.etf.dto.ToolMaintanceActivity;
 
@@ -349,6 +350,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 
 		return ret;
 	}
+
 	public List<ToolMaintanceActivity> getByUpToDateService(Boolean upToDateService) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -361,7 +363,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			} else {
 				ps = getConn().prepareStatement(
 						DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "up_to_date_service" })));
-				DBUtil.bind(ps, 1,upToDateService);
+				DBUtil.bind(ps, 1, upToDateService);
 			}
 
 			rs = ps.executeQuery();

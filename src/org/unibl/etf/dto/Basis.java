@@ -2,6 +2,9 @@ package org.unibl.etf.dto;
 
 import java.util.Date;
 
+import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
+
 public class Basis {
 	private Integer basisId;
 	private Date plantingDate;
@@ -60,9 +63,18 @@ public class Basis {
 
 	public void setPlantId(Integer plantId) {
 		this.plantId = plantId;
+		this.plant = null;
 	}
 
 	public Plant getPlant() {
+		if (this.plant == null) {
+			try {
+				this.plant = DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(this.plantId);
+			} catch (DAOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return plant;
 	}
 

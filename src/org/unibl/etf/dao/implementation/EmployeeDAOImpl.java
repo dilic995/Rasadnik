@@ -48,7 +48,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	//
 	// CRUD methods
 	//
-	public Employee getByPrimaryKey(int employeeId) throws DAOException {
+	public Employee getByPrimaryKey(Integer employeeId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 

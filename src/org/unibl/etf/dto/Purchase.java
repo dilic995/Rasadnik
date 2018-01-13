@@ -2,9 +2,7 @@
 package org.unibl.etf.dto;
 
 import java.math.BigDecimal;
-
 import java.sql.Clob;
-
 import java.util.Date;
 
 import org.unibl.etf.dao.interfaces.DAOException;

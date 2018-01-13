@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.PurchaseDAO;
 import org.unibl.etf.dto.Purchase;
 

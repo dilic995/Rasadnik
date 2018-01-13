@@ -2,9 +2,11 @@
 package org.unibl.etf.dto;
 
 import java.math.BigDecimal;
-
 import java.sql.Clob;
 import java.util.Date;
+
+import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class ToolMaintanceActivity {
 	private Clob description;
@@ -13,9 +15,6 @@ public class ToolMaintanceActivity {
 	private ToolItem toolItem;
 	private Integer toolItemId;
 	private Boolean upToDateService;
-	
-
-	
 
 	//
 	// getters / setters
@@ -27,6 +26,7 @@ public class ToolMaintanceActivity {
 	public void setUpToDateService(Boolean upToDateService) {
 		this.upToDateService = upToDateService;
 	}
+
 	public Date getDate() {
 		return this.date;
 	}
@@ -40,6 +40,14 @@ public class ToolMaintanceActivity {
 	}
 
 	public ToolItem getToolItem() {
+		if (this.toolItem == null) {
+			try {
+				this.toolItem = DAOFactory.getInstance().getToolItemDAO().getByPrimaryKey(this.toolItemId);
+			} catch (DAOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return toolItem;
 	}
 
@@ -49,6 +57,7 @@ public class ToolMaintanceActivity {
 
 	public void setToolItemId(Integer toolItemId) {
 		this.toolItemId = toolItemId;
+		this.toolItem = null;
 	}
 
 	public Clob getDescription() {

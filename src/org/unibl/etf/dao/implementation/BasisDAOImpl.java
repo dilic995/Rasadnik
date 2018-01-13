@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.unibl.etf.dao.interfaces.BasisDAO;
 import org.unibl.etf.dao.interfaces.DAOException;
-import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Basis;
 
 public class BasisDAOImpl implements BasisDAO {
@@ -53,7 +52,7 @@ public class BasisDAOImpl implements BasisDAO {
 	//
 	// CRUD methods
 	//
-	public Basis getByPrimaryKey(int basisId) throws DAOException {
+	public Basis getByPrimaryKey(Integer basisId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -386,17 +385,12 @@ public class BasisDAOImpl implements BasisDAO {
 	protected Basis fromResultSet(ResultSet rs) throws SQLException {
 		Basis obj = new Basis();
 
-		try {
-			obj.setBasisId(DBUtil.getInt(rs, "basis_id"));
-			obj.setPlantingDate(DBUtil.getDate(rs, "planting_date"));
-			obj.setProduced(DBUtil.getInt(rs, "produced"));
-			obj.setTakeARoot(DBUtil.getInt(rs, "take_a_root"));
-			obj.setActive(DBUtil.getBoolean(rs, "active"));
-			obj.setPlantId(DBUtil.getInteger(rs, "plant_id"));
-			obj.setPlant(DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(DBUtil.getInt(rs, "plant_id")));
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
+		obj.setBasisId(DBUtil.getInt(rs, "basis_id"));
+		obj.setPlantingDate(DBUtil.getDate(rs, "planting_date"));
+		obj.setProduced(DBUtil.getInt(rs, "produced"));
+		obj.setTakeARoot(DBUtil.getInt(rs, "take_a_root"));
+		obj.setActive(DBUtil.getBoolean(rs, "active"));
+		obj.setPlantId(DBUtil.getInteger(rs, "plant_id"));
 
 		return obj;
 	}

@@ -8,7 +8,7 @@ import org.unibl.etf.dto.Event;
 
 public interface EventDAO {
 	// CRUD methods
-	public Event getByPrimaryKey(int eventId) throws DAOException;
+	public Event getByPrimaryKey(Integer eventId) throws DAOException;
 
 	public List<Event> selectAll() throws DAOException;
 

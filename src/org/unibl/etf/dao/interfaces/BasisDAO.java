@@ -7,7 +7,7 @@ import org.unibl.etf.dto.Basis;
 
 public interface BasisDAO {
 	// CRUD methods
-	public Basis getByPrimaryKey(int basisId) throws DAOException;
+	public Basis getByPrimaryKey(Integer basisId) throws DAOException;
 
 	public List<Basis> selectAll() throws DAOException;
 

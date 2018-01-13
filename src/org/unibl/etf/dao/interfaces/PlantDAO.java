@@ -8,7 +8,7 @@ import org.unibl.etf.dto.Plant;
 
 public interface PlantDAO {
 	// CRUD methods
-	public Plant getByPrimaryKey(int plantId) throws DAOException;
+	public Plant getByPrimaryKey(Integer plantId) throws DAOException;
 
 	public List<Plant> selectAll() throws DAOException;
 

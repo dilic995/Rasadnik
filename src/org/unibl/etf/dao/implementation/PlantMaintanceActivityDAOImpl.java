@@ -47,7 +47,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 	//
 	// CRUD methods
 	//
-	public PlantMaintanceActivity getByPrimaryKey(int plantMaintanceActivityId) throws DAOException {
+	public PlantMaintanceActivity getByPrimaryKey(Integer plantMaintanceActivityId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -270,7 +270,6 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 		return ret;
 	}
 
-	
 	//
 	// helpers
 	//
@@ -291,7 +290,6 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 
 		obj.setPlantMaintanceActivityId(DBUtil.getInt(rs, "plant_maintance_activity_id"));
 		obj.setActivity(DBUtil.getString(rs, "activity"));
-	
 
 		return obj;
 	}

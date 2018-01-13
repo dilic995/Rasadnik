@@ -5,30 +5,26 @@ import java.util.List;
 
 import org.unibl.etf.dto.Region;
 
+public interface RegionDAO {
+	// CRUD methods
+	public Region getByPrimaryKey(Integer regionId) throws DAOException;
 
-public interface RegionDAO
-{
-  // CRUD methods
-  public Region getByPrimaryKey(Integer regionId) throws DAOException;
+	public List<Region> selectAll() throws DAOException;
 
-  public List<Region> selectAll() throws DAOException;
+	public List<Region> select(String whereStatement, Object[] bindVariables) throws DAOException;
 
-  public List<Region> select(String whereStatement, Object[] bindVariables)
-    throws DAOException;
+	public Long selectCount() throws DAOException;
 
-  public Long selectCount() throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
 
-  public Long selectCount(String whereStatement, Object[] bindVariables)
-    throws DAOException;
+	public Integer update(Region obj) throws DAOException;
 
-  public Integer update(Region obj) throws DAOException;
+	public Integer insert(Region obj) throws DAOException;
 
-  public Integer insert(Region obj) throws DAOException;
+	public Integer delete(Region obj) throws DAOException;
 
-  public Integer delete(Region obj) throws DAOException;
+	// Finders
+	public List<Region> getByNumberOfPlants(Integer numberOfPlants) throws DAOException;
 
-  // Finders
-  public List<Region> getByNumberOfPlants(Integer numberOfPlants) throws DAOException;
-
-  public List<Region> getByBasis(Integer basisId) throws DAOException;
+	public List<Region> getByBasis(Integer basisId) throws DAOException;
 }

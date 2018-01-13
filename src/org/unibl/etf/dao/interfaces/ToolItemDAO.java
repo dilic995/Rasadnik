@@ -6,35 +6,30 @@ import java.util.List;
 
 import org.unibl.etf.dto.ToolItem;
 
+public interface ToolItemDAO {
+	// CRUD methods
+	public ToolItem getByPrimaryKey(Integer toolItemId) throws DAOException;
 
-public interface ToolItemDAO
-{
-  // CRUD methods
-  public ToolItem getByPrimaryKey(Integer toolItemId) throws DAOException;
+	public List<ToolItem> selectAll() throws DAOException;
 
-  public List<ToolItem> selectAll() throws DAOException;
+	public List<ToolItem> select(String whereStatement, Object[] bindVariables) throws DAOException;
 
-  public List<ToolItem> select(String whereStatement, Object[] bindVariables)
-    throws DAOException;
+	public Long selectCount() throws DAOException;
 
-  public Long selectCount() throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
 
-  public Long selectCount(String whereStatement, Object[] bindVariables)
-    throws DAOException;
+	public Integer update(ToolItem obj) throws DAOException;
 
-  public Integer update(ToolItem obj) throws DAOException;
+	public Integer insert(ToolItem obj) throws DAOException;
 
-  public Integer insert(ToolItem obj) throws DAOException;
+	public Integer delete(ToolItem obj) throws DAOException;
 
-  public Integer delete(ToolItem obj) throws DAOException;
+	// Finders
+	public List<ToolItem> getByNextServiceDate(Date nextServiceDate) throws DAOException;
 
-  // Finders
-  public List<ToolItem> getByNextServiceDate(Date nextServiceDate)
-    throws DAOException;
+	public List<ToolItem> getByIsMachine(Boolean isMachine) throws DAOException;
 
-  public List<ToolItem> getByIsMachine(Boolean isMachine) throws DAOException;
+	public List<ToolItem> getByToolId(Integer toolId) throws DAOException;
 
-  public List<ToolItem> getByToolId(Integer toolId) throws DAOException;
-
-  public List<ToolItem> getByConditionId(Integer conditionId) throws DAOException;
+	public List<ToolItem> getByConditionId(Integer conditionId) throws DAOException;
 }

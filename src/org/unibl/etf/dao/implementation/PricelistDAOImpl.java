@@ -50,7 +50,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 	//
 	// CRUD methods
 	//
-	public Pricelist getByPrimaryKey(int pricelistId) throws DAOException {
+	public Pricelist getByPrimaryKey(Integer pricelistId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 

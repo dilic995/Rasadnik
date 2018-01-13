@@ -52,7 +52,7 @@ public class EventDAOImpl implements EventDAO {
 	//
 	// CRUD methods
 	//
-	public Event getByPrimaryKey(int eventId) throws DAOException {
+	public Event getByPrimaryKey(Integer eventId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 

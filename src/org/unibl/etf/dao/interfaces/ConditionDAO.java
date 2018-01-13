@@ -6,7 +6,7 @@ import org.unibl.etf.dto.Condition;
 
 public interface ConditionDAO {
 	// CRUD methods
-	public Condition getByPrimaryKey(int conditionId) throws DAOException;
+	public Condition getByPrimaryKey(Integer conditionId) throws DAOException;
 
 	public List<Condition> selectAll() throws DAOException;
 

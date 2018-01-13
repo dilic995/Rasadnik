@@ -53,7 +53,7 @@ public class PlantDAOImpl implements PlantDAO {
 	//
 	// CRUD methods
 	//
-	public Plant getByPrimaryKey(int plantId) throws DAOException {
+	public Plant getByPrimaryKey(Integer plantId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 

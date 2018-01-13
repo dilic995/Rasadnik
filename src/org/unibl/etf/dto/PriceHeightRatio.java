@@ -3,6 +3,9 @@ package org.unibl.etf.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
+
 public class PriceHeightRatio {
 	private BigDecimal heightMin;
 	private BigDecimal heightMax;
@@ -62,9 +65,18 @@ public class PriceHeightRatio {
 
 	public void setPlantId(Integer plantId) {
 		this.plantId = plantId;
+		this.plant = null;
 	}
 
 	public Plant getPlant() {
+		if (this.plant == null) {
+			try {
+				this.plant = DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(this.plantId);
+			} catch (DAOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return plant;
 	}
 

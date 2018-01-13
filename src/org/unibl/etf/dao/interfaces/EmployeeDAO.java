@@ -6,7 +6,7 @@ import org.unibl.etf.dto.Employee;
 
 public interface EmployeeDAO {
 	// CRUD methods
-	public Employee getByPrimaryKey(int employeeId) throws DAOException;
+	public Employee getByPrimaryKey(Integer employeeId) throws DAOException;
 
 	public List<Employee> selectAll() throws DAOException;
 

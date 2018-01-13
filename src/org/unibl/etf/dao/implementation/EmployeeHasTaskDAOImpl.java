@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.unibl.etf.dao.interfaces.DAOException;
-import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.EmployeeHasTaskDAO;
 import org.unibl.etf.dto.EmployeeHasTask;
 
@@ -411,19 +410,12 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 	protected EmployeeHasTask fromResultSet(ResultSet rs) throws SQLException {
 		EmployeeHasTask obj = new EmployeeHasTask();
 
-		try {
-			obj.setDate(DBUtil.getDate(rs, "date"));
-			obj.setTaskId(DBUtil.getInteger(rs, "task_id"));
-			obj.setTask(DAOFactory.getInstance().getTaskDAO().getByPrimaryKey(DBUtil.getInt(rs, "task_id")));
-			obj.setEmployeeId(DBUtil.getInteger(rs, "employee_id"));
-			obj.setEmployee(
-					DAOFactory.getInstance().getEmployeeDAO().getByPrimaryKey(DBUtil.getInt(rs, "employee_id")));
-			obj.setHourlyWage(DBUtil.getBigDecimal(rs, "hourly_wage"));
-			obj.setHours(DBUtil.getInt(rs, "hours"));
-			obj.setPaidOff(DBUtil.getBoolean(rs, "paid_off"));
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
+		obj.setDate(DBUtil.getDate(rs, "date"));
+		obj.setTaskId(DBUtil.getInteger(rs, "task_id"));
+		obj.setEmployeeId(DBUtil.getInteger(rs, "employee_id"));
+		obj.setHourlyWage(DBUtil.getBigDecimal(rs, "hourly_wage"));
+		obj.setHours(DBUtil.getInt(rs, "hours"));
+		obj.setPaidOff(DBUtil.getBoolean(rs, "paid_off"));
 
 		return obj;
 	}

@@ -348,8 +348,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> getByPlantMaintanceActivityId(Integer plantMaintanceActivityId)
-			throws DAOException {
+	public List<Task> getByPlantMaintanceActivityId(Integer plantMaintanceActivityId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();

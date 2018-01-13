@@ -25,446 +25,344 @@ public class ToolItemDAOImpl implements ToolItemDAO
   protected static List<String>allColumns = new ArrayList<>();
   protected static String tableName = "tool_item";
 
-  static
-  {
-    pkColumns.add("tool_item_id");
-    stdColumns.add("next_service_date");
-    stdColumns.add("is_machine");
-    stdColumns.add("tool_id");
-    stdColumns.add("condition_id");
-    allColumns.addAll(pkColumns);
-    allColumns.addAll(stdColumns);
-  }
-
-  //
-  // data
-  //
-  protected Connection conn = null;
-
-  //
-  // construction
-  //
-  public ToolItemDAOImpl()
-  {
-    this(null);
-  }
-
-  public ToolItemDAOImpl(Connection conn)
-  {
-    this.conn = conn;
-  }
-
-  //
-  // CRUD methods
-  //
-  public ToolItem getByPrimaryKey(Integer toolItemId) throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    try
-    {
-      int pos = 1;
-      ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns, pkColumns));
-      DBUtil.bind(ps, pos++, toolItemId);
-      rs = ps.executeQuery();
-
-      if (rs.next())
-      {
-        return fromResultSet(rs);
-      }
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
-
-    return null;
-  }
-
-  public Long selectCount() throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    try
-    {
-      ps = getConn().prepareStatement("select count(*) from " + tableName);
-      rs = ps.executeQuery();
-
-      if (rs.next())
-      {
-        return rs.getLong(1);
-      }
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
-
-    return Long.valueOf(0);
-  }
-
-  public Long selectCount(String whereStatement, Object[] bindVariables)
-    throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    if (!whereStatement.trim().toUpperCase().startsWith("WHERE"))
-    {
-      whereStatement = " WHERE " + whereStatement;
-    }
-    else if (whereStatement.startsWith(" ") == false)
-    {
-      whereStatement = " " + whereStatement;
-    }
-
-    try
-    {
-      ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement);
-
-      for (int i = 0; i < bindVariables.length; i++)
-        DBUtil.bind(ps, i + 1, bindVariables[i]);
-
-      rs = ps.executeQuery();
-
-      if (rs.next())
-      {
-        return rs.getLong(1);
-      }
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
-
-    return 0L;
-  }
-
-  public List<ToolItem> selectAll() throws DAOException
-  {
-    List<ToolItem> ret = new ArrayList<>();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns));
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
-
-    return ret;
-  }
-
-  public List<ToolItem> select(String whereStatement, Object[] bindVariables)
-    throws DAOException
-  {
-    List<ToolItem> ret = new ArrayList<>();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-
-    if (!whereStatement.trim().toUpperCase().startsWith("WHERE"))
-    {
-      whereStatement = " WHERE " + whereStatement;
-    }
-    else if (whereStatement.startsWith(" ") == false)
-    {
-      whereStatement = " " + whereStatement;
-    }
-
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement);
-
-      for (int i = 0; i < bindVariables.length; i++)
-        DBUtil.bind(ps, i + 1, bindVariables[i]);
-
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException("Error in select(), table = " + tableName, e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
-
-    return ret;
-  }
-
-  public Integer update(ToolItem obj) throws DAOException
-  {
-    PreparedStatement ps = null;
-    int pos = 1;
-
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.update(tableName, stdColumns, pkColumns));
-      pos = bindStdColumns(ps, obj, pos);
-      bindPrimaryKey(ps, obj, pos);
-
-      int rowCount = ps.executeUpdate();
-
-      if (rowCount != 1)
-      {
-        throw new DAOException("Error updating " + obj.getClass() + " in " + tableName +
-          ", affected rows = " + rowCount);
-      }
-
-      return rowCount;
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, null,conn);
-    }
-  }
-
-  public Integer insert(ToolItem obj) throws DAOException
-  {
-    PreparedStatement ps = null;
-    int pos = 1;
-
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
-      pos = bindPrimaryKey(ps, obj, pos);
-      bindStdColumns(ps, obj, pos);
-
-      int rowCount = ps.executeUpdate();
-
-      if (rowCount != 1)
-      {
-        throw new DAOException("Error inserting " + obj.getClass() + " in " + tableName +
-          ", affected rows = " + rowCount);
-      }
-
-      return rowCount;
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, null,conn);
-    }
-  }
-
-  public Integer delete(ToolItem obj) throws DAOException
-  {
-    PreparedStatement ps = null;
-
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.delete(tableName, pkColumns));
-      bindPrimaryKey(ps, obj, 1);
-
-      int rowCount = ps.executeUpdate();
-
-      if (rowCount != 1)
-      {
-        throw new DAOException("Error deleting " + obj.getClass() + " in " + tableName +
-          ", affected rows = " + rowCount);
-      }
-
-      return rowCount;
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, null,conn);
-    }
-  }
-
-  //
-  // finders
-  //
-  public List<ToolItem> getByNextServiceDate(Date nextServiceDate)
-    throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    List<ToolItem> ret = new ArrayList<>();
-
-    try
-    {
-      if (null == nextServiceDate)
-      {
-        ps = getConn()
-               .prepareStatement(DBUtil.selectNull(tableName, allColumns,
-              Arrays.asList(new String[]{ "next_service_date" })));
-      }
-      else
-      {
-        ps = getConn()
-               .prepareStatement(DBUtil.select(tableName, allColumns,
-              Arrays.asList(new String[]{ "next_service_date" })));
-        DBUtil.bind(ps, 1, nextServiceDate);
-      }
-
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
-
-    return ret;
-  }
-
-  public List<ToolItem> getByIsMachine(Boolean isMachine) throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    List<ToolItem> ret = new ArrayList<>();
-
-    try
-    {
-      ps = getConn()
-             .prepareStatement(DBUtil.select(tableName, allColumns,
-            Arrays.asList(new String[]{ "is_machine" })));
-      DBUtil.bind(ps, 1, isMachine);
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
-
-    return ret;
-  }
-
-  public List<ToolItem> getByToolId(Integer toolId) throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    List<ToolItem> ret = new ArrayList<>();
-
-    try
-    {
-      ps = getConn()
-             .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "tool_id" })));
-      DBUtil.bind(ps, 1, toolId);
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
-
-    return ret;
-  }
-
-  public List<ToolItem> getByConditionId(Integer conditionId) throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    List<ToolItem> ret = new ArrayList<>();
-
-    try
-    {
-      ps = getConn()
-             .prepareStatement(DBUtil.select(tableName, allColumns,
-            Arrays.asList(new String[]{ "condition_id" })));
-      DBUtil.bind(ps, 1, conditionId);
-      rs = ps.executeQuery();
-
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
-
-    return ret;
-  }
-
-  //
-  // helpers
-  //
-  protected int bindPrimaryKey(PreparedStatement ps, ToolItem obj, int pos)
-    throws SQLException
-  {
-    DBUtil.bind(ps, pos++, obj.getToolItemId());
-
-    return pos;
-  }
-
-  protected int bindStdColumns(PreparedStatement ps, ToolItem obj, int pos)
-    throws SQLException
-  {
-    DBUtil.bind(ps, pos++, obj.getNextServiceDate());
-    DBUtil.bind(ps, pos++, obj.getIsMachine());
-    DBUtil.bind(ps, pos++, obj.getToolId());
-    DBUtil.bind(ps, pos++, obj.getConditionId());
-
-    return pos;
-  }
-
-  protected ToolItem fromResultSet(ResultSet rs) throws SQLException
-  {
-    ToolItem obj = new ToolItem();
+	static {
+		pkColumns.add("tool_item_id");
+		stdColumns.add("next_service_date");
+		stdColumns.add("is_machine");
+		stdColumns.add("tool_id");
+		stdColumns.add("condition_id");
+		allColumns.addAll(pkColumns);
+		allColumns.addAll(stdColumns);
+	}
+
+	//
+	// data
+	//
+	protected Connection conn = null;
+
+	//
+	// construction
+	//
+	public ToolItemDAOImpl() {
+		this(null);
+	}
+
+	public ToolItemDAOImpl(Connection conn) {
+		this.conn = conn;
+	}
+
+	//
+	// CRUD methods
+	//
+	public ToolItem getByPrimaryKey(Integer toolItemId) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			int pos = 1;
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns, pkColumns));
+			DBUtil.bind(ps, pos++, toolItemId);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return fromResultSet(rs);
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return null;
+	}
+
+	public Long selectCount() throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = getConn().prepareStatement("select count(*) from " + tableName);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return rs.getLong(1);
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return Long.valueOf(0);
+	}
+
+	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		if (!whereStatement.trim().toUpperCase().startsWith("WHERE")) {
+			whereStatement = " WHERE " + whereStatement;
+		} else if (whereStatement.startsWith(" ") == false) {
+			whereStatement = " " + whereStatement;
+		}
+
+		try {
+			ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement);
+
+			for (int i = 0; i < bindVariables.length; i++)
+				DBUtil.bind(ps, i + 1, bindVariables[i]);
+
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return rs.getLong(1);
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return 0L;
+	}
+
+	public List<ToolItem> selectAll() throws DAOException {
+		List<ToolItem> ret = new ArrayList<>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns));
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	public List<ToolItem> select(String whereStatement, Object[] bindVariables) throws DAOException {
+		List<ToolItem> ret = new ArrayList<>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		if (!whereStatement.trim().toUpperCase().startsWith("WHERE")) {
+			whereStatement = " WHERE " + whereStatement;
+		} else if (whereStatement.startsWith(" ") == false) {
+			whereStatement = " " + whereStatement;
+		}
+
+		try {
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement);
+
+			for (int i = 0; i < bindVariables.length; i++)
+				DBUtil.bind(ps, i + 1, bindVariables[i]);
+
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException("Error in select(), table = " + tableName, e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	public Integer update(ToolItem obj) throws DAOException {
+		PreparedStatement ps = null;
+		int pos = 1;
+
+		try {
+			ps = getConn().prepareStatement(DBUtil.update(tableName, stdColumns, pkColumns));
+			pos = bindStdColumns(ps, obj, pos);
+			bindPrimaryKey(ps, obj, pos);
+
+			int rowCount = ps.executeUpdate();
+
+			if (rowCount != 1) {
+				throw new DAOException(
+						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			}
+
+			return rowCount;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, null, conn);
+		}
+	}
+
+	public Integer insert(ToolItem obj) throws DAOException {
+		PreparedStatement ps = null;
+		int pos = 1;
+
+		try {
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			pos = bindPrimaryKey(ps, obj, pos);
+			bindStdColumns(ps, obj, pos);
+
+			int rowCount = ps.executeUpdate();
+
+			if (rowCount != 1) {
+				throw new DAOException(
+						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			}
+
+			return rowCount;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, null, conn);
+		}
+	}
+
+	public Integer delete(ToolItem obj) throws DAOException {
+		PreparedStatement ps = null;
+
+		try {
+			ps = getConn().prepareStatement(DBUtil.delete(tableName, pkColumns));
+			bindPrimaryKey(ps, obj, 1);
+
+			int rowCount = ps.executeUpdate();
+
+			if (rowCount != 1) {
+				throw new DAOException(
+						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			}
+
+			return rowCount;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, null, conn);
+		}
+	}
+
+	//
+	// finders
+	//
+	public List<ToolItem> getByNextServiceDate(Date nextServiceDate) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<ToolItem> ret = new ArrayList<>();
+
+		try {
+			if (null == nextServiceDate) {
+				ps = getConn().prepareStatement(
+						DBUtil.selectNull(tableName, allColumns, Arrays.asList(new String[] { "next_service_date" })));
+			} else {
+				ps = getConn().prepareStatement(
+						DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "next_service_date" })));
+				DBUtil.bind(ps, 1, nextServiceDate);
+			}
+
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	public List<ToolItem> getByIsMachine(Boolean isMachine) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<ToolItem> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(
+					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_machine" })));
+			DBUtil.bind(ps, 1, isMachine);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	public List<ToolItem> getByToolId(Integer toolId) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<ToolItem> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "tool_id" })));
+			DBUtil.bind(ps, 1, toolId);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	public List<ToolItem> getByConditionId(Integer conditionId) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<ToolItem> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(
+					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "condition_id" })));
+			DBUtil.bind(ps, 1, conditionId);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	//
+	// helpers
+	//
+	protected int bindPrimaryKey(PreparedStatement ps, ToolItem obj, int pos) throws SQLException {
+		DBUtil.bind(ps, pos++, obj.getToolItemId());
+
+		return pos;
+	}
+
+	protected int bindStdColumns(PreparedStatement ps, ToolItem obj, int pos) throws SQLException {
+		DBUtil.bind(ps, pos++, obj.getNextServiceDate());
+		DBUtil.bind(ps, pos++, obj.getIsMachine());
+		DBUtil.bind(ps, pos++, obj.getToolId());
+		DBUtil.bind(ps, pos++, obj.getConditionId());
+
+		return pos;
+	}
+
+	protected ToolItem fromResultSet(ResultSet rs) throws SQLException {
+		ToolItem obj = new ToolItem();
 
     obj.setToolItemId(DBUtil.getInt(rs, "tool_item_id"));
     obj.setNextServiceDate(DBUtil.getDate(rs, "next_service_date"));
@@ -475,10 +373,8 @@ public class ToolItemDAOImpl implements ToolItemDAO
     return obj;
   }
 
-  protected Connection getConn()
-  {
-    return (conn == null) ? DBUtil.getConnection() : conn;
-  }
-
+	protected Connection getConn() {
+		return (conn == null) ? DBUtil.getConnection() : conn;
+	}
 
 }

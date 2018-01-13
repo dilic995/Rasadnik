@@ -50,7 +50,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	//
 	// CRUD methods
 	//
-	public Customer getByPrimaryKey(int customerId) throws DAOException {
+	public Customer getByPrimaryKey(Integer customerId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 

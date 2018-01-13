@@ -47,7 +47,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 	//
 	// CRUD methods
 	//
-	public Condition getByPrimaryKey(int conditionId) throws DAOException {
+	public Condition getByPrimaryKey(Integer conditionId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 

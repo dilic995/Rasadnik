@@ -3,6 +3,9 @@ package org.unibl.etf.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
+
 public class EmployeeHasTask {
 	private BigDecimal hourlyWage;
 	private Integer hours;
@@ -55,9 +58,18 @@ public class EmployeeHasTask {
 
 	public void setTaskId(Integer taskId) {
 		this.taskId = taskId;
+		this.task = null;
 	}
 
 	public Task getTask() {
+		if (this.task == null) {
+			try {
+				this.task = DAOFactory.getInstance().getTaskDAO().getByPrimaryKey(this.taskId);
+			} catch (DAOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return task;
 	}
 
@@ -71,9 +83,18 @@ public class EmployeeHasTask {
 
 	public void setEmployeeId(Integer employeeId) {
 		this.employeeId = employeeId;
+		this.employee = null;
 	}
 
 	public Employee getEmployee() {
+		if (this.employee == null) {
+			try {
+				this.employee = DAOFactory.getInstance().getEmployeeDAO().getByPrimaryKey(this.employeeId);
+			} catch (DAOException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return employee;
 	}
 

@@ -6,7 +6,7 @@ import org.unibl.etf.dto.PlantMaintanceActivity;
 
 public interface PlantMaintanceActivityDAO {
 	// CRUD methods
-	public PlantMaintanceActivity getByPrimaryKey(int plantMaintanceActivityId) throws DAOException;
+	public PlantMaintanceActivity getByPrimaryKey(Integer plantMaintanceActivityId) throws DAOException;
 
 	public List<PlantMaintanceActivity> selectAll() throws DAOException;
 
@@ -25,5 +25,4 @@ public interface PlantMaintanceActivityDAO {
 	// Finders
 	public List<PlantMaintanceActivity> getByActivity(String activity) throws DAOException;
 
-	
 }

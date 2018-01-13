@@ -1,7 +1,6 @@
 package org.unibl.etf.dto;
 
 import java.sql.Clob;
-
 import java.util.Date;
 
 public class Event {

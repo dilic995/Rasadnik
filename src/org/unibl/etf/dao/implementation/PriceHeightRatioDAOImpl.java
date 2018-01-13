@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.unibl.etf.dao.interfaces.DAOException;
-import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.PriceHeightRatioDAO;
 import org.unibl.etf.dto.PriceHeightRatio;
 
@@ -422,17 +421,12 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 	protected PriceHeightRatio fromResultSet(ResultSet rs) throws SQLException {
 		PriceHeightRatio obj = new PriceHeightRatio();
 
-		try {
-			obj.setDateFrom(DBUtil.getDate(rs, "date_from"));
-			obj.setPlantId(DBUtil.getInteger(rs, "plant_id"));
-			obj.setPlant(DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(DBUtil.getInt(rs, "plant_id")));
-			obj.setHeightMin(DBUtil.getBigDecimal(rs, "height_min"));
-			obj.setHeightMax(DBUtil.getBigDecimal(rs, "height_max"));
-			obj.setPrice(DBUtil.getBigDecimal(rs, "price"));
-			obj.setActive(DBUtil.getBoolean(rs, "active"));
-		} catch (DAOException e) {
-			e.printStackTrace();
-		}
+		obj.setDateFrom(DBUtil.getDate(rs, "date_from"));
+		obj.setPlantId(DBUtil.getInteger(rs, "plant_id"));
+		obj.setHeightMin(DBUtil.getBigDecimal(rs, "height_min"));
+		obj.setHeightMax(DBUtil.getBigDecimal(rs, "height_max"));
+		obj.setPrice(DBUtil.getBigDecimal(rs, "price"));
+		obj.setActive(DBUtil.getBoolean(rs, "active"));
 
 		return obj;
 	}

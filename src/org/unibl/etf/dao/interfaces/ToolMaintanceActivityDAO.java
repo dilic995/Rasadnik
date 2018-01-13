@@ -8,37 +8,32 @@ import java.util.List;
 
 import org.unibl.etf.dto.ToolMaintanceActivity;
 
+public interface ToolMaintanceActivityDAO {
+	// CRUD methods
+	public ToolMaintanceActivity getByPrimaryKey(Integer idToolItem, Date date) throws DAOException;
 
-public interface ToolMaintanceActivityDAO
-{
-  // CRUD methods
-  public ToolMaintanceActivity getByPrimaryKey(Integer idToolItem,Date date)
-    throws DAOException;
+	public List<ToolMaintanceActivity> selectAll() throws DAOException;
 
-  public List<ToolMaintanceActivity> selectAll() throws DAOException;
+	public List<ToolMaintanceActivity> select(String whereStatement, Object[] bindVariables) throws DAOException;
 
-  public List<ToolMaintanceActivity> select(String whereStatement, Object[] bindVariables)
-    throws DAOException;
+	public Long selectCount() throws DAOException;
 
-  public Long selectCount() throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
 
-  public Long selectCount(String whereStatement, Object[] bindVariables)
-    throws DAOException;
+	public Integer update(ToolMaintanceActivity obj) throws DAOException;
 
-  public Integer update(ToolMaintanceActivity obj) throws DAOException;
+	public Integer insert(ToolMaintanceActivity obj) throws DAOException;
 
-  public Integer insert(ToolMaintanceActivity obj) throws DAOException;
+	public Integer delete(ToolMaintanceActivity obj) throws DAOException;
 
-  public Integer delete(ToolMaintanceActivity obj) throws DAOException;
+	// Finders
+	public List<ToolMaintanceActivity> getByDate(Date date) throws DAOException;
 
-  // Finders
-  public List<ToolMaintanceActivity> getByDate(Date date) throws DAOException;
+	public List<ToolMaintanceActivity> getByToolItemId(Integer toolItemId) throws DAOException;
 
-  public List<ToolMaintanceActivity> getByToolItemId(Integer toolItemId) throws DAOException;
+	public List<ToolMaintanceActivity> getByDescription(Clob description) throws DAOException;
 
-  public List<ToolMaintanceActivity> getByDescription(Clob description) throws DAOException;
+	public List<ToolMaintanceActivity> getByAmount(BigDecimal amount) throws DAOException;
 
-  public List<ToolMaintanceActivity> getByAmount(BigDecimal amount) throws DAOException;
-  
-  public List<ToolMaintanceActivity> getByUpToDateService(Boolean upToDateService) throws DAOException;
+	public List<ToolMaintanceActivity> getByUpToDateService(Boolean upToDateService) throws DAOException;
 }
