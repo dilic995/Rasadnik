@@ -4,7 +4,7 @@ package org.unibl.etf.dao.interfaces;
 import org.unibl.etf.dto.Transaction;
 
 import java.math.BigDecimal;
-
+import java.sql.Clob;
 import java.util.List;
 
 
@@ -34,4 +34,6 @@ public interface TransactionDAO
   public List<Transaction> getByAmount(BigDecimal amount) throws DAOException;
 
   public List<Transaction> getByType(Boolean type) throws DAOException;
+  
+  public List<Transaction> getByDescription(Clob description) throws DAOException;
 }

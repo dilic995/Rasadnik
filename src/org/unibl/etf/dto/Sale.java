@@ -8,7 +8,7 @@ import java.util.Date;
 public class Sale {
 	private Integer saleId;
 	private Date date;
-	private BigDecimal amount;
+	private BigDecimal price;
 	private Boolean paidOff;
 	private Customer customer;
 	private Integer customerId;
@@ -32,12 +32,12 @@ public class Sale {
 		this.date = date;
 	}
 
-	public BigDecimal getAmount() {
-		return this.amount;
+	public BigDecimal getPrice() {
+		return this.price;
 	}
 
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
+	public void setPrice(BigDecimal amount) {
+		this.price = amount;
 	}
 
 	public Boolean getPaidOff() {
@@ -94,7 +94,7 @@ public class Sale {
 
 		buffer.append("[").append("saleId").append("=").append(saleId).append("]");
 		buffer.append("[").append("date").append("=").append(date).append("]");
-		buffer.append("[").append("amount").append("=").append(amount).append("]");
+		buffer.append("[").append("amount").append("=").append(price).append("]");
 		buffer.append("[").append("paidOff").append("=").append(paidOff).append("]");
 		buffer.append("[").append("customerId").append("=").append(customerId).append("]");
 

@@ -33,7 +33,7 @@ public class SaleDAOImpl implements SaleDAO
   {
     pkColumns.add("sale_id");
     stdColumns.add("date");
-    stdColumns.add("amount");
+    stdColumns.add("price");
     stdColumns.add("paid_off");
     stdColumns.add("customer_id");
     allColumns.addAll(pkColumns);
@@ -356,7 +356,7 @@ public class SaleDAOImpl implements SaleDAO
     return ret;
   }
 
-  public List<Sale> getByAmount(BigDecimal amount) throws DAOException
+  public List<Sale> getByPrice(BigDecimal amount) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -368,12 +368,12 @@ public class SaleDAOImpl implements SaleDAO
       {
         ps = getConn()
                .prepareStatement(DBUtil.selectNull(tableName, allColumns,
-              Arrays.asList(new String[]{ "amount" })));
+              Arrays.asList(new String[]{ "price" })));
       }
       else
       {
         ps = getConn()
-               .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "amount" })));
+               .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "price" })));
         DBUtil.bind(ps, 1, amount);
       }
 
@@ -466,7 +466,7 @@ public class SaleDAOImpl implements SaleDAO
     throws SQLException
   {
     DBUtil.bind(ps, pos++, obj.getDate());
-    DBUtil.bind(ps, pos++, obj.getAmount());
+    DBUtil.bind(ps, pos++, obj.getPrice());
     DBUtil.bind(ps, pos++, obj.getPaidOff());
     DBUtil.bind(ps, pos++, obj.getCustomerId());
 
@@ -479,7 +479,7 @@ public class SaleDAOImpl implements SaleDAO
 
     obj.setSaleId(DBUtil.getInt(rs, "sale_id"));
     obj.setDate(DBUtil.getDate(rs, "date"));
-    obj.setAmount(DBUtil.getBigDecimal(rs, "amount"));
+    obj.setPrice(DBUtil.getBigDecimal(rs, "price"));
     obj.setPaidOff(DBUtil.getBooleanObject(rs, "paid_off"));
     obj.setCustomerId((DBUtil.getInt(rs, "customer_id")));
     try {

@@ -34,7 +34,7 @@ public interface SaleDAO
   // Finders
   public List<Sale> getByDate(Date date) throws DAOException;
 
-  public List<Sale> getByAmount(BigDecimal amount) throws DAOException;
+  public List<Sale> getByPrice(BigDecimal amount) throws DAOException;
 
   public List<Sale> getByPaidOff(Boolean paidOff) throws DAOException;
 

@@ -6,7 +6,7 @@ import org.unibl.etf.dao.interfaces.TransactionDAO;
 import org.unibl.etf.dto.Transaction;
 
 import java.math.BigDecimal;
-
+import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,404 +16,347 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+public class TransactionDAOImpl implements TransactionDAO {
+	//
+	// static data
+	//
+	protected static List<String> pkColumns = new ArrayList<>();
+	protected static List<String> stdColumns = new ArrayList<>();
+	protected static List<String> allColumns = new ArrayList<>();
+	protected static String tableName = "transaction";
 
-public class TransactionDAOImpl implements TransactionDAO
-{
-  //
-  // static data
-  //
-  protected static List<String> pkColumns = new ArrayList<>();
-  protected static List<String> stdColumns = new ArrayList<>();
-  protected static List<String> allColumns = new ArrayList<>();
-  protected static String tableName = "transaction";
+	static {
+		pkColumns.add("transaction_id");
+		stdColumns.add("amount");
+		stdColumns.add("type");
+		stdColumns.add("description");
+		allColumns.addAll(pkColumns);
+		allColumns.addAll(stdColumns);
+	}
 
-  static
-  {
-    pkColumns.add("transaction_id");
-    stdColumns.add("amount");
-    stdColumns.add("type");
-    allColumns.addAll(pkColumns);
-    allColumns.addAll(stdColumns);
-  }
+	//
+	// data
+	//
+	protected Connection conn = null;
 
-  //
-  // data
-  //
-  protected Connection conn = null;
+	//
+	// construction
+	//
+	public TransactionDAOImpl() {
+		this(null);
+	}
 
-  //
-  // construction
-  //
-  public TransactionDAOImpl()
-  {
-    this(null);
-  }
+	public TransactionDAOImpl(Connection conn) {
+		this.conn = conn;
+	}
 
-  public TransactionDAOImpl(Connection conn)
-  {
-    this.conn = conn;
-  }
+	//
+	// CRUD methods
+	//
+	public Transaction getByPrimaryKey(Integer transactionId) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 
-  //
-  // CRUD methods
-  //
-  public Transaction getByPrimaryKey(Integer transactionId)
-    throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+		try {
+			int pos = 1;
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns, pkColumns));
+			DBUtil.bind(ps, pos++, transactionId);
+			rs = ps.executeQuery();
 
-    try
-    {
-      int pos = 1;
-      ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns, pkColumns));
-      DBUtil.bind(ps, pos++, transactionId);
-      rs = ps.executeQuery();
+			if (rs.next()) {
+				return fromResultSet(rs);
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
 
-      if (rs.next())
-      {
-        return fromResultSet(rs);
-      }
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
+		return null;
+	}
 
-    return null;
-  }
+	public Long selectCount() throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 
-  public Long selectCount() throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+		try {
+			ps = getConn().prepareStatement("select count(*) from " + tableName);
+			rs = ps.executeQuery();
 
-    try
-    {
-      ps = getConn().prepareStatement("select count(*) from " + tableName);
-      rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getLong(1);
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
 
-      if (rs.next())
-      {
-        return rs.getLong(1);
-      }
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
+		return 0L;
+	}
 
-    return 0L;
-  }
+	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 
-  public Long selectCount(String whereStatement, Object[] bindVariables)
-    throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+		if (!whereStatement.trim().toUpperCase().startsWith("WHERE")) {
+			whereStatement = " WHERE " + whereStatement;
+		} else if (whereStatement.startsWith(" ") == false) {
+			whereStatement = " " + whereStatement;
+		}
 
-    if (!whereStatement.trim().toUpperCase().startsWith("WHERE"))
-    {
-      whereStatement = " WHERE " + whereStatement;
-    }
-    else if (whereStatement.startsWith(" ") == false)
-    {
-      whereStatement = " " + whereStatement;
-    }
+		try {
+			ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement);
 
-    try
-    {
-      ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement);
+			for (int i = 0; i < bindVariables.length; i++)
+				DBUtil.bind(ps, i + 1, bindVariables[i]);
 
-      for (int i = 0; i < bindVariables.length; i++)
-        DBUtil.bind(ps, i + 1, bindVariables[i]);
+			rs = ps.executeQuery();
 
-      rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getLong(1);
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
 
-      if (rs.next())
-      {
-        return rs.getLong(1);
-      }
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
+		return 0L;
+	}
 
-    return 0L;
-  }
+	public List<Transaction> selectAll() throws DAOException {
+		List<Transaction> ret = new ArrayList<>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 
-  public List<Transaction> selectAll() throws DAOException
-  {
-    List<Transaction> ret = new ArrayList<>();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+		try {
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns));
+			rs = ps.executeQuery();
 
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns));
-      rs = ps.executeQuery();
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
 
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
+		return ret;
+	}
 
-    return ret;
-  }
+	public List<Transaction> select(String whereStatement, Object[] bindVariables) throws DAOException {
+		List<Transaction> ret = new ArrayList<>();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 
-  public List<Transaction> select(String whereStatement, Object[] bindVariables)
-    throws DAOException
-  {
-    List<Transaction> ret = new ArrayList<>();
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+		if (!whereStatement.trim().toUpperCase().startsWith("WHERE")) {
+			whereStatement = " WHERE " + whereStatement;
+		} else if (whereStatement.startsWith(" ") == false) {
+			whereStatement = " " + whereStatement;
+		}
 
-    if (!whereStatement.trim().toUpperCase().startsWith("WHERE"))
-    {
-      whereStatement = " WHERE " + whereStatement;
-    }
-    else if (whereStatement.startsWith(" ") == false)
-    {
-      whereStatement = " " + whereStatement;
-    }
+		try {
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement);
 
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement);
+			for (int i = 0; i < bindVariables.length; i++)
+				DBUtil.bind(ps, i + 1, bindVariables[i]);
 
-      for (int i = 0; i < bindVariables.length; i++)
-        DBUtil.bind(ps, i + 1, bindVariables[i]);
+			rs = ps.executeQuery();
 
-      rs = ps.executeQuery();
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException("Error in select(), table = " + tableName, e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
 
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException("Error in select(), table = " + tableName, e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
+		return ret;
+	}
 
-    return ret;
-  }
+	public Integer update(Transaction obj) throws DAOException {
+		PreparedStatement ps = null;
+		int pos = 1;
 
-  public Integer update(Transaction obj) throws DAOException
-  {
-    PreparedStatement ps = null;
-    int pos = 1;
+		try {
+			ps = getConn().prepareStatement(DBUtil.update(tableName, stdColumns, pkColumns));
+			pos = bindStdColumns(ps, obj, pos);
+			bindPrimaryKey(ps, obj, pos);
 
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.update(tableName, stdColumns, pkColumns));
-      pos = bindStdColumns(ps, obj, pos);
-      bindPrimaryKey(ps, obj, pos);
+			int rowCount = ps.executeUpdate();
 
-      int rowCount = ps.executeUpdate();
+			if (rowCount != 1) {
+				throw new DAOException(
+						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			}
 
-      if (rowCount != 1)
-      {
-        throw new DAOException("Error updating " + obj.getClass() + " in " + tableName +
-          ", affected rows = " + rowCount);
-      }
+			return rowCount;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, null, conn);
+		}
+	}
 
-      return rowCount;
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, null,conn);
-    }
-  }
+	public Integer insert(Transaction obj) throws DAOException {
+		PreparedStatement ps = null;
+		int pos = 1;
 
-  public Integer insert(Transaction obj) throws DAOException
-  {
-    PreparedStatement ps = null;
-    int pos = 1;
+		try {
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			pos = bindPrimaryKey(ps, obj, pos);
+			bindStdColumns(ps, obj, pos);
 
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
-      pos = bindPrimaryKey(ps, obj, pos);
-      bindStdColumns(ps, obj, pos);
+			int rowCount = ps.executeUpdate();
 
-      int rowCount = ps.executeUpdate();
+			if (rowCount != 1) {
+				throw new DAOException(
+						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			}
 
-      if (rowCount != 1)
-      {
-        throw new DAOException("Error inserting " + obj.getClass() + " in " + tableName +
-          ", affected rows = " + rowCount);
-      }
+			return rowCount;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, null, conn);
+		}
+	}
 
-      return rowCount;
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, null,conn);
-    }
-  }
+	public Integer delete(Transaction obj) throws DAOException {
+		PreparedStatement ps = null;
 
-  public Integer delete(Transaction obj) throws DAOException
-  {
-    PreparedStatement ps = null;
+		try {
+			ps = getConn().prepareStatement(DBUtil.delete(tableName, pkColumns));
+			bindPrimaryKey(ps, obj, 1);
 
-    try
-    {
-      ps = getConn().prepareStatement(DBUtil.delete(tableName, pkColumns));
-      bindPrimaryKey(ps, obj, 1);
+			int rowCount = ps.executeUpdate();
 
-      int rowCount = ps.executeUpdate();
+			if (rowCount != 1) {
+				throw new DAOException(
+						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			}
 
-      if (rowCount != 1)
-      {
-        throw new DAOException("Error deleting " + obj.getClass() + " in " + tableName +
-          ", affected rows = " + rowCount);
-      }
+			return rowCount;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, null, conn);
+		}
+	}
 
-      return rowCount;
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, null,conn);
-    }
-  }
+	//
+	// finders
+	//
+	public List<Transaction> getByAmount(BigDecimal amount) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Transaction> ret = new ArrayList<>();
 
-  //
-  // finders
-  //
-  public List<Transaction> getByAmount(BigDecimal amount) throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    List<Transaction> ret = new ArrayList<>();
+		try {
+			if (null == amount) {
+				ps = getConn().prepareStatement(
+						DBUtil.selectNull(tableName, allColumns, Arrays.asList(new String[] { "amount" })));
+			} else {
+				ps = getConn().prepareStatement(
+						DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "amount" })));
+				DBUtil.bind(ps, 1, amount);
+			}
 
-    try
-    {
-      if (null == amount)
-      {
-        ps = getConn()
-               .prepareStatement(DBUtil.selectNull(tableName, allColumns,
-              Arrays.asList(new String[]{ "amount" })));
-      }
-      else
-      {
-        ps = getConn()
-               .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "amount" })));
-        DBUtil.bind(ps, 1, amount);
-      }
+			rs = ps.executeQuery();
 
-      rs = ps.executeQuery();
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
 
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
+		return ret;
+	}
 
-    return ret;
-  }
+	public List<Transaction> getByType(Boolean type) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Transaction> ret = new ArrayList<>();
 
-  public List<Transaction> getByType(Boolean type) throws DAOException
-  {
-    PreparedStatement ps = null;
-    ResultSet rs = null;
-    List<Transaction> ret = new ArrayList<>();
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "type" })));
+			DBUtil.bind(ps, 1, type);
+			rs = ps.executeQuery();
 
-    try
-    {
-      ps = getConn()
-             .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "type" })));
-      DBUtil.bind(ps, 1, type);
-      rs = ps.executeQuery();
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
 
-      while (rs.next())
-        ret.add(fromResultSet(rs));
-    }
-    catch (SQLException e)
-    {
-      throw new DAOException(e);
-    }
-    finally
-    {
-      DBUtil.close(ps, rs,conn);
-    }
+		return ret;
+	}
 
-    return ret;
-  }
+	@Override
+	public List<Transaction> getByDescription(Clob description) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Transaction> ret = new ArrayList<>();
 
-  //
-  // helpers
-  //
-  protected int bindPrimaryKey(PreparedStatement ps, Transaction obj, int pos)
-    throws SQLException
-  {
-    DBUtil.bind(ps, pos++, obj.getTransactionId());
+		try {
+			if (null == description) {
+				ps = getConn().prepareStatement(
+						DBUtil.selectNull(tableName, allColumns, Arrays.asList(new String[] { "description" })));
+			} else {
+				ps = getConn().prepareStatement(
+						DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "description" })));
+				DBUtil.bind(ps, 1, description);
+			}
 
-    return pos;
-  }
+			rs = ps.executeQuery();
 
-  protected int bindStdColumns(PreparedStatement ps, Transaction obj, int pos)
-    throws SQLException
-  {
-    DBUtil.bind(ps, pos++, obj.getAmount());
-    DBUtil.bind(ps, pos++, obj.getType());
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
 
-    return pos;
-  }
+		return ret;
+	}
 
-  protected Transaction fromResultSet(ResultSet rs) throws SQLException
-  {
-    Transaction obj = new Transaction();
+	//
+	// helpers
+	//
+	protected int bindPrimaryKey(PreparedStatement ps, Transaction obj, int pos) throws SQLException {
+		DBUtil.bind(ps, pos++, obj.getTransactionId());
 
-    obj.setTransactionId(DBUtil.getInt(rs, "transaction_id"));
-    obj.setAmount(DBUtil.getBigDecimal(rs, "amount"));
-    obj.setType(DBUtil.getBoolean(rs, "type"));
+		return pos;
+	}
 
-    return obj;
-  }
+	protected int bindStdColumns(PreparedStatement ps, Transaction obj, int pos) throws SQLException {
+		DBUtil.bind(ps, pos++, obj.getAmount());
+		DBUtil.bind(ps, pos++, obj.getType());
+		DBUtil.bind(ps, pos++, obj.getDescription());
 
-  protected Connection getConn()
-  {
-    return (conn == null) ? DBUtil.getConnection() : conn;
-  }
+		return pos;
+	}
+
+	protected Transaction fromResultSet(ResultSet rs) throws SQLException {
+		Transaction obj = new Transaction();
+
+		obj.setTransactionId(DBUtil.getInt(rs, "transaction_id"));
+		obj.setAmount(DBUtil.getBigDecimal(rs, "amount"));
+		obj.setType(DBUtil.getBoolean(rs, "type"));
+		obj.setDescription(DBUtil.getClob(rs, "description"));
+
+		return obj;
+	}
+
+	protected Connection getConn() {
+		return (conn == null) ? DBUtil.getConnection() : conn;
+	}
+
 }

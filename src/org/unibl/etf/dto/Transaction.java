@@ -2,11 +2,13 @@
 package org.unibl.etf.dto;
 
 import java.math.BigDecimal;
+import java.sql.Clob;
 
 public class Transaction {
 	private Integer transactionId;
 	private BigDecimal amount;
 	private Boolean type;
+	private Clob description;
 
 	//
 	// getters / setters
@@ -25,6 +27,14 @@ public class Transaction {
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
+	}
+
+	public Clob getDescription() {
+		return description;
+	}
+
+	public void setDescription(Clob description) {
+		this.description = description;
 	}
 
 	public Boolean getType() {
@@ -65,6 +75,7 @@ public class Transaction {
 
 		buffer.append("[").append("transactionId").append("=").append(transactionId).append("]");
 		buffer.append("[").append("amount").append("=").append(amount).append("]");
+		buffer.append("[").append("description").append("=").append(description).append("]");
 		buffer.append("[").append("type").append("=").append(type).append("]");
 
 		return buffer.append(")").toString();
