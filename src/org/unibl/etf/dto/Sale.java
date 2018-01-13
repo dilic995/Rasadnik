@@ -5,138 +5,99 @@ import java.math.BigDecimal;
 
 import java.util.Date;
 
+public class Sale {
+	private Integer saleId;
+	private Date date;
+	private BigDecimal amount;
+	private Boolean paidOff;
+	private Customer customer;
+	private Integer customerId;
 
-public class Sale
-{
-  private Integer saleId;
-  private Date date;
-  private BigDecimal amount;
-  private Boolean paidOff;
-  private Customer customerId;
+	//
+	// getters / setters
+	//
+	public Integer getSaleId() {
+		return this.saleId;
+	}
 
-  //
-  // getters / setters
-  //
-  public Integer getSaleId()
-  {
-    return this.saleId;
-  }
+	public void setSaleId(Integer saleId) {
+		this.saleId = saleId;
+	}
 
-  public void setSaleId(Integer saleId)
-  {
-    this.saleId = saleId;
-  }
+	public Date getDate() {
+		return this.date;
+	}
 
-  public Date getDate()
-  {
-    return this.date;
-  }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
-  public void setDate(Date date)
-  {
-    this.date = date;
-  }
+	public BigDecimal getAmount() {
+		return this.amount;
+	}
 
-  public BigDecimal getAmount()
-  {
-    return this.amount;
-  }
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
 
-  public void setAmount(BigDecimal amount)
-  {
-    this.amount = amount;
-  }
+	public Boolean getPaidOff() {
+		return this.paidOff;
+	}
 
-  public Boolean getPaidOff()
-  {
-    return this.paidOff;
-  }
+	public void setPaidOff(Boolean paidOff) {
+		this.paidOff = paidOff;
+	}
 
-  public void setPaidOff(Boolean paidOff)
-  {
-    this.paidOff = paidOff;
-  }
+	public Customer getCustomer() {
+		return this.customer;
+	}
 
-  public Customer getCustomerId()
-  {
-    return this.customerId;
-  }
+	public void setCustomer(Customer customerId) {
+		this.customer = customerId;
+	}
 
-  public void setCustomerId(Customer customerId)
-  {
-    this.customerId = customerId;
-  }
+	public Integer getCustomerId() {
+		return customerId;
+	}
 
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-    {
-      return true;
-    }
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
 
-    if (null == obj)
-    {
-      return false;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((saleId == null) ? 0 : saleId.hashCode());
+		return result;
+	}
 
-    if (obj instanceof Sale == false)
-    {
-      return false;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sale other = (Sale) obj;
+		if (saleId == null) {
+			if (other.saleId != null)
+				return false;
+		} else if (!saleId.equals(other.saleId))
+			return false;
+		return true;
+	}
 
-    Sale other = (Sale) obj;
+	public String toString() {
+		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Sale").append("(");
 
-    if (saleId != other.saleId)
-    {
-      return false;
-    }
+		buffer.append("[").append("saleId").append("=").append(saleId).append("]");
+		buffer.append("[").append("date").append("=").append(date).append("]");
+		buffer.append("[").append("amount").append("=").append(amount).append("]");
+		buffer.append("[").append("paidOff").append("=").append(paidOff).append("]");
+		buffer.append("[").append("customerId").append("=").append(customerId).append("]");
 
-    if (false == date.equals(other.date))
-    {
-      return false;
-    }
-
-    if (false == amount.equals(other.amount))
-    {
-      return false;
-    }
-
-    if (paidOff != other.paidOff)
-    {
-      return false;
-    }
-
-    if (customerId != other.customerId)
-    {
-      return false;
-    }
-
-    return true;
-  }
-
-  public int hashCode()
-  {
-    int result = 29;
-
-    result = (29 * result) + saleId;
-    result = (29 * result) + date.hashCode();
-    result = (29 * result) + amount.hashCode();
-    result = (29 * result) + paidOff.hashCode();
-    result = (29 * result) + customerId.hashCode();
-
-    return result;
-  }
-
-  public String toString()
-  {
-    StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Sale").append("(");
-
-    buffer.append("[").append("saleId").append("=").append(saleId).append("]");
-    buffer.append("[").append("date").append("=").append(date).append("]");
-    buffer.append("[").append("amount").append("=").append(amount).append("]");
-    buffer.append("[").append("paidOff").append("=").append(paidOff).append("]");
-    buffer.append("[").append("customerId").append("=").append(customerId).append("]");
-
-    return buffer.append(")").toString();
-  }
+		return buffer.append(")").toString();
+	}
 }

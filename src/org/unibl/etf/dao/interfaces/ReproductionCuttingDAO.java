@@ -12,7 +12,7 @@ import java.util.List;
 public interface ReproductionCuttingDAO
 {
   // CRUD methods
-  public ReproductionCutting getByPrimaryKey(Basis idBasis,Date date)
+  public ReproductionCutting getByPrimaryKey(Integer idBasis,Date date)
     throws DAOException;
 
   public List<ReproductionCutting> selectAll() throws DAOException;
@@ -32,7 +32,7 @@ public interface ReproductionCuttingDAO
   public Integer delete(ReproductionCutting obj) throws DAOException;
 
   // Finders
-  public List<ReproductionCutting> getByBasisId(Basis basisId) throws DAOException;
+  public List<ReproductionCutting> getByBasisId(Integer basisId) throws DAOException;
 
   public List<ReproductionCutting> getByDate(Date date) throws DAOException;
 }

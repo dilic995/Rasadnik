@@ -11,36 +11,32 @@ import java.sql.Clob;
 import java.util.Date;
 import java.util.List;
 
+public interface PurchaseDAO {
+	// CRUD methods
+	public Purchase getByPrimaryKey(Integer purchaseId) throws DAOException;
 
-public interface PurchaseDAO
-{
-  // CRUD methods
-  public Purchase getByPrimaryKey(Integer purchaseId) throws DAOException;
+	public List<Purchase> selectAll() throws DAOException;
 
-  public List<Purchase> selectAll() throws DAOException;
+	public List<Purchase> select(String whereStatement, Object[] bindVariables) throws DAOException;
 
-  public List<Purchase> select(String whereStatement, Object[] bindVariables)
-    throws DAOException;
+	public Long selectCount() throws DAOException;
 
-  public Long selectCount() throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
 
-  public Long selectCount(String whereStatement, Object[] bindVariables)
-    throws DAOException;
+	public Integer update(Purchase obj) throws DAOException;
 
-  public Integer update(Purchase obj) throws DAOException;
+	public Integer insert(Purchase obj) throws DAOException;
 
-  public Integer insert(Purchase obj) throws DAOException;
+	public Integer delete(Purchase obj) throws DAOException;
 
-  public Integer delete(Purchase obj) throws DAOException;
+	// Finders
+	public List<Purchase> getByDate(Date date) throws DAOException;
 
-  // Finders
-  public List<Purchase> getByDate(Date date) throws DAOException;
+	public List<Purchase> getByDescription(Clob description) throws DAOException;
 
-  public List<Purchase> getByDescription(Clob description) throws DAOException;
+	public List<Purchase> getByPrice(BigDecimal price) throws DAOException;
 
-  public List<Purchase> getByPrice(BigDecimal price) throws DAOException;
+	public List<Purchase> getByPaidOff(Boolean paidOff) throws DAOException;
 
-  public List<Purchase> getByPaidOff(Boolean paidOff) throws DAOException;
-
-  public List<Purchase> getByCustomerId(Customer customerId) throws DAOException;
+	public List<Purchase> getByCustomerId(Integer customerId) throws DAOException;
 }

@@ -3,84 +3,76 @@ package org.unibl.etf.dto;
 
 import java.util.Date;
 
-public class ReproductionCutting
-{
-	  private Basis basisId;
-	  private Date date;
+public class ReproductionCutting {
+	private Basis basis;
+	private Date date;
+	private Integer basisId;
 
-	  //
-	  // getters / setters
-	  //
-	  public Basis getBasisId()
-	  {
-	    return this.basisId;
-	  }
+	//
+	// getters / setters
+	//
+	public Integer getBasisId() {
+		return basisId;
+	}
 
-	  public void setBasisId(Basis basisId)
-	  {
-	    this.basisId = basisId;
-	  }
+	public void setBasisId(Integer basisId) {
+		this.basisId = basisId;
+	}
 
-	  public Date getDate()
-	  {
-	    return this.date;
-	  }
+	public Basis getBasis() {
+		return this.basis;
+	}
 
-	  public void setDate(Date date)
-	  {
-	    this.date = date;
-	  }
+	public void setBasis(Basis basisId) {
+		this.basis = basisId;
+	}
 
-	  public boolean equals(Object obj)
-	  {
-	    if (this == obj)
-	    {
-	      return true;
-	    }
+	public Date getDate() {
+		return this.date;
+	}
 
-	    if (null == obj)
-	    {
-	      return false;
-	    }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
-	    if (obj instanceof ReproductionCutting == false)
-	    {
-	      return false;
-	    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((basisId == null) ? 0 : basisId.hashCode());
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		return result;
+	}
 
-	    ReproductionCutting other = (ReproductionCutting) obj;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ReproductionCutting other = (ReproductionCutting) obj;
+		if (basisId == null) {
+			if (other.basisId != null)
+				return false;
+		} else if (!basisId.equals(other.basisId))
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		return true;
+	}
 
-	    if (basisId != other.basisId)
-	    {
-	      return false;
-	    }
+	public String toString() {
+		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("ReproductionCutting")
+				.append("(");
 
-	    if (false == date.equals(other.date))
-	    {
-	      return false;
-	    }
+		buffer.append("[").append("basisId").append("=").append(basisId).append("]");
+		buffer.append("[").append("date").append("=").append(date).append("]");
 
-	    return true;
-	  }
-
-	  public int hashCode()
-	  {
-	    int result = 29;
-
-	    result = (29 * result) + basisId.hashCode();
-	    result = (29 * result) + date.hashCode();
-
-	    return result;
-	  }
-
-	  public String toString()
-	  {
-	    StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("ReproductionCutting")
-	                                                               .append("(");
-
-	    buffer.append("[").append("basisId").append("=").append(basisId).append("]");
-	    buffer.append("[").append("date").append("=").append(date).append("]");
-
-	    return buffer.append(")").toString();
-	  }
+		return buffer.append(")").toString();
+	}
 }

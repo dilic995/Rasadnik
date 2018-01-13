@@ -15,7 +15,7 @@ import java.util.List;
 public interface ToolMaintanceActivityDAO
 {
   // CRUD methods
-  public ToolMaintanceActivity getByPrimaryKey(ToolItem idToolItem,Date date)
+  public ToolMaintanceActivity getByPrimaryKey(Integer idToolItem,Date date)
     throws DAOException;
 
   public List<ToolMaintanceActivity> selectAll() throws DAOException;
@@ -37,7 +37,7 @@ public interface ToolMaintanceActivityDAO
   // Finders
   public List<ToolMaintanceActivity> getByDate(Date date) throws DAOException;
 
-  public List<ToolMaintanceActivity> getByToolItemId(ToolItem toolItemId) throws DAOException;
+  public List<ToolMaintanceActivity> getByToolItemId(Integer toolItemId) throws DAOException;
 
   public List<ToolMaintanceActivity> getByDescription(Clob description) throws DAOException;
 

@@ -37,8 +37,8 @@ public interface TaskDAO
 
   public List<Task> getByDone(Boolean done) throws DAOException;
 
-  public List<Task> getByRegionId(Region regionId) throws DAOException;
+  public List<Task> getByRegionId(Integer regionId) throws DAOException;
 
-  public List<Task> getByPlantMaintanceActivityId(PlantMaintanceActivity plantMaintanceActivityId)
+  public List<Task> getByPlantMaintanceActivityId(Integer plantMaintanceActivityId)
     throws DAOException;
 }

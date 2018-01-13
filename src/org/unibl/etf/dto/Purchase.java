@@ -7,156 +7,109 @@ import java.sql.Clob;
 
 import java.util.Date;
 
+public class Purchase {
+	private Integer purchaseId;
+	private Date date;
+	private Clob description;// treba raspraviti da li Clob ili string
+	private BigDecimal price;
+	private Boolean paidOff;
+	private Customer customer;
+	private Integer customerId;
 
-public class Purchase
-{
-  private Integer purchaseId;
-  private Date date;
-  private Clob description;//treba raspraviti da li Clob ili string
-  private BigDecimal price;
-  private Boolean paidOff;
-  private Customer customerId;
+	//
+	// getters / setters
+	//
+	public Integer getPurchaseId() {
+		return this.purchaseId;
+	}
 
-  //
-  // getters / setters
-  //
-  public int getPurchaseId()
-  {
-    return this.purchaseId;
-  }
+	public Integer getCustomerId() {
+		return customerId;
+	}
 
-  public void setPurchaseId(int purchaseId)
-  {
-    this.purchaseId = purchaseId;
-  }
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
 
-  public Date getDate()
-  {
-    return this.date;
-  }
+	public void setPurchaseId(int purchaseId) {
+		this.purchaseId = purchaseId;
+	}
 
-  public void setDate(Date date)
-  {
-    this.date = date;
-  }
+	public Date getDate() {
+		return this.date;
+	}
 
-  public Clob getDescription()
-  {
-    return this.description;
-  }
+	public void setDate(Date date) {
+		this.date = date;
+	}
 
-  public void setDescription(Clob description)
-  {
-    this.description = description;
-  }
+	public Clob getDescription() {
+		return this.description;
+	}
 
-  public BigDecimal getPrice()
-  {
-    return this.price;
-  }
+	public void setDescription(Clob description) {
+		this.description = description;
+	}
 
-  public void setPrice(BigDecimal price)
-  {
-    this.price = price;
-  }
+	public BigDecimal getPrice() {
+		return this.price;
+	}
 
-  public Boolean getPaidOff()
-  {
-    return this.paidOff;
-  }
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
 
-  public void setPaidOff(Boolean paidOff)
-  {
-    this.paidOff = paidOff;
-  }
+	public Boolean getPaidOff() {
+		return this.paidOff;
+	}
 
-  public Customer getCustomerId()
-  {
-    return this.customerId;
-  }
+	public void setPaidOff(Boolean paidOff) {
+		this.paidOff = paidOff;
+	}
 
-  public void setCustomerId(Customer customerId)
-  {
-    this.customerId = customerId;
-  }
+	public Customer getCustomer() {
+		return this.customer;
+	}
 
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-    {
-      return true;
-    }
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
-    if (null == obj)
-    {
-      return false;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((customerId == null) ? 0 : customerId.hashCode());
+		return result;
+	}
 
-    if (obj instanceof Purchase == false)
-    {
-      return false;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Purchase other = (Purchase) obj;
+		if (customerId == null) {
+			if (other.customerId != null)
+				return false;
+		} else if (!customerId.equals(other.customerId))
+			return false;
+		return true;
+	}
 
-    Purchase other = (Purchase) obj;
+	public String toString() {
+		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Purchase").append("(");
 
-    if (purchaseId != other.purchaseId)
-    {
-      return false;
-    }
+		buffer.append("[").append("purchaseId").append("=").append(purchaseId).append("]");
+		buffer.append("[").append("date").append("=").append(date).append("]");
+		buffer.append("[").append("description").append("=").append(description).append("]");
+		buffer.append("[").append("price").append("=").append(price).append("]");
+		buffer.append("[").append("paidOff").append("=").append(paidOff).append("]");
+		buffer.append("[").append("customerId").append("=").append(customerId).append("]");
 
-    if (false == date.equals(other.date))
-    {
-      return false;
-    }
-
-    if (false == description.equals(other.description))
-    {
-      return false;
-    }
-
-    if (false == price.equals(other.price))
-    {
-      return false;
-    }
-
-    if (paidOff != other.paidOff)
-    {
-      return false;
-    }
-
-    if (customerId != other.customerId)
-    {
-      return false;
-    }
-
-    return true;
-  }
-
-  public int hashCode()
-  {
-    int result = 29;
-
-    result = (29 * result) + purchaseId;
-    result = (29 * result) + date.hashCode();
-    result = (29 * result) + description.hashCode();
-    result = (29 * result) + price.hashCode();
-    result = (29 * result) + paidOff.hashCode();
-    result = (29 * result) + customerId.hashCode();
-
-    return result;
-  }
-
-  public String toString()
-  {
-    StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Purchase").append("(");
-
-    buffer.append("[").append("purchaseId").append("=").append(purchaseId).append("]");
-    buffer.append("[").append("date").append("=").append(date).append("]");
-    buffer.append("[").append("description").append("=").append(description).append("]");
-    buffer.append("[").append("price").append("=").append(price).append("]");
-    buffer.append("[").append("paidOff").append("=").append(paidOff).append("]");
-    buffer.append("[").append("customerId").append("=").append(customerId).append("]");
-
-    return buffer.append(")").toString();
-  }
+		return buffer.append(")").toString();
+	}
 }

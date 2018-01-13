@@ -3,157 +3,118 @@ package org.unibl.etf.dto;
 
 import java.util.Date;
 
+public class Task {
+	private Integer taskId;
+	private Date dateFrom;
+	private Date dateTo;
+	private Boolean done;
+	private Integer regionId;
+	private Region region;
+	private Integer plantMaintanceActivityId;
+	private PlantMaintanceActivity plantMaintanceActivity;
 
-public class Task
-{
-  private Integer taskId;
-  private Date dateFrom;
-  private Date dateTo;
-  private Boolean done;
-  private Region regionId;
-  private PlantMaintanceActivity plantMaintanceActivityId;
+	//
+	// getters / setters
+	//
+	public Integer getTaskId() {
+		return this.taskId;
+	}
 
-  //
-  // getters / setters
-  //
-  public Integer getTaskId()
-  {
-    return this.taskId;
-  }
+	public void setTaskId(Integer taskId) {
+		this.taskId = taskId;
+	}
 
-  public void setTaskId(Integer taskId)
-  {
-    this.taskId = taskId;
-  }
+	public Date getDateFrom() {
+		return this.dateFrom;
+	}
 
-  public Date getDateFrom()
-  {
-    return this.dateFrom;
-  }
+	public void setDateFrom(Date dateFrom) {
+		this.dateFrom = dateFrom;
+	}
 
-  public void setDateFrom(Date dateFrom)
-  {
-    this.dateFrom = dateFrom;
-  }
+	public Date getDateTo() {
+		return this.dateTo;
+	}
 
-  public Date getDateTo()
-  {
-    return this.dateTo;
-  }
+	public void setDateTo(Date dateTo) {
+		this.dateTo = dateTo;
+	}
 
-  public void setDateTo(Date dateTo)
-  {
-    this.dateTo = dateTo;
-  }
+	public Boolean getDone() {
+		return this.done;
+	}
 
-  public Boolean getDone()
-  {
-    return this.done;
-  }
+	public void setDone(Boolean done) {
+		this.done = done;
+	}
 
-  public void setDone(Boolean done)
-  {
-    this.done = done;
-  }
+	public Region getRegion() {
+		return this.region;
+	}
 
-  public Region getRegionId()
-  {
-    return this.regionId;
-  }
+	public void setRegion(Region regionId) {
+		this.region = regionId;
+	}
 
-  public void setRegionId(Region regionId)
-  {
-    this.regionId = regionId;
-  }
+	public PlantMaintanceActivity getPlantMaintanceActivity() {
+		return this.plantMaintanceActivity;
+	}
 
-  public PlantMaintanceActivity getPlantMaintanceActivityId()
-  {
-    return this.plantMaintanceActivityId;
-  }
+	public void setPlantMaintanceActivity(PlantMaintanceActivity plantMaintanceActivityId) {
+		this.plantMaintanceActivity = plantMaintanceActivityId;
+	}
 
-  public void setPlantMaintanceActivityId(PlantMaintanceActivity plantMaintanceActivityId)
-  {
-    this.plantMaintanceActivityId = plantMaintanceActivityId;
-  }
+	public Integer getRegionId() {
+		return regionId;
+	}
 
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-    {
-      return true;
-    }
+	public void setRegionId(Integer regionId) {
+		this.regionId = regionId;
+	}
 
-    if (null == obj)
-    {
-      return false;
-    }
+	public Integer getPlantMaintanceActivityId() {
+		return plantMaintanceActivityId;
+	}
 
-    if (obj instanceof Task == false)
-    {
-      return false;
-    }
+	public void setPlantMaintanceActivityId(Integer plantMaintanceActivityId) {
+		this.plantMaintanceActivityId = plantMaintanceActivityId;
+	}
 
-    Task other = (Task) obj;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((taskId == null) ? 0 : taskId.hashCode());
+		return result;
+	}
 
-    if (taskId != other.taskId)
-    {
-      return false;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Task other = (Task) obj;
+		if (taskId == null) {
+			if (other.taskId != null)
+				return false;
+		} else if (!taskId.equals(other.taskId))
+			return false;
+		return true;
+	}
 
-    if (false == dateFrom.equals(other.dateFrom))
-    {
-      return false;
-    }
+	public String toString() {
+		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Task").append("(");
 
-    if (false == dateTo.equals(other.dateTo))
-    {
-      return false;
-    }
+		buffer.append("[").append("taskId").append("=").append(taskId).append("]");
+		buffer.append("[").append("dateFrom").append("=").append(dateFrom).append("]");
+		buffer.append("[").append("dateTo").append("=").append(dateTo).append("]");
+		buffer.append("[").append("done").append("=").append(done).append("]");
+		buffer.append("[").append("regionId").append("=").append(regionId).append("]");
+		buffer.append("[").append("plantMaintanceActivityId").append("=").append(plantMaintanceActivityId).append("]");
 
-    if (done != other.done)
-    {
-      return false;
-    }
-
-    if (regionId != other.regionId)
-    {
-      return false;
-    }
-
-    if (plantMaintanceActivityId != other.plantMaintanceActivityId)
-    {
-      return false;
-    }
-
-    return true;
-  }
-
-  public int hashCode()
-  {
-    int result = 29;
-
-    result = (29 * result) + taskId;
-    result = (29 * result) + dateFrom.hashCode();
-    result = (29 * result) + dateTo.hashCode();
-    result = (29 * result) + done.hashCode();
-    result = (29 * result) + regionId.hashCode();
-    result = (29 * result) + plantMaintanceActivityId.hashCode();
-
-    return result;
-  }
-
-  public String toString()
-  {
-    StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Task").append("(");
-
-    buffer.append("[").append("taskId").append("=").append(taskId).append("]");
-    buffer.append("[").append("dateFrom").append("=").append(dateFrom).append("]");
-    buffer.append("[").append("dateTo").append("=").append(dateTo).append("]");
-    buffer.append("[").append("done").append("=").append(done).append("]");
-    buffer.append("[").append("regionId").append("=").append(regionId).append("]");
-    buffer.append("[").append("plantMaintanceActivityId").append("=").append(plantMaintanceActivityId)
-          .append("]");
-
-    return buffer.append(")").toString();
-  }
+		return buffer.append(")").toString();
+	}
 }

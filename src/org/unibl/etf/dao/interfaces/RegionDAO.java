@@ -31,5 +31,5 @@ public interface RegionDAO
   // Finders
   public List<Region> getByNumberOfPlants(Integer numberOfPlants) throws DAOException;
 
-  public List<Region> getByBasis(Basis basis) throws DAOException;
+  public List<Region> getByBasis(Integer basisId) throws DAOException;
 }

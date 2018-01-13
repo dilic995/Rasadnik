@@ -4,7 +4,6 @@ package org.unibl.etf.dao.implementation;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.RegionDAO;
-import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.Region;
 
 import java.sql.Connection;
@@ -343,7 +342,7 @@ public class RegionDAOImpl implements RegionDAO
     return ret;
   }
 
-  public List<Region> getByBasis(Basis basis) throws DAOException
+  public List<Region> getByBasis(Integer basis) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -353,7 +352,7 @@ public class RegionDAOImpl implements RegionDAO
     {
       ps = getConn()
              .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "basis_id" })));
-      DBUtil.bind(ps, 1, basis.getBasisId());
+      DBUtil.bind(ps, 1, basis);
       rs = ps.executeQuery();
 
       while (rs.next())
@@ -386,7 +385,7 @@ public class RegionDAOImpl implements RegionDAO
     throws SQLException
   {
     DBUtil.bind(ps, pos++, obj.getNumberOfPlants());
-    DBUtil.bind(ps, pos++, obj.getBasis().getBasisId());
+    DBUtil.bind(ps, pos++, obj.getBasisId());
 
     return pos;
   }
@@ -397,6 +396,7 @@ public class RegionDAOImpl implements RegionDAO
 
     obj.setRegionId(DBUtil.getInt(rs, "region_id"));
     obj.setNumberOfPlants(DBUtil.getInt(rs, "number_of_plants"));
+    obj.setBasisId(DBUtil.getInt(rs, "basis_id"));
     try {
 		obj.setBasis(DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(DBUtil.getInt(rs, "basis_id")));
 	} catch (DAOException e) {

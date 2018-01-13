@@ -3,138 +3,108 @@ package org.unibl.etf.dto;
 
 import java.util.Date;
 
+public class ToolItem {
+	private Integer toolItemId;
+	private Date nextServiceDate;
+	private Boolean isMachine;
+	private Tool tool;
+	private Condition condition;
+	private Integer toolId;
+	private Integer conditionId;
 
-public class ToolItem
-{
-  private Integer toolItemId;
-  private Date nextServiceDate;
-  private Boolean isMachine;
-  private Tool toolId;
-  private Condition conditionId;
+	//
+	// getters / setters
+	//
+	public Integer getToolItemId() {
+		return this.toolItemId;
+	}
 
-  //
-  // getters / setters
-  //
-  public Integer getToolItemId()
-  {
-    return this.toolItemId;
-  }
+	public void setToolItemId(Integer toolItemId) {
+		this.toolItemId = toolItemId;
+	}
 
-  public void setToolItemId(Integer toolItemId)
-  {
-    this.toolItemId = toolItemId;
-  }
+	public Date getNextServiceDate() {
+		return this.nextServiceDate;
+	}
 
-  public Date getNextServiceDate()
-  {
-    return this.nextServiceDate;
-  }
+	public void setNextServiceDate(Date nextServiceDate) {
+		this.nextServiceDate = nextServiceDate;
+	}
 
-  public void setNextServiceDate(Date nextServiceDate)
-  {
-    this.nextServiceDate = nextServiceDate;
-  }
+	public Boolean getIsMachine() {
+		return this.isMachine;
+	}
 
-  public Boolean getIsMachine()
-  {
-    return this.isMachine;
-  }
+	public void setIsMachine(Boolean isMachine) {
+		this.isMachine = isMachine;
+	}
 
-  public void setIsMachine(Boolean isMachine)
-  {
-    this.isMachine = isMachine;
-  }
+	public Integer getToolId() {
+		return this.toolId;
+	}
 
-  public Tool getToolId()
-  {
-    return this.toolId;
-  }
+	public void setToolId(Integer toolId) {
+		this.toolId = toolId;
+	}
 
-  public void setToolId(Tool toolId)
-  {
-    this.toolId = toolId;
-  }
+	public Integer getConditionId() {
+		return this.conditionId;
+	}
 
-  public Condition getConditionId()
-  {
-    return this.conditionId;
-  }
+	public void setConditionId(Integer conditionId) {
+		this.conditionId = conditionId;
+	}
 
-  public void setConditionId(Condition conditionId)
-  {
-    this.conditionId = conditionId;
-  }
+	public Tool getTool() {
+		return tool;
+	}
 
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-    {
-      return true;
-    }
+	public void setTool(Tool tool) {
+		this.tool = tool;
+	}
 
-    if (null == obj)
-    {
-      return false;
-    }
+	public Condition getCondition() {
+		return condition;
+	}
 
-    if (obj instanceof ToolItem == false)
-    {
-      return false;
-    }
+	public void setCondition(Condition condition) {
+		this.condition = condition;
+	}
 
-    ToolItem other = (ToolItem) obj;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((toolItemId == null) ? 0 : toolItemId.hashCode());
+		return result;
+	}
 
-    if (toolItemId != other.toolItemId)
-    {
-      return false;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ToolItem other = (ToolItem) obj;
+		if (toolItemId == null) {
+			if (other.toolItemId != null)
+				return false;
+		} else if (!toolItemId.equals(other.toolItemId))
+			return false;
+		return true;
+	}
 
-    if (false == nextServiceDate.equals(other.nextServiceDate))
-    {
-      return false;
-    }
+	public String toString() {
+		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("ToolItem").append("(");
 
-    if (isMachine != other.isMachine)
-    {
-      return false;
-    }
+		buffer.append("[").append("toolItemId").append("=").append(toolItemId).append("]");
+		buffer.append("[").append("nextServiceDate").append("=").append(nextServiceDate).append("]");
+		buffer.append("[").append("isMachine").append("=").append(isMachine).append("]");
+		buffer.append("[").append("toolId").append("=").append(toolId).append("]");
+		buffer.append("[").append("conditionId").append("=").append(conditionId).append("]");
 
-    if (toolId != other.toolId)
-    {
-      return false;
-    }
-
-    if (conditionId != other.conditionId)
-    {
-      return false;
-    }
-
-    return true;
-  }
-
-  public int hashCode()
-  {
-    int result = 29;
-
-    result = (29 * result) + toolItemId;
-    result = (29 * result) + nextServiceDate.hashCode();
-    result = (29 * result) + isMachine.hashCode();
-    result = (29 * result) + toolId.hashCode();
-    result = (29 * result) + conditionId.hashCode();
-
-    return result;
-  }
-
-  public String toString()
-  {
-    StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("ToolItem").append("(");
-
-    buffer.append("[").append("toolItemId").append("=").append(toolItemId).append("]");
-    buffer.append("[").append("nextServiceDate").append("=").append(nextServiceDate).append("]");
-    buffer.append("[").append("isMachine").append("=").append(isMachine).append("]");
-    buffer.append("[").append("toolId").append("=").append(toolId).append("]");
-    buffer.append("[").append("conditionId").append("=").append(conditionId).append("]");
-
-    return buffer.append(")").toString();
-  }
+		return buffer.append(")").toString();
+	}
 }

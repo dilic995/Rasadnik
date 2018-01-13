@@ -38,5 +38,5 @@ public interface SaleDAO
 
   public List<Sale> getByPaidOff(Boolean paidOff) throws DAOException;
 
-  public List<Sale> getByCustomer(Customer customerId) throws DAOException;
+  public List<Sale> getByCustomer(Integer customerId) throws DAOException;
 }

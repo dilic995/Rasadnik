@@ -4,8 +4,6 @@ package org.unibl.etf.dao.implementation;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.TaskDAO;
-import org.unibl.etf.dto.PlantMaintanceActivity;
-import org.unibl.etf.dto.Region;
 import org.unibl.etf.dto.Task;
 
 import java.sql.Connection;
@@ -330,7 +328,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> getByRegionId(Region regionId) throws DAOException {
+	public List<Task> getByRegionId(Integer regionId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -338,7 +336,7 @@ public class TaskDAOImpl implements TaskDAO {
 		try {
 			ps = getConn().prepareStatement(
 					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "region_id" })));
-			DBUtil.bind(ps, 1, regionId.getRegionId());
+			DBUtil.bind(ps, 1, regionId);
 			rs = ps.executeQuery();
 
 			while (rs.next())
@@ -352,7 +350,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> getByPlantMaintanceActivityId(PlantMaintanceActivity plantMaintanceActivityId)
+	public List<Task> getByPlantMaintanceActivityId(Integer plantMaintanceActivityId)
 			throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -361,7 +359,7 @@ public class TaskDAOImpl implements TaskDAO {
 		try {
 			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns,
 					Arrays.asList(new String[] { "plant_maintance_activity_id" })));
-			DBUtil.bind(ps, 1, plantMaintanceActivityId.getPlantMaintanceActivityId());
+			DBUtil.bind(ps, 1, plantMaintanceActivityId);
 			rs = ps.executeQuery();
 
 			while (rs.next())
@@ -388,8 +386,8 @@ public class TaskDAOImpl implements TaskDAO {
 		DBUtil.bind(ps, pos++, obj.getDateFrom());
 		DBUtil.bind(ps, pos++, obj.getDateTo());
 		DBUtil.bind(ps, pos++, obj.getDone());
-		DBUtil.bind(ps, pos++, obj.getRegionId().getRegionId());
-		DBUtil.bind(ps, pos++, obj.getPlantMaintanceActivityId().getPlantMaintanceActivityId());
+		DBUtil.bind(ps, pos++, obj.getRegionId());
+		DBUtil.bind(ps, pos++, obj.getPlantMaintanceActivityId());
 
 		return pos;
 	}
@@ -401,10 +399,13 @@ public class TaskDAOImpl implements TaskDAO {
 		obj.setDateFrom(DBUtil.getDate(rs, "date_from"));
 		obj.setDateTo(DBUtil.getDate(rs, "date_to"));
 		obj.setDone(DBUtil.getBoolean(rs, "done"));
-		try {
-			obj.setRegionId(DAOFactory.getInstance().getRegionDAO().getByPrimaryKey(DBUtil.getInt(rs, "region_id")));
+		obj.setRegionId((DBUtil.getInt(rs, "region_id")));
 
-			obj.setPlantMaintanceActivityId(DAOFactory.getInstance().getPlantMaintanceActivityDAO()
+		obj.setPlantMaintanceActivityId((DBUtil.getInt(rs, "plant_maintance_activity_id")));
+		try {
+			obj.setRegion(DAOFactory.getInstance().getRegionDAO().getByPrimaryKey(DBUtil.getInt(rs, "region_id")));
+
+			obj.setPlantMaintanceActivity(DAOFactory.getInstance().getPlantMaintanceActivityDAO()
 					.getByPrimaryKey(DBUtil.getInt(rs, "plant_maintance_activity_id")));
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block

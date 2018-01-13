@@ -351,7 +351,7 @@ public class ToolDAOImpl implements ToolDAO
     return ret;
   }
 
-  public List<Tool> getByCount(int count) throws DAOException
+  public List<Tool> getByCount(Integer count) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;

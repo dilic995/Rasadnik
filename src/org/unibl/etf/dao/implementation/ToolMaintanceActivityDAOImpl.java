@@ -4,7 +4,6 @@ package org.unibl.etf.dao.implementation;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.ToolMaintanceActivityDAO;
-import org.unibl.etf.dto.ToolItem;
 import org.unibl.etf.dto.ToolMaintanceActivity;
 
 import java.math.BigDecimal;
@@ -57,7 +56,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 	//
 	// CRUD methods
 	//
-	public ToolMaintanceActivity getByPrimaryKey(ToolItem idToolItem, Date date) throws DAOException {
+	public ToolMaintanceActivity getByPrimaryKey(Integer idToolItem, Date date) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -65,7 +64,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			int pos = 1;
 			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns, pkColumns));
 			DBUtil.bind(ps, pos++, date);
-			DBUtil.bind(ps, pos++, idToolItem.getToolItemId());
+			DBUtil.bind(ps, pos++, idToolItem);
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
@@ -275,7 +274,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		return ret;
 	}
 
-	public List<ToolMaintanceActivity> getByToolItemId(ToolItem toolItemId) throws DAOException {
+	public List<ToolMaintanceActivity> getByToolItemId(Integer toolItemId) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<ToolMaintanceActivity> ret = new ArrayList<>();
@@ -283,7 +282,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		try {
 			ps = getConn().prepareStatement(
 					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "tool_item_id" })));
-			DBUtil.bind(ps, 1, toolItemId.getToolItemId());
+			DBUtil.bind(ps, 1, toolItemId);
 			rs = ps.executeQuery();
 
 			while (rs.next())
@@ -358,7 +357,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 	//
 	protected int bindPrimaryKey(PreparedStatement ps, ToolMaintanceActivity obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getDate());
-		DBUtil.bind(ps, pos++, obj.getToolItemId().getToolItemId());
+		DBUtil.bind(ps, pos++, obj.getToolItemId());
 
 		return pos;
 	}
@@ -374,8 +373,9 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		ToolMaintanceActivity obj = new ToolMaintanceActivity();
 
 		obj.setDate(DBUtil.getDate(rs, "date"));
+		obj.setToolItemId((DBUtil.getInt(rs, "tool_item_id")));
 		try {
-			obj.setToolItemId(
+			obj.setToolItem(
 					DAOFactory.getInstance().getToolItemDAO().getByPrimaryKey(DBUtil.getInt(rs, "tool_item_id")));
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block

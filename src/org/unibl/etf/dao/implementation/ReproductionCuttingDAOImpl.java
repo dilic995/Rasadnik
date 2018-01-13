@@ -4,7 +4,6 @@ package org.unibl.etf.dao.implementation;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.ReproductionCuttingDAO;
-import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.ReproductionCutting;
 
 
@@ -58,7 +57,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO
   //
   // CRUD methods
   //
-  public ReproductionCutting getByPrimaryKey(Basis idBasis,Date date)
+  public ReproductionCutting getByPrimaryKey(Integer idBasis,Date date)
     throws DAOException
   {
     PreparedStatement ps = null;
@@ -68,7 +67,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO
     {
       int pos = 1;
       ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns, pkColumns));
-      DBUtil.bind(ps, pos++, idBasis.getBasisId());
+      DBUtil.bind(ps, pos++, idBasis);
       DBUtil.bind(ps, pos++, date);
       rs = ps.executeQuery();
 
@@ -317,7 +316,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO
   //
   // finders
   //
-  public List<ReproductionCutting> getByBasisId(Basis basisId) throws DAOException
+  public List<ReproductionCutting> getByBasisId(Integer basisId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -327,7 +326,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO
     {
       ps = getConn()
              .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "basis_id" })));
-      DBUtil.bind(ps, 1, basisId.getBasisId());
+      DBUtil.bind(ps, 1, basisId);
       rs = ps.executeQuery();
 
       while (rs.next())
@@ -379,7 +378,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO
   protected int bindPrimaryKey(PreparedStatement ps, ReproductionCutting obj, int pos)
     throws SQLException
   {
-    DBUtil.bind(ps, pos++, obj.getBasisId().getBasisId());
+    DBUtil.bind(ps, pos++, obj.getBasisId());
     DBUtil.bind(ps, pos++, obj.getDate());
 
     return pos;
@@ -396,11 +395,12 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO
     ReproductionCutting obj = new ReproductionCutting();
 
     try {
-		obj.setBasisId(DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(DBUtil.getInt(rs, "basis_id")));
+		obj.setBasis(DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(DBUtil.getInt(rs, "basis_id")));
 	} catch (DAOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
+    obj.setBasisId((DBUtil.getInt(rs, "basis_id")));
     obj.setDate(DBUtil.getDate(rs, "date"));
 
     return obj;

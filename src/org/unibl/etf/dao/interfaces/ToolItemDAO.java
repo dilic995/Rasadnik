@@ -36,7 +36,7 @@ public interface ToolItemDAO
 
   public List<ToolItem> getByIsMachine(Boolean isMachine) throws DAOException;
 
-  public List<ToolItem> getByToolId(Tool toolId) throws DAOException;
+  public List<ToolItem> getByToolId(Integer toolId) throws DAOException;
 
-  public List<ToolItem> getByConditionId(Condition conditionId) throws DAOException;
+  public List<ToolItem> getByConditionId(Integer conditionId) throws DAOException;
 }

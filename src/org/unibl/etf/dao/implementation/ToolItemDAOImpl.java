@@ -4,8 +4,6 @@ package org.unibl.etf.dao.implementation;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.ToolItemDAO;
-import org.unibl.etf.dto.Condition;
-import org.unibl.etf.dto.Tool;
 import org.unibl.etf.dto.ToolItem;
 
 import java.sql.Connection;
@@ -387,7 +385,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
     return ret;
   }
 
-  public List<ToolItem> getByToolId(Tool toolId) throws DAOException
+  public List<ToolItem> getByToolId(Integer toolId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -397,7 +395,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
     {
       ps = getConn()
              .prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[]{ "tool_id" })));
-      DBUtil.bind(ps, 1, toolId.getToolId());
+      DBUtil.bind(ps, 1, toolId);
       rs = ps.executeQuery();
 
       while (rs.next())
@@ -415,7 +413,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
     return ret;
   }
 
-  public List<ToolItem> getByConditionId(Condition conditionId) throws DAOException
+  public List<ToolItem> getByConditionId(Integer conditionId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -460,8 +458,8 @@ public class ToolItemDAOImpl implements ToolItemDAO
   {
     DBUtil.bind(ps, pos++, obj.getNextServiceDate());
     DBUtil.bind(ps, pos++, obj.getIsMachine());
-    DBUtil.bind(ps, pos++, obj.getToolId().getToolId());
-    DBUtil.bind(ps, pos++, obj.getConditionId().getConditionId());
+    DBUtil.bind(ps, pos++, obj.getToolId());
+    DBUtil.bind(ps, pos++, obj.getConditionId());
 
     return pos;
   }
@@ -473,10 +471,12 @@ public class ToolItemDAOImpl implements ToolItemDAO
     obj.setToolItemId(DBUtil.getInt(rs, "tool_item_id"));
     obj.setNextServiceDate(DBUtil.getDate(rs, "next_service_date"));
     obj.setIsMachine(DBUtil.getBooleanObject(rs, "is_machine"));
+    obj.setToolId((DBUtil.getInt(rs, "tool_id")));
+    obj.setConditionId((DBUtil.getInt(rs, "condition_id")));
     try {
-		obj.setToolId(DAOFactory.getInstance().getToolDAO().getByPrimaryKey(DBUtil.getInt(rs, "tool_id")));
-	
-    obj.setConditionId(DAOFactory.getInstance().getConditionDAO().getByPrimaryKey(DBUtil.getInt(rs, "condition_id")));
+		obj.setTool(DAOFactory.getInstance().getToolDAO().getByPrimaryKey(DBUtil.getInt(rs, "tool_id")));
+
+    obj.setCondition(DAOFactory.getInstance().getConditionDAO().getByPrimaryKey(DBUtil.getInt(rs, "condition_id")));
     } catch (DAOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

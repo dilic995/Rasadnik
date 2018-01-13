@@ -3,102 +3,70 @@ package org.unibl.etf.dto;
 
 import java.math.BigDecimal;
 
+public class Transaction {
+	private Integer transactionId;
+	private BigDecimal amount;
+	private Boolean type;
 
-public class Transaction
-{
-  private Integer transactionId;
-  private BigDecimal amount;
-  private Boolean type;
+	//
+	// getters / setters
+	//
+	public Integer getTransactionId() {
+		return this.transactionId;
+	}
 
-  //
-  // getters / setters
-  //
-  public Integer getTransactionId()
-  {
-    return this.transactionId;
-  }
+	public void setTransactionId(Integer transactionId) {
+		this.transactionId = transactionId;
+	}
 
-  public void setTransactionId(Integer transactionId)
-  {
-    this.transactionId = transactionId;
-  }
+	public BigDecimal getAmount() {
+		return this.amount;
+	}
 
-  public BigDecimal getAmount()
-  {
-    return this.amount;
-  }
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
 
-  public void setAmount(BigDecimal amount)
-  {
-    this.amount = amount;
-  }
+	public Boolean getType() {
+		return this.type;
+	}
 
-  public Boolean getType()
-  {
-    return this.type;
-  }
+	public void setType(Boolean type) {
+		this.type = type;
+	}
 
-  public void setType(Boolean type)
-  {
-    this.type = type;
-  }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((transactionId == null) ? 0 : transactionId.hashCode());
+		return result;
+	}
 
-  public boolean equals(Object obj)
-  {
-    if (this == obj)
-    {
-      return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Transaction other = (Transaction) obj;
+		if (transactionId == null) {
+			if (other.transactionId != null)
+				return false;
+		} else if (!transactionId.equals(other.transactionId))
+			return false;
+		return true;
+	}
 
-    if (null == obj)
-    {
-      return false;
-    }
+	public String toString() {
+		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Transaction").append("(");
 
-    if (obj instanceof Transaction == false)
-    {
-      return false;
-    }
+		buffer.append("[").append("transactionId").append("=").append(transactionId).append("]");
+		buffer.append("[").append("amount").append("=").append(amount).append("]");
+		buffer.append("[").append("type").append("=").append(type).append("]");
 
-    Transaction other = (Transaction) obj;
-
-    if (transactionId != other.transactionId)
-    {
-      return false;
-    }
-
-    if (false == amount.equals(other.amount))
-    {
-      return false;
-    }
-
-    if (type != other.type)
-    {
-      return false;
-    }
-
-    return true;
-  }
-
-  public int hashCode()
-  {
-    int result = 29;
-
-    result = (29 * result) + transactionId;
-    result = (29 * result) + amount.hashCode();
-    result = (29 * result) + type.hashCode();
-
-    return result;
-  }
-
-  public String toString()
-  {
-    StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Transaction").append("(");
-
-    buffer.append("[").append("transactionId").append("=").append(transactionId).append("]");
-    buffer.append("[").append("amount").append("=").append(amount).append("]");
-    buffer.append("[").append("type").append("=").append(type).append("]");
-
-    return buffer.append(")").toString();
-  }
+		return buffer.append(")").toString();
+	}
 }

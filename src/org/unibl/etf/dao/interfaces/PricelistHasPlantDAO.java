@@ -5,34 +5,28 @@ import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.Pricelist;
 import org.unibl.etf.dto.PricelistHasPlant;
 
-
 import java.util.List;
 
+public interface PricelistHasPlantDAO {
+	// CRUD methods
+	public PricelistHasPlant getByPrimaryKey(Integer idPricelist, Integer plantId) throws DAOException;
 
-public interface PricelistHasPlantDAO
-{
-  // CRUD methods
-  public PricelistHasPlant getByPrimaryKey(Pricelist idPricelist,Plant plantId)
-    throws DAOException;
+	public List<PricelistHasPlant> selectAll() throws DAOException;
 
-  public List<PricelistHasPlant> selectAll() throws DAOException;
+	public List<PricelistHasPlant> select(String whereStatement, Object[] bindVariables) throws DAOException;
 
-  public List<PricelistHasPlant> select(String whereStatement, Object[] bindVariables)
-    throws DAOException;
+	public Long selectCount() throws DAOException;
 
-  public Long selectCount() throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
 
-  public Long selectCount(String whereStatement, Object[] bindVariables)
-    throws DAOException;
+	public Integer update(PricelistHasPlant obj) throws DAOException;
 
-  public Integer update(PricelistHasPlant obj) throws DAOException;
+	public Integer insert(PricelistHasPlant obj) throws DAOException;
 
-  public Integer insert(PricelistHasPlant obj) throws DAOException;
+	public Integer delete(PricelistHasPlant obj) throws DAOException;
 
-  public Integer delete(PricelistHasPlant obj) throws DAOException;
+	// Finders
+	public List<PricelistHasPlant> getByPricelistId(Integer pricelistId) throws DAOException;
 
-  // Finders
-  public List<PricelistHasPlant>  getByPricelistId(Pricelist pricelistId) throws DAOException;
-
-  public List<PricelistHasPlant>  getByPlantId(Plant plantId) throws DAOException;
+	public List<PricelistHasPlant> getByPlantId(Integer plantId) throws DAOException;
 }

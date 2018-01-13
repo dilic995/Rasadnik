@@ -423,7 +423,7 @@ public class SaleDAOImpl implements SaleDAO
     return ret;
   }
 
-  public List<Sale> getByCustomer(Customer customerId) throws DAOException
+  public List<Sale> getByCustomer(Integer customerId) throws DAOException
   {
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -434,7 +434,7 @@ public class SaleDAOImpl implements SaleDAO
       ps = getConn()
              .prepareStatement(DBUtil.select(tableName, allColumns,
             Arrays.asList(new String[]{ "customer_id" })));
-      DBUtil.bind(ps, 1, customerId.getCustomerId());
+      DBUtil.bind(ps, 1, customerId);
       rs = ps.executeQuery();
 
       while (rs.next())
@@ -469,7 +469,7 @@ public class SaleDAOImpl implements SaleDAO
     DBUtil.bind(ps, pos++, obj.getDate());
     DBUtil.bind(ps, pos++, obj.getAmount());
     DBUtil.bind(ps, pos++, obj.getPaidOff());
-    DBUtil.bind(ps, pos++, obj.getCustomerId().getCustomerId());
+    DBUtil.bind(ps, pos++, obj.getCustomerId());
 
     return pos;
   }
@@ -482,8 +482,9 @@ public class SaleDAOImpl implements SaleDAO
     obj.setDate(DBUtil.getDate(rs, "date"));
     obj.setAmount(DBUtil.getBigDecimal(rs, "amount"));
     obj.setPaidOff(DBUtil.getBooleanObject(rs, "paid_off"));
+    obj.setCustomerId((DBUtil.getInt(rs, "customer_id")));
     try {
-		obj.setCustomerId(DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(DBUtil.getInt(rs, "customer_id")));
+		obj.setCustomer(DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(DBUtil.getInt(rs, "customer_id")));
 	} catch (DAOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

@@ -30,5 +30,5 @@ public interface ToolDAO
   // Finders
   public List<Tool> getByToolName(String toolName) throws DAOException;
 
-  public List<Tool> getByCount(int count) throws DAOException;
+  public List<Tool> getByCount(Integer count) throws DAOException;
 }
