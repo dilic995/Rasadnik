@@ -105,7 +105,6 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`plant_maintance_activity` (
   `plant_maintance_activity_id` INT NOT NULL AUTO_INCREMENT,
   `activity` VARCHAR(100) NOT NULL,
-  `plant` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`plant_maintance_activity_id`))
 ENGINE = InnoDB;
 
@@ -362,6 +361,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool_maintance_activity` (
   `tool_item_id` INT NOT NULL,
   `description` TEXT(500) NOT NULL,
   `amount` DECIMAL(10,2) NOT NULL,
+  `up_to_date_service` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`date`, `tool_item_id`),
   INDEX `fk_tool_maintance_activity_tool_item1_idx` (`tool_item_id` ASC),
   CONSTRAINT `fk_tool_maintance_activity_tool_item1`
