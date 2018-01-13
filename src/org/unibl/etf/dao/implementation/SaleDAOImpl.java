@@ -15,16 +15,14 @@ import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.SaleDAO;
 import org.unibl.etf.dto.Sale;
 
-
-public class SaleDAOImpl implements SaleDAO
-{
-  //
-  // static data
-  //
-  protected static List<String> pkColumns = new ArrayList<>();
-  protected static List<String> stdColumns = new ArrayList<>();
-  protected static List<String> allColumns = new ArrayList<>();
-  protected static String tableName = "sale";
+public class SaleDAOImpl implements SaleDAO {
+	//
+	// static data
+	//
+	protected static List<String> pkColumns = new ArrayList<>();
+	protected static List<String> stdColumns = new ArrayList<>();
+	protected static List<String> allColumns = new ArrayList<>();
+	protected static String tableName = "sale";
 
 	static {
 		pkColumns.add("sale_id");
@@ -371,12 +369,13 @@ public class SaleDAOImpl implements SaleDAO
 	protected Sale fromResultSet(ResultSet rs) throws SQLException {
 		Sale obj = new Sale();
 
-    obj.setSaleId(DBUtil.getInt(rs, "sale_id"));
-    obj.setDate(DBUtil.getDate(rs, "date"));
-    obj.setPrice(DBUtil.getBigDecimal(rs, "price"));
-    obj.setPaidOff(DBUtil.getBooleanObject(rs, "paid_off"));
-    obj.setCustomerId((DBUtil.getInt(rs, "customer_id")));
-   
+		obj.setSaleId(DBUtil.getInt(rs, "sale_id"));
+		obj.setDate(DBUtil.getDate(rs, "date"));
+		obj.setPrice(DBUtil.getBigDecimal(rs, "price"));
+		obj.setPaidOff(DBUtil.getBooleanObject(rs, "paid_off"));
+		obj.setCustomerId((DBUtil.getInt(rs, "customer_id")));
+		return obj;
+	}
 
 	protected Connection getConn() {
 		return (conn == null) ? DBUtil.getConnection() : conn;

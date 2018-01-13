@@ -14,16 +14,14 @@ import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.ReproductionCuttingDAO;
 import org.unibl.etf.dto.ReproductionCutting;
 
-
-public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO
-{
-  //
-  // static data
-  //
-  protected static List<String> pkColumns = new ArrayList<>();
-  protected static List<String> stdColumns = new ArrayList<>();
-  protected static List<String> allColumns = new ArrayList<>();
-  protected static String tableName = "reproduction_cutting";
+public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
+	//
+	// static data
+	//
+	protected static List<String> pkColumns = new ArrayList<>();
+	protected static List<String> stdColumns = new ArrayList<>();
+	protected static List<String> allColumns = new ArrayList<>();
+	protected static String tableName = "reproduction_cutting";
 
 	static {
 		pkColumns.add("basis_id");
@@ -308,9 +306,10 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO
 	protected ReproductionCutting fromResultSet(ResultSet rs) throws SQLException {
 		ReproductionCutting obj = new ReproductionCutting();
 
-   
-    obj.setBasisId((DBUtil.getInt(rs, "basis_id")));
-    obj.setDate(DBUtil.getDate(rs, "date"));
+		obj.setBasisId((DBUtil.getInt(rs, "basis_id")));
+		obj.setDate(DBUtil.getDate(rs, "date"));
+		return obj;
+	}
 
 	protected Connection getConn() {
 		return (conn == null) ? DBUtil.getConnection() : conn;
