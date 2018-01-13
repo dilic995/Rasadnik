@@ -2,12 +2,11 @@
 package org.unibl.etf.dao.interfaces;
 
 
-import org.unibl.etf.dto.Sale;
-
 import java.math.BigDecimal;
-
 import java.util.Date;
 import java.util.List;
+
+import org.unibl.etf.dto.Sale;
 
 
 public interface SaleDAO

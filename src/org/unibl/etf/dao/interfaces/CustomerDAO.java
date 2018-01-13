@@ -1,8 +1,8 @@
 package org.unibl.etf.dao.interfaces;
 
-import org.unibl.etf.dto.Customer;
-
 import java.util.List;
+
+import org.unibl.etf.dto.Customer;
 
 public interface CustomerDAO {
 	// CRUD methods

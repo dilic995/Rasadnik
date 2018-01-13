@@ -1,8 +1,8 @@
 package org.unibl.etf.dao.interfaces;
 
-import org.unibl.etf.dto.PlantMaintanceActivity;
-
 import java.util.List;
+
+import org.unibl.etf.dto.PlantMaintanceActivity;
 
 public interface PlantMaintanceActivityDAO {
 	// CRUD methods

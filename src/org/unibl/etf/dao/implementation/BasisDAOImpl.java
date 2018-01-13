@@ -1,19 +1,18 @@
 package org.unibl.etf.dao.implementation;
 
-import org.unibl.etf.dao.interfaces.BasisDAO;
-import org.unibl.etf.dao.interfaces.DAOException;
-import org.unibl.etf.dao.interfaces.DAOFactory;
-import org.unibl.etf.dto.Basis;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import org.unibl.etf.dao.interfaces.BasisDAO;
+import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
+import org.unibl.etf.dto.Basis;
 
 public class BasisDAOImpl implements BasisDAO {
 	//

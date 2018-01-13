@@ -1,9 +1,9 @@
 package org.unibl.etf.dao.interfaces;
 
-import org.unibl.etf.dto.Pricelist;
-
 import java.util.Date;
 import java.util.List;
+
+import org.unibl.etf.dto.Pricelist;
 
 public interface PricelistDAO {
 	// CRUD methods

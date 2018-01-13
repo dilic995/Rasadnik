@@ -1,11 +1,10 @@
 package org.unibl.etf.dao.interfaces;
 
-import org.unibl.etf.dto.Plant;
-
 import java.sql.Blob;
 import java.sql.Clob;
-
 import java.util.List;
+
+import org.unibl.etf.dto.Plant;
 
 public interface PlantDAO {
 	// CRUD methods

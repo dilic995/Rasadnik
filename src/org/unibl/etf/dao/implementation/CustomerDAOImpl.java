@@ -1,17 +1,16 @@
 package org.unibl.etf.dao.implementation;
 
-import org.unibl.etf.dao.interfaces.CustomerDAO;
-import org.unibl.etf.dao.interfaces.DAOException;
-import org.unibl.etf.dto.Customer;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.unibl.etf.dao.interfaces.CustomerDAO;
+import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dto.Customer;
 
 public class CustomerDAOImpl implements CustomerDAO {
 	//

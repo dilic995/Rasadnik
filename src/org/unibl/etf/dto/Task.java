@@ -3,6 +3,9 @@ package org.unibl.etf.dto;
 
 import java.util.Date;
 
+import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
+
 public class Task {
 	private Integer taskId;
 	private Date dateFrom;
@@ -49,6 +52,14 @@ public class Task {
 	}
 
 	public Region getRegion() {
+		if(region==null) {
+			try {
+				region=DAOFactory.getInstance().getRegionDAO().getByPrimaryKey(regionId);
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return this.region;
 	}
 
@@ -57,6 +68,14 @@ public class Task {
 	}
 
 	public PlantMaintanceActivity getPlantMaintanceActivity() {
+		if(plantMaintanceActivity==null) {
+			try {
+				plantMaintanceActivity=DAOFactory.getInstance().getPlantMaintanceActivityDAO().getByPrimaryKey(plantMaintanceActivityId);
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return this.plantMaintanceActivity;
 	}
 
@@ -70,6 +89,7 @@ public class Task {
 
 	public void setRegionId(Integer regionId) {
 		this.regionId = regionId;
+		region=null;
 	}
 
 	public Integer getPlantMaintanceActivityId() {
@@ -78,6 +98,7 @@ public class Task {
 
 	public void setPlantMaintanceActivityId(Integer plantMaintanceActivityId) {
 		this.plantMaintanceActivityId = plantMaintanceActivityId;
+		plantMaintanceActivity=null;
 	}
 
 	@Override

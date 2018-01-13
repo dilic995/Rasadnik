@@ -1,5 +1,7 @@
 package org.unibl.etf.dao.implementation;
 
+import java.sql.Connection;
+
 import org.unibl.etf.dao.interfaces.BasisDAO;
 import org.unibl.etf.dao.interfaces.ConditionDAO;
 import org.unibl.etf.dao.interfaces.CustomerDAO;
@@ -22,8 +24,6 @@ import org.unibl.etf.dao.interfaces.ToolDAO;
 import org.unibl.etf.dao.interfaces.ToolItemDAO;
 import org.unibl.etf.dao.interfaces.ToolMaintanceActivityDAO;
 import org.unibl.etf.dao.interfaces.TransactionDAO;
-
-import java.sql.Connection;
 
 public class JDBCDAOFactory extends DAOFactory {
 	public BasisDAO getBasisDAO() {

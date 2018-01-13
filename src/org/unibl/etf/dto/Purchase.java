@@ -7,6 +7,9 @@ import java.sql.Clob;
 
 import java.util.Date;
 
+import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
+
 public class Purchase {
 	private Integer purchaseId;
 	private Date date;
@@ -29,6 +32,7 @@ public class Purchase {
 
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
+		this.customer=null;
 	}
 
 	public void setPurchaseId(int purchaseId) {
@@ -68,6 +72,14 @@ public class Purchase {
 	}
 
 	public Customer getCustomer() {
+		if(customer==null) {
+			try {
+				this.customer=DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(customerId);
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return this.customer;
 	}
 

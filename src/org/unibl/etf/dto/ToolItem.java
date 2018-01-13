@@ -3,6 +3,9 @@ package org.unibl.etf.dto;
 
 import java.util.Date;
 
+import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
+
 public class ToolItem {
 	private Integer toolItemId;
 	private Date nextServiceDate;
@@ -21,6 +24,7 @@ public class ToolItem {
 
 	public void setToolItemId(Integer toolItemId) {
 		this.toolItemId = toolItemId;
+		
 	}
 
 	public Date getNextServiceDate() {
@@ -45,6 +49,7 @@ public class ToolItem {
 
 	public void setToolId(Integer toolId) {
 		this.toolId = toolId;
+		tool=null;
 	}
 
 	public Integer getConditionId() {
@@ -53,9 +58,18 @@ public class ToolItem {
 
 	public void setConditionId(Integer conditionId) {
 		this.conditionId = conditionId;
+		condition=null;
 	}
 
 	public Tool getTool() {
+		if(tool==null) {
+			try {
+				tool=DAOFactory.getInstance().getToolDAO().getByPrimaryKey(toolId);
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return tool;
 	}
 
@@ -64,6 +78,14 @@ public class ToolItem {
 	}
 
 	public Condition getCondition() {
+		if(condition==null) {
+			try {
+				condition=DAOFactory.getInstance().getConditionDAO().getByPrimaryKey(conditionId);
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return condition;
 	}
 

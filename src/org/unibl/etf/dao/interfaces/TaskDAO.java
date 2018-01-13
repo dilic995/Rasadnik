@@ -2,10 +2,10 @@
 package org.unibl.etf.dao.interfaces;
 
 
-import org.unibl.etf.dto.Task;
-
 import java.util.Date;
 import java.util.List;
+
+import org.unibl.etf.dto.Task;
 
 
 public interface TaskDAO

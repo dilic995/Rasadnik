@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 
 import java.util.Date;
 
+import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
+
 public class Sale {
 	private Integer saleId;
 	private Date date;
@@ -49,6 +52,14 @@ public class Sale {
 	}
 
 	public Customer getCustomer() {
+		if(customer==null) {
+			try {
+				customer=DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(customerId);
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return this.customer;
 	}
 
@@ -62,6 +73,7 @@ public class Sale {
 
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
+		customer=null;
 	}
 
 	@Override

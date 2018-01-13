@@ -1,8 +1,8 @@
 package org.unibl.etf.dao.interfaces;
 
-import org.unibl.etf.dto.Condition;
-
 import java.util.List;
+
+import org.unibl.etf.dto.Condition;
 
 public interface ConditionDAO {
 	// CRUD methods

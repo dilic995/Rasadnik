@@ -3,6 +3,9 @@ package org.unibl.etf.dto;
 
 import java.util.Date;
 
+import org.unibl.etf.dao.interfaces.DAOException;
+import org.unibl.etf.dao.interfaces.DAOFactory;
+
 public class ReproductionCutting {
 	private Basis basis;
 	private Date date;
@@ -17,9 +20,18 @@ public class ReproductionCutting {
 
 	public void setBasisId(Integer basisId) {
 		this.basisId = basisId;
+		basis=null;
 	}
 
 	public Basis getBasis() {
+		if(basis==null) {
+			try {
+				basis=DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(basisId);
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return this.basis;
 	}
 
