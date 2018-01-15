@@ -63,3 +63,19 @@ begin
 	end if;
 end$$
 delimiter ;
+
+
+-- PROCEDURE
+
+drop procedure if exists get_current_state;
+delimiter $$
+create procedure get_current_state(out out_amount decimal(10,2))
+begin
+	declare plus decimal(10,2);
+    declare minus decimal(10,2);
+    select sum(amount) into plus from transaction where type=0;
+    select sum(amount) into minus from transaction where type=1;
+    set out_amount=plus-minus;
+end$$
+delimiter ;
+
