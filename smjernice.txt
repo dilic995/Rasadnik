@@ -9,3 +9,8 @@
 	[1] - Pokusati koristiti engleski jezik
 	[2] - Sve pisati malim slovima (imena tabela, kolona, atributa...)
 	[3] - Koristiti _ za odvajanje imena
+
+## Zadaci za CD
+	Brada: employee, employee_has_task, task, maintenence_activity
+	Helena: tool, tool_item, condition, maintenane_activity
+	Ja: ostalo
