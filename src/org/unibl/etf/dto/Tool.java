@@ -67,4 +67,16 @@ public class Tool {
 
 		return buffer.append(")").toString();
 	}
+
+	public Tool(Integer toolId, String toolName, Integer count) {
+		super();
+		this.toolId = toolId;
+		this.toolName = toolName;
+		this.count = count;
+	}
+
+	public Tool() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 }
