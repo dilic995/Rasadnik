@@ -94,5 +94,4 @@ public class MyPlant {
 			return false;
 		return true;
 	}
-	
 }
