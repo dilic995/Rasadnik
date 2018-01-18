@@ -12,6 +12,8 @@ import org.unibl.etf.dao.interfaces.ConditionDAO;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dto.Condition;
 
+import javafx.collections.FXCollections;
+
 public class ConditionDAOImpl implements ConditionDAO {
 	//
 	// static data
@@ -19,11 +21,11 @@ public class ConditionDAOImpl implements ConditionDAO {
 	protected static List<String> pkColumns = new ArrayList<>();
 	protected static List<String> stdColumns = new ArrayList<>();
 	protected static List<String> allColumns = new ArrayList<>();
-	protected static String tableName = "condition";
+	protected static String tableName = "item_condition"; //promijenjeno
 
 	static {
 		pkColumns.add("condition_id");
-		stdColumns.add("condition");
+		stdColumns.add("item_condition"); //promijenjeno
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -120,11 +122,13 @@ public class ConditionDAOImpl implements ConditionDAO {
 	}
 
 	public List<Condition> selectAll() throws DAOException {
-		List<Condition> ret = new ArrayList<>();
+		//List<Condition> ret = new ArrayList<>();
+		List<Condition> ret  = FXCollections.observableArrayList();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		try {
+			System.out.println(DBUtil.select(tableName, allColumns));
 			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns));
 			rs = ps.executeQuery();
 
@@ -289,7 +293,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 		Condition obj = new Condition();
 
 		obj.setConditionId(DBUtil.getInt(rs, "condition_id"));
-		obj.setCondition(DBUtil.getString(rs, "condition"));
+		obj.setCondition(DBUtil.getString(rs, "item_condition"));//promijenjeno
 
 		return obj;
 	}

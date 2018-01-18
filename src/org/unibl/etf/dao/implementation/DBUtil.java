@@ -113,7 +113,7 @@ public class DBUtil {
 				buf.append(whereColumns.get(i)).append(" = ?");
 			}
 		}
-
+		
 		return buf.toString();
 	}
 

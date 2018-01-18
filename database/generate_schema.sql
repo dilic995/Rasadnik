@@ -321,11 +321,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `rasadnik_db`.`condition`
+-- Table `rasadnik_db`.`item_condition`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `rasadnik_db`.`condition` (
+CREATE TABLE IF NOT EXISTS `rasadnik_db`.`item_condition` (
   `condition_id` INT NOT NULL AUTO_INCREMENT,
-  `condition` VARCHAR(100) NOT NULL,
+  `item_condition` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`condition_id`))
 ENGINE = InnoDB;
 
@@ -349,7 +349,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool_item` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_tool_item_condition1`
     FOREIGN KEY (`condition_id`)
-    REFERENCES `rasadnik_db`.`condition` (`condition_id`)
+    REFERENCES `rasadnik_db`.`item_condition` (`condition_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
