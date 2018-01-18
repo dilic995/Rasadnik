@@ -9,11 +9,20 @@ import org.unibl.etf.dao.interfaces.DAOFactory;
 public class ToolItem {
 	private Integer toolItemId;
 	private Date nextServiceDate;
-	private Boolean isMachine;
+	
 	private Tool tool;
 	private Condition condition;
 	private Integer toolId;
 	private Integer conditionId;
+	private Boolean isDeleted;
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 
 	//
 	// getters / setters
@@ -34,15 +43,6 @@ public class ToolItem {
 	public void setNextServiceDate(Date nextServiceDate) {
 		this.nextServiceDate = nextServiceDate;
 	}
-
-	public Boolean getIsMachine() {
-		return this.isMachine;
-	}
-
-	public void setIsMachine(Boolean isMachine) {
-		this.isMachine = isMachine;
-	}
-
 	public Integer getToolId() {
 		return this.toolId;
 	}
@@ -123,10 +123,9 @@ public class ToolItem {
 
 		buffer.append("[").append("toolItemId").append("=").append(toolItemId).append("]");
 		buffer.append("[").append("nextServiceDate").append("=").append(nextServiceDate).append("]");
-		buffer.append("[").append("isMachine").append("=").append(isMachine).append("]");
 		buffer.append("[").append("toolId").append("=").append(toolId).append("]");
 		buffer.append("[").append("conditionId").append("=").append(conditionId).append("]");
-
+		buffer.append("[").append("isDeleted").append("=").append(isDeleted).append("]");
 		return buffer.append(")").toString();
 	}
 }

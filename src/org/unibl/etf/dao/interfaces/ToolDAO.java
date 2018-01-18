@@ -22,6 +22,8 @@ public interface ToolDAO {
 	public Integer insert(Tool obj) throws DAOException;
 
 	public Integer delete(Tool obj) throws DAOException;
+	
+	public List<Tool> getByIsMachine(Boolean isMachine) throws DAOException;
 
 	// Finders
 	public List<Tool> getByToolName(String toolName) throws DAOException;

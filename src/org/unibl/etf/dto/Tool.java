@@ -5,6 +5,7 @@ public class Tool {
 	private Integer toolId;
 	private String toolName;
 	private Integer count;
+	private Boolean isMachine;
 
 	//
 	// getters / setters
@@ -31,6 +32,13 @@ public class Tool {
 
 	public void setCount(Integer count) {
 		this.count = count;
+	}
+	public Boolean getIsMachine() {
+		return this.isMachine;
+	}
+
+	public void setIsMachine(Boolean isMachine) {
+		this.isMachine = isMachine;
 	}
 
 	@Override
@@ -63,6 +71,7 @@ public class Tool {
 
 		buffer.append("[").append("toolId").append("=").append(toolId).append("]");
 		buffer.append("[").append("toolName").append("=").append(toolName).append("]");
+		buffer.append("[").append("isMachine").append("=").append(isMachine).append("]");
 		buffer.append("[").append("count").append("=").append(count).append("]");
 
 		return buffer.append(")").toString();

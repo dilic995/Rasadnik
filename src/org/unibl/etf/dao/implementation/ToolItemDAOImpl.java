@@ -28,7 +28,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 	static {
 		pkColumns.add("tool_item_id");
 		stdColumns.add("next_service_date");
-		stdColumns.add("is_machine");
+		stdColumns.add("is_deleted");
 		stdColumns.add("tool_id");
 		stdColumns.add("condition_id");
 		allColumns.addAll(pkColumns);
@@ -277,27 +277,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 		return ret;
 	}
 
-	public List<ToolItem> getByIsMachine(Boolean isMachine) throws DAOException {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		List<ToolItem> ret = new ArrayList<>();
-
-		try {
-			ps = getConn().prepareStatement(
-					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_machine" })));
-			DBUtil.bind(ps, 1, isMachine);
-			rs = ps.executeQuery();
-
-			while (rs.next())
-				ret.add(fromResultSet(rs));
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		} finally {
-			DBUtil.close(ps, rs, conn);
-		}
-
-		return ret;
-	}
+	
 
 	public List<ToolItem> getByToolId(Integer toolId) throws DAOException {
 		PreparedStatement ps = null;
@@ -342,6 +322,28 @@ public class ToolItemDAOImpl implements ToolItemDAO
 
 		return ret;
 	}
+	
+	public List<ToolItem> getByIsDeleted(Boolean isDeleted) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<ToolItem> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(
+					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_machine" })));
+			DBUtil.bind(ps, 1, isDeleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -354,7 +356,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 
 	protected int bindStdColumns(PreparedStatement ps, ToolItem obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getNextServiceDate());
-		DBUtil.bind(ps, pos++, obj.getIsMachine());
+		DBUtil.bind(ps, pos++, obj.getIsDeleted());
 		DBUtil.bind(ps, pos++, obj.getToolId());
 		DBUtil.bind(ps, pos++, obj.getConditionId());
 
@@ -366,7 +368,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 
     obj.setToolItemId(DBUtil.getInt(rs, "tool_item_id"));
     obj.setNextServiceDate(DBUtil.getDate(rs, "next_service_date"));
-    obj.setIsMachine(DBUtil.getBooleanObject(rs, "is_machine"));
+    obj.setIsDeleted(DBUtil.getBooleanObject(rs, "is_deleted"));
     obj.setToolId((DBUtil.getInt(rs, "tool_id")));
     obj.setConditionId((DBUtil.getInt(rs, "condition_id")));
     

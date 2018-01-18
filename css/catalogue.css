@@ -1,0 +1,78 @@
+.toolbarPane{
+	-fx-pref-height: 40;
+	-fx-border-width: 2 0 1 0;
+	-fx-border-color: #d9d9d9;
+}
+.statusBarPane{
+	-fx-pref-height: 30;
+	-fx-border-width: 1 0 0 0;
+	-fx-border-color: #d9d9d9;
+}
+#toolbar{
+	-fx-background-color: #ffffff;
+}
+.tree-view{
+	-fx-border-width: 1 1 1 1;
+	-fx-border-color: #d9d9d9;
+}
+#plus-button{
+	-fx-background-color: #ffffff;
+}
+#left-button{
+	-fx-background-color: #ffffff;
+}
+#right-button{
+	-fx-background-color: #ffffff;
+}
+#center-pane{
+	-fx-border-width: 1 0 1 1;
+	-fx-border-color: #d9d9d9;
+	-fx-background-color: #ffffff;
+}
+#delete-button{
+	-fx-background-color: #ffffff;
+}
+#plus-button:hover{
+	-fx-background-color:  #b3d1ff;
+	-fx-cursor: hand;
+}
+#delete-button:hover{
+	-fx-background-color:  #b3d1ff;
+	-fx-cursor: hand;
+}
+#left-button:hover{
+	-fx-background-color:  #b3d1ff;
+	-fx-cursor: hand;
+}
+#right-button:hover{
+	-fx-background-color:  #b3d1ff;
+	-fx-cursor: hand;
+}
+.title{
+	-fx-font-size: 30;
+	-fx-font-family: Arial;
+	-fx-font-style: italic;
+}
+.common-name{
+	-fx-font-size: 18;
+	-fx-font-family: Arial;
+}
+.table-column{
+	-fx-background-color: #ffffff;
+	-fx-border-width: 1 1 1 1;
+	-fx-border-color: #d9d9d9;
+}
+.title-small{
+	-fx-font-size: 12;
+	-fx-font-family: Arial;
+}
+.green-fill{
+	-fx-stroke: #2eb82e;
+	-fx-fill: #2eb82e;
+}
+.plantOwned{
+	-fx-font-size: 15;
+	-fx-font-family: Arial;
+	-fx-text-fill: #2eb82e;
+	-fx-font-weight: bold;
+}
