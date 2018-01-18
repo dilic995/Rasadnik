@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.unibl.etf.dao.interfaces.DAOException;
@@ -129,28 +130,21 @@ public class ToolMaintanceActivity {
 	public StringProperty dateProperty() {
 		return new SimpleStringProperty(new SimpleDateFormat("dd-MM-yyyy").format(date));
 	}
-	public StringProperty descriptionProperty() {
-		return new SimpleStringProperty(clobToString(description));
-	}
-	private String clobToString(Clob data) {//dodano, obrisati kad promijene bazu
-	    StringBuilder sb = new StringBuilder();
-	    try {
-	        Reader reader = data.getCharacterStream();
-	        BufferedReader br = new BufferedReader(reader);
 
-	        String line;
-	        while(null != (line = br.readLine())) {
-	            sb.append(line);
-	        }
-	        br.close();
-	    } catch (SQLException e) {
-	        // handle this exception
-	    } catch (IOException e) {
-	        // handle this exception
-	    }
-	    return sb.toString();
+	public ToolMaintanceActivity() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
+
+	public ToolMaintanceActivity(String description, BigDecimal amount, Date date, ToolItem toolItem,
+			Integer toolItemId, Boolean upToDateService) {
+		super();
+		this.description = description;
+		this.amount = amount;
+		this.date = date;
+		this.toolItem = toolItem;
+		this.toolItemId = toolItemId;
+		this.upToDateService = upToDateService;
+	} 
 	
-	
-	 
 }
