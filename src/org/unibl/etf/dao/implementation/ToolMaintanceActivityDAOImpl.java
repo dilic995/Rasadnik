@@ -2,7 +2,6 @@
 package org.unibl.etf.dao.implementation;
 
 import java.math.BigDecimal;
-import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -297,7 +296,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		return ret;
 	}
 
-	public List<ToolMaintanceActivity> getByDescription(Clob description) throws DAOException {
+	public List<ToolMaintanceActivity> getByDescription(String description) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<ToolMaintanceActivity> ret = new ArrayList<>();
@@ -405,7 +404,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		obj.setDate(DBUtil.getDate(rs, "date"));
 		obj.setToolItemId((DBUtil.getInt(rs, "tool_item_id")));
 		
-		obj.setDescription(DBUtil.getClob(rs, "description"));
+		obj.setDescription(DBUtil.getString(rs, "description"));
 		obj.setAmount(DBUtil.getBigDecimal(rs, "amount"));
 		obj.setUpToDateService(DBUtil.getBooleanObject(rs, "up_to_date_service"));
 

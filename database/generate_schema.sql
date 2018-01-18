@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`plant` (
   `plant_id` INT NOT NULL AUTO_INCREMENT,
   `scientific_name` VARCHAR(100) NOT NULL,
   `known_as` VARCHAR(100) NOT NULL,
-  `description` TEXT(500) NOT NULL,
+  `description` VARCHAR(500) NOT NULL,
   `image` MEDIUMBLOB NOT NULL,
   `owned` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`plant_id`))
@@ -225,7 +225,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`purchase` (
   `purchase_id` INT NOT NULL AUTO_INCREMENT,
   `date` DATE NOT NULL,
-  `description` TEXT(500) NOT NULL,
+  `description` VARCHAR(500) NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
   `paid_off` TINYINT NOT NULL DEFAULT 0,
   `customer_id` INT NOT NULL,
@@ -289,7 +289,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`transaction` (
   `transaction_id` INT NOT NULL AUTO_INCREMENT,
   `amount` DECIMAL(10,2) NOT NULL,
   `type` TINYINT NOT NULL,
-  `description` TEXT(500) NOT NULL,
+  `description` VARCHAR(500) NOT NULL,
   PRIMARY KEY (`transaction_id`))
 ENGINE = InnoDB;
 
@@ -300,7 +300,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`event` (
   `event_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
-  `description` TEXT(500) NOT NULL,
+  `description` VARCHAR(500) NOT NULL,
   `date` DATE NOT NULL,
   `done` TINYINT NOT NULL,
   PRIMARY KEY (`event_id`))
@@ -361,7 +361,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool_maintance_activity` (
   `date` DATE NOT NULL,
   `tool_item_id` INT NOT NULL,
-  `description` TEXT(500) NOT NULL,
+  `description` VARCHAR(500) NOT NULL,
   `amount` DECIMAL(10,2) NOT NULL,
   `up_to_date_service` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`date`, `tool_item_id`),

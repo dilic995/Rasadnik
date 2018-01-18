@@ -2,7 +2,6 @@
 package org.unibl.etf.dao.implementation;
 
 import java.math.BigDecimal;
-import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -278,7 +277,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		return ret;
 	}
 
-	public List<Purchase> getByDescription(Clob description) throws DAOException {
+	public List<Purchase> getByDescription(String description) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Purchase> ret = new ArrayList<>();
@@ -403,7 +402,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 		obj.setPurchaseId(DBUtil.getInt(rs, "purchase_id"));
 		obj.setDate(DBUtil.getDate(rs, "date"));
-		obj.setDescription(DBUtil.getClob(rs, "description"));
+		obj.setDescription(DBUtil.getString(rs, "description"));
 		obj.setPrice(DBUtil.getBigDecimal(rs, "price"));
 		obj.setPaidOff(DBUtil.getBooleanObject(rs, "paid_off"));
 		obj.setCustomerId(DBUtil.getInt(rs, "customer_id"));

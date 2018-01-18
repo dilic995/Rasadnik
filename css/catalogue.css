@@ -57,15 +57,11 @@
 	-fx-font-size: 18;
 	-fx-font-family: Arial;
 }
-.table-column{
+/* .table-column{
 	-fx-background-color: #ffffff;
 	-fx-border-width: 1 1 1 1;
 	-fx-border-color: #d9d9d9;
-}
-.title-small{
-	-fx-font-size: 12;
-	-fx-font-family: Arial;
-}
+}*/
 .green-fill{
 	-fx-stroke: #2eb82e;
 	-fx-fill: #2eb82e;
@@ -74,5 +70,15 @@
 	-fx-font-size: 15;
 	-fx-font-family: Arial;
 	-fx-text-fill: #2eb82e;
+	-fx-font-weight: bold;
+}
+.red-fill{
+	-fx-stroke: #ff0000;
+	-fx-fill: #ff0000;
+}
+.plant-not-owned{
+	-fx-font-size: 15;
+	-fx-font-family: Arial;
+	-fx-text-fill: #ff0000;
 	-fx-font-weight: bold;
 }

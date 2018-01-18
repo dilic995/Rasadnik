@@ -7,9 +7,6 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
-import java.sql.Clob;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.unibl.etf.dao.interfaces.DAOException;
@@ -20,8 +17,7 @@ import javafx.beans.property.StringProperty;
 import sun.misc.IOUtils;
 
 public class ToolMaintanceActivity {
-	private Clob description;
-
+	private String description;
 	private BigDecimal amount;
 	private Date date;
 	private ToolItem toolItem;
@@ -72,11 +68,11 @@ public class ToolMaintanceActivity {
 		this.toolItem = null;
 	}
 
-	public Clob getDescription() {
+	public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription(Clob description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 

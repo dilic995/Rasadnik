@@ -1,4 +1,4 @@
-package org.unibl.etf.application;
+package org.unibl.etf.gui.view.base;
 
 import java.io.IOException;
 

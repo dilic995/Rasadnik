@@ -2,7 +2,6 @@
 package org.unibl.etf.dao.implementation;
 
 import java.math.BigDecimal;
-import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -298,7 +297,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 	}
 
 	@Override
-	public List<Transaction> getByDescription(Clob description) throws DAOException {
+	public List<Transaction> getByDescription(String description) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Transaction> ret = new ArrayList<>();
@@ -349,7 +348,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		obj.setTransactionId(DBUtil.getInt(rs, "transaction_id"));
 		obj.setAmount(DBUtil.getBigDecimal(rs, "amount"));
 		obj.setType(DBUtil.getBoolean(rs, "type"));
-		obj.setDescription(DBUtil.getClob(rs, "description"));
+		obj.setDescription(DBUtil.getString(rs, "description"));
 
 		return obj;
 	}

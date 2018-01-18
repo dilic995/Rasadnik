@@ -15,7 +15,6 @@ import javafx.beans.property.StringProperty;
 public class ToolItem {
 	private Integer toolItemId;
 	private Date nextServiceDate;
-	
 	private Tool tool;
 	private Condition condition;
 	private Integer toolId;
