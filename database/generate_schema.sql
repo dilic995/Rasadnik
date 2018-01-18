@@ -314,7 +314,9 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool` (
   `tool_id` INT NOT NULL AUTO_INCREMENT,
   `tool_name` VARCHAR(100) NOT NULL,
   `count` INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`tool_id`))
+  `is_machine` TINYINT NOT NULL,
+  PRIMARY KEY (`tool_id`),
+  UNIQUE INDEX `tool_name_UNIQUE` (`tool_name` ASC))
 ENGINE = InnoDB;
 
 
@@ -334,7 +336,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool_item` (
   `tool_item_id` INT NOT NULL AUTO_INCREMENT,
   `next_service_date` DATE NOT NULL,
-  `is_machine` TINYINT NOT NULL,
+  `is_deleted` TINYINT NOT NULL DEFAULT 0,
   `tool_id` INT NOT NULL,
   `condition_id` INT NOT NULL,
   PRIMARY KEY (`tool_item_id`),
