@@ -14,6 +14,7 @@ import org.unibl.etf.dao.interfaces.ToolDAO;
 import org.unibl.etf.dto.Tool;
 
 
+
 public class ToolDAOImpl implements ToolDAO
 {
   //
@@ -28,6 +29,7 @@ public class ToolDAOImpl implements ToolDAO
 		pkColumns.add("tool_id");
 		stdColumns.add("tool_name");
 		stdColumns.add("count");
+		stdColumns.add("is_machine");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -295,6 +297,27 @@ public class ToolDAOImpl implements ToolDAO
 
 		return ret;
 	}
+	public List<Tool> getByIsMachine(Boolean isMachine) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Tool> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(
+					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_machine" })));
+			DBUtil.bind(ps, 1, isMachine);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -308,6 +331,7 @@ public class ToolDAOImpl implements ToolDAO
 	protected int bindStdColumns(PreparedStatement ps, Tool obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getToolName());
 		DBUtil.bind(ps, pos++, obj.getCount());
+		DBUtil.bind(ps, pos++, obj.getIsMachine());
 
 		return pos;
 	}
@@ -318,7 +342,7 @@ public class ToolDAOImpl implements ToolDAO
 		obj.setToolId(DBUtil.getInt(rs, "tool_id"));
 		obj.setToolName(DBUtil.getString(rs, "tool_name"));
 		obj.setCount(DBUtil.getInt(rs, "count"));
-
+		obj.setIsMachine(DBUtil.getBooleanObject(rs, "is_machine"));
 		return obj;
 	}
 

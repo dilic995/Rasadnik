@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.unibl.etf.dao.interfaces.DAOException;
-import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.PricelistHasPlantDAO;
 import org.unibl.etf.dto.PricelistHasPlant;
 
