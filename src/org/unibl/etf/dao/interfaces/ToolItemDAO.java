@@ -4,6 +4,7 @@ package org.unibl.etf.dao.interfaces;
 import java.util.Date;
 import java.util.List;
 
+
 import org.unibl.etf.dto.ToolItem;
 
 public interface ToolItemDAO {
@@ -27,9 +28,9 @@ public interface ToolItemDAO {
 	// Finders
 	public List<ToolItem> getByNextServiceDate(Date nextServiceDate) throws DAOException;
 
-	public List<ToolItem> getByIsMachine(Boolean isMachine) throws DAOException;
-
 	public List<ToolItem> getByToolId(Integer toolId) throws DAOException;
 
 	public List<ToolItem> getByConditionId(Integer conditionId) throws DAOException;
+	
+	public List<ToolItem> getByIsDeleted(Boolean isDeleted) throws DAOException;
 }
