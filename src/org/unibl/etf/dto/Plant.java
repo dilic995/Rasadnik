@@ -1,13 +1,12 @@
 package org.unibl.etf.dto;
 
 import java.sql.Blob;
-import java.sql.Clob;
 
 public class Plant {
 	private Integer plantId;
 	private String scientificName;
 	private String knownAs;
-	private Clob description;
+	private String description;
 	private Blob image;
 	private Boolean owned;
 
@@ -38,11 +37,11 @@ public class Plant {
 		this.knownAs = knownAs;
 	}
 
-	public Clob getDescription() {
+	public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription(Clob description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 

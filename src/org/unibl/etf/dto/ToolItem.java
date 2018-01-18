@@ -9,7 +9,6 @@ import org.unibl.etf.dao.interfaces.DAOFactory;
 public class ToolItem {
 	private Integer toolItemId;
 	private Date nextServiceDate;
-	
 	private Tool tool;
 	private Condition condition;
 	private Integer toolId;

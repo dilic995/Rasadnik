@@ -1,6 +1,5 @@
 package org.unibl.etf.dao.implementation;
 
-import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -275,7 +274,7 @@ public class EventDAOImpl implements EventDAO {
 		return ret;
 	}
 
-	public List<Event> getByDescription(Clob description) throws DAOException {
+	public List<Event> getByDescription(String description) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Event> ret = new ArrayList<>();
@@ -376,7 +375,7 @@ public class EventDAOImpl implements EventDAO {
 
 		obj.setEventId(DBUtil.getInt(rs, "event_id"));
 		obj.setName(DBUtil.getString(rs, "name"));
-		obj.setDescription(DBUtil.getClob(rs, "description"));
+		obj.setDescription(DBUtil.getString(rs, "description"));
 		obj.setDate(DBUtil.getDate(rs, "date"));
 		obj.setDone(DBUtil.getBoolean(rs, "done"));
 

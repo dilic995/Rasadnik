@@ -2,14 +2,13 @@
 package org.unibl.etf.dto;
 
 import java.math.BigDecimal;
-import java.sql.Clob;
 import java.util.Date;
 
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class ToolMaintanceActivity {
-	private Clob description;
+	private String description;
 	private BigDecimal amount;
 	private Date date;
 	private ToolItem toolItem;
@@ -60,11 +59,11 @@ public class ToolMaintanceActivity {
 		this.toolItem = null;
 	}
 
-	public Clob getDescription() {
+	public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription(Clob description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 

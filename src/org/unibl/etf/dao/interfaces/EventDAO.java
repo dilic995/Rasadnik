@@ -1,6 +1,5 @@
 package org.unibl.etf.dao.interfaces;
 
-import java.sql.Clob;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +26,7 @@ public interface EventDAO {
 	// Finders
 	public List<Event> getByName(String name) throws DAOException;
 
-	public List<Event> getByDescription(Clob description) throws DAOException;
+	public List<Event> getByDescription(String description) throws DAOException;
 
 	public List<Event> getByDate(Date date) throws DAOException;
 

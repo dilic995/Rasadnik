@@ -1,12 +1,11 @@
 package org.unibl.etf.dto;
 
-import java.sql.Clob;
 import java.util.Date;
 
 public class Event {
 	private Integer eventId;
 	private String name;
-	private Clob description;
+	private String description;
 	private Date date;
 	private Boolean done;
 
@@ -29,11 +28,11 @@ public class Event {
 		this.name = name;
 	}
 
-	public Clob getDescription() {
+	public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription(Clob description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 

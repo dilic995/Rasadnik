@@ -2,7 +2,6 @@
 package org.unibl.etf.dao.interfaces;
 
 import java.math.BigDecimal;
-import java.sql.Clob;
 import java.util.Date;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public interface ToolMaintanceActivityDAO {
 
 	public List<ToolMaintanceActivity> getByToolItemId(Integer toolItemId) throws DAOException;
 
-	public List<ToolMaintanceActivity> getByDescription(Clob description) throws DAOException;
+	public List<ToolMaintanceActivity> getByDescription(String description) throws DAOException;
 
 	public List<ToolMaintanceActivity> getByAmount(BigDecimal amount) throws DAOException;
 

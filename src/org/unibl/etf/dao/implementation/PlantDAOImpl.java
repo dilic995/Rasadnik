@@ -1,7 +1,6 @@
 package org.unibl.etf.dao.implementation;
 
 import java.sql.Blob;
-import java.sql.Clob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -304,7 +303,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return ret;
 	}
 
-	public List<Plant> getByDescription(Clob description) throws DAOException {
+	public List<Plant> getByDescription(String description) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Plant> ret = new ArrayList<>();
@@ -407,7 +406,7 @@ public class PlantDAOImpl implements PlantDAO {
 		obj.setPlantId(DBUtil.getInt(rs, "plant_id"));
 		obj.setScientificName(DBUtil.getString(rs, "scientific_name"));
 		obj.setKnownAs(DBUtil.getString(rs, "known_as"));
-		obj.setDescription(DBUtil.getClob(rs, "description"));
+		obj.setDescription(DBUtil.getString(rs, "description"));
 		obj.setImage(DBUtil.getBlob(rs, "image"));
 		obj.setOwned(DBUtil.getBoolean(rs, "owned"));
 

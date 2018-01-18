@@ -1,7 +1,6 @@
 package org.unibl.etf.dao.interfaces;
 
 import java.sql.Blob;
-import java.sql.Clob;
 import java.util.List;
 
 import org.unibl.etf.dto.Plant;
@@ -29,7 +28,7 @@ public interface PlantDAO {
 
 	public List<Plant> getByKnownAs(String knownAs) throws DAOException;
 
-	public List<Plant> getByDescription(Clob description) throws DAOException;
+	public List<Plant> getByDescription(String description) throws DAOException;
 
 	public List<Plant> getByImage(Blob image) throws DAOException;
 
