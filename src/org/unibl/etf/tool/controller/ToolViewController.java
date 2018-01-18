@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.unibl.etf.application.BaseController;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.ToolDAO;
@@ -19,6 +18,7 @@ import org.unibl.etf.dto.Condition;
 import org.unibl.etf.dto.Tool;
 import org.unibl.etf.dto.ToolItem;
 import org.unibl.etf.dto.ToolMaintanceActivity;
+import org.unibl.etf.gui.view.base.BaseController;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
