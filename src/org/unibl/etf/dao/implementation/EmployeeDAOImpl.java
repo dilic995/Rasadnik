@@ -12,6 +12,8 @@ import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.EmployeeDAO;
 import org.unibl.etf.dto.Employee;
 
+import com.mysql.jdbc.Statement;
+
 public class EmployeeDAOImpl implements EmployeeDAO {
 	//
 	// static data
@@ -199,18 +201,21 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns),Statement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
 
+			
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
 				throw new DAOException(
 						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
 			}
-
-			return rowCount;
+			ResultSet tmp = ps.getGeneratedKeys();
+			if(tmp.next())
+				return tmp.getInt(1);
+			return -1;
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		} finally {
