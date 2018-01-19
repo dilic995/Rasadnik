@@ -322,12 +322,12 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `rasadnik_db`.`condition`
+-- Table `rasadnik_db`.`item_condition`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `rasadnik_db`.`condition` (
-  `condition_id` INT NOT NULL AUTO_INCREMENT,
-  `condition` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`condition_id`))
+CREATE TABLE IF NOT EXISTS `rasadnik_db`.`item_condition` (
+  `item_condition_id` INT NOT NULL AUTO_INCREMENT,
+  `item_condition` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`item_condition_id`))
 ENGINE = InnoDB;
 
 
@@ -339,18 +339,18 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool_item` (
   `next_service_date` DATE NOT NULL,
   `is_deleted` TINYINT NOT NULL DEFAULT 0,
   `tool_id` INT NOT NULL,
-  `condition_id` INT NOT NULL,
+  `item_condition_id` INT NOT NULL,
   PRIMARY KEY (`tool_item_id`),
   INDEX `fk_tool_item_tool1_idx` (`tool_id` ASC),
-  INDEX `fk_tool_item_condition1_idx` (`condition_id` ASC),
+  INDEX `fk_tool_item_condition1_idx` (`item_condition_id` ASC),
   CONSTRAINT `fk_tool_item_tool1`
     FOREIGN KEY (`tool_id`)
     REFERENCES `rasadnik_db`.`tool` (`tool_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_tool_item_condition1`
-    FOREIGN KEY (`condition_id`)
-    REFERENCES `rasadnik_db`.`condition` (`condition_id`)
+    FOREIGN KEY (`item_condition_id`)
+    REFERENCES `rasadnik_db`.`item_condition` (`item_condition_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
