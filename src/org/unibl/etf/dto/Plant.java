@@ -1,14 +1,14 @@
 package org.unibl.etf.dto;
 
 import java.sql.Blob;
-import java.sql.Clob;
 
 public class Plant {
 	private Integer plantId;
 	private String scientificName;
 	private String knownAs;
-	private Clob description;
+	private String description;
 	private Blob image;
+	private Boolean isEvergreen;
 	private Boolean owned;
 
 	//
@@ -38,11 +38,11 @@ public class Plant {
 		this.knownAs = knownAs;
 	}
 
-	public Clob getDescription() {
+	public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription(Clob description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -60,6 +60,14 @@ public class Plant {
 
 	public void setOwned(Boolean owned) {
 		this.owned = owned;
+	}
+
+	public Boolean getIsEvergreen() {
+		return isEvergreen;
+	}
+
+	public void setIsEvergreen(Boolean isEvergreen) {
+		this.isEvergreen = isEvergreen;
 	}
 
 	@Override
@@ -95,6 +103,7 @@ public class Plant {
 		buffer.append("[").append("knownAs").append("=").append(knownAs).append("]");
 		buffer.append("[").append("description").append("=").append(description).append("]");
 		buffer.append("[").append("image").append("=").append(image).append("]");
+		buffer.append("[").append("isEvergreen").append("=").append(isEvergreen).append("]");
 		buffer.append("[").append("owned").append("=").append(owned).append("]");
 
 		return buffer.append(")").toString();

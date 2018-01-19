@@ -22,8 +22,8 @@ public class ConditionDAOImpl implements ConditionDAO {
 	protected static String tableName = "condition";
 
 	static {
-		pkColumns.add("condition_id");
-		stdColumns.add("condition");
+		pkColumns.add("item_condition_id");
+		stdColumns.add("item_condition");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}

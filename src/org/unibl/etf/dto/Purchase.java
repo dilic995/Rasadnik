@@ -2,7 +2,6 @@
 package org.unibl.etf.dto;
 
 import java.math.BigDecimal;
-import java.sql.Clob;
 import java.util.Date;
 
 import org.unibl.etf.dao.interfaces.DAOException;
@@ -11,7 +10,7 @@ import org.unibl.etf.dao.interfaces.DAOFactory;
 public class Purchase {
 	private Integer purchaseId;
 	private Date date;
-	private Clob description;// treba raspraviti da li Clob ili string
+	private String description;
 	private BigDecimal price;
 	private Boolean paidOff;
 	private Customer customer;
@@ -45,11 +44,11 @@ public class Purchase {
 		this.date = date;
 	}
 
-	public Clob getDescription() {
+	public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription(Clob description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -74,7 +73,6 @@ public class Purchase {
 			try {
 				this.customer=DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(customerId);
 			} catch (DAOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

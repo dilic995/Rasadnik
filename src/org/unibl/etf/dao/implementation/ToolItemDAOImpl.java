@@ -30,7 +30,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 		stdColumns.add("next_service_date");
 		stdColumns.add("is_deleted");
 		stdColumns.add("tool_id");
-		stdColumns.add("condition_id");
+		stdColumns.add("item_condition_id");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
