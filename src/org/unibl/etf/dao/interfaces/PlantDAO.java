@@ -31,6 +31,8 @@ public interface PlantDAO {
 	public List<Plant> getByDescription(String description) throws DAOException;
 
 	public List<Plant> getByImage(Blob image) throws DAOException;
+	
+	public List<Plant> getByIsEvergreen(Boolean isEvergreen) throws DAOException;
 
 	public List<Plant> getByOwned(Boolean owned) throws DAOException;
 }

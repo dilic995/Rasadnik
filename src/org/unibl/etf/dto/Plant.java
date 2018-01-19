@@ -8,6 +8,7 @@ public class Plant {
 	private String knownAs;
 	private String description;
 	private Blob image;
+	private Boolean isEvergreen;
 	private Boolean owned;
 
 	//
@@ -61,6 +62,14 @@ public class Plant {
 		this.owned = owned;
 	}
 
+	public Boolean getIsEvergreen() {
+		return isEvergreen;
+	}
+
+	public void setIsEvergreen(Boolean isEvergreen) {
+		this.isEvergreen = isEvergreen;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -94,6 +103,7 @@ public class Plant {
 		buffer.append("[").append("knownAs").append("=").append(knownAs).append("]");
 		buffer.append("[").append("description").append("=").append(description).append("]");
 		buffer.append("[").append("image").append("=").append(image).append("]");
+		buffer.append("[").append("isEvergreen").append("=").append(isEvergreen).append("]");
 		buffer.append("[").append("owned").append("=").append(owned).append("]");
 
 		return buffer.append(")").toString();

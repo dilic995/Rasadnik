@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`plant` (
   `known_as` VARCHAR(100) NOT NULL,
   `description` VARCHAR(500) NOT NULL,
   `image` MEDIUMBLOB NOT NULL,
+  `is_evergreen` TINYINT NOT NULL DEFAULT 0,
   `owned` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`plant_id`))
 ENGINE = InnoDB;
