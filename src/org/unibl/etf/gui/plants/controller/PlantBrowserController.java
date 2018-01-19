@@ -16,9 +16,9 @@ import javafx.scene.image.Image;
 public abstract class PlantBrowserController extends BaseController {
 
 	public void loadPlants() {
-		HeightPriceRatio s = new HeightPriceRatio(0.0, 10.0, 20.0);
-		HeightPriceRatio m = new HeightPriceRatio(10.0, 50.0, 50.0);
-		HeightPriceRatio l = new HeightPriceRatio(50.0, null, 100.0);
+		HeightPriceRatio s = new HeightPriceRatio(0, 10, 20.0);
+		HeightPriceRatio m = new HeightPriceRatio(10, 50, 50.0);
+		HeightPriceRatio l = new HeightPriceRatio(50, null, 100.0);
 		List<HeightPriceRatio> ratios = new ArrayList<HeightPriceRatio>();
 		ratios.add(s);
 		ratios.add(m);
@@ -26,13 +26,13 @@ public abstract class PlantBrowserController extends BaseController {
 		try {
 			plants.add(new MyPlant(1, "Cedrus atlantica", "Atlaski kedar",
 					"Atlaski kedar (Cedrus atlantica (Endl.) Manetti ex Carr) pripada rodu Cedrus, koji se u sastavu familije Pinaceae. Naziv Cedrus potiče od grčke reči κεο = goreti, jer se drvo upotrebljava za kađenje. Kod Plinija starijeg naziv označava kedrovo drvo i kedrovo ulje, ali i crvenu kleku (Juniperus oxycedrus) [1]. Većina savremenih izvora tretira atlaski kedar kao posebnu vrstu Cedrus atlantica, ali neki izvori smatraju da je podvrsta libanskog kedra (Cedrus libani A. Rich. subsp. atlantica (Endl.) Batt. & Trab.). U okviru roda nalaze se još dve do tri vrste zimzelenog drveća, čiji areal je ograničen na područje južnog i istočnog Mediterana i na zapadne Himalaje.",
-					true, new Image(new FileInputStream("resources/images/cedrus.jpg")), ratios));
+					true, new Image(new FileInputStream("resources/images/cedrus.jpg")), true, ratios));
 			plants.add(new MyPlant(2, "Mimosa pudica", "Sramezljiva mimoza",
 					"Mimoza, drvo iz porodice akacija, u odnosu na neke druge vrste, nema dug vek. Ima kratak životni vek, najveći broj živi 15—30 gidina, domaća mimoza uspeva oko 30 godina, a italijanka do petnaest godina. Akacije su uglavnom žbunovi ili manja stabla koja rastu na sušnim i sunčanim predelima. Obično naraste do 12 metara visine, premda neke mogu dostići i veće visine. Mnoge vrste imaju zelene peraste listove koji su gusto zbijeni na granama i stvaraju utisak paprati.",
-					true, new Image(new FileInputStream("resources/images/mimosa.jpg")), ratios));
+					true, new Image(new FileInputStream("resources/images/mimosa.jpg")),false, ratios));
 			plants.add(new MyPlant(3, "Pinus parviflora", "Japanski bijeli bor",
 					"Bonsai, bolje rečeno bonsaj, u doslovnom prevodu znači stabaoce u posudi. Poreklom je iz Kine odakle je prenesen u Japan gde je dalje razvijen i gde je dobio današnju formu. Za njegovo oblikovanje i uzgoj je potrebno mnogo više od same hortikulturne veštine. Veći je naglasak na umetničkim sklonostima samog uzgajivača. Osnovni princip je uzgojiti minijaturno stabaoce koje ima sve karakteristike te biljne vrste u „normalnoj“ veličini u prirodi.",
-					false, new Image(new FileInputStream("resources/images/bonsai.jpg")), ratios));
+					false, new Image(new FileInputStream("resources/images/bonsai.jpg")),false, ratios));
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}

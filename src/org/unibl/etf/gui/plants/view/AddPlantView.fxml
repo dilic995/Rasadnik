@@ -6,35 +6,31 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="650.0" stylesheets="@../../../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="600.0" prefWidth="650.0" stylesheets="@../../../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.plants.controller.AddPlantController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" style="-fx-font-size: 25;" text="Dodavanje biljke" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="10.0" />
       <Separator layoutX="16.0" layoutY="45.0" prefWidth="200.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="50.0" />
       <AnchorPane layoutX="376.0" layoutY="74.0" prefHeight="206.0" prefWidth="206.0" style="-fx-border-color: black;" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="66.0">
          <children>
-            <ImageView fx:id="imgPhoto" fitHeight="200.0" fitWidth="200.0" layoutX="28.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
+            <ImageView fx:id="imgPhoto" fitHeight="200.0" fitWidth="200.0" layoutX="28.0" layoutY="53.0" onMouseClicked="#addImage" pickOnBounds="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
          </children>
       </AnchorPane>
       <Label layoutX="28.0" layoutY="113.0" styleClass="prompt-label" text="Latinski naziv:" AnchorPane.topAnchor="113.0" />
       <TextField fx:id="txtLatinName" layoutX="123.0" layoutY="110.0" prefHeight="25.0" prefWidth="230.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="247.0" AnchorPane.topAnchor="110.0" />
       <Label layoutX="29.0" layoutY="149.0" styleClass="prompt-label" text="Lokalni naziv:" AnchorPane.topAnchor="149.0" />
       <TextField fx:id="txtCommonName" layoutX="123.0" layoutY="146.0" prefHeight="25.0" prefWidth="230.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="247.0" AnchorPane.topAnchor="146.0" />
-      <Label alignment="CENTER_RIGHT" layoutX="51.0" layoutY="191.0" prefHeight="20.0" prefWidth="41.0" styleClass="prompt-label" stylesheets="@../../../../../../../css/catalogue.css" text="Od:" AnchorPane.topAnchor="191.0" />
+      <Label alignment="CENTER_RIGHT" layoutX="51.0" layoutY="191.0" prefHeight="20.0" prefWidth="41.0" styleClass="prompt-label" stylesheets="@../../../../../../../css/catalogue.css" text="Od:" AnchorPane.topAnchor="194.0" />
       <Label alignment="CENTER_RIGHT" layoutX="51.0" layoutY="229.0" prefHeight="20.0" prefWidth="41.0" styleClass="prompt-label" text="Do:" AnchorPane.topAnchor="229.0" />
       <Label layoutX="51.0" layoutY="261.0" styleClass="prompt-label" text="Cijena:" AnchorPane.topAnchor="261.0" />
-      <Spinner fx:id="spinFrom" layoutX="98.0" layoutY="191.0" prefHeight="25.0" prefWidth="71.0" AnchorPane.leftAnchor="98.0" AnchorPane.topAnchor="191.0" />
-      <Spinner fx:id="spinTo" layoutX="98.0" layoutY="226.0" prefHeight="25.0" prefWidth="71.0" AnchorPane.topAnchor="226.0" />
-      <Spinner fx:id="spinPrice" layoutX="98.0" layoutY="261.0" prefHeight="25.0" prefWidth="71.0" AnchorPane.topAnchor="261.0" />
-      <Label layoutX="175.0" layoutY="191.0" styleClass="prompt-label" text="cm" AnchorPane.topAnchor="191.0" />
-      <Label layoutX="175.0" layoutY="226.0" styleClass="prompt-label" text="cm" AnchorPane.topAnchor="226.0" />
-      <Label layoutX="174.0" layoutY="261.0" styleClass="prompt-label" text="KM" AnchorPane.topAnchor="261.0" />
+      <Label layoutX="166.0" layoutY="195.0" styleClass="prompt-label" text="cm" AnchorPane.topAnchor="195.0" />
+      <Label layoutX="166.0" layoutY="229.0" styleClass="prompt-label" text="cm" AnchorPane.topAnchor="229.0" />
+      <Label layoutX="165.0" layoutY="261.0" styleClass="prompt-label" text="KM" AnchorPane.topAnchor="261.0" />
       <Button fx:id="btnRemoveImage" layoutX="376.0" layoutY="288.0" mnemonicParsing="false" onAction="#removeImage" prefHeight="25.0" prefWidth="208.0" text="Obrisite sliku" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="288.0" />
       <RadioButton fx:id="rbConifer" layoutX="121.0" layoutY="74.0" mnemonicParsing="false" selected="true" styleClass="prompt-label" text="Četinar" AnchorPane.topAnchor="74.0">
          <toggleGroup>
@@ -49,5 +45,8 @@
       <Button fx:id="btnSave" layoutX="532.0" layoutY="561.0" mnemonicParsing="false" onAction="#save" text="Sačuvajte" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />
       <Label layoutX="35.0" layoutY="305.0" styleClass="prompt-label" text="Opis:" />
       <TextArea fx:id="taDescription" layoutX="430.0" layoutY="351.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="335.0" />
+      <TextField fx:id="txtTo" layoutX="101.0" layoutY="192.0" prefHeight="25.0" prefWidth="60.0" AnchorPane.topAnchor="226.0" />
+      <TextField fx:id="txtPrice" layoutX="101.0" layoutY="227.0" prefHeight="25.0" prefWidth="60.0" AnchorPane.topAnchor="259.0" />
+      <TextField fx:id="txtFrom" layoutX="101.0" layoutY="192.0" prefHeight="25.0" prefWidth="60.0" AnchorPane.topAnchor="192.0" />
    </children>
 </AnchorPane>
