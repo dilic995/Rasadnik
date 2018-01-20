@@ -421,6 +421,10 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 	}
 
 	protected Connection getConn() {
+		if(conn == null) {
+			conn = DBUtil.getConnection();
+		}
+		
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
 }

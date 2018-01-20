@@ -439,6 +439,10 @@ public class PlantDAOImpl implements PlantDAO {
 	}
 
 	protected Connection getConn() {
+		if(conn == null) {
+			conn = DBUtil.getConnection();
+		}
+		
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
 }

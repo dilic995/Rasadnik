@@ -376,6 +376,10 @@ public class ToolItemDAOImpl implements ToolItemDAO
   }
 
 	protected Connection getConn() {
+		if(conn == null) {
+			conn = DBUtil.getConnection();
+		}
+		
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
 

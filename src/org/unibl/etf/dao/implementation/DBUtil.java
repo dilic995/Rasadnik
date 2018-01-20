@@ -40,7 +40,6 @@ public class DBUtil {
 	}
 
 	protected static Connection getConnection() {
-
 		try {
 			return ConnectionPool.getInstance().checkOut();
 		} catch (SQLException e) {
