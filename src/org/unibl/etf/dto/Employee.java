@@ -4,6 +4,7 @@ public class Employee {
 	private Integer employeeId;
 	private String firstName;
 	private String lastName;
+	private Boolean isDeleted;
 
 	public Employee() {
 		super();
@@ -43,6 +44,14 @@ public class Employee {
 		this.lastName = lastName;
 	}
 
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -74,6 +83,7 @@ public class Employee {
 		buffer.append("[").append("employeeId").append("=").append(employeeId).append("]");
 		buffer.append("[").append("firstName").append("=").append(firstName).append("]");
 		buffer.append("[").append("lastName").append("=").append(lastName).append("]");
+		buffer.append("[").append("isDeleted").append("=").append(isDeleted).append("]");
 
 		return buffer.append(")").toString();
 	}
