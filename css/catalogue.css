@@ -82,3 +82,6 @@
 	-fx-text-fill: #ff0000;
 	-fx-font-weight: bold;
 }
+.prompt-label{
+	-fx-font-size: 14;
+}

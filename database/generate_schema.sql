@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`plant` (
   `known_as` VARCHAR(100) NOT NULL,
   `description` VARCHAR(500) NOT NULL,
   `image` MEDIUMBLOB NOT NULL,
-  `is_evergreen` TINYINT NOT NULL DEFAULT 0,
+  `is_conifer` TINYINT NOT NULL DEFAULT 0,
   `owned` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`plant_id`))
 ENGINE = InnoDB;
@@ -118,6 +118,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`task` (
   `date_from` DATE NOT NULL,
   `date_to` DATE NULL,
   `done` TINYINT NOT NULL DEFAULT 0,
+  `is_deleted` TINYINT NOT NULL DEFAULT 0,
   `region_id` INT NOT NULL,
   `plant_maintance_activity_id` INT NOT NULL,
   INDEX `fk_region_has_maintance_activity_maintance_activity1_idx` (`plant_maintance_activity_id` ASC),
@@ -143,6 +144,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`employee` (
   `employee_id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(75) NOT NULL,
   `last_name` VARCHAR(100) NOT NULL,
+  `is_deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`employee_id`))
 ENGINE = InnoDB;
 

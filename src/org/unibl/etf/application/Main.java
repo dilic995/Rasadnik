@@ -18,7 +18,7 @@ public class Main extends Application {
 			e.printStackTrace();
 			System.out.println(e.getCause());
 		}
-		primaryStage.setResizable(false);
+		primaryStage.setResizable(true);
 		primaryStage.show();
 		
 	}

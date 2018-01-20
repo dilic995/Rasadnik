@@ -27,6 +27,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		pkColumns.add("employee_id");
 		stdColumns.add("first_name");
 		stdColumns.add("last_name");
+		stdColumns.add("is_deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -303,6 +304,28 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 		return ret;
 	}
+	
+	public List<Employee> getByIsDeleted(Boolean isDeleted) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Employee> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_deleted" })));
+			DBUtil.bind(ps, 1, isDeleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -316,6 +339,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	protected int bindStdColumns(PreparedStatement ps, Employee obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getFirstName());
 		DBUtil.bind(ps, pos++, obj.getLastName());
+		DBUtil.bind(ps, pos++, obj.getIsDeleted());
 
 		return pos;
 	}
@@ -326,11 +350,16 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		obj.setEmployeeId(DBUtil.getInt(rs, "employee_id"));
 		obj.setFirstName(DBUtil.getString(rs, "first_name"));
 		obj.setLastName(DBUtil.getString(rs, "last_name"));
+		obj.setIsDeleted(DBUtil.getBooleanObject(rs, "is_deleted"));
 
 		return obj;
 	}
 
 	protected Connection getConn() {
+		if(conn == null) {
+			conn = DBUtil.getConnection();
+		}
+		
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
 }

@@ -26,4 +26,6 @@ public interface EmployeeDAO {
 	public List<Employee> getByFirstName(String firstName) throws DAOException;
 
 	public List<Employee> getByLastName(String lastName) throws DAOException;
+	
+	public List<Employee> getByIsDeleted(Boolean isDeleted) throws DAOException;
 }

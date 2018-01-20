@@ -28,7 +28,7 @@ public class PlantDAOImpl implements PlantDAO {
 		stdColumns.add("known_as");
 		stdColumns.add("description");
 		stdColumns.add("image");
-		stdColumns.add("is_evergreen");
+		stdColumns.add("is_conifer");
 		stdColumns.add("owned");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
@@ -360,15 +360,15 @@ public class PlantDAOImpl implements PlantDAO {
 		return ret;
 	}
 	
-	public List<Plant> getByIsEvergreen(Boolean isEvergreen) throws DAOException {
+	public List<Plant> getByIsConifer(Boolean isConifer) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Plant> ret = new ArrayList<>();
 
 		try {
 			ps = getConn()
-					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_evergreen" })));
-			DBUtil.bind(ps, 1, isEvergreen);
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_conifer" })));
+			DBUtil.bind(ps, 1, isConifer);
 			rs = ps.executeQuery();
 
 			while (rs.next())
@@ -418,7 +418,7 @@ public class PlantDAOImpl implements PlantDAO {
 		DBUtil.bind(ps, pos++, obj.getKnownAs());
 		DBUtil.bind(ps, pos++, obj.getDescription());
 		DBUtil.bind(ps, pos++, obj.getImage());
-		DBUtil.bind(ps, pos++, obj.getIsEvergreen());
+		DBUtil.bind(ps, pos++, obj.getIsConifer());
 		DBUtil.bind(ps, pos++, obj.getOwned());
 
 		return pos;
@@ -432,13 +432,17 @@ public class PlantDAOImpl implements PlantDAO {
 		obj.setKnownAs(DBUtil.getString(rs, "known_as"));
 		obj.setDescription(DBUtil.getString(rs, "description"));
 		obj.setImage(DBUtil.getBlob(rs, "image"));
-		obj.setIsEvergreen(DBUtil.getBoolean(rs, "is_evergreen"));
+		obj.setIsConifer(DBUtil.getBoolean(rs, "is_conifer"));
 		obj.setOwned(DBUtil.getBoolean(rs, "owned"));
 
 		return obj;
 	}
 
 	protected Connection getConn() {
+		if(conn == null) {
+			conn = DBUtil.getConnection();
+		}
+		
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
 }

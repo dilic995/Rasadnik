@@ -102,8 +102,9 @@ public class ConnectionPool {
 	}
 
 	public synchronized void checkIn(Connection conn) {
-		if (conn == null)
+		if (conn == null) {
 			return;
+		}
 		if (usedConnections.remove(conn)) {
 			System.out.println("vratio");
 			freeConnections.add(conn);

@@ -28,6 +28,7 @@ public class TaskDAOImpl implements TaskDAO {
 		stdColumns.add("date_from");
 		stdColumns.add("date_to");
 		stdColumns.add("done");
+		stdColumns.add("is_deleted");
 		stdColumns.add("region_id");
 		stdColumns.add("plant_maintance_activity_id");
 		allColumns.addAll(pkColumns);
@@ -303,6 +304,28 @@ public class TaskDAOImpl implements TaskDAO {
 
 		return ret;
 	}
+	
+	public List<Task> getByIsDeleted(Boolean isDeleted) throws DAOException {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Task> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_deleted" })));
+			DBUtil.bind(ps, 1, isDeleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	public List<Task> getByDone(Boolean done) throws DAOException {
 		PreparedStatement ps = null;
@@ -383,6 +406,7 @@ public class TaskDAOImpl implements TaskDAO {
 		DBUtil.bind(ps, pos++, obj.getDateFrom());
 		DBUtil.bind(ps, pos++, obj.getDateTo());
 		DBUtil.bind(ps, pos++, obj.getDone());
+		DBUtil.bind(ps, pos++, obj.getIsDeleted());
 		DBUtil.bind(ps, pos++, obj.getRegionId());
 		DBUtil.bind(ps, pos++, obj.getPlantMaintanceActivityId());
 
@@ -396,14 +420,18 @@ public class TaskDAOImpl implements TaskDAO {
 		obj.setDateFrom(DBUtil.getDate(rs, "date_from"));
 		obj.setDateTo(DBUtil.getDate(rs, "date_to"));
 		obj.setDone(DBUtil.getBoolean(rs, "done"));
+		obj.setDone(DBUtil.getBoolean(rs, "is_deleted"));
 		obj.setRegionId((DBUtil.getInt(rs, "region_id")));
-
 		obj.setPlantMaintanceActivityId((DBUtil.getInt(rs, "plant_maintance_activity_id")));
 		
 		return obj;
 	}
 
 	protected Connection getConn() {
+		if(conn == null) {
+			conn = DBUtil.getConnection();
+		}
+		
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
 }

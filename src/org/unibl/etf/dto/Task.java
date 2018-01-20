@@ -13,6 +13,7 @@ public class Task {
 	private Boolean done;
 	private Integer regionId;
 	private Region region;
+	private Boolean isDeleted;
 	private Integer plantMaintanceActivityId;
 	private PlantMaintanceActivity plantMaintanceActivity;
 
@@ -51,12 +52,19 @@ public class Task {
 		this.done = done;
 	}
 
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	public Region getRegion() {
 		if(region==null) {
 			try {
 				region=DAOFactory.getInstance().getRegionDAO().getByPrimaryKey(regionId);
 			} catch (DAOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -72,7 +80,6 @@ public class Task {
 			try {
 				plantMaintanceActivity=DAOFactory.getInstance().getPlantMaintanceActivityDAO().getByPrimaryKey(plantMaintanceActivityId);
 			} catch (DAOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -133,6 +140,7 @@ public class Task {
 		buffer.append("[").append("dateFrom").append("=").append(dateFrom).append("]");
 		buffer.append("[").append("dateTo").append("=").append(dateTo).append("]");
 		buffer.append("[").append("done").append("=").append(done).append("]");
+		buffer.append("[").append("isDeleted").append("=").append(isDeleted).append("]");
 		buffer.append("[").append("regionId").append("=").append(regionId).append("]");
 		buffer.append("[").append("plantMaintanceActivityId").append("=").append(plantMaintanceActivityId).append("]");
 

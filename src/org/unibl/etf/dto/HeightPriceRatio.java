@@ -1,27 +1,27 @@
 package org.unibl.etf.dto;
 
 public class HeightPriceRatio {
-	private Double minHeight;
-	private Double maxHeight;
+	private Integer minHeight;
+	private Integer maxHeight;
 	private Double price;
 	public HeightPriceRatio() {
 	}
-	public HeightPriceRatio(Double minHeight, Double maxHeight, Double price) {
+	public HeightPriceRatio(Integer minHeight, Integer maxHeight, Double price) {
 		super();
 		this.minHeight = minHeight;
 		this.maxHeight = maxHeight;
 		this.price = price;
 	}
-	public Double getMinHeight() {
+	public Integer getMinHeight() {
 		return minHeight;
 	}
-	public void setMinHeight(Double minHeight) {
+	public void setMinHeight(Integer minHeight) {
 		this.minHeight = minHeight;
 	}
-	public Double getMaxHeight() {
+	public Integer getMaxHeight() {
 		return maxHeight;
 	}
-	public void setMaxHeight(Double maxHeight) {
+	public void setMaxHeight(Integer maxHeight) {
 		this.maxHeight = maxHeight;
 	}
 	public Double getPrice() {
@@ -65,5 +65,8 @@ public class HeightPriceRatio {
 			return false;
 		return true;
 	}
-	
+	@Override
+	public String toString() {
+		return minHeight + " - " + (maxHeight == null ? " " : maxHeight) + " : " + price + " KM";
+	}
 }

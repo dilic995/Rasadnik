@@ -30,6 +30,8 @@ public interface TaskDAO {
 	public List<Task> getByDateTo(Date dateTo) throws DAOException;
 
 	public List<Task> getByDone(Boolean done) throws DAOException;
+	
+	public List<Task> getByIsDeleted(Boolean isDeleted) throws DAOException;
 
 	public List<Task> getByRegionId(Integer regionId) throws DAOException;
 
