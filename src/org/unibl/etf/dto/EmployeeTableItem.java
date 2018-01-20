@@ -80,6 +80,9 @@ public class EmployeeTableItem {
 		this.employee.setLastName(lastName);
 		this.lastName.set(lastName);
 	}
+	public void setIsDeleted(Boolean isDeleted) {
+		this.employee.setIsDeleted(isDeleted);
+	}
 	
 	public void update() throws DAOException {
 		DAOFactory.getInstance().getEmployeeDAO().update(this.employee);

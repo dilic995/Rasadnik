@@ -11,23 +11,23 @@ import org.unibl.etf.dto.ActivityTableItem;
 import org.unibl.etf.dto.Employee;
 import org.unibl.etf.dto.EmployeeHasTask;
 import org.unibl.etf.dto.EmployeeTableItem;
+import org.unibl.etf.gui.util.OrBinder;
 import org.unibl.etf.gui.view.base.BaseController;
 
-import com.sun.javafx.scene.control.skin.IntegerFieldSkin;
-
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.Callback;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -77,6 +77,9 @@ public class EmployeeViewController extends BaseController implements Initializa
     
     @FXML
     private TextField txtSearch;
+    
+    @FXML
+    private Button btnAddEmployee;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -84,25 +87,38 @@ public class EmployeeViewController extends BaseController implements Initializa
 		initializeTableAktivnosti();
 		initializeSearch();
 		
+		OrBinder binder = new OrBinder();
+		btnAddEmployee.disableProperty().bind(binder.bindAll(txtIme.textProperty().isEmpty(), txtPrezime.textProperty().isEmpty()));
 	}
 	
-	public void initializeSearch() {
-		txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-			if("".equals(newValue)) {
-				tvRadnici.setItems(employeeList);
-			}
-			else {
-				ObservableList<EmployeeTableItem> tempList = FXCollections.observableArrayList(employeeList.stream()
-						.filter(x -> (x.getFirstName() + " " + x.getLastName()).toLowerCase().contains(newValue.toLowerCase())).collect(Collectors.toList()));
-				tvRadnici.setItems(tempList);
-				System.out.println(tempList.size());
-			}
-		});
-	}
 	
-	//TESTIRATI
+	//RADI
 	public void deleteEmployee() {
-		
+		EmployeeTableItem item = tvRadnici.getSelectionModel().getSelectedItem();
+		if(item != null) {
+			item.setIsDeleted(true);
+			try {
+				item.update();
+			} catch (DAOException e) {
+				e.printStackTrace();
+			}
+			tvRadnici.getItems().remove(item);
+		}
+	}
+	
+	//RADI
+	public void revoke() {
+		for(ActivityTableItem item : tvAktivnosti.getSelectionModel().getSelectedItems()) {
+			if(item.getPaidOff()) {
+				item.setPaidOff(false);
+				try {
+					item.update();
+				} catch (DAOException e) {
+					e.printStackTrace();
+				}
+				tvAktivnosti.refresh();
+			}
+		}
 	}
 	
 	//RADI
@@ -121,18 +137,23 @@ public class EmployeeViewController extends BaseController implements Initializa
 	}
 	
 	//RADI
-	//URADITI BIND SA txtIme i txtPrezime
 	public void addEmployee() {
 		try {
 			List<Employee> tmpList = DAOFactory.getInstance().getEmployeeDAO().getByFirstName(txtIme.getText());
 			for(Employee employee : tmpList) {
 				if(employee.getLastName().equals(txtPrezime.getText())) {
-					//PRIKAZATI WARNING : POSTOJI VEC RADNIK SA TIM IMENOM. DA LI STE SIGURNI?
-					//YES - DODATI
-					//NO - NISTA
+					
+					Alert alert = new Alert(AlertType.WARNING, "Postoji radnik sa tim imenom i prezimenom. Da li ste sigurni da želite da nastavite?",
+							ButtonType.YES, ButtonType.NO);
+					alert.setTitle("Upozorenje");
+					alert.setHeaderText("Upozorenje!");
+					if(alert.showAndWait().equals(ButtonType.NO))
+						return;
+					
 				}
 			}
 			Employee newEmployee = new Employee(null, txtIme.getText(), txtPrezime.getText());
+			newEmployee.setIsDeleted(false);
 			int generatedId = DAOFactory.getInstance().getEmployeeDAO().insert(newEmployee);
 			newEmployee.setEmployeeId(generatedId);
 			
@@ -144,6 +165,19 @@ public class EmployeeViewController extends BaseController implements Initializa
 			e.printStackTrace();
 			//TREBA ALERT DA KAZE DA NE MOZE DODATI IZ NEKOG RAZLOGA
 		}
+	}
+	
+	public void initializeSearch() {
+		txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+			if("".equals(newValue)) {
+				tvRadnici.setItems(employeeList);
+			}
+			else {
+				ObservableList<EmployeeTableItem> tempList = FXCollections.observableArrayList(employeeList.stream()
+						.filter(x -> (x.getFirstName() + " " + x.getLastName()).toLowerCase().contains(newValue.toLowerCase())).collect(Collectors.toList()));
+				tvRadnici.setItems(tempList);
+			}
+		});
 	}
 	
 	public void initializeTableRadnici() {
@@ -175,7 +209,7 @@ public class EmployeeViewController extends BaseController implements Initializa
 		
 		List<Employee> employees = null;
 		try {
-			employees = DAOFactory.getInstance().getEmployeeDAO().selectAll();
+			employees = DAOFactory.getInstance().getEmployeeDAO().getByIsDeleted(false);
 		} catch (DAOException e) {
 			e.printStackTrace();
 			return;

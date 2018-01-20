@@ -106,7 +106,6 @@ public class ConnectionPool {
 			return;
 		}
 		if (usedConnections.remove(conn)) {
-			System.out.println("vratio");
 			freeConnections.add(conn);
 			while (freeConnections.size() > maxIdleConnections) {
 				int lastOne = freeConnections.size() - 1;
