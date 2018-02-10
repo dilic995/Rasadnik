@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.CheckListView?>
+
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="org.unibl.etf.gui.task.controller.RegionViewController">
+   <children>
+      <Label alignment="CENTER" layoutX="56.0" layoutY="53.0" prefHeight="694.0" prefWidth="404.0" style="-fx-background-color: lightgreen;" text="Regioni" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="50.0">
+         <font>
+            <Font size="54.0" />
+         </font>
+      </Label>
+      <CheckListView fx:id="clvTasks" layoutX="457.0" layoutY="410.0" prefHeight="316.0" prefWidth="718.0" />
+      <Label layoutX="457.0" layoutY="379.0" text="TASKOVI" />
+      <Label alignment="CENTER" layoutX="563.0" layoutY="118.0" prefHeight="191.0" prefWidth="526.0" text="neke kontrole">
+         <font>
+            <Font size="39.0" />
+         </font>
+      </Label>
+      <Button layoutX="898.0" layoutY="749.0" mnemonicParsing="false" onAction="#saveTasksState" text="Sačuvaj promjene" />
+      <Button layoutX="1045.0" layoutY="749.0" mnemonicParsing="false" onAction="#cancelTasksState" prefWidth="130.0" text="Otkaži promjene" />
+   </children>
+</AnchorPane>
