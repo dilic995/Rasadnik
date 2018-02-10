@@ -1,6 +1,7 @@
 package org.unibl.etf.dto;
 
 import java.sql.Blob;
+import java.util.List;
 
 public class Plant {
 	private Integer plantId;
@@ -10,7 +11,9 @@ public class Plant {
 	private Blob image;
 	private Boolean isConifer;
 	private Boolean owned;
-
+	private List<PriceHeightRatio> ratios;
+	
+	
 	//
 	// getters / setters
 	//
@@ -107,5 +110,13 @@ public class Plant {
 		buffer.append("[").append("owned").append("=").append(owned).append("]");
 
 		return buffer.append(")").toString();
+	}
+
+	public List<PriceHeightRatio> getRatios() {
+		return ratios;
+	}
+
+	public void setRatios(List<PriceHeightRatio> ratios) {
+		this.ratios = ratios;
 	}
 }
