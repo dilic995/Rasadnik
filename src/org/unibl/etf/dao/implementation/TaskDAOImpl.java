@@ -420,7 +420,7 @@ public class TaskDAOImpl implements TaskDAO {
 		obj.setDateFrom(DBUtil.getDate(rs, "date_from"));
 		obj.setDateTo(DBUtil.getDate(rs, "date_to"));
 		obj.setDone(DBUtil.getBoolean(rs, "done"));
-		obj.setDone(DBUtil.getBoolean(rs, "is_deleted"));
+		obj.setIsDeleted(DBUtil.getBoolean(rs, "is_deleted"));
 		obj.setRegionId((DBUtil.getInt(rs, "region_id")));
 		obj.setPlantMaintanceActivityId((DBUtil.getInt(rs, "plant_maintance_activity_id")));
 		
