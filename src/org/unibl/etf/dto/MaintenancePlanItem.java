@@ -14,6 +14,7 @@ public class MaintenancePlanItem {
 		super();
 		this.region = region;
 		this.plannedTasks = plannedTasks;
+		this.state = new InitialState();
 	}
 
 	public Region getRegion() {
@@ -30,6 +31,14 @@ public class MaintenancePlanItem {
 
 	public void setPlannedTasks(Set<Task> plannedTasks) {
 		this.plannedTasks = plannedTasks;
+	}
+	
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 
 	public void addTask(Task task) {
@@ -55,6 +64,11 @@ public class MaintenancePlanItem {
 			}
 		}
 	}
+	
+	public void updateState(Boolean active) {
+		state = state.getNewState(this, active);
+	}
+	
 	@Override
 	public String toString() {
 		String res = "Region " + region.getRegionId();
@@ -62,8 +76,10 @@ public class MaintenancePlanItem {
 			Task t = it.next();
 			res += "\n" + t.getPlantMaintanceActivity().getActivity() + " - " + t.getDone();
 		}
+		res += "\n" + "Stanje : " + state.getName();
 		return res;
 	}
 	private Region region;
 	private Set<Task> plannedTasks;
+	private State state;
 }

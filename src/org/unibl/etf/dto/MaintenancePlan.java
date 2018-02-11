@@ -50,6 +50,8 @@ public class MaintenancePlan {
 
 	public void setActive(Boolean active) {
 		this.active = active;
+		if(plannedTasks != null)
+			updateState();
 	}
 	
 	public void addTask(Region region, Task task) {
@@ -58,6 +60,7 @@ public class MaintenancePlan {
 			item = new MaintenancePlanItem(region, new HashSet<Task>());
 		}
 		item.addTask(task);
+		item.updateState(active);
 	}
 	public Boolean removeTask(Region region, Task task) {
 		Boolean result = false;
@@ -65,6 +68,7 @@ public class MaintenancePlan {
 		if(item != null) {
 			result = item.removeTask(task);
 		}
+		item.updateState(active);
 		return result;
 	}
 	
@@ -72,7 +76,12 @@ public class MaintenancePlan {
 		MaintenancePlanItem item = plannedTasks.get(region);
 		if(item != null) {
 			item.setDone(task, done);
+			item.updateState(active);
 		}
+	}
+	
+	private void updateState() {
+		plannedTasks.values().forEach(x -> x.updateState(active));
 	}
 	
 	@Override
