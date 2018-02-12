@@ -9,7 +9,7 @@ public interface PlantDAO {
 	// CRUD methods
 	public Plant getByPrimaryKey(Integer plantId) throws DAOException;
 
-	public List<Plant> selectAll() throws DAOException;
+	public List<Plant> selectAll();
 
 	public List<Plant> select(String whereStatement, Object[] bindVariables) throws DAOException;
 
@@ -17,9 +17,9 @@ public interface PlantDAO {
 
 	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
 
-	public int update(Plant obj) throws DAOException;
+	public int update(Plant obj);
 
-	public int insert(Plant obj) throws DAOException;
+	public int insert(Plant obj);
 
 	public int delete(Plant obj) throws DAOException;
 

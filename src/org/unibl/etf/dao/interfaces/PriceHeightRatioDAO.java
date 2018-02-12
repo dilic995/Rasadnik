@@ -20,14 +20,14 @@ public interface PriceHeightRatioDAO {
 
 	public int update(PriceHeightRatio obj) throws DAOException;
 
-	public int insert(PriceHeightRatio obj) throws DAOException;
+	public int insert(PriceHeightRatio obj);
 
 	public int delete(PriceHeightRatio obj) throws DAOException;
 
 	// Finders
 	public List<PriceHeightRatio> getByDateFrom(Date dateFrom) throws DAOException;
 
-	public List<PriceHeightRatio> getByPlantId(Integer plantId) throws DAOException;
+	public List<PriceHeightRatio> getByPlantId(Integer plantId);
 
 	public List<PriceHeightRatio> getByHeightMin(BigDecimal heightMin) throws DAOException;
 

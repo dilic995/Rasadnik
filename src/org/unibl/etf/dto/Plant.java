@@ -3,7 +3,10 @@ package org.unibl.etf.dto;
 import java.sql.Blob;
 import java.util.List;
 
+import org.unibl.etf.dao.interfaces.DAOFactory;
+
 public class Plant {
+
 	private Integer plantId;
 	private String scientificName;
 	private String knownAs;
@@ -12,8 +15,27 @@ public class Plant {
 	private Boolean isConifer;
 	private Boolean owned;
 	private List<PriceHeightRatio> ratios;
-	
-	
+
+	//
+	// constructors
+	//
+	// podrazumijevani
+	public Plant() {
+	}
+	// svi parametri
+	public Plant(Integer plantId, String scientificName, String knownAs, String description, Blob image,
+			Boolean isConifer, Boolean owned, List<PriceHeightRatio> ratios) {
+		super();
+		this.plantId = plantId;
+		this.scientificName = scientificName;
+		this.knownAs = knownAs;
+		this.description = description;
+		this.image = image;
+		this.isConifer = isConifer;
+		this.owned = owned;
+		this.ratios = ratios;
+	}
+
 	//
 	// getters / setters
 	//
@@ -113,6 +135,9 @@ public class Plant {
 	}
 
 	public List<PriceHeightRatio> getRatios() {
+		if(ratios == null) {
+			ratios = DAOFactory.getInstance().getPriceHeightRatioDAO().getByPlantId(plantId);
+		}
 		return ratios;
 	}
 

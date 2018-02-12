@@ -200,29 +200,34 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		}
 	}
 
-	public int insert(PriceHeightRatio obj) throws DAOException {
+	public int insert(PriceHeightRatio obj){
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns), PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
-
-			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			rs = ps.getGeneratedKeys();
+			if(rs.next()) {
+				obj.setPlantId(rs.getInt(1));
 			}
-
+			if (rowCount != 1) {
+				
+			}
+			
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
-			DBUtil.close(ps, null, conn);
+			DBUtil.close(ps, rs, conn);
 		}
+		return 0;
 	}
+	
 
 	public int delete(PriceHeightRatio obj) throws DAOException {
 		PreparedStatement ps = null;
@@ -271,7 +276,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return ret;
 	}
 
-	public List<PriceHeightRatio> getByPlantId(Integer plantId) throws DAOException {
+	public List<PriceHeightRatio> getByPlantId(Integer plantId){
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<PriceHeightRatio> ret = new ArrayList<>();
@@ -285,7 +290,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("SQL Error in finder getByPlantId()", e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

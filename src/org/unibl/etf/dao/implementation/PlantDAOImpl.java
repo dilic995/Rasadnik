@@ -125,7 +125,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return 0;
 	}
 
-	public List<Plant> selectAll() throws DAOException {
+	public List<Plant> selectAll() {
 		List<Plant> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -137,7 +137,7 @@ public class PlantDAOImpl implements PlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -175,7 +175,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return ret;
 	}
 
-	public int update(Plant obj) throws DAOException {
+	public int update(Plant obj) {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -187,40 +187,43 @@ public class PlantDAOImpl implements PlantDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public int insert(Plant obj) throws DAOException {
+	public int insert(Plant obj){
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns), PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
-
 			int rowCount = ps.executeUpdate();
-
+			rs = ps.getGeneratedKeys();
+			if(rs.next()) {
+				obj.setPlantId(rs.getInt(1));
+			}
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
-			DBUtil.close(ps, null, conn);
+			DBUtil.close(ps, rs, conn);
 		}
+		return 0;
 	}
 
 	public int delete(Plant obj) throws DAOException {
@@ -359,15 +362,15 @@ public class PlantDAOImpl implements PlantDAO {
 
 		return ret;
 	}
-	
+
 	public List<Plant> getByIsConifer(Boolean isConifer) throws DAOException {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Plant> ret = new ArrayList<>();
 
 		try {
-			ps = getConn()
-					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_conifer" })));
+			ps = getConn().prepareStatement(
+					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_conifer" })));
 			DBUtil.bind(ps, 1, isConifer);
 			rs = ps.executeQuery();
 
@@ -439,10 +442,10 @@ public class PlantDAOImpl implements PlantDAO {
 	}
 
 	protected Connection getConn() {
-		if(conn == null) {
+		if (conn == null) {
 			conn = DBUtil.getConnection();
 		}
-		
+
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
 }

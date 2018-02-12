@@ -7,6 +7,7 @@ import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class PriceHeightRatio {
+
 	private BigDecimal heightMin;
 	private BigDecimal heightMax;
 	private BigDecimal price;
@@ -16,9 +17,28 @@ public class PriceHeightRatio {
 	private Plant plant;
 
 	//
+	// constuctors
+	//
+	// podrazumijevani
+	public PriceHeightRatio() {
+	}
+
+	// svi parametri
+	public PriceHeightRatio(BigDecimal heightMin, BigDecimal heightMax, BigDecimal price, Boolean active, Date dateFrom,
+			Integer plantId, Plant plant) {
+		super();
+		this.heightMin = heightMin;
+		this.heightMax = heightMax;
+		this.price = price;
+		this.active = active;
+		this.dateFrom = dateFrom;
+		this.plantId = plantId;
+		this.plant = plant;
+	}
+
+	//
 	// getters / setters
 	//
-
 	public BigDecimal getHeightMin() {
 		return this.heightMin;
 	}

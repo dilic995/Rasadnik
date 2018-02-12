@@ -7,3 +7,4 @@
 .settings
 /resources/
 /src/test/
+/src/org/unibl/etf/util/config.properties

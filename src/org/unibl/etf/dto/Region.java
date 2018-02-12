@@ -5,11 +5,24 @@ import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class Region {
+	
 	private Integer regionId;
 	private Integer numberOfPlants;
 	private Basis basis;
 	private Integer basisId;
-
+	
+	public Region() {
+		// TODO Auto-generated constructor stub
+	}
+	public Region(Integer regionId, Integer numberOfPlants, Basis basis, Integer basisId) {
+		super();
+		this.regionId = regionId;
+		this.numberOfPlants = numberOfPlants;
+		this.basis = basis;
+		this.basisId = basisId;
+	}
+	
+	
 	//
 	// getters / setters
 	//
@@ -19,7 +32,7 @@ public class Region {
 
 	public void setBasisId(Integer basisId) {
 		this.basisId = basisId;
-		basis=null;
+		basis = null;
 	}
 
 	public Integer getRegionId() {
@@ -39,7 +52,7 @@ public class Region {
 	}
 
 	public Basis getBasis() {
-		if(basis==null) {
+		if (basis == null) {
 			try {
 				DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(basisId);
 			} catch (DAOException e) {
@@ -76,6 +89,18 @@ public class Region {
 				return false;
 		} else if (!regionId.equals(other.regionId))
 			return false;
+		return true;
+	}
+
+	public void addPlants(int num) {
+		this.numberOfPlants += num;
+	}
+
+	public boolean removePlants(int num) {
+		if (num > this.numberOfPlants) {
+			return false;
+		}
+		this.numberOfPlants -= num;
 		return true;
 	}
 

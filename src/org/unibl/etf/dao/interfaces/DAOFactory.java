@@ -5,13 +5,13 @@ import java.sql.Connection;
 public abstract class DAOFactory {
 	private static DAOFactory singleton;
 
-	public static DAOFactory getInstance() throws DAOException {
+	public static DAOFactory getInstance() {
 		try {
 			if (null == singleton) {
 				singleton = (DAOFactory) Class.forName("org.unibl.etf.dao.implementation.JDBCDAOFactory").newInstance();
 			}
 		} catch (Exception e) {
-			throw new DAOException("Could not create the DAOFactory singleton", e);
+			e.printStackTrace();
 		}
 
 		return singleton;
