@@ -1,16 +1,18 @@
 package org.unibl.etf.gui.plants.controller;
 
-import java.io.IOException;
+import java.awt.Container;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Plant;
+import org.unibl.etf.dto.PlantContainer;
 import org.unibl.etf.dto.PriceHeightRatio;
 import org.unibl.etf.dto.PriceHeightRatioTableItem;
 import org.unibl.etf.gui.util.CSSUtil;
 import org.unibl.etf.gui.util.DisplayUtil;
-import org.unibl.etf.gui.view.base.BaseController;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -113,7 +115,14 @@ public class CatalogueController extends PlantBrowserController {
 
 	@FXML
 	public void exportToPricelist(ActionEvent event) {
-		// TODO
+		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
+				"org/unibl/etf/gui/plants/view/PricelistView.fxml");
+		AnchorPane root = DisplayUtil.getAnchorPane(loader);
+		PricelistController controller = DisplayUtil.<PricelistController>getController(loader);
+		PlantContainer newContainer = new PlantContainer(
+				container.getPlants().stream().filter(x -> x.getOwned() == true).collect(Collectors.toList()));
+		controller.setContainer(newContainer);
+		DisplayUtil.switchStage(root, 800, 500, true, "Pregled cjenovnika", true);
 	}
 
 	// Event Listener on Circle[#ownedIndicator].onMouseClicked
