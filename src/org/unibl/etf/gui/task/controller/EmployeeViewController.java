@@ -139,33 +139,28 @@ public class EmployeeViewController extends BaseController implements Initializa
 	
 	//RADI
 	public void addEmployee() {
-		try {
-			List<Employee> tmpList = DAOFactory.getInstance().getEmployeeDAO().getByFirstName(txtIme.getText());
-			for(Employee employee : tmpList) {
-				if(employee.getLastName().equals(txtPrezime.getText())) {
-					
-					Alert alert = new Alert(AlertType.WARNING, "Postoji radnik sa tim imenom i prezimenom. Da li ste sigurni da želite da nastavite?",
-							ButtonType.YES, ButtonType.NO);
-					alert.setTitle("Upozorenje");
-					alert.setHeaderText("Upozorenje!");
-					if(alert.showAndWait().equals(ButtonType.NO))
-						return;
-					
-				}
+		List<Employee> tmpList = DAOFactory.getInstance().getEmployeeDAO().getByFirstName(txtIme.getText());
+		for(Employee employee : tmpList) {
+			if(employee.getLastName().equals(txtPrezime.getText())) {
+				
+				Alert alert = new Alert(AlertType.WARNING, "Postoji radnik sa tim imenom i prezimenom. Da li ste sigurni da želite da nastavite?",
+						ButtonType.YES, ButtonType.NO);
+				alert.setTitle("Upozorenje");
+				alert.setHeaderText("Upozorenje!");
+				if(alert.showAndWait().equals(ButtonType.NO))
+					return;
+				
 			}
-			Employee newEmployee = new Employee(null, txtIme.getText(), txtPrezime.getText());
-			newEmployee.setIsDeleted(false);
-			int generatedId = DAOFactory.getInstance().getEmployeeDAO().insert(newEmployee);
-			newEmployee.setEmployeeId(generatedId);
-			
-			employeeList.add(new EmployeeTableItem(newEmployee)); 
-			
-			txtIme.clear();
-			txtPrezime.clear();
-		} catch (DAOException e) {
-			e.printStackTrace();
-			//TREBA ALERT DA KAZE DA NE MOZE DODATI IZ NEKOG RAZLOGA
 		}
+		Employee newEmployee = new Employee(null, txtIme.getText(), txtPrezime.getText());
+		newEmployee.setIsDeleted(false);
+		int generatedId = DAOFactory.getInstance().getEmployeeDAO().insert(newEmployee);
+		newEmployee.setEmployeeId(generatedId);
+		
+		employeeList.add(new EmployeeTableItem(newEmployee)); 
+		
+		txtIme.clear();
+		txtPrezime.clear();
 	}
 	
 	public void initializeSearch() {
@@ -209,12 +204,7 @@ public class EmployeeViewController extends BaseController implements Initializa
                 });
 		
 		List<Employee> employees = null;
-		try {
-			employees = DAOFactory.getInstance().getEmployeeDAO().getByIsDeleted(false);
-		} catch (DAOException e) {
-			e.printStackTrace();
-			return;
-		}
+		employees = DAOFactory.getInstance().getEmployeeDAO().getByIsDeleted(false);
 		
 		employeeList = FXCollections.observableArrayList(EmployeeTableItem.convert(employees));
 		tvRadnici.setItems(employeeList);
@@ -223,13 +213,9 @@ public class EmployeeViewController extends BaseController implements Initializa
 	public void tableRadniciOnMouseClicked() {
 		EmployeeTableItem item = tvRadnici.getSelectionModel().getSelectedItem();
 		if(item != null) {
-			try {
-				List<EmployeeHasTask> tempList = DAOFactory.getInstance().getEmployeeHasTaskDAO().getByEmployeeId(item.getId());
-				activityList = FXCollections.observableArrayList(ActivityTableItem.convert(tempList));
-				tvAktivnosti.setItems(activityList);
-			} catch (DAOException e) {
-				e.printStackTrace();
-			}
+			List<EmployeeHasTask> tempList = DAOFactory.getInstance().getEmployeeHasTaskDAO().getByEmployeeId(item.getId());
+			activityList = FXCollections.observableArrayList(ActivityTableItem.convert(tempList));
+			tvAktivnosti.setItems(activityList);
 		}
 	}
 	
