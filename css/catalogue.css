@@ -85,3 +85,6 @@
 .prompt-label{
 	-fx-font-size: 14;
 }
+#pricelist-table .table-column{
+	-fx-alignment: center;
+}

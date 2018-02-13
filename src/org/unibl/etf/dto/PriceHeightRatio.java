@@ -127,6 +127,11 @@ public class PriceHeightRatio {
 				return false;
 		} else if (!plantId.equals(other.plantId))
 			return false;
+		if (heightMin == null) {
+			if (other.heightMin != null)
+				return false;
+		} else if (!heightMin.equals(other.heightMin))
+			return false;
 		return true;
 	}
 
