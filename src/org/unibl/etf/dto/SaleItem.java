@@ -25,13 +25,8 @@ public class SaleItem {
 	}
 
 	public Pricelist getPricelist() {
-		if(pricelist==null) {
-			try {
-				pricelist=DAOFactory.getInstance().getPricelistDAO().getByPrimaryKey(pricelistId);
-			} catch (DAOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (pricelist == null) {
+			pricelist = DAOFactory.getInstance().getPricelistDAO().getByPrimaryKey(pricelistId);
 		}
 		return pricelist;
 	}
@@ -41,9 +36,9 @@ public class SaleItem {
 	}
 
 	public Plant getPlant() {
-		if(plant==null) {
+		if (plant == null) {
 			try {
-				plant=DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(plantId);
+				plant = DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(plantId);
 			} catch (DAOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -57,13 +52,8 @@ public class SaleItem {
 	}
 
 	public Sale getSale() {
-		if(sale==null) {
-			try {
-				sale=DAOFactory.getInstance().getSaleDAO().getByPrimaryKey(saleId);
-			} catch (DAOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (sale == null) {
+			sale = DAOFactory.getInstance().getSaleDAO().getByPrimaryKey(saleId);
 		}
 		return sale;
 	}
@@ -78,7 +68,7 @@ public class SaleItem {
 
 	public void setPricelistId(Integer pricelistId) {
 		this.pricelistId = pricelistId;
-		pricelist=null;
+		pricelist = null;
 	}
 
 	public Integer getPlantId() {
@@ -87,7 +77,7 @@ public class SaleItem {
 
 	public void setPlantId(Integer plantId) {
 		this.plantId = plantId;
-		plant=null;
+		plant = null;
 	}
 
 	public Integer getSaleId() {
@@ -96,7 +86,7 @@ public class SaleItem {
 
 	public void setSaleId(Integer saleId) {
 		this.saleId = saleId;
-		sale=null;
+		sale = null;
 	}
 
 	@Override

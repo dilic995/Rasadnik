@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.PricelistDAO;
 import org.unibl.etf.dto.Pricelist;
 
@@ -50,7 +48,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 	//
 	// CRUD methods
 	//
-	public Pricelist getByPrimaryKey(Integer pricelistId) throws DAOException {
+	public Pricelist getByPrimaryKey(Integer pricelistId)   {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -64,7 +62,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -72,7 +70,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		return null;
 	}
 
-	public long selectCount() throws DAOException {
+	public long selectCount()   {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -84,7 +82,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -92,7 +90,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		return 0;
 	}
 
-	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public long selectCount(String whereStatement, Object[] bindVariables)   {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -114,7 +112,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -122,7 +120,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		return 0;
 	}
 
-	public List<Pricelist> selectAll() throws DAOException {
+	public List<Pricelist> selectAll()   {
 		List<Pricelist> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -134,7 +132,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -142,7 +140,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		return ret;
 	}
 
-	public List<Pricelist> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<Pricelist> select(String whereStatement, Object[] bindVariables)   {
 		List<Pricelist> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -164,7 +162,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -172,7 +170,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		return ret;
 	}
 
-	public int update(Pricelist obj) throws DAOException {
+	public int update(Pricelist obj)   {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -184,43 +182,48 @@ public class PricelistDAOImpl implements PricelistDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public int insert(Pricelist obj) throws DAOException {
+	public int insert(Pricelist obj)   {
 		PreparedStatement ps = null;
+		ResultSet rs=null;
 		int pos = 1;
 
 		try {
 			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
-
 			int rowCount = ps.executeUpdate();
+			rs = ps.getGeneratedKeys();
+			if(rs.next()) {
+				obj.setPricelistId(rs.getInt(1));
+			}
+			
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public int delete(Pricelist obj) throws DAOException {
+	public int delete(Pricelist obj)   {
 		PreparedStatement ps = null;
 
 		try {
@@ -229,23 +232,19 @@ public class PricelistDAOImpl implements PricelistDAO {
 
 			int rowCount = ps.executeUpdate();
 
-			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
-			}
-
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<Pricelist> getByDateFrom(Date dateFrom) throws DAOException {
+	public List<Pricelist> getByDateFrom(Date dateFrom)   {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Pricelist> ret = new ArrayList<>();
@@ -265,7 +264,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -273,7 +272,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		return ret;
 	}
 
-	public List<Pricelist> getByDateTo(Date dateTo) throws DAOException {
+	public List<Pricelist> getByDateTo(Date dateTo)   {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Pricelist> ret = new ArrayList<>();
@@ -293,7 +292,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -301,7 +300,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		return ret;
 	}
 
-	public List<Pricelist> getByActive(Boolean active) throws DAOException {
+	public List<Pricelist> getByActive(Boolean active)   {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Pricelist> ret = new ArrayList<>();
@@ -315,7 +314,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -352,10 +351,10 @@ public class PricelistDAOImpl implements PricelistDAO {
 	}
 
 	protected Connection getConn() {
-		if(conn == null) {
+		if (conn == null) {
 			conn = DBUtil.getConnection();
 		}
-		
+
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
 }

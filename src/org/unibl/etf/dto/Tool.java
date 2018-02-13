@@ -33,6 +33,7 @@ public class Tool {
 	public void setCount(Integer count) {
 		this.count = count;
 	}
+
 	public Boolean getIsMachine() {
 		return this.isMachine;
 	}

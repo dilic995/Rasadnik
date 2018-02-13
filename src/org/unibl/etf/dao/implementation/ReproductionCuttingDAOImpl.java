@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.ReproductionCuttingDAO;
 import org.unibl.etf.dto.ReproductionCutting;
 
@@ -49,7 +47,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 	//
 	// CRUD methods
 	//
-	public ReproductionCutting getByPrimaryKey(Integer idBasis, Date date) throws DAOException {
+	public ReproductionCutting getByPrimaryKey(Integer idBasis, Date date)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -64,7 +62,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -72,7 +70,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return null;
 	}
 
-	public Long selectCount() throws DAOException {
+	public Long selectCount()  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -84,7 +82,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -92,7 +90,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return 0L;
 	}
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public Long selectCount(String whereStatement, Object[] bindVariables)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -114,7 +112,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -122,7 +120,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return 0L;
 	}
 
-	public List<ReproductionCutting> selectAll() throws DAOException {
+	public List<ReproductionCutting> selectAll()  {
 		List<ReproductionCutting> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -134,7 +132,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -142,7 +140,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return ret;
 	}
 
-	public List<ReproductionCutting> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<ReproductionCutting> select(String whereStatement, Object[] bindVariables)  {
 		List<ReproductionCutting> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -164,7 +162,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -172,7 +170,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return ret;
 	}
 
-	public Integer update(ReproductionCutting obj) throws DAOException {
+	public Integer update(ReproductionCutting obj)  {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -184,20 +182,21 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer insert(ReproductionCutting obj) throws DAOException {
+	public Integer insert(ReproductionCutting obj)  {
 		PreparedStatement ps = null;
+		ResultSet rs=null;
 		int pos = 1;
 
 		try {
@@ -206,21 +205,25 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
-
+			rs = ps.getGeneratedKeys();
+			if(rs.next()) {
+				obj.setBasisId(rs.getInt(1));
+				obj.setDate(rs.getDate(2));
+			}
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer delete(ReproductionCutting obj) throws DAOException {
+	public Integer delete(ReproductionCutting obj)  {
 		PreparedStatement ps = null;
 
 		try {
@@ -230,22 +233,22 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<ReproductionCutting> getByBasisId(Integer basisId) throws DAOException {
+	public List<ReproductionCutting> getByBasisId(Integer basisId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<ReproductionCutting> ret = new ArrayList<>();
@@ -259,7 +262,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("SQL Error in finder getByBasisId()", e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -267,7 +270,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return ret;
 	}
 
-	public List<ReproductionCutting> getByDate(Date date) throws DAOException {
+	public List<ReproductionCutting> getByDate(Date date)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<ReproductionCutting> ret = new ArrayList<>();
@@ -281,7 +284,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("SQL Error in finder getByDate()", e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

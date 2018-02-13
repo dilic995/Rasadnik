@@ -40,13 +40,8 @@ public class ToolMaintanceActivity {
 
 	public ToolItem getToolItem() {
 		if (this.toolItem == null) {
-			try {
-				this.toolItem = DAOFactory.getInstance().getToolItemDAO().getByPrimaryKey(this.toolItemId);
-			} catch (DAOException e) {
-				e.printStackTrace();
-			}
+			this.toolItem = DAOFactory.getInstance().getToolItemDAO().getByPrimaryKey(this.toolItemId);
 		}
-
 		return toolItem;
 	}
 

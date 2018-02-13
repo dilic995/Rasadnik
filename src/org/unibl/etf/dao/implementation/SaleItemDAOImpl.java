@@ -50,7 +50,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 	//
 	// CRUD methods
 	//
-	public SaleItem getByPrimaryKey(Integer idSale, Integer idPricelist, Integer idPlant) throws DAOException {
+	public SaleItem getByPrimaryKey(Integer idSale, Integer idPricelist, Integer idPlant)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -66,7 +66,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -74,7 +74,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 		return null;
 	}
 
-	public Long selectCount() throws DAOException {
+	public Long selectCount()  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -86,7 +86,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -94,7 +94,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 		return 0L;
 	}
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public Long selectCount(String whereStatement, Object[] bindVariables)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -116,7 +116,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -124,7 +124,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 		return 0L;
 	}
 
-	public List<SaleItem> selectAll() throws DAOException {
+	public List<SaleItem> selectAll()  {
 		List<SaleItem> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -136,7 +136,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -144,7 +144,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 		return ret;
 	}
 
-	public List<SaleItem> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<SaleItem> select(String whereStatement, Object[] bindVariables)  {
 		List<SaleItem> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -166,7 +166,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -174,7 +174,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 		return ret;
 	}
 
-	public Integer update(SaleItem obj) throws DAOException {
+	public Integer update(SaleItem obj)  {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -186,20 +186,21 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer insert(SaleItem obj) throws DAOException {
+	public Integer insert(SaleItem obj)  {
 		PreparedStatement ps = null;
+		ResultSet rs=null;
 		int pos = 1;
 
 		try {
@@ -208,21 +209,26 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
-
+			rs = ps.getGeneratedKeys();
+			if(rs.next()) {
+				obj.setPricelistId(rs.getInt(1));
+				obj.setPlantId(rs.getInt(2));
+				obj.setSaleId(rs.getInt(3));
+			}
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer delete(SaleItem obj) throws DAOException {
+	public Integer delete(SaleItem obj)  {
 		PreparedStatement ps = null;
 
 		try {
@@ -232,22 +238,22 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<SaleItem> getByPricelistId(Integer pricelistId) throws DAOException {
+	public List<SaleItem> getByPricelistId(Integer pricelistId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<SaleItem> ret = new ArrayList<>();
@@ -261,7 +267,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("SQL Error in finder getByPricelistId()", e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -269,7 +275,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 		return ret;
 	}
 
-	public List<SaleItem> getByPlantId(Integer plantId) throws DAOException {
+	public List<SaleItem> getByPlantId(Integer plantId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<SaleItem> ret = new ArrayList<>();
@@ -283,7 +289,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("SQL Error in finder getByPlantId()", e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -291,7 +297,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 		return ret;
 	}
 
-	public List<SaleItem> getBySaleId(Integer saleId) throws DAOException {
+	public List<SaleItem> getBySaleId(Integer saleId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<SaleItem> ret = new ArrayList<>();
@@ -305,7 +311,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("SQL Error in finder getBySaleId()", e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -313,7 +319,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 		return ret;
 	}
 
-	public List<SaleItem> getByCount(Integer count) throws DAOException {
+	public List<SaleItem> getByCount(Integer count)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<SaleItem> ret = new ArrayList<>();
@@ -327,7 +333,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

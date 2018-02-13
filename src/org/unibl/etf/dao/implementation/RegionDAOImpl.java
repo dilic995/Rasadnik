@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.RegionDAO;
 import org.unibl.etf.dto.Region;
 
@@ -50,7 +48,7 @@ public class RegionDAOImpl implements RegionDAO {
 	//
 	// CRUD methods
 	//
-	public Region getByPrimaryKey(Integer regionId) throws DAOException {
+	public Region getByPrimaryKey(Integer regionId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -64,7 +62,7 @@ public class RegionDAOImpl implements RegionDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -72,7 +70,7 @@ public class RegionDAOImpl implements RegionDAO {
 		return null;
 	}
 
-	public Long selectCount() throws DAOException {
+	public Long selectCount()  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -84,7 +82,7 @@ public class RegionDAOImpl implements RegionDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -93,7 +91,7 @@ public class RegionDAOImpl implements RegionDAO {
 	}
 
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public Long selectCount(String whereStatement, Object[] bindVariables)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -115,7 +113,7 @@ public class RegionDAOImpl implements RegionDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -123,7 +121,7 @@ public class RegionDAOImpl implements RegionDAO {
 		return Long.valueOf(0);
 	}
 
-	public List<Region> selectAll() throws DAOException {
+	public List<Region> selectAll()  {
 		List<Region> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -135,7 +133,7 @@ public class RegionDAOImpl implements RegionDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -143,7 +141,7 @@ public class RegionDAOImpl implements RegionDAO {
 		return ret;
 	}
 
-	public List<Region> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<Region> select(String whereStatement, Object[] bindVariables)  {
 		List<Region> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -165,7 +163,7 @@ public class RegionDAOImpl implements RegionDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -173,7 +171,7 @@ public class RegionDAOImpl implements RegionDAO {
 		return ret;
 	}
 
-	public Integer update(Region obj) throws DAOException {
+	public Integer update(Region obj)  {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -185,20 +183,21 @@ public class RegionDAOImpl implements RegionDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer insert(Region obj) throws DAOException {
+	public Integer insert(Region obj)  {
 		PreparedStatement ps = null;
+		ResultSet rs=null;
 		int pos = 1;
 
 		try {
@@ -207,21 +206,24 @@ public class RegionDAOImpl implements RegionDAO {
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
-
+			rs = ps.getGeneratedKeys();
+			if(rs.next()) {
+				obj.setRegionId(rs.getInt(1));
+			}
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer delete(Region obj) throws DAOException {
+	public Integer delete(Region obj)  {
 		PreparedStatement ps = null;
 
 		try {
@@ -231,22 +233,22 @@ public class RegionDAOImpl implements RegionDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<Region> getByNumberOfPlants(Integer numberOfPlants) throws DAOException {
+	public List<Region> getByNumberOfPlants(Integer numberOfPlants)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Region> ret = new ArrayList<>();
@@ -260,7 +262,7 @@ public class RegionDAOImpl implements RegionDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -268,7 +270,7 @@ public class RegionDAOImpl implements RegionDAO {
 		return ret;
 	}
 
-	public List<Region> getByBasis(Integer basis) throws DAOException {
+	public List<Region> getByBasis(Integer basis)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Region> ret = new ArrayList<>();
@@ -282,7 +284,7 @@ public class RegionDAOImpl implements RegionDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

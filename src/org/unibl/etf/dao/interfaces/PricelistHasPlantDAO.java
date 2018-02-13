@@ -7,24 +7,24 @@ import org.unibl.etf.dto.PricelistHasPlant;
 
 public interface PricelistHasPlantDAO {
 	// CRUD methods
-	public PricelistHasPlant getByPrimaryKey(Integer idPricelist, Integer plantId) throws DAOException;
+	public PricelistHasPlant getByPrimaryKey(Integer idPricelist, Integer plantId);
 
-	public List<PricelistHasPlant> selectAll() throws DAOException;
+	public List<PricelistHasPlant> selectAll();
 
-	public List<PricelistHasPlant> select(String whereStatement, Object[] bindVariables) throws DAOException;
+	public List<PricelistHasPlant> select(String whereStatement, Object[] bindVariables);
 
-	public Long selectCount() throws DAOException;
+	public Long selectCount();
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables);
 
-	public Integer update(PricelistHasPlant obj) throws DAOException;
+	public Integer update(PricelistHasPlant obj);
 
-	public Integer insert(PricelistHasPlant obj) throws DAOException;
+	public Integer insert(PricelistHasPlant obj);
 
-	public Integer delete(PricelistHasPlant obj) throws DAOException;
+	public Integer delete(PricelistHasPlant obj);
 
 	// Finders
-	public List<PricelistHasPlant> getByPricelistId(Integer pricelistId) throws DAOException;
+	public List<PricelistHasPlant> getByPricelistId(Integer pricelistId);
 
-	public List<PricelistHasPlant> getByPlantId(Integer plantId) throws DAOException;
+	public List<PricelistHasPlant> getByPlantId(Integer plantId);
 }

@@ -32,7 +32,7 @@ public class ToolItem {
 
 	public void setToolItemId(Integer toolItemId) {
 		this.toolItemId = toolItemId;
-		
+
 	}
 
 	public Date getNextServiceDate() {
@@ -42,13 +42,14 @@ public class ToolItem {
 	public void setNextServiceDate(Date nextServiceDate) {
 		this.nextServiceDate = nextServiceDate;
 	}
+
 	public Integer getToolId() {
 		return this.toolId;
 	}
 
 	public void setToolId(Integer toolId) {
 		this.toolId = toolId;
-		tool=null;
+		tool = null;
 	}
 
 	public Integer getConditionId() {
@@ -57,17 +58,12 @@ public class ToolItem {
 
 	public void setConditionId(Integer conditionId) {
 		this.conditionId = conditionId;
-		condition=null;
+		condition = null;
 	}
 
 	public Tool getTool() {
-		if(tool==null) {
-			try {
-				tool=DAOFactory.getInstance().getToolDAO().getByPrimaryKey(toolId);
-			} catch (DAOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (tool == null) {
+			tool = DAOFactory.getInstance().getToolDAO().getByPrimaryKey(toolId);
 		}
 		return tool;
 	}
@@ -77,9 +73,9 @@ public class ToolItem {
 	}
 
 	public Condition getCondition() {
-		if(condition==null) {
+		if (condition == null) {
 			try {
-				condition=DAOFactory.getInstance().getConditionDAO().getByPrimaryKey(conditionId);
+				condition = DAOFactory.getInstance().getConditionDAO().getByPrimaryKey(conditionId);
 			} catch (DAOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

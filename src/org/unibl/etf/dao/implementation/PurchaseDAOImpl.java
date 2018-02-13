@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.PurchaseDAO;
 import org.unibl.etf.dto.Purchase;
 
@@ -54,7 +52,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 	//
 	// CRUD methods
 	//
-	public Purchase getByPrimaryKey(Integer purchaseId) throws DAOException {
+	public Purchase getByPrimaryKey(Integer purchaseId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -68,7 +66,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -76,7 +74,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		return null;
 	}
 
-	public Long selectCount() throws DAOException {
+	public Long selectCount()  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -88,7 +86,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -96,7 +94,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		return Long.valueOf(0);
 	}
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public Long selectCount(String whereStatement, Object[] bindVariables)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -118,7 +116,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -126,7 +124,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		return Long.valueOf(0);
 	}
 
-	public List<Purchase> selectAll() throws DAOException {
+	public List<Purchase> selectAll()  {
 		List<Purchase> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -138,7 +136,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -146,7 +144,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		return ret;
 	}
 
-	public List<Purchase> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<Purchase> select(String whereStatement, Object[] bindVariables)  {
 		List<Purchase> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -168,15 +166,16 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
+		
 
 		return ret;
 	}
 
-	public Integer update(Purchase obj) throws DAOException {
+	public Integer update(Purchase obj)  {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -188,20 +187,21 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer insert(Purchase obj) throws DAOException {
+	public Integer insert(Purchase obj)  {
 		PreparedStatement ps = null;
+		ResultSet rs=null;
 		int pos = 1;
 
 		try {
@@ -210,21 +210,24 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
-
+			rs = ps.getGeneratedKeys();
+			if(rs.next()) {
+				obj.setPurchaseId(rs.getInt(1));
+			}
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer delete(Purchase obj) throws DAOException {
+	public Integer delete(Purchase obj)  {
 		PreparedStatement ps = null;
 
 		try {
@@ -234,22 +237,22 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<Purchase> getByDate(Date date) throws DAOException {
+	public List<Purchase> getByDate(Date date)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Purchase> ret = new ArrayList<>();
@@ -269,7 +272,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -277,7 +280,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		return ret;
 	}
 
-	public List<Purchase> getByDescription(String description) throws DAOException {
+	public List<Purchase> getByDescription(String description)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Purchase> ret = new ArrayList<>();
@@ -297,7 +300,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -305,7 +308,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		return ret;
 	}
 
-	public List<Purchase> getByPrice(BigDecimal price) throws DAOException {
+	public List<Purchase> getByPrice(BigDecimal price)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Purchase> ret = new ArrayList<>();
@@ -325,7 +328,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -333,7 +336,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		return ret;
 	}
 
-	public List<Purchase> getByPaidOff(Boolean paidOff) throws DAOException {
+	public List<Purchase> getByPaidOff(Boolean paidOff)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Purchase> ret = new ArrayList<>();
@@ -347,7 +350,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -355,7 +358,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		return ret;
 	}
 
-	public List<Purchase> getByCustomerId(Integer customerId) throws DAOException {
+	public List<Purchase> getByCustomerId(Integer customerId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Purchase> ret = new ArrayList<>();
@@ -369,7 +372,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 

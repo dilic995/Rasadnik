@@ -9,28 +9,28 @@ import org.unibl.etf.dto.Sale;
 
 public interface SaleDAO {
 	// CRUD methods
-	public Sale getByPrimaryKey(Integer saleId) throws DAOException;
+	public Sale getByPrimaryKey(Integer saleId);
 
-	public List<Sale> selectAll() throws DAOException;
+	public List<Sale> selectAll();
 
-	public List<Sale> select(String whereStatement, Object[] bindVariables) throws DAOException;
+	public List<Sale> select(String whereStatement, Object[] bindVariables);
 
-	public Long selectCount() throws DAOException;
+	public Long selectCount();
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables);
 
-	public Integer update(Sale obj) throws DAOException;
+	public Integer update(Sale obj);
 
-	public Integer insert(Sale obj) throws DAOException;
+	public Integer insert(Sale obj);
 
-	public Integer delete(Sale obj) throws DAOException;
+	public Integer delete(Sale obj);
 
 	// Finders
-	public List<Sale> getByDate(Date date) throws DAOException;
+	public List<Sale> getByDate(Date date);
 
-	public List<Sale> getByPrice(BigDecimal amount) throws DAOException;
+	public List<Sale> getByPrice(BigDecimal amount);
 
-	public List<Sale> getByPaidOff(Boolean paidOff) throws DAOException;
+	public List<Sale> getByPaidOff(Boolean paidOff);
 
-	public List<Sale> getByCustomer(Integer customerId) throws DAOException;
+	public List<Sale> getByCustomer(Integer customerId);
 }

@@ -29,7 +29,7 @@ public class Purchase {
 
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
-		this.customer=null;
+		this.customer = null;
 	}
 
 	public void setPurchaseId(int purchaseId) {
@@ -69,9 +69,9 @@ public class Purchase {
 	}
 
 	public Customer getCustomer() {
-		if(customer==null) {
+		if (customer == null) {
 			try {
-				this.customer=DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(customerId);
+				this.customer = DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(customerId);
 			} catch (DAOException e) {
 				e.printStackTrace();
 			}

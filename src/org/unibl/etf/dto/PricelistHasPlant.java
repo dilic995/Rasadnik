@@ -20,7 +20,7 @@ public class PricelistHasPlant {
 
 	public void setPricelistId(Integer pricelistId) {
 		this.pricelistId = pricelistId;
-		pricelist=null;
+		pricelist = null;
 	}
 
 	public Integer getPlantId() {
@@ -29,17 +29,12 @@ public class PricelistHasPlant {
 
 	public void setPlantId(Integer plantId) {
 		this.plantId = plantId;
-		this.plant=null;
+		this.plant = null;
 	}
 
 	public Pricelist getPricelist() {
-		if(pricelist==null) {
-			try {
-				this.pricelist=DAOFactory.getInstance().getPricelistDAO().getByPrimaryKey(pricelistId);
-			} catch (DAOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (pricelist == null) {
+			this.pricelist = DAOFactory.getInstance().getPricelistDAO().getByPrimaryKey(pricelistId);
 		}
 		return pricelist;
 	}
@@ -49,9 +44,9 @@ public class PricelistHasPlant {
 	}
 
 	public Plant getPlant() {
-		if(plant==null) {
+		if (plant == null) {
 			try {
-				plant=DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(plantId);
+				plant = DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(plantId);
 			} catch (DAOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

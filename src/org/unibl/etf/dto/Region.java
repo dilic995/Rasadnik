@@ -5,15 +5,16 @@ import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class Region {
-	
+
 	private Integer regionId;
 	private Integer numberOfPlants;
 	private Basis basis;
 	private Integer basisId;
-	
+
 	public Region() {
 		// TODO Auto-generated constructor stub
 	}
+
 	public Region(Integer regionId, Integer numberOfPlants, Basis basis, Integer basisId) {
 		super();
 		this.regionId = regionId;
@@ -21,8 +22,7 @@ public class Region {
 		this.basis = basis;
 		this.basisId = basisId;
 	}
-	
-	
+
 	//
 	// getters / setters
 	//

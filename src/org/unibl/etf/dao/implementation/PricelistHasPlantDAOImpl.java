@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.PricelistHasPlantDAO;
 import org.unibl.etf.dto.PricelistHasPlant;
 
@@ -48,7 +47,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 	//
 	// CRUD methods
 	//
-	public PricelistHasPlant getByPrimaryKey(Integer idPricelist, Integer idPlant) throws DAOException {
+	public PricelistHasPlant getByPrimaryKey(Integer idPricelist, Integer idPlant)   {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -63,7 +62,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -71,7 +70,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 		return null;
 	}
 
-	public Long selectCount() throws DAOException {
+	public Long selectCount()   {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -83,7 +82,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -91,7 +90,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 		return 0L;
 	}
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public Long selectCount(String whereStatement, Object[] bindVariables)   {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -113,7 +112,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -121,7 +120,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 		return 0L;
 	}
 
-	public List<PricelistHasPlant> selectAll() throws DAOException {
+	public List<PricelistHasPlant> selectAll()   {
 		List<PricelistHasPlant> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -133,7 +132,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -141,7 +140,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 		return ret;
 	}
 
-	public List<PricelistHasPlant> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<PricelistHasPlant> select(String whereStatement, Object[] bindVariables)   {
 		List<PricelistHasPlant> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -163,7 +162,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -171,7 +170,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 		return ret;
 	}
 
-	public Integer update(PricelistHasPlant obj) throws DAOException {
+	public Integer update(PricelistHasPlant obj)   {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -183,20 +182,21 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer insert(PricelistHasPlant obj) throws DAOException {
+	public Integer insert(PricelistHasPlant obj)   {
 		PreparedStatement ps = null;
+		ResultSet rs=null;
 		int pos = 1;
 
 		try {
@@ -205,21 +205,25 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
-
+			rs = ps.getGeneratedKeys();
+			if(rs.next()) {
+				obj.setPricelistId(rs.getInt(1));
+				obj.setPlantId(rs.getInt(2));
+			}
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer delete(PricelistHasPlant obj) throws DAOException {
+	public Integer delete(PricelistHasPlant obj)   {
 		PreparedStatement ps = null;
 
 		try {
@@ -229,22 +233,22 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<PricelistHasPlant> getByPricelistId(Integer pricelistId) throws DAOException {
+	public List<PricelistHasPlant> getByPricelistId(Integer pricelistId)   {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<PricelistHasPlant> ret = new ArrayList<>();
@@ -258,7 +262,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("SQL Error in finder getByPricelistId()", e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -266,7 +270,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 		return ret;
 	}
 
-	public List<PricelistHasPlant> getByPlantId(Integer plantId) throws DAOException {
+	public List<PricelistHasPlant> getByPlantId(Integer plantId)   {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<PricelistHasPlant> ret = new ArrayList<>();
@@ -280,7 +284,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("SQL Error in finder getByPlantId()", e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

@@ -61,12 +61,9 @@ public class Task {
 	}
 
 	public Region getRegion() {
-		if(region==null) {
-			try {
-				region=DAOFactory.getInstance().getRegionDAO().getByPrimaryKey(regionId);
-			} catch (DAOException e) {
-				e.printStackTrace();
-			}
+		if (region == null) {
+			region = DAOFactory.getInstance().getRegionDAO().getByPrimaryKey(regionId);
+
 		}
 		return this.region;
 	}
@@ -76,9 +73,10 @@ public class Task {
 	}
 
 	public PlantMaintanceActivity getPlantMaintanceActivity() {
-		if(plantMaintanceActivity==null) {
+		if (plantMaintanceActivity == null) {
 			try {
-				plantMaintanceActivity=DAOFactory.getInstance().getPlantMaintanceActivityDAO().getByPrimaryKey(plantMaintanceActivityId);
+				plantMaintanceActivity = DAOFactory.getInstance().getPlantMaintanceActivityDAO()
+						.getByPrimaryKey(plantMaintanceActivityId);
 			} catch (DAOException e) {
 				e.printStackTrace();
 			}
@@ -96,7 +94,7 @@ public class Task {
 
 	public void setRegionId(Integer regionId) {
 		this.regionId = regionId;
-		region=null;
+		region = null;
 	}
 
 	public Integer getPlantMaintanceActivityId() {
@@ -105,7 +103,7 @@ public class Task {
 
 	public void setPlantMaintanceActivityId(Integer plantMaintanceActivityId) {
 		this.plantMaintanceActivityId = plantMaintanceActivityId;
-		plantMaintanceActivity=null;
+		plantMaintanceActivity = null;
 	}
 
 	@Override

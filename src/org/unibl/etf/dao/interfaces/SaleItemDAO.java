@@ -7,28 +7,28 @@ import org.unibl.etf.dto.SaleItem;
 
 public interface SaleItemDAO {
 	// CRUD methods
-	public SaleItem getByPrimaryKey(Integer idSale, Integer idPricelist, Integer idPlant) throws DAOException;
+	public SaleItem getByPrimaryKey(Integer idSale, Integer idPricelist, Integer idPlant);
 
-	public List<SaleItem> selectAll() throws DAOException;
+	public List<SaleItem> selectAll();
 
-	public List<SaleItem> select(String whereStatement, Object[] bindVariables) throws DAOException;
+	public List<SaleItem> select(String whereStatement, Object[] bindVariables);
 
-	public Long selectCount() throws DAOException;
+	public Long selectCount();
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables);
 
-	public Integer update(SaleItem obj) throws DAOException;
+	public Integer update(SaleItem obj);
 
-	public Integer insert(SaleItem obj) throws DAOException;
+	public Integer insert(SaleItem obj);
 
-	public Integer delete(SaleItem obj) throws DAOException;
+	public Integer delete(SaleItem obj);
 
 	// Finders
-	public List<SaleItem> getByPricelistId(Integer pricelistId) throws DAOException;
+	public List<SaleItem> getByPricelistId(Integer pricelistId);
 
-	public List<SaleItem> getByPlantId(Integer plantId) throws DAOException;
+	public List<SaleItem> getByPlantId(Integer plantId);
 
-	public List<SaleItem> getBySaleId(Integer saleId) throws DAOException;
+	public List<SaleItem> getBySaleId(Integer saleId);
 
-	public List<SaleItem> getByCount(Integer count) throws DAOException;
+	public List<SaleItem> getByCount(Integer count);
 }

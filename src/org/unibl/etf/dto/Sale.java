@@ -51,9 +51,9 @@ public class Sale {
 	}
 
 	public Customer getCustomer() {
-		if(customer==null) {
+		if (customer == null) {
 			try {
-				customer=DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(customerId);
+				customer = DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(customerId);
 			} catch (DAOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -72,7 +72,7 @@ public class Sale {
 
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
-		customer=null;
+		customer = null;
 	}
 
 	@Override

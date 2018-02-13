@@ -53,7 +53,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 	//
 	// CRUD methods
 	//
-	public ToolMaintanceActivity getByPrimaryKey(Integer idToolItem, Date date) throws DAOException {
+	public ToolMaintanceActivity getByPrimaryKey(Integer idToolItem, Date date)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -68,7 +68,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -76,7 +76,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		return null;
 	}
 
-	public Long selectCount() throws DAOException {
+	public Long selectCount()  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -88,7 +88,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -96,7 +96,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		return 0L;
 	}
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public Long selectCount(String whereStatement, Object[] bindVariables)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -118,7 +118,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -126,7 +126,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		return 0L;
 	}
 
-	public List<ToolMaintanceActivity> selectAll() throws DAOException {
+	public List<ToolMaintanceActivity> selectAll()  {
 		List<ToolMaintanceActivity> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -138,7 +138,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -146,7 +146,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		return ret;
 	}
 
-	public List<ToolMaintanceActivity> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<ToolMaintanceActivity> select(String whereStatement, Object[] bindVariables)  {
 		List<ToolMaintanceActivity> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -168,7 +168,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -176,7 +176,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		return ret;
 	}
 
-	public Integer update(ToolMaintanceActivity obj) throws DAOException {
+	public Integer update(ToolMaintanceActivity obj)  {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -188,20 +188,20 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
-			}
+				return 0;}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer insert(ToolMaintanceActivity obj) throws DAOException {
+	public Integer insert(ToolMaintanceActivity obj)  {
 		PreparedStatement ps = null;
+		ResultSet rs=null;
 		int pos = 1;
 
 		try {
@@ -210,21 +210,24 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
-
-			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			rs = ps.getGeneratedKeys();
+			if(rs.next()) {
+				obj.setDate(rs.getDate(1));
+				obj.setToolItemId(rs.getInt(2));
 			}
+			if (rowCount != 1) {
+				return 0;}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer delete(ToolMaintanceActivity obj) throws DAOException {
+	public Integer delete(ToolMaintanceActivity obj)  {
 		PreparedStatement ps = null;
 
 		try {
@@ -234,22 +237,21 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
-			}
+				return 0;}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<ToolMaintanceActivity> getByDate(Date date) throws DAOException {
+	public List<ToolMaintanceActivity> getByDate(Date date)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<ToolMaintanceActivity> ret = new ArrayList<>();
@@ -263,7 +265,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("SQL Error in finder getByDate()", e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -271,7 +273,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		return ret;
 	}
 
-	public List<ToolMaintanceActivity> getByToolItemId(Integer toolItemId) throws DAOException {
+	public List<ToolMaintanceActivity> getByToolItemId(Integer toolItemId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<ToolMaintanceActivity> ret = new ArrayList<>();
@@ -285,7 +287,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("SQL Error in finder getByToolItemId()", e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -293,7 +295,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		return ret;
 	}
 
-	public List<ToolMaintanceActivity> getByDescription(String description) throws DAOException {
+	public List<ToolMaintanceActivity> getByDescription(String description)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<ToolMaintanceActivity> ret = new ArrayList<>();
@@ -313,7 +315,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -321,7 +323,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		return ret;
 	}
 
-	public List<ToolMaintanceActivity> getByAmount(BigDecimal amount) throws DAOException {
+	public List<ToolMaintanceActivity> getByAmount(BigDecimal amount)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<ToolMaintanceActivity> ret = new ArrayList<>();
@@ -341,7 +343,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -349,7 +351,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		return ret;
 	}
 
-	public List<ToolMaintanceActivity> getByUpToDateService(Boolean upToDateService) throws DAOException {
+	public List<ToolMaintanceActivity> getByUpToDateService(Boolean upToDateService)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<ToolMaintanceActivity> ret = new ArrayList<>();
@@ -369,7 +371,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

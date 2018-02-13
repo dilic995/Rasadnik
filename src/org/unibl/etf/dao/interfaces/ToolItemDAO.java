@@ -9,28 +9,28 @@ import org.unibl.etf.dto.ToolItem;
 
 public interface ToolItemDAO {
 	// CRUD methods
-	public ToolItem getByPrimaryKey(Integer toolItemId) throws DAOException;
+	public ToolItem getByPrimaryKey(Integer toolItemId);
 
-	public List<ToolItem> selectAll() throws DAOException;
+	public List<ToolItem> selectAll();
 
-	public List<ToolItem> select(String whereStatement, Object[] bindVariables) throws DAOException;
+	public List<ToolItem> select(String whereStatement, Object[] bindVariables);
 
-	public Long selectCount() throws DAOException;
+	public Long selectCount();
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables);
 
-	public Integer update(ToolItem obj) throws DAOException;
+	public Integer update(ToolItem obj);
 
-	public Integer insert(ToolItem obj) throws DAOException;
+	public Integer insert(ToolItem obj);
 
-	public Integer delete(ToolItem obj) throws DAOException;
+	public Integer delete(ToolItem obj);
 
 	// Finders
-	public List<ToolItem> getByNextServiceDate(Date nextServiceDate) throws DAOException;
+	public List<ToolItem> getByNextServiceDate(Date nextServiceDate);
 
-	public List<ToolItem> getByToolId(Integer toolId) throws DAOException;
+	public List<ToolItem> getByToolId(Integer toolId);
 
-	public List<ToolItem> getByConditionId(Integer conditionId) throws DAOException;
+	public List<ToolItem> getByConditionId(Integer conditionId);
 	
-	public List<ToolItem> getByIsDeleted(Boolean isDeleted) throws DAOException;
+	public List<ToolItem> getByIsDeleted(Boolean isDeleted);
 }

@@ -54,7 +54,7 @@ public class TaskDAOImpl implements TaskDAO {
 	//
 	// CRUD methods
 	//
-	public Task getByPrimaryKey(Integer taskId) throws DAOException {
+	public Task getByPrimaryKey(Integer taskId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -68,7 +68,7 @@ public class TaskDAOImpl implements TaskDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -76,7 +76,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return null;
 	}
 
-	public Long selectCount() throws DAOException {
+	public Long selectCount()  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -88,7 +88,7 @@ public class TaskDAOImpl implements TaskDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -96,7 +96,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return 0L;
 	}
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public Long selectCount(String whereStatement, Object[] bindVariables)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -118,7 +118,7 @@ public class TaskDAOImpl implements TaskDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -126,7 +126,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return 0L;
 	}
 
-	public List<Task> selectAll() throws DAOException {
+	public List<Task> selectAll()  {
 		List<Task> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -138,7 +138,7 @@ public class TaskDAOImpl implements TaskDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -146,7 +146,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<Task> select(String whereStatement, Object[] bindVariables)  {
 		List<Task> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -168,7 +168,7 @@ public class TaskDAOImpl implements TaskDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -176,7 +176,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public Integer update(Task obj) throws DAOException {
+	public Integer update(Task obj)  {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -188,20 +188,21 @@ public class TaskDAOImpl implements TaskDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer insert(Task obj) throws DAOException {
+	public Integer insert(Task obj)  {
 		PreparedStatement ps = null;
+		ResultSet rs=null;
 		int pos = 1;
 
 		try {
@@ -210,21 +211,24 @@ public class TaskDAOImpl implements TaskDAO {
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
-
+			rs = ps.getGeneratedKeys();
+			if(rs.next()) {
+				obj.setTaskId(rs.getInt(1));
+			}
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
-	public Integer delete(Task obj) throws DAOException {
+	public Integer delete(Task obj)  {
 		PreparedStatement ps = null;
 
 		try {
@@ -234,22 +238,22 @@ public class TaskDAOImpl implements TaskDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<Task> getByDateFrom(Date dateFrom) throws DAOException {
+	public List<Task> getByDateFrom(Date dateFrom)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -269,7 +273,7 @@ public class TaskDAOImpl implements TaskDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -277,7 +281,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> getByDateTo(Date dateTo) throws DAOException {
+	public List<Task> getByDateTo(Date dateTo)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -297,7 +301,7 @@ public class TaskDAOImpl implements TaskDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -305,7 +309,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 	
-	public List<Task> getByIsDeleted(Boolean isDeleted) throws DAOException {
+	public List<Task> getByIsDeleted(Boolean isDeleted)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -319,7 +323,7 @@ public class TaskDAOImpl implements TaskDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -327,7 +331,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> getByDone(Boolean done) throws DAOException {
+	public List<Task> getByDone(Boolean done)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -341,7 +345,7 @@ public class TaskDAOImpl implements TaskDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -349,7 +353,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> getByRegionId(Integer regionId) throws DAOException {
+	public List<Task> getByRegionId(Integer regionId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -363,7 +367,7 @@ public class TaskDAOImpl implements TaskDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -371,7 +375,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> getByPlantMaintanceActivityId(Integer plantMaintanceActivityId) throws DAOException {
+	public List<Task> getByPlantMaintanceActivityId(Integer plantMaintanceActivityId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -385,7 +389,7 @@ public class TaskDAOImpl implements TaskDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

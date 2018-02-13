@@ -8,24 +8,24 @@ import org.unibl.etf.dto.ReproductionCutting;
 
 public interface ReproductionCuttingDAO {
 	// CRUD methods
-	public ReproductionCutting getByPrimaryKey(Integer idBasis, Date date) throws DAOException;
+	public ReproductionCutting getByPrimaryKey(Integer idBasis, Date date);
 
-	public List<ReproductionCutting> selectAll() throws DAOException;
+	public List<ReproductionCutting> selectAll();
 
-	public List<ReproductionCutting> select(String whereStatement, Object[] bindVariables) throws DAOException;
+	public List<ReproductionCutting> select(String whereStatement, Object[] bindVariables);
 
-	public Long selectCount() throws DAOException;
+	public Long selectCount();
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables);
 
-	public Integer update(ReproductionCutting obj) throws DAOException;
+	public Integer update(ReproductionCutting obj);
 
-	public Integer insert(ReproductionCutting obj) throws DAOException;
+	public Integer insert(ReproductionCutting obj);
 
-	public Integer delete(ReproductionCutting obj) throws DAOException;
+	public Integer delete(ReproductionCutting obj);
 
 	// Finders
-	public List<ReproductionCutting> getByBasisId(Integer basisId) throws DAOException;
+	public List<ReproductionCutting> getByBasisId(Integer basisId);
 
-	public List<ReproductionCutting> getByDate(Date date) throws DAOException;
+	public List<ReproductionCutting> getByDate(Date date);
 }

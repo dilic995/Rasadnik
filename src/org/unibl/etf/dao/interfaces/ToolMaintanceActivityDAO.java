@@ -9,30 +9,30 @@ import org.unibl.etf.dto.ToolMaintanceActivity;
 
 public interface ToolMaintanceActivityDAO {
 	// CRUD methods
-	public ToolMaintanceActivity getByPrimaryKey(Integer idToolItem, Date date) throws DAOException;
+	public ToolMaintanceActivity getByPrimaryKey(Integer idToolItem, Date date);
 
-	public List<ToolMaintanceActivity> selectAll() throws DAOException;
+	public List<ToolMaintanceActivity> selectAll();
 
-	public List<ToolMaintanceActivity> select(String whereStatement, Object[] bindVariables) throws DAOException;
+	public List<ToolMaintanceActivity> select(String whereStatement, Object[] bindVariables);
 
-	public Long selectCount() throws DAOException;
+	public Long selectCount();
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables);
 
-	public Integer update(ToolMaintanceActivity obj) throws DAOException;
+	public Integer update(ToolMaintanceActivity obj);
 
-	public Integer insert(ToolMaintanceActivity obj) throws DAOException;
+	public Integer insert(ToolMaintanceActivity obj);
 
-	public Integer delete(ToolMaintanceActivity obj) throws DAOException;
+	public Integer delete(ToolMaintanceActivity obj);
 
 	// Finders
-	public List<ToolMaintanceActivity> getByDate(Date date) throws DAOException;
+	public List<ToolMaintanceActivity> getByDate(Date date);
 
-	public List<ToolMaintanceActivity> getByToolItemId(Integer toolItemId) throws DAOException;
+	public List<ToolMaintanceActivity> getByToolItemId(Integer toolItemId);
 
-	public List<ToolMaintanceActivity> getByDescription(String description) throws DAOException;
+	public List<ToolMaintanceActivity> getByDescription(String description);
 
-	public List<ToolMaintanceActivity> getByAmount(BigDecimal amount) throws DAOException;
+	public List<ToolMaintanceActivity> getByAmount(BigDecimal amount);
 
-	public List<ToolMaintanceActivity> getByUpToDateService(Boolean upToDateService) throws DAOException;
+	public List<ToolMaintanceActivity> getByUpToDateService(Boolean upToDateService);
 }

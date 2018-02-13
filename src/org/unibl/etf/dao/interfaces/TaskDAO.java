@@ -8,32 +8,32 @@ import org.unibl.etf.dto.Task;
 
 public interface TaskDAO {
 	// CRUD methods
-	public Task getByPrimaryKey(Integer taskId) throws DAOException;
+	public Task getByPrimaryKey(Integer taskId);
 
-	public List<Task> selectAll() throws DAOException;
+	public List<Task> selectAll();
 
-	public List<Task> select(String whereStatement, Object[] bindVariables) throws DAOException;
+	public List<Task> select(String whereStatement, Object[] bindVariables);
 
-	public Long selectCount() throws DAOException;
+	public Long selectCount();
 
-	public Long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
+	public Long selectCount(String whereStatement, Object[] bindVariables);
 
-	public Integer update(Task obj) throws DAOException;
+	public Integer update(Task obj);
 
-	public Integer insert(Task obj) throws DAOException;
+	public Integer insert(Task obj);
 
-	public Integer delete(Task obj) throws DAOException;
+	public Integer delete(Task obj);
 
 	// Finders
-	public List<Task> getByDateFrom(Date dateFrom) throws DAOException;
+	public List<Task> getByDateFrom(Date dateFrom);
 
-	public List<Task> getByDateTo(Date dateTo) throws DAOException;
+	public List<Task> getByDateTo(Date dateTo);
 
-	public List<Task> getByDone(Boolean done) throws DAOException;
-	
-	public List<Task> getByIsDeleted(Boolean isDeleted) throws DAOException;
+	public List<Task> getByDone(Boolean done);
 
-	public List<Task> getByRegionId(Integer regionId) throws DAOException;
+	public List<Task> getByIsDeleted(Boolean isDeleted);
 
-	public List<Task> getByPlantMaintanceActivityId(Integer plantMaintanceActivityId) throws DAOException;
+	public List<Task> getByRegionId(Integer regionId);
+
+	public List<Task> getByPlantMaintanceActivityId(Integer plantMaintanceActivityId);
 }

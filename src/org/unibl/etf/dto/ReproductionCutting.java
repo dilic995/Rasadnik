@@ -20,13 +20,13 @@ public class ReproductionCutting {
 
 	public void setBasisId(Integer basisId) {
 		this.basisId = basisId;
-		basis=null;
+		basis = null;
 	}
 
 	public Basis getBasis() {
-		if(basis==null) {
+		if (basis == null) {
 			try {
-				basis=DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(basisId);
+				basis = DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(basisId);
 			} catch (DAOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
