@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.EventDAO;
 import org.unibl.etf.dto.Event;
 
@@ -51,7 +50,7 @@ public class EventDAOImpl implements EventDAO {
 	//
 	// CRUD methods
 	//
-	public Event getByPrimaryKey(Integer eventId) throws DAOException {
+	public Event getByPrimaryKey(Integer eventId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -65,7 +64,7 @@ public class EventDAOImpl implements EventDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -73,7 +72,7 @@ public class EventDAOImpl implements EventDAO {
 		return null;
 	}
 
-	public long selectCount() throws DAOException {
+	public long selectCount() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -85,7 +84,7 @@ public class EventDAOImpl implements EventDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -93,7 +92,7 @@ public class EventDAOImpl implements EventDAO {
 		return 0;
 	}
 
-	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public long selectCount(String whereStatement, Object[] bindVariables) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -115,7 +114,7 @@ public class EventDAOImpl implements EventDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -123,7 +122,7 @@ public class EventDAOImpl implements EventDAO {
 		return 0;
 	}
 
-	public List<Event> selectAll() throws DAOException {
+	public List<Event> selectAll() {
 		List<Event> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -135,7 +134,7 @@ public class EventDAOImpl implements EventDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -143,7 +142,7 @@ public class EventDAOImpl implements EventDAO {
 		return ret;
 	}
 
-	public List<Event> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<Event> select(String whereStatement, Object[] bindVariables) {
 		List<Event> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -165,7 +164,7 @@ public class EventDAOImpl implements EventDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -173,7 +172,7 @@ public class EventDAOImpl implements EventDAO {
 		return ret;
 	}
 
-	public int update(Event obj) throws DAOException {
+	public int update(Event obj) {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -185,43 +184,51 @@ public class EventDAOImpl implements EventDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
-	public int insert(Event obj) throws DAOException {
+	public int insert(Event obj) {
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns), PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
+			rs = ps.getGeneratedKeys();
 
+			if(rs.next()) {
+				obj.setEventId(rs.getInt(1));
+			}
+			
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
-			DBUtil.close(ps, null, conn);
+			DBUtil.close(ps, rs, conn);
 		}
+		
+		return 0;
 	}
 
-	public int delete(Event obj) throws DAOException {
+	public int delete(Event obj) {
 		PreparedStatement ps = null;
 
 		try {
@@ -231,22 +238,23 @@ public class EventDAOImpl implements EventDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<Event> getByName(String name) throws DAOException {
+	public List<Event> getByName(String name) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Event> ret = new ArrayList<>();
@@ -266,7 +274,7 @@ public class EventDAOImpl implements EventDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -274,7 +282,7 @@ public class EventDAOImpl implements EventDAO {
 		return ret;
 	}
 
-	public List<Event> getByDescription(String description) throws DAOException {
+	public List<Event> getByDescription(String description) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Event> ret = new ArrayList<>();
@@ -294,7 +302,7 @@ public class EventDAOImpl implements EventDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -302,7 +310,7 @@ public class EventDAOImpl implements EventDAO {
 		return ret;
 	}
 
-	public List<Event> getByDate(Date date) throws DAOException {
+	public List<Event> getByDate(Date date) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Event> ret = new ArrayList<>();
@@ -322,7 +330,7 @@ public class EventDAOImpl implements EventDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -330,7 +338,7 @@ public class EventDAOImpl implements EventDAO {
 		return ret;
 	}
 
-	public List<Event> getByDone(Boolean done) throws DAOException {
+	public List<Event> getByDone(Boolean done) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Event> ret = new ArrayList<>();
@@ -344,7 +352,7 @@ public class EventDAOImpl implements EventDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.unibl.etf.dao.interfaces.CustomerDAO;
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dto.Customer;
 
 public class CustomerDAOImpl implements CustomerDAO {
@@ -50,7 +49,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	//
 	// CRUD methods
 	//
-	public Customer getByPrimaryKey(Integer customerId) throws DAOException {
+	public Customer getByPrimaryKey(Integer customerId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -64,7 +63,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -72,7 +71,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return null;
 	}
 
-	public long selectCount() throws DAOException {
+	public long selectCount() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -84,7 +83,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -92,7 +91,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return 0;
 	}
 
-	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public long selectCount(String whereStatement, Object[] bindVariables) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -114,7 +113,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -122,7 +121,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return 0;
 	}
 
-	public List<Customer> selectAll() throws DAOException {
+	public List<Customer> selectAll() {
 		List<Customer> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -134,7 +133,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -142,7 +141,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return ret;
 	}
 
-	public List<Customer> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<Customer> select(String whereStatement, Object[] bindVariables) {
 		List<Customer> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -164,7 +163,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -172,7 +171,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return ret;
 	}
 
-	public int update(Customer obj) throws DAOException {
+	public int update(Customer obj) {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -184,43 +183,51 @@ public class CustomerDAOImpl implements CustomerDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
-	public int insert(Customer obj) throws DAOException {
+	public int insert(Customer obj) {
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns), PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
+			rs = ps.getGeneratedKeys();
 
+			if(rs.next()) {
+				obj.setCustomerId(rs.getInt(1));
+			}
+			
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0; 
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
-			DBUtil.close(ps, null, conn);
+			DBUtil.close(ps, rs, conn);
 		}
+		
+		return 0;
 	}
 
-	public int delete(Customer obj) throws DAOException {
+	public int delete(Customer obj) {
 		PreparedStatement ps = null;
 
 		try {
@@ -230,22 +237,23 @@ public class CustomerDAOImpl implements CustomerDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<Customer> getByFirstName(String firstName) throws DAOException {
+	public List<Customer> getByFirstName(String firstName) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Customer> ret = new ArrayList<>();
@@ -265,7 +273,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -273,7 +281,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return ret;
 	}
 
-	public List<Customer> getByLastName(String lastName) throws DAOException {
+	public List<Customer> getByLastName(String lastName) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Customer> ret = new ArrayList<>();
@@ -293,7 +301,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -301,7 +309,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return ret;
 	}
 
-	public List<Customer> getByAddress(String address) throws DAOException {
+	public List<Customer> getByAddress(String address) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Customer> ret = new ArrayList<>();
@@ -321,7 +329,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -329,7 +337,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		return ret;
 	}
 
-	public List<Customer> getByIsSupplier(Boolean isSupplier) throws DAOException {
+	public List<Customer> getByIsSupplier(Boolean isSupplier) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Customer> ret = new ArrayList<>();
@@ -343,7 +351,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

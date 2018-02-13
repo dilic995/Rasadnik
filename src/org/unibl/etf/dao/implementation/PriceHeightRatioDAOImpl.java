@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.PriceHeightRatioDAO;
 import org.unibl.etf.dto.PriceHeightRatio;
 
@@ -53,7 +52,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 	//
 	// CRUD methods
 	//
-	public PriceHeightRatio getByPrimaryKey(Date date, Integer plantId) throws DAOException {
+	public PriceHeightRatio getByPrimaryKey(Date date, Integer plantId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -68,7 +67,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -76,7 +75,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return null;
 	}
 
-	public long selectCount() throws DAOException {
+	public long selectCount() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -88,7 +87,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -96,7 +95,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return 0;
 	}
 
-	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public long selectCount(String whereStatement, Object[] bindVariables) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -118,7 +117,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -126,7 +125,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return 0;
 	}
 
-	public List<PriceHeightRatio> selectAll() throws DAOException {
+	public List<PriceHeightRatio> selectAll() {
 		List<PriceHeightRatio> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -138,7 +137,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -146,7 +145,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return ret;
 	}
 
-	public List<PriceHeightRatio> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<PriceHeightRatio> select(String whereStatement, Object[] bindVariables) {
 		List<PriceHeightRatio> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -168,7 +167,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -176,7 +175,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return ret;
 	}
 
-	public int update(PriceHeightRatio obj) throws DAOException {
+	public int update(PriceHeightRatio obj) {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -188,16 +187,17 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
 	public int insert(PriceHeightRatio obj){
@@ -212,11 +212,14 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 
 			int rowCount = ps.executeUpdate();
 			rs = ps.getGeneratedKeys();
+			
 			if(rs.next()) {
-				obj.setPlantId(rs.getInt(1));
+				obj.setDateFrom(rs.getDate(1));
+				obj.setPlantId(rs.getInt(2));
 			}
+			
 			if (rowCount != 1) {
-				
+				return 0;
 			}
 			
 			return rowCount;
@@ -229,7 +232,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 	}
 	
 
-	public int delete(PriceHeightRatio obj) throws DAOException {
+	public int delete(PriceHeightRatio obj) {
 		PreparedStatement ps = null;
 
 		try {
@@ -239,22 +242,23 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<PriceHeightRatio> getByDateFrom(Date dateFrom) throws DAOException {
+	public List<PriceHeightRatio> getByDateFrom(Date dateFrom) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<PriceHeightRatio> ret = new ArrayList<>();
@@ -268,7 +272,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("SQL Error in finder getByDateFrom()", e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -298,7 +302,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return ret;
 	}
 
-	public List<PriceHeightRatio> getByHeightMin(BigDecimal heightMin) throws DAOException {
+	public List<PriceHeightRatio> getByHeightMin(BigDecimal heightMin) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<PriceHeightRatio> ret = new ArrayList<>();
@@ -318,7 +322,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -326,7 +330,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return ret;
 	}
 
-	public List<PriceHeightRatio> getByHeightMax(BigDecimal heightMax) throws DAOException {
+	public List<PriceHeightRatio> getByHeightMax(BigDecimal heightMax) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<PriceHeightRatio> ret = new ArrayList<>();
@@ -346,7 +350,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -354,7 +358,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return ret;
 	}
 
-	public List<PriceHeightRatio> getByPrice(BigDecimal price) throws DAOException {
+	public List<PriceHeightRatio> getByPrice(BigDecimal price) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<PriceHeightRatio> ret = new ArrayList<>();
@@ -374,7 +378,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -382,7 +386,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		return ret;
 	}
 
-	public List<PriceHeightRatio> getByActive(Boolean active) throws DAOException {
+	public List<PriceHeightRatio> getByActive(Boolean active) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<PriceHeightRatio> ret = new ArrayList<>();
@@ -396,7 +400,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

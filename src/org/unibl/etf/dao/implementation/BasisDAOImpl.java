@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.unibl.etf.dao.interfaces.BasisDAO;
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dto.Basis;
 
 public class BasisDAOImpl implements BasisDAO {
@@ -52,7 +51,7 @@ public class BasisDAOImpl implements BasisDAO {
 	//
 	// CRUD methods
 	//
-	public Basis getByPrimaryKey(Integer basisId) throws DAOException {
+	public Basis getByPrimaryKey(Integer basisId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -66,7 +65,7 @@ public class BasisDAOImpl implements BasisDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -74,7 +73,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return null;
 	}
 
-	public long selectCount() throws DAOException {
+	public long selectCount() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -86,7 +85,7 @@ public class BasisDAOImpl implements BasisDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -94,7 +93,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return 0;
 	}
 
-	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public long selectCount(String whereStatement, Object[] bindVariables) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -116,7 +115,7 @@ public class BasisDAOImpl implements BasisDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -124,7 +123,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return 0;
 	}
 
-	public List<Basis> selectAll() throws DAOException {
+	public List<Basis> selectAll() {
 		List<Basis> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -136,7 +135,7 @@ public class BasisDAOImpl implements BasisDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -144,7 +143,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public List<Basis> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<Basis> select(String whereStatement, Object[] bindVariables) {
 		List<Basis> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -166,7 +165,7 @@ public class BasisDAOImpl implements BasisDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -174,7 +173,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public int update(Basis obj) throws DAOException {
+	public int update(Basis obj){
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -186,43 +185,51 @@ public class BasisDAOImpl implements BasisDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
-	public int insert(Basis obj) throws DAOException {
+	public int insert(Basis obj) {
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns), PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
+			rs = ps.getGeneratedKeys();
 
+			if(rs.next()) {
+				obj.setBasisId(rs.getInt(1));
+			}
+			
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
-			DBUtil.close(ps, null, conn);
+			DBUtil.close(ps, rs, conn);
 		}
+		
+		return 0;
 	}
 
-	public int delete(Basis obj) throws DAOException {
+	public int delete(Basis obj) {
 		PreparedStatement ps = null;
 
 		try {
@@ -232,22 +239,23 @@ public class BasisDAOImpl implements BasisDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<Basis> getByPlantingDate(Date plantingDate) throws DAOException {
+	public List<Basis> getByPlantingDate(Date plantingDate) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Basis> ret = new ArrayList<>();
@@ -267,7 +275,7 @@ public class BasisDAOImpl implements BasisDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -275,7 +283,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public List<Basis> getByProduced(Integer produced) throws DAOException {
+	public List<Basis> getByProduced(Integer produced) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Basis> ret = new ArrayList<>();
@@ -289,7 +297,7 @@ public class BasisDAOImpl implements BasisDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -297,7 +305,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public List<Basis> getByTakeARoot(Integer takeARoot) throws DAOException {
+	public List<Basis> getByTakeARoot(Integer takeARoot) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Basis> ret = new ArrayList<>();
@@ -311,7 +319,7 @@ public class BasisDAOImpl implements BasisDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -319,7 +327,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public List<Basis> getByActive(Boolean active) throws DAOException {
+	public List<Basis> getByActive(Boolean active) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Basis> ret = new ArrayList<>();
@@ -333,7 +341,7 @@ public class BasisDAOImpl implements BasisDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -341,7 +349,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public List<Basis> getByPlantId(Integer plantId) throws DAOException {
+	public List<Basis> getByPlantId(Integer plantId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Basis> ret = new ArrayList<>();
@@ -355,7 +363,7 @@ public class BasisDAOImpl implements BasisDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

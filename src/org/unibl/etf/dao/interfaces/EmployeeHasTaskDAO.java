@@ -8,32 +8,32 @@ import org.unibl.etf.dto.EmployeeHasTask;
 
 public interface EmployeeHasTaskDAO {
 	// CRUD methods
-	public EmployeeHasTask getByPrimaryKey(Date date, Integer taskId, Integer employeeId) throws DAOException;
+	public EmployeeHasTask getByPrimaryKey(Date date, Integer taskId, Integer employeeId);
 
-	public List<EmployeeHasTask> selectAll() throws DAOException;
+	public List<EmployeeHasTask> selectAll();
 
-	public List<EmployeeHasTask> select(String whereStatement, Object[] bindVariables) throws DAOException;
+	public List<EmployeeHasTask> select(String whereStatement, Object[] bindVariables);
 
-	public long selectCount() throws DAOException;
+	public long selectCount();
 
-	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
+	public long selectCount(String whereStatement, Object[] bindVariables);
 
-	public int update(EmployeeHasTask obj) throws DAOException;
+	public int update(EmployeeHasTask obj);
 
-	public int insert(EmployeeHasTask obj) throws DAOException;
+	public int insert(EmployeeHasTask obj);
 
-	public int delete(EmployeeHasTask obj) throws DAOException;
+	public int delete(EmployeeHasTask obj);
 
 	// Finders
-	public List<EmployeeHasTask> getByDate(Date date) throws DAOException;
+	public List<EmployeeHasTask> getByDate(Date date);
 
-	public List<EmployeeHasTask> getByTaskId(Integer taskId) throws DAOException;
+	public List<EmployeeHasTask> getByTaskId(Integer taskId);
 
-	public List<EmployeeHasTask> getByEmployeeId(Integer employeeId) throws DAOException;
+	public List<EmployeeHasTask> getByEmployeeId(Integer employeeId);
 
-	public List<EmployeeHasTask> getByHourlyWage(BigDecimal hourlyWage) throws DAOException;
+	public List<EmployeeHasTask> getByHourlyWage(BigDecimal hourlyWage);
 
-	public List<EmployeeHasTask> getByHours(Integer hours) throws DAOException;
+	public List<EmployeeHasTask> getByHours(Integer hours);
 
-	public List<EmployeeHasTask> getByPaidOff(Boolean paidOff) throws DAOException;
+	public List<EmployeeHasTask> getByPaidOff(Boolean paidOff);
 }

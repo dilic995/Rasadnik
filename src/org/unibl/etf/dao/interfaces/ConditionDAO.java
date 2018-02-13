@@ -6,22 +6,22 @@ import org.unibl.etf.dto.Condition;
 
 public interface ConditionDAO {
 	// CRUD methods
-	public Condition getByPrimaryKey(Integer conditionId) throws DAOException;
+	public Condition getByPrimaryKey(Integer conditionId);
 
-	public List<Condition> selectAll() throws DAOException;
+	public List<Condition> selectAll();
 
-	public List<Condition> select(String whereStatement, Object[] bindVariables) throws DAOException;
+	public List<Condition> select(String whereStatement, Object[] bindVariables);
 
-	public long selectCount() throws DAOException;
+	public long selectCount();
 
-	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
+	public long selectCount(String whereStatement, Object[] bindVariables);
 
-	public int update(Condition obj) throws DAOException;
+	public int update(Condition obj);
 
-	public int insert(Condition obj) throws DAOException;
+	public int insert(Condition obj);
 
-	public int delete(Condition obj) throws DAOException;
+	public int delete(Condition obj);
 
 	// Finders
-	public List<Condition> getByCondition(String condition) throws DAOException;
+	public List<Condition> getByCondition(String condition);
 }

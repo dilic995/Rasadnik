@@ -8,11 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.EmployeeDAO;
 import org.unibl.etf.dto.Employee;
-
-import com.mysql.jdbc.Statement;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 	//
@@ -51,7 +48,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	//
 	// CRUD methods
 	//
-	public Employee getByPrimaryKey(Integer employeeId) throws DAOException {
+	public Employee getByPrimaryKey(Integer employeeId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -65,7 +62,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -73,7 +70,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return null;
 	}
 
-	public long selectCount() throws DAOException {
+	public long selectCount() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -85,7 +82,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -93,7 +90,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return 0;
 	}
 
-	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public long selectCount(String whereStatement, Object[] bindVariables) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -115,7 +112,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -123,7 +120,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return 0;
 	}
 
-	public List<Employee> selectAll() throws DAOException {
+	public List<Employee> selectAll() {
 		List<Employee> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -135,7 +132,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -143,7 +140,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return ret;
 	}
 
-	public List<Employee> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<Employee> select(String whereStatement, Object[] bindVariables) {
 		List<Employee> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -165,7 +162,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -173,7 +170,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return ret;
 	}
 
-	public int update(Employee obj) throws DAOException {
+	public int update(Employee obj) {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -185,46 +182,51 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
-	public int insert(Employee obj) throws DAOException {
+	public int insert(Employee obj) {
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns),Statement.RETURN_GENERATED_KEYS);
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns), PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
-
 			
 			int rowCount = ps.executeUpdate();
+			rs = ps.getGeneratedKeys();
 
-			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+			if(rs.next()) {
+				obj.setEmployeeId(rs.getInt(1));
 			}
-			ResultSet tmp = ps.getGeneratedKeys();
-			if(tmp.next())
-				return tmp.getInt(1);
-			return -1;
+			
+			if (rowCount != 1) {
+				return 0;
+			}
+			
+			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
-			DBUtil.close(ps, null, conn);
+			DBUtil.close(ps, rs, conn);
 		}
+		
+		return 0;
 	}
 
-	public int delete(Employee obj) throws DAOException {
+	public int delete(Employee obj) {
 		PreparedStatement ps = null;
 
 		try {
@@ -234,22 +236,23 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<Employee> getByFirstName(String firstName) throws DAOException {
+	public List<Employee> getByFirstName(String firstName) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Employee> ret = new ArrayList<>();
@@ -269,7 +272,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -277,7 +280,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return ret;
 	}
 
-	public List<Employee> getByLastName(String lastName) throws DAOException {
+	public List<Employee> getByLastName(String lastName) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Employee> ret = new ArrayList<>();
@@ -297,7 +300,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -305,7 +308,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return ret;
 	}
 	
-	public List<Employee> getByIsDeleted(Boolean isDeleted) throws DAOException {
+	public List<Employee> getByIsDeleted(Boolean isDeleted) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Employee> ret = new ArrayList<>();
@@ -319,7 +322,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

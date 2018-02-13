@@ -7,30 +7,30 @@ import org.unibl.etf.dto.Basis;
 
 public interface BasisDAO {
 	// CRUD methods
-	public Basis getByPrimaryKey(Integer basisId) throws DAOException;
+	public Basis getByPrimaryKey(Integer basisId);
 
-	public List<Basis> selectAll() throws DAOException;
+	public List<Basis> selectAll();
 
-	public List<Basis> select(String whereStatement, Object[] bindVariables) throws DAOException;
+	public List<Basis> select(String whereStatement, Object[] bindVariables);
 
-	public long selectCount() throws DAOException;
+	public long selectCount();
 
-	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException;
+	public long selectCount(String whereStatement, Object[] bindVariables);
 
-	public int update(Basis obj) throws DAOException;
+	public int update(Basis obj);
 
-	public int insert(Basis obj) throws DAOException;
+	public int insert(Basis obj);
 
-	public int delete(Basis obj) throws DAOException;
+	public int delete(Basis obj);
 
 	// Finders
-	public List<Basis> getByPlantingDate(Date plantingDate) throws DAOException;
+	public List<Basis> getByPlantingDate(Date plantingDate);
 
-	public List<Basis> getByProduced(Integer produced) throws DAOException;
+	public List<Basis> getByProduced(Integer produced);
 
-	public List<Basis> getByTakeARoot(Integer takeARoot) throws DAOException;
+	public List<Basis> getByTakeARoot(Integer takeARoot);
 
-	public List<Basis> getByActive(Boolean active) throws DAOException;
+	public List<Basis> getByActive(Boolean active);
 
-	public List<Basis> getByPlantId(Integer plantId) throws DAOException;
+	public List<Basis> getByPlantId(Integer plantId);
 }

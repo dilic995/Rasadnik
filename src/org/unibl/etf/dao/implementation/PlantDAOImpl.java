@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.PlantDAO;
 import org.unibl.etf.dto.Plant;
 
@@ -53,7 +52,7 @@ public class PlantDAOImpl implements PlantDAO {
 	//
 	// CRUD methods
 	//
-	public Plant getByPrimaryKey(Integer plantId) throws DAOException {
+	public Plant getByPrimaryKey(Integer plantId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -67,7 +66,7 @@ public class PlantDAOImpl implements PlantDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -75,7 +74,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return null;
 	}
 
-	public long selectCount() throws DAOException {
+	public long selectCount() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -87,7 +86,7 @@ public class PlantDAOImpl implements PlantDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -95,7 +94,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return 0;
 	}
 
-	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public long selectCount(String whereStatement, Object[] bindVariables) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -117,7 +116,7 @@ public class PlantDAOImpl implements PlantDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -145,7 +144,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return ret;
 	}
 
-	public List<Plant> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<Plant> select(String whereStatement, Object[] bindVariables) {
 		List<Plant> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -167,7 +166,7 @@ public class PlantDAOImpl implements PlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -208,11 +207,14 @@ public class PlantDAOImpl implements PlantDAO {
 			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns), PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
+			
 			int rowCount = ps.executeUpdate();
 			rs = ps.getGeneratedKeys();
+			
 			if(rs.next()) {
 				obj.setPlantId(rs.getInt(1));
 			}
+			
 			if (rowCount != 1) {
 				return 0;
 			}
@@ -223,10 +225,11 @@ public class PlantDAOImpl implements PlantDAO {
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
+		
 		return 0;
 	}
 
-	public int delete(Plant obj) throws DAOException {
+	public int delete(Plant obj) {
 		PreparedStatement ps = null;
 
 		try {
@@ -236,22 +239,23 @@ public class PlantDAOImpl implements PlantDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<Plant> getByScientificName(String scientificName) throws DAOException {
+	public List<Plant> getByScientificName(String scientificName) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Plant> ret = new ArrayList<>();
@@ -271,7 +275,7 @@ public class PlantDAOImpl implements PlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -279,7 +283,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return ret;
 	}
 
-	public List<Plant> getByKnownAs(String knownAs) throws DAOException {
+	public List<Plant> getByKnownAs(String knownAs) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Plant> ret = new ArrayList<>();
@@ -299,7 +303,7 @@ public class PlantDAOImpl implements PlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -307,7 +311,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return ret;
 	}
 
-	public List<Plant> getByDescription(String description) throws DAOException {
+	public List<Plant> getByDescription(String description) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Plant> ret = new ArrayList<>();
@@ -327,7 +331,7 @@ public class PlantDAOImpl implements PlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -335,7 +339,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return ret;
 	}
 
-	public List<Plant> getByImage(Blob image) throws DAOException {
+	public List<Plant> getByImage(Blob image) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Plant> ret = new ArrayList<>();
@@ -355,7 +359,7 @@ public class PlantDAOImpl implements PlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -363,7 +367,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return ret;
 	}
 
-	public List<Plant> getByIsConifer(Boolean isConifer) throws DAOException {
+	public List<Plant> getByIsConifer(Boolean isConifer) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Plant> ret = new ArrayList<>();
@@ -377,7 +381,7 @@ public class PlantDAOImpl implements PlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -385,7 +389,7 @@ public class PlantDAOImpl implements PlantDAO {
 		return ret;
 	}
 
-	public List<Plant> getByOwned(Boolean owned) throws DAOException {
+	public List<Plant> getByOwned(Boolean owned) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Plant> ret = new ArrayList<>();
@@ -399,7 +403,7 @@ public class PlantDAOImpl implements PlantDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

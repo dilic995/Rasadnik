@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.unibl.etf.dao.interfaces.ConditionDAO;
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dto.Condition;
 
 public class ConditionDAOImpl implements ConditionDAO {
@@ -47,7 +46,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 	//
 	// CRUD methods
 	//
-	public Condition getByPrimaryKey(Integer conditionId) throws DAOException {
+	public Condition getByPrimaryKey(Integer conditionId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -61,7 +60,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 				return fromResultSet(rs);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -69,7 +68,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 		return null;
 	}
 
-	public long selectCount() throws DAOException {
+	public long selectCount() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -81,7 +80,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -89,7 +88,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 		return 0;
 	}
 
-	public long selectCount(String whereStatement, Object[] bindVariables) throws DAOException {
+	public long selectCount(String whereStatement, Object[] bindVariables) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -111,7 +110,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 				return rs.getLong(1);
 			}
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -119,7 +118,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 		return 0;
 	}
 
-	public List<Condition> selectAll() throws DAOException {
+	public List<Condition> selectAll() {
 		List<Condition> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -131,7 +130,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -139,7 +138,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 		return ret;
 	}
 
-	public List<Condition> select(String whereStatement, Object[] bindVariables) throws DAOException {
+	public List<Condition> select(String whereStatement, Object[] bindVariables) {
 		List<Condition> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -161,7 +160,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException("Error in select(), table = " + tableName, e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -169,7 +168,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 		return ret;
 	}
 
-	public int update(Condition obj) throws DAOException {
+	public int update(Condition obj) {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -181,43 +180,51 @@ public class ConditionDAOImpl implements ConditionDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error updating " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
-	public int insert(Condition obj) throws DAOException {
+	public int insert(Condition obj) {
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns), PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
+			rs = ps.getGeneratedKeys();
+			
+			if(rs.next()) {
+				obj.setConditionId(rs.getInt(1));
+			}
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error inserting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
-			DBUtil.close(ps, null, conn);
+			DBUtil.close(ps, rs, conn);
 		}
+		
+		return 0;
 	}
 
-	public int delete(Condition obj) throws DAOException {
+	public int delete(Condition obj) {
 		PreparedStatement ps = null;
 
 		try {
@@ -227,22 +234,23 @@ public class ConditionDAOImpl implements ConditionDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-				throw new DAOException(
-						"Error deleting " + obj.getClass() + " in " + tableName + ", affected rows = " + rowCount);
+				return 0;
 			}
 
 			return rowCount;
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
+		
+		return 0;
 	}
 
 	//
 	// finders
 	//
-	public List<Condition> getByCondition(String condition) throws DAOException {
+	public List<Condition> getByCondition(String condition) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Condition> ret = new ArrayList<>();
@@ -262,7 +270,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 			while (rs.next())
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
-			throw new DAOException(e);
+			e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
