@@ -3,7 +3,6 @@ package org.unibl.etf.dto;
 
 import java.util.Date;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class ToolItem {
@@ -74,12 +73,7 @@ public class ToolItem {
 
 	public Condition getCondition() {
 		if (condition == null) {
-			try {
-				condition = DAOFactory.getInstance().getConditionDAO().getByPrimaryKey(conditionId);
-			} catch (DAOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			condition = DAOFactory.getInstance().getConditionDAO().getByPrimaryKey(conditionId);
 		}
 		return condition;
 	}

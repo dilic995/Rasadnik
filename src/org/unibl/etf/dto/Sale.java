@@ -4,7 +4,6 @@ package org.unibl.etf.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class Sale {
@@ -52,12 +51,7 @@ public class Sale {
 
 	public Customer getCustomer() {
 		if (customer == null) {
-			try {
-				customer = DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(customerId);
-			} catch (DAOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			customer = DAOFactory.getInstance().getCustomerDAO().getByPrimaryKey(customerId);
 		}
 		return this.customer;
 	}

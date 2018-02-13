@@ -3,7 +3,6 @@ package org.unibl.etf.dto;
 
 import java.util.Date;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class ReproductionCutting {
@@ -25,12 +24,7 @@ public class ReproductionCutting {
 
 	public Basis getBasis() {
 		if (basis == null) {
-			try {
-				basis = DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(basisId);
-			} catch (DAOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			basis = DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(basisId);
 		}
 		return this.basis;
 	}

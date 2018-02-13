@@ -3,7 +3,6 @@ package org.unibl.etf.dto;
 
 import java.util.Date;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class Task {
@@ -74,12 +73,8 @@ public class Task {
 
 	public PlantMaintanceActivity getPlantMaintanceActivity() {
 		if (plantMaintanceActivity == null) {
-			try {
-				plantMaintanceActivity = DAOFactory.getInstance().getPlantMaintanceActivityDAO()
-						.getByPrimaryKey(plantMaintanceActivityId);
-			} catch (DAOException e) {
-				e.printStackTrace();
-			}
+			plantMaintanceActivity = DAOFactory.getInstance().getPlantMaintanceActivityDAO()
+					.getByPrimaryKey(plantMaintanceActivityId);
 		}
 		return this.plantMaintanceActivity;
 	}
