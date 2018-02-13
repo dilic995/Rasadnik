@@ -63,18 +63,13 @@ public class RegionViewController extends BaseController implements Initializabl
 		testRegion1.attachObserver(this);
 		testRegion2.attachObserver(this);
 		testRegion3.attachObserver(this);
+		testRegion1.setPlan(plan);
+		testRegion2.setPlan(plan);
+		testRegion3.setPlan(plan);
 		
-		List<Plant> plants = DAOFactory.getInstance().getPlantDAO().selectAll();
-		List<Basis> bases = DAOFactory.getInstance().getBasisDAO().getByActive(true);
-		List<Region> regions = new ArrayList<Region>();
-		for(Basis b : bases) {
-			Region region = new Region(null, 0, b, b.getBasisId());
-			regions.add(region);
-		}
-		Estate estate = new Estate(regions);
-		estate.addPlants(estate.getRegions().get(0), 10);
-		estate.addPlants(estate.getRegions().get(1), 100);
-		estate.addPlants(estate.getRegions().get(2), 50);
+		testRegion1.setRegion(regioni.get(0));
+		testRegion2.setRegion(regioni.get(1));
+		testRegion3.setRegion(regioni.get(2));
 		
 		List<PlantMaintanceActivity> aktivnosti = DAOFactory.getInstance().getPlantMaintanceActivityDAO().selectAll();
 		
@@ -88,10 +83,6 @@ public class RegionViewController extends BaseController implements Initializabl
 			map.put(r, new MaintenancePlanItem(r,set));
 		}
 		plan.setPlannedTasks(map);
-		
-		testRegion1.setItem(map.get(regioni.get(0)));
-		testRegion2.setItem(map.get(regioni.get(1)));
-		testRegion3.setItem(map.get(regioni.get(2)));
 		
 	}
 	
@@ -115,16 +106,14 @@ public class RegionViewController extends BaseController implements Initializabl
 	
 	@FXML
     void promijeni(ActionEvent event) {
-		plan.setDone(regioni.get(0), DAOFactory.getInstance().getTaskDAO().getByPrimaryKey(1), true);
-		testRegion1.update();
+		testRegion1.setDone(DAOFactory.getInstance().getTaskDAO().getByPrimaryKey(1), true);
     }
 	
 	public void saveTasksState() {
-		System.out.println(clvTasks.getItems());
-	}
-	
-	public void cancelTasksState() {
-		System.out.println(taskList);
+		ObservableList<TaskListItem> list = clvTasks.checkModelProperty().get().getCheckedItems();
+		for(TaskListItem item : taskList) {
+			currentSelectedRegion.setDone(item.getTask(), list.contains(item));
+		}
 	}
 	
 	public void initializeTaskList() {
