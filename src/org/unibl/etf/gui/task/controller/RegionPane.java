@@ -3,8 +3,9 @@ package org.unibl.etf.gui.task.controller;
 
 import java.util.Set;
 
-import org.unibl.etf.dto.MaintenancePlanItem;
+import org.unibl.etf.dto.MaintenancePlan;
 import org.unibl.etf.dto.Observable;
+import org.unibl.etf.dto.Region;
 import org.unibl.etf.dto.Task;
 
 import javafx.scene.control.Label;
@@ -12,45 +13,60 @@ import javafx.scene.control.Label;
 public class RegionPane extends Observable{
 	
 	private Label label;
-	private MaintenancePlanItem item;
+	private Region region;
+	private MaintenancePlan plan;
 	
-	public RegionPane(Label label, MaintenancePlanItem item) {
+	
+	public RegionPane(Label label, Region region, MaintenancePlan plan) {
 		super();
 		this.label = label;
-		this.item = item;
+		this.region = region;
+		this.plan = plan;
 	}
-	
+
 	public RegionPane(Label label) {
 		super();
 		this.label = label;
 	}
 
-	public MaintenancePlanItem getItem() {
-		return item;
+	public Region getRegion() {
+		return region;
 	}
 
-	public void setItem(MaintenancePlanItem item) {
-		this.item = item;
+	public void setRegion(Region region) {
+		this.region = region;
+	}
+
+	public MaintenancePlan getPlan() {
+		return plan;
+	}
+
+	public void setPlan(MaintenancePlan plan) {
+		this.plan = plan;
 	}
 	
 	public void addTask(Task task) {
-		item.addTask(task);
+		plan.addTask(region, task);
+		update();
 	}
 
 	public Boolean removeTask(Task task) {
-		return item.removeTask(task);
+		Boolean retVal = plan.removeTask(region, task);
+		update();
+		return retVal;
 	}
 
 	public void setDone(Task task, Boolean done) {
-		item.setDone(task, done);
+		plan.setDone(region, task, done);
+		update();
 	}
 	
 	public void update() {
-		label.setText(item.getState().getName());
+		label.setText(plan.getPlannedTasks().get(region).getState().getName());
 		observers.forEach(x-> x.update());
 	}
 	
 	public Set<Task> getTasks() {
-		return item.getPlannedTasks();
+		return plan.getPlannedTasks().get(region).getPlannedTasks();
 	}
 }
