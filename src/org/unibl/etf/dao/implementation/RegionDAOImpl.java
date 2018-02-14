@@ -25,6 +25,14 @@ public class RegionDAOImpl implements RegionDAO {
 		pkColumns.add("region_id");
 		stdColumns.add("number_of_plants");
 		stdColumns.add("basis_id");
+		stdColumns.add("x1");
+		stdColumns.add("y1");
+		stdColumns.add("x2");
+		stdColumns.add("y2");
+		stdColumns.add("x3");
+		stdColumns.add("y3");
+		stdColumns.add("x4");
+		stdColumns.add("y4");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -201,7 +209,7 @@ public class RegionDAOImpl implements RegionDAO {
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns), PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
 
@@ -304,7 +312,9 @@ public class RegionDAOImpl implements RegionDAO {
 	protected int bindStdColumns(PreparedStatement ps, Region obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getNumberOfPlants());
 		DBUtil.bind(ps, pos++, obj.getBasisId());
-
+		for(int i=0 ; i<8 ; i++) {
+			DBUtil.bind(ps, pos++, obj.getCoords()[i]);
+		}
 		return pos;
 	}
 
@@ -314,6 +324,16 @@ public class RegionDAOImpl implements RegionDAO {
 		obj.setRegionId(DBUtil.getInt(rs, "region_id"));
 		obj.setNumberOfPlants(DBUtil.getInt(rs, "number_of_plants"));
 		obj.setBasisId(DBUtil.getInt(rs, "basis_id"));
+		obj.setCoords(new Double[] {
+				DBUtil.getDouble(rs, "x1"),
+				DBUtil.getDouble(rs, "y1"),
+				DBUtil.getDouble(rs, "x2"),
+				DBUtil.getDouble(rs, "y2"),
+				DBUtil.getDouble(rs, "x3"),
+				DBUtil.getDouble(rs, "y3"),
+				DBUtil.getDouble(rs, "x4"),
+				DBUtil.getDouble(rs, "y4"),
+		});
 		return obj;
 	}
 

@@ -9,17 +9,19 @@ public class Region {
 	private Integer numberOfPlants;
 	private Basis basis;
 	private Integer basisId;
+	private Double[] coords;
 
 	public Region() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Region(Integer regionId, Integer numberOfPlants, Basis basis, Integer basisId) {
+	public Region(Integer regionId, Integer numberOfPlants, Basis basis, Integer basisId, Double[] coords) {
 		super();
 		this.regionId = regionId;
 		this.numberOfPlants = numberOfPlants;
 		this.basis = basis;
 		this.basisId = basisId;
+		this.setCoords(coords);
 	}
 
 	//
@@ -106,5 +108,13 @@ public class Region {
 		buffer.append("[").append("basisId").append("=").append(basis).append("]");
 
 		return buffer.append(")").toString();
+	}
+
+	public Double[] getCoords() {
+		return coords;
+	}
+
+	public void setCoords(Double[] coords) {
+		this.coords = coords;
 	}
 }
