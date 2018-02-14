@@ -2,6 +2,7 @@ package org.unibl.etf.application;
 
 import java.io.IOException;
 
+import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.gui.view.base.BaseController;
 
 import javafx.application.Application;
@@ -12,7 +13,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage)  {
 		try {
-			BaseController.changeScene("/org/unibl/etf/gui/plants/view/DrawRegionsView.fxml", primaryStage);
+			BaseController.changeScene("/org/unibl/etf/gui/plants/view/BasesView.fxml", primaryStage);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println(e.getCause());
@@ -24,5 +25,6 @@ public class Main extends Application {
 
 	public static void main(String[] args) throws Exception {
 		launch(args);
+		//System.out.println(DAOFactory.getInstance().getBasisDAO().getNum(2, "number_of_plants", "region"));
 	}
 }

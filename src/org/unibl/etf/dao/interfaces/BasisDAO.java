@@ -29,4 +29,6 @@ public interface BasisDAO {
 	public List<Basis> getByActive(Boolean active);
 
 	public List<Basis> getByPlantId(Integer plantId);
+	
+	public Integer getNum(int basis_id, String type, String tableName);
 }

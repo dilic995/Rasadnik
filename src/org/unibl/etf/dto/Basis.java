@@ -1,6 +1,7 @@
 package org.unibl.etf.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
@@ -10,7 +11,9 @@ public class Basis {
 	private Boolean active;
 	private Integer plantId;
 	private Plant plant;
-
+	private List<ReproductionCutting> cuttings;
+	
+	
 	//
 	// getters / setters
 	//
@@ -51,7 +54,6 @@ public class Basis {
 		if (this.plant == null) {
 			this.plant = DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(this.plantId);
 		}
-
 		return plant;
 	}
 
@@ -93,5 +95,16 @@ public class Basis {
 		buffer.append("[").append("plantId").append("=").append(plantId).append("]");
 
 		return buffer.append(")").toString();
+	}
+
+	public List<ReproductionCutting> getCuttings() {
+		if(cuttings == null) {
+			cuttings = DAOFactory.getInstance().getReproductionCuttingDAO().selectAll();
+		}
+		return cuttings;
+	}
+
+	public void setCuttings(List<ReproductionCutting> cuttings) {
+		this.cuttings = cuttings;
 	}
 }

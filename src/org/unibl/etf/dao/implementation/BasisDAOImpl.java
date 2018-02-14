@@ -171,7 +171,7 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public int update(Basis obj){
+	public int update(Basis obj) {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -192,7 +192,7 @@ public class BasisDAOImpl implements BasisDAO {
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
-		
+
 		return 0;
 	}
 
@@ -202,17 +202,18 @@ public class BasisDAOImpl implements BasisDAO {
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns), PreparedStatement.RETURN_GENERATED_KEYS);
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns),
+					PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
 			rs = ps.getGeneratedKeys();
 
-			if(rs.next()) {
+			if (rs.next()) {
 				obj.setBasisId(rs.getInt(1));
 			}
-			
+
 			if (rowCount != 1) {
 				return 0;
 			}
@@ -223,7 +224,7 @@ public class BasisDAOImpl implements BasisDAO {
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
-		
+
 		return 0;
 	}
 
@@ -246,7 +247,7 @@ public class BasisDAOImpl implements BasisDAO {
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
-		
+
 		return 0;
 	}
 
@@ -354,10 +355,31 @@ public class BasisDAOImpl implements BasisDAO {
 	}
 
 	protected Connection getConn() {
-		if(conn == null) {
+		if (conn == null) {
 			conn = DBUtil.getConnection();
 		}
-		
+
 		return (conn == null) ? DBUtil.getConnection() : conn;
+	}
+
+	@Override
+	public Integer getNum(int basis_id, String type, String tableName) {
+		Integer result = 0;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String querry = "select sum(" + type + ") as broj from " + tableName + " where basis_id=?";
+		try {
+			ps = getConn().prepareStatement(querry);
+			DBUtil.bind(ps, 1, basis_id);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt("broj");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+		return result;
 	}
 }

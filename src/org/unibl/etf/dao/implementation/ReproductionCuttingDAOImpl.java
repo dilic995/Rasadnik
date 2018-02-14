@@ -359,6 +359,8 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 
 		obj.setBasisId((DBUtil.getInt(rs, "basis_id")));
 		obj.setDate(DBUtil.getDate(rs, "date"));
+		obj.setProduces(DBUtil.getInt(rs, "produces"));
+		obj.setTakeARoot(DBUtil.getInt(rs, "take_a_root"));
 		return obj;
 	}
 
