@@ -8,7 +8,7 @@ import org.unibl.etf.dto.PriceHeightRatio;
 
 public interface PriceHeightRatioDAO {
 	// CRUD methods
-	public PriceHeightRatio getByPrimaryKey(Date date, Integer plantId);
+	public PriceHeightRatio getByPrimaryKey(Date date, BigDecimal heightMin, Integer plantId);
 
 	public List<PriceHeightRatio> selectAll();
 
