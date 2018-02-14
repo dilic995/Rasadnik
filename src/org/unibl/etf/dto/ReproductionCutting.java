@@ -8,6 +8,8 @@ import org.unibl.etf.dao.interfaces.DAOFactory;
 public class ReproductionCutting {
 	private Basis basis;
 	private Date date;
+	private Integer produces;
+	private Integer takeARoot;
 	private Integer basisId;
 
 	//
@@ -39,6 +41,22 @@ public class ReproductionCutting {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public Integer getProduces() {
+		return produces;
+	}
+
+	public void setProduces(Integer produces) {
+		this.produces = produces;
+	}
+
+	public Integer getTakeARoot() {
+		return takeARoot;
+	}
+
+	public void setTakeARoot(Integer takeARoot) {
+		this.takeARoot = takeARoot;
 	}
 
 	@Override
@@ -77,6 +95,8 @@ public class ReproductionCutting {
 				.append("(");
 
 		buffer.append("[").append("basisId").append("=").append(basisId).append("]");
+		buffer.append("[").append("produces").append("=").append(produces).append("]");
+		buffer.append("[").append("takeARoot").append("=").append(takeARoot).append("]");
 		buffer.append("[").append("date").append("=").append(date).append("]");
 
 		return buffer.append(")").toString();

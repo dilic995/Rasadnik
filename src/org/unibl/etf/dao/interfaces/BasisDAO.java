@@ -26,10 +26,6 @@ public interface BasisDAO {
 	// Finders
 	public List<Basis> getByPlantingDate(Date plantingDate);
 
-	public List<Basis> getByProduced(Integer produced);
-
-	public List<Basis> getByTakeARoot(Integer takeARoot);
-
 	public List<Basis> getByActive(Boolean active);
 
 	public List<Basis> getByPlantId(Integer plantId);

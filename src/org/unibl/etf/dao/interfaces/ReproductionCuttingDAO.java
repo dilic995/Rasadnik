@@ -28,4 +28,8 @@ public interface ReproductionCuttingDAO {
 	public List<ReproductionCutting> getByBasisId(Integer basisId);
 
 	public List<ReproductionCutting> getByDate(Date date);
+	
+	public List<ReproductionCutting> getByProduces(Integer produces);
+	
+	public List<ReproductionCutting> getByTakeARoot(Integer takeARoot);
 }

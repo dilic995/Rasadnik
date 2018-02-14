@@ -24,8 +24,6 @@ public class BasisDAOImpl implements BasisDAO {
 	static {
 		pkColumns.add("basis_id");
 		stdColumns.add("planting_date");
-		stdColumns.add("produced");
-		stdColumns.add("take_a_root");
 		stdColumns.add("active");
 		stdColumns.add("plant_id");
 		allColumns.addAll(pkColumns);
@@ -283,50 +281,6 @@ public class BasisDAOImpl implements BasisDAO {
 		return ret;
 	}
 
-	public List<Basis> getByProduced(Integer produced) {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		List<Basis> ret = new ArrayList<>();
-
-		try {
-			ps = getConn()
-					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "produced" })));
-			DBUtil.bind(ps, 1, produced);
-			rs = ps.executeQuery();
-
-			while (rs.next())
-				ret.add(fromResultSet(rs));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.close(ps, rs, conn);
-		}
-
-		return ret;
-	}
-
-	public List<Basis> getByTakeARoot(Integer takeARoot) {
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		List<Basis> ret = new ArrayList<>();
-
-		try {
-			ps = getConn().prepareStatement(
-					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "take_a_root" })));
-			DBUtil.bind(ps, 1, takeARoot);
-			rs = ps.executeQuery();
-
-			while (rs.next())
-				ret.add(fromResultSet(rs));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBUtil.close(ps, rs, conn);
-		}
-
-		return ret;
-	}
-
 	public List<Basis> getByActive(Boolean active) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -382,8 +336,6 @@ public class BasisDAOImpl implements BasisDAO {
 
 	protected int bindStdColumns(PreparedStatement ps, Basis obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getPlantingDate());
-		DBUtil.bind(ps, pos++, obj.getProduced());
-		DBUtil.bind(ps, pos++, obj.getTakeARoot());
 		DBUtil.bind(ps, pos++, obj.getActive());
 		DBUtil.bind(ps, pos++, obj.getPlantId());
 
@@ -395,8 +347,6 @@ public class BasisDAOImpl implements BasisDAO {
 
 		obj.setBasisId(DBUtil.getInt(rs, "basis_id"));
 		obj.setPlantingDate(DBUtil.getDate(rs, "planting_date"));
-		obj.setProduced(DBUtil.getInt(rs, "produced"));
-		obj.setTakeARoot(DBUtil.getInt(rs, "take_a_root"));
 		obj.setActive(DBUtil.getBoolean(rs, "active"));
 		obj.setPlantId(DBUtil.getInteger(rs, "plant_id"));
 

@@ -34,12 +34,12 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`price_height_ratio` (
   `date_from` DATE NOT NULL,
-  `plant_id` INT NOT NULL,
   `height_min` DECIMAL(10,2) NOT NULL,
+  `plant_id` INT NOT NULL,
   `height_max` DECIMAL(10,2) NULL,
   `price` DECIMAL(10,2) NOT NULL,
   `active` TINYINT NOT NULL,
-  PRIMARY KEY (`date_from`, `plant_id`),
+  PRIMARY KEY (`date_from`, `height_min`, `plant_id`),
   CONSTRAINT `fk_price_height_ratio_plant`
     FOREIGN KEY (`plant_id`)
     REFERENCES `rasadnik_db`.`plant` (`plant_id`)
@@ -54,8 +54,6 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`basis` (
   `basis_id` INT NOT NULL AUTO_INCREMENT,
   `planting_date` DATE NOT NULL,
-  `produced` INT NOT NULL DEFAULT 0,
-  `take_a_root` INT NOT NULL DEFAULT 0,
   `active` TINYINT NOT NULL DEFAULT 1,
   `plant_id` INT NOT NULL,
   PRIMARY KEY (`basis_id`),
@@ -74,6 +72,8 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`reproduction_cutting` (
   `date` DATE NOT NULL,
   `basis_id` INT NOT NULL,
+  `produces` INT NOT NULL DEFAULT 0,
+  `take_a_root` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`basis_id`, `date`),
   CONSTRAINT `fk_reproduction_cutting_basis1`
     FOREIGN KEY (`basis_id`)

@@ -24,8 +24,8 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 
 	static {
 		pkColumns.add("date_from");
+		pkColumns.add("height_min");
 		pkColumns.add("plant_id");
-		stdColumns.add("height_min");
 		stdColumns.add("height_max");
 		stdColumns.add("price");
 		stdColumns.add("active");
@@ -52,7 +52,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 	//
 	// CRUD methods
 	//
-	public PriceHeightRatio getByPrimaryKey(Date date, Integer plantId) {
+	public PriceHeightRatio getByPrimaryKey(Date date, BigDecimal heightMin, Integer plantId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -60,6 +60,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			int pos = 1;
 			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns, pkColumns));
 			DBUtil.bind(ps, pos++, date);
+			DBUtil.bind(ps, pos++, heightMin);
 			DBUtil.bind(ps, pos++, plantId);
 			rs = ps.executeQuery();
 
@@ -413,13 +414,13 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 	//
 	protected int bindPrimaryKey(PreparedStatement ps, PriceHeightRatio obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getDateFrom());
+		DBUtil.bind(ps, pos++, obj.getHeightMin());
 		DBUtil.bind(ps, pos++, obj.getPlantId());
 
 		return pos;
 	}
 
 	protected int bindStdColumns(PreparedStatement ps, PriceHeightRatio obj, int pos) throws SQLException {
-		DBUtil.bind(ps, pos++, obj.getHeightMin());
 		DBUtil.bind(ps, pos++, obj.getHeightMax());
 		DBUtil.bind(ps, pos++, obj.getPrice());
 		DBUtil.bind(ps, pos++, obj.getActive());

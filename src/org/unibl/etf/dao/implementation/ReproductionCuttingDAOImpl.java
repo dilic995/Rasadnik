@@ -22,8 +22,10 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 	protected static String tableName = "reproduction_cutting";
 
 	static {
-		pkColumns.add("basis_id");
 		pkColumns.add("date");
+		pkColumns.add("basis_id");
+		stdColumns.add("produces");
+		stdColumns.add("take_a_root");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -54,8 +56,8 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		try {
 			int pos = 1;
 			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns, pkColumns));
-			DBUtil.bind(ps, pos++, idBasis);
 			DBUtil.bind(ps, pos++, date);
+			DBUtil.bind(ps, pos++, idBasis);
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
@@ -279,6 +281,52 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			ps = getConn()
 					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "date" })));
 			DBUtil.bind(ps, 1, date);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+	
+	@Override
+	public List<ReproductionCutting> getByProduces(Integer produces) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<ReproductionCutting> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "produces" })));
+			DBUtil.bind(ps, 1, produces);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+
+	@Override
+	public List<ReproductionCutting> getByTakeARoot(Integer takeARoot) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<ReproductionCutting> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "take_a_root" })));
+			DBUtil.bind(ps, 1, takeARoot);
 			rs = ps.executeQuery();
 
 			while (rs.next())

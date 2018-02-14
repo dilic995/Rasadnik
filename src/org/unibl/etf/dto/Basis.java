@@ -7,8 +7,6 @@ import org.unibl.etf.dao.interfaces.DAOFactory;
 public class Basis {
 	private Integer basisId;
 	private Date plantingDate;
-	private Integer produced;
-	private Integer takeARoot;
 	private Boolean active;
 	private Integer plantId;
 	private Plant plant;
@@ -30,22 +28,6 @@ public class Basis {
 
 	public void setPlantingDate(Date plantingDate) {
 		this.plantingDate = plantingDate;
-	}
-
-	public Integer getProduced() {
-		return this.produced;
-	}
-
-	public void setProduced(Integer produced) {
-		this.produced = produced;
-	}
-
-	public Integer getTakeARoot() {
-		return this.takeARoot;
-	}
-
-	public void setTakeARoot(Integer takeARoot) {
-		this.takeARoot = takeARoot;
 	}
 
 	public Boolean getActive() {
@@ -107,8 +89,6 @@ public class Basis {
 
 		buffer.append("[").append("basisId").append("=").append(basisId).append("]");
 		buffer.append("[").append("plantingDate").append("=").append(plantingDate).append("]");
-		buffer.append("[").append("produced").append("=").append(produced).append("]");
-		buffer.append("[").append("takeARoot").append("=").append(takeARoot).append("]");
 		buffer.append("[").append("active").append("=").append(active).append("]");
 		buffer.append("[").append("plantId").append("=").append(plantId).append("]");
 
