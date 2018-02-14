@@ -24,7 +24,6 @@ public class RegionDAOImpl implements RegionDAO {
 	static {
 		pkColumns.add("region_id");
 		stdColumns.add("number_of_plants");
-		stdColumns.add("basis_id");
 		stdColumns.add("x1");
 		stdColumns.add("y1");
 		stdColumns.add("x2");
@@ -33,6 +32,7 @@ public class RegionDAOImpl implements RegionDAO {
 		stdColumns.add("y3");
 		stdColumns.add("x4");
 		stdColumns.add("y4");
+		stdColumns.add("basis_id");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -311,10 +311,12 @@ public class RegionDAOImpl implements RegionDAO {
 
 	protected int bindStdColumns(PreparedStatement ps, Region obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getNumberOfPlants());
-		DBUtil.bind(ps, pos++, obj.getBasisId());
+		//TODO izbrisati hard kodovanje
 		for(int i=0 ; i<8 ; i++) {
 			DBUtil.bind(ps, pos++, obj.getCoords()[i]);
 		}
+		DBUtil.bind(ps, pos++, obj.getBasisId());
+		
 		return pos;
 	}
 
