@@ -14,7 +14,6 @@ public class Main extends Application {
 		try {
 			BaseController.changeScene("/org/unibl/etf/gui/plants/view/CatalogueView.fxml", primaryStage);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println(e.getCause());
 		}

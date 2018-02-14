@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class PricelistController extends PlantBrowserController {
 	@FXML
@@ -33,8 +34,9 @@ public class PricelistController extends PlantBrowserController {
 	private TableColumn<PlantTableItem, String> colPrices;
 	@FXML
 	private Button btnPrint;
-	
-	
+	@FXML
+	private Button btnDelete;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize(location, resources);
@@ -46,24 +48,26 @@ public class PricelistController extends PlantBrowserController {
 		this.container = container;
 		populateTable();
 	}
-	
+
 	@Override
 	public void update() {
 	}
+
 	private void buildTable() {
 		colScientificName.setCellValueFactory(new PropertyValueFactory<PlantTableItem, String>("scientificName"));
 		colKnownAs.setCellValueFactory(new PropertyValueFactory<PlantTableItem, String>("knownAs"));
 		colPrices.setCellValueFactory(new PropertyValueFactory<PlantTableItem, String>("prices"));
 		populateTable();
 	}
+
 	private void populateTable() {
 		ObservableList<PlantTableItem> plants = FXCollections.observableArrayList();
-		for(Plant plant : container.getPlants()) {
+		for (Plant plant : container.getPlants()) {
 			plants.add(new PlantTableItem(plant));
 		}
 		tblPlants.setItems(plants);
 	}
-	
+
 	@FXML
 	public void print(ActionEvent event) {
 		PDFCreator creator = new PDFCreator("./resources/cjenovnik_" + System.currentTimeMillis() + ".pdf");
@@ -79,5 +83,21 @@ public class PricelistController extends PlantBrowserController {
 			e.printStackTrace();
 		}
 	}
-	
+
+	@FXML
+	public void selectItem(MouseEvent event) {
+		int index = tblPlants.getSelectionModel().getSelectedIndex();
+		if (index > -1 && index < container.getPlants().size()) {
+			container.setCurrent(index);
+		}
+	}
+	@FXML
+	public void delete(ActionEvent event) {
+		if(container.current() != null) {
+			int index = tblPlants.getSelectionModel().getSelectedIndex();
+			container.setCurrent(index);
+			container.remove(container.current());
+			tblPlants.getItems().remove(tblPlants.getSelectionModel().getSelectedIndex());
+		}
+	}
 }
