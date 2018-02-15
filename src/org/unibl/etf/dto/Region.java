@@ -54,7 +54,7 @@ public class Region {
 
 	public Basis getBasis() {
 		if (basis == null) {
-			DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(basisId);
+			this.basis = DAOFactory.getInstance().getBasisDAO().getByPrimaryKey(basisId);
 		}
 		return this.basis;
 	}

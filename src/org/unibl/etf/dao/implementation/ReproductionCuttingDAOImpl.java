@@ -49,7 +49,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 	//
 	// CRUD methods
 	//
-	public ReproductionCutting getByPrimaryKey(Integer idBasis, Date date)  {
+	public ReproductionCutting getByPrimaryKey(Integer idBasis, Date date) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -72,7 +72,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return null;
 	}
 
-	public Long selectCount()  {
+	public Long selectCount() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -92,7 +92,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return 0L;
 	}
 
-	public Long selectCount(String whereStatement, Object[] bindVariables)  {
+	public Long selectCount(String whereStatement, Object[] bindVariables) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -122,7 +122,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return 0L;
 	}
 
-	public List<ReproductionCutting> selectAll()  {
+	public List<ReproductionCutting> selectAll() {
 		List<ReproductionCutting> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -142,7 +142,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return ret;
 	}
 
-	public List<ReproductionCutting> select(String whereStatement, Object[] bindVariables)  {
+	public List<ReproductionCutting> select(String whereStatement, Object[] bindVariables) {
 		List<ReproductionCutting> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -172,7 +172,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return ret;
 	}
 
-	public Integer update(ReproductionCutting obj)  {
+	public Integer update(ReproductionCutting obj) {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -196,19 +196,20 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return 0;
 	}
 
-	public Integer insert(ReproductionCutting obj)  {
+	public Integer insert(ReproductionCutting obj) {
 		PreparedStatement ps = null;
-		ResultSet rs=null;
+		ResultSet rs = null;
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns),PreparedStatement.RETURN_GENERATED_KEYS);
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns),
+					PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
 			rs = ps.getGeneratedKeys();
-			if(rs.next()) {
+			if (rs.next()) {
 				obj.setBasisId(rs.getInt(1));
 				obj.setDate(rs.getDate(2));
 			}
@@ -225,7 +226,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return 0;
 	}
 
-	public Integer delete(ReproductionCutting obj)  {
+	public Integer delete(ReproductionCutting obj) {
 		PreparedStatement ps = null;
 
 		try {
@@ -250,7 +251,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 	//
 	// finders
 	//
-	public List<ReproductionCutting> getByBasisId(Integer basisId)  {
+	public List<ReproductionCutting> getByBasisId(Integer basisId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<ReproductionCutting> ret = new ArrayList<>();
@@ -272,7 +273,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		return ret;
 	}
 
-	public List<ReproductionCutting> getByDate(Date date)  {
+	public List<ReproductionCutting> getByDate(Date date) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<ReproductionCutting> ret = new ArrayList<>();
@@ -293,7 +294,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 
 		return ret;
 	}
-	
+
 	@Override
 	public List<ReproductionCutting> getByProduces(Integer produces) {
 		PreparedStatement ps = null;
@@ -324,8 +325,8 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		List<ReproductionCutting> ret = new ArrayList<>();
 
 		try {
-			ps = getConn()
-					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "take_a_root" })));
+			ps = getConn().prepareStatement(
+					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "take_a_root" })));
 			DBUtil.bind(ps, 1, takeARoot);
 			rs = ps.executeQuery();
 
@@ -344,13 +345,14 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 	// helpers
 	//
 	protected int bindPrimaryKey(PreparedStatement ps, ReproductionCutting obj, int pos) throws SQLException {
-		DBUtil.bind(ps, pos++, obj.getBasisId());
 		DBUtil.bind(ps, pos++, obj.getDate());
-
+		DBUtil.bind(ps, pos++, obj.getBasisId());
 		return pos;
 	}
 
 	protected int bindStdColumns(PreparedStatement ps, ReproductionCutting obj, int pos) throws SQLException {
+		DBUtil.bind(ps, pos++, obj.getProduces());
+		DBUtil.bind(ps, pos++, obj.getTakeARoot());
 		return pos;
 	}
 
@@ -365,10 +367,10 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 	}
 
 	protected Connection getConn() {
-		if(conn == null) {
+		if (conn == null) {
 			conn = DBUtil.getConnection();
 		}
-		
+
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
 }

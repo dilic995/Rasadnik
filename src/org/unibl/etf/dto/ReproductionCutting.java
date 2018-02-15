@@ -6,11 +6,23 @@ import java.util.Date;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class ReproductionCutting {
+	public ReproductionCutting(Basis basis, Date date, Integer produces, Integer takeARoot, Integer basisId) {
+		this.basis = basis;
+		this.date = date;
+		this.produces = produces;
+		this.takeARoot = takeARoot;
+		this.basisId = basisId;
+	}
+
 	private Basis basis;
 	private Date date;
 	private Integer produces;
 	private Integer takeARoot;
 	private Integer basisId;
+
+	public ReproductionCutting() {
+
+	}
 
 	//
 	// getters / setters

@@ -15,6 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -109,5 +110,15 @@ public class DisplayUtil {
 		Alert alert = new Alert(AlertType.CONFIRMATION, question, ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
 		alert.showAndWait();
 		return alert.getResult();
+	}
+	public static void showMessageDialog(String message) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setHeaderText("");
+		alert.setContentText(message);
+		alert.setTitle("Obavjestenje");
+		ButtonType okButton=new ButtonType("U redu", ButtonData.OK_DONE);
+		alert.getButtonTypes().clear();
+		alert.getButtonTypes().add(okButton);
+		alert.showAndWait();
 	}
 }

@@ -72,6 +72,9 @@ public class Plant {
 	}
 
 	public Blob getImage() {
+		if(this.image == null) {
+			
+		}
 		return this.image;
 	}
 

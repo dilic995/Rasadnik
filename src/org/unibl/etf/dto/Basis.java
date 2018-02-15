@@ -6,12 +6,27 @@ import java.util.List;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class Basis {
+	public Basis(Integer basisId, Date plantingDate, Boolean active, Integer plantId, Plant plant,
+			List<ReproductionCutting> cuttings) {
+		super();
+		this.basisId = basisId;
+		this.plantingDate = plantingDate;
+		this.active = active;
+		this.plantId = plantId;
+		this.plant = plant;
+		this.cuttings = cuttings;
+	}
+
 	private Integer basisId;
 	private Date plantingDate;
 	private Boolean active;
 	private Integer plantId;
 	private Plant plant;
 	private List<ReproductionCutting> cuttings;
+	
+	
+	public Basis() {
+	}
 	
 	
 	//

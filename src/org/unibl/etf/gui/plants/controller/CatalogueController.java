@@ -2,11 +2,14 @@ package org.unibl.etf.gui.plants.controller;
 
 import java.awt.Container;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
+import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.PlantContainer;
 import org.unibl.etf.dto.PriceHeightRatio;
@@ -128,8 +131,21 @@ public class CatalogueController extends PlantBrowserController {
 	// Event Listener on Circle[#ownedIndicator].onMouseClicked
 	@FXML
 	public void setOwned(MouseEvent event) {
+		List<Basis> bases = DAOFactory.getInstance().getBasisDAO().getByPlantId(container.current().getPlantId());
 		container.current().setOwned(!container.current().getOwned());
 		DAOFactory.getInstance().getPlantDAO().update(container.current());
+		if (container.current().getOwned() && bases.size() == 0) {
+			String message = "Biljka ne postoji u maticnjaku. Zelite li da je dodate?";
+			if (DisplayUtil.showConfirmationDialog(message) == ButtonType.YES) {
+				Basis basis = new Basis(null, Calendar.getInstance().getTime(), true, container.current().getPlantId(),
+						container.current(), null);
+				if (DAOFactory.getInstance().getBasisDAO().insert(basis) > 0) {
+					DisplayUtil.showMessageDialog("Dodavanje u maticnjak uspjesno");
+				} else {
+					DisplayUtil.showMessageDialog("Dodavanje u maticnjak neuspjesno");
+				}
+			}
+		}
 		displaySelectedItem();
 	}
 

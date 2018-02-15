@@ -75,6 +75,8 @@ public class BasisTableItem {
 	}
 
 	public final IntegerProperty currentProperty() {
+		this.current = new SimpleIntegerProperty(
+				DAOFactory.getInstance().getBasisDAO().getNum(basis.getBasisId(), "number_of_plants", "region"));
 		return this.current;
 	}
 
@@ -87,6 +89,8 @@ public class BasisTableItem {
 	}
 
 	public final IntegerProperty totalProperty() {
+		this.total = new SimpleIntegerProperty(DAOFactory.getInstance().getBasisDAO().getNum(basis.getBasisId(),
+				"take_a_root", "reproduction_cutting"));
 		return this.total;
 	}
 
