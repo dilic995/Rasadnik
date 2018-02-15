@@ -206,7 +206,7 @@ public class TaskDAOImpl implements TaskDAO {
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns));
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns),PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
 
