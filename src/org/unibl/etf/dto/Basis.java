@@ -102,14 +102,7 @@ public class Basis {
 	}
 
 	public String toString() {
-		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Basis").append("(");
-
-		buffer.append("[").append("basisId").append("=").append(basisId).append("]");
-		buffer.append("[").append("plantingDate").append("=").append(plantingDate).append("]");
-		buffer.append("[").append("active").append("=").append(active).append("]");
-		buffer.append("[").append("plantId").append("=").append(plantId).append("]");
-
-		return buffer.append(")").toString();
+		return getPlant().getScientificName();
 	}
 
 	public List<ReproductionCutting> getCuttings() {

@@ -1,6 +1,7 @@
 package org.unibl.etf.gui.plants.controller;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.unibl.etf.dto.Region;
@@ -55,7 +56,7 @@ public class SelectTool extends CanvasEditor {
 
 	private Polygon selected = null;
 	private DrawRegionsController controller;
-	
+
 	@Override
 	public void invalidate() {
 		if (selected != null) {

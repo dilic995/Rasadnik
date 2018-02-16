@@ -8,71 +8,42 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="parentPane" maxHeight="-Infinity"
-	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-	onMouseClicked="#click" onMousePressed="#press" onMouseReleased="#release"
-	prefHeight="650.0" prefWidth="1200.0" stylesheets="@../../../../../../../css/catalogue.css"
-	xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="org.unibl.etf.gui.plants.controller.DrawRegionsController">
+<AnchorPane fx:id="parentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#click" onMousePressed="#press" onMouseReleased="#release" prefHeight="650.0" prefWidth="1200.0" stylesheets="@../../../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.plants.controller.DrawRegionsController">
 	<children>
-		<AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="200.0"
-			prefWidth="200.0" styleClass="toolbarPane" AnchorPane.leftAnchor="0.0"
-			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		<AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" styleClass="toolbarPane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<children>
-				<ToolBar id="toolbar" layoutX="28.0" prefHeight="40.0"
-					prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
-					AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-					AnchorPane.topAnchor="0.0">
+				<ToolBar id="toolbar" layoutX="28.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 					<items>
-						<Button id="left-button" fx:id="btnSetSelectTool"
-							mnemonicParsing="false" onAction="#setSelectTool" text="S" />
-						<Button id="left-button" fx:id="btnSetPolygonTool"
-							mnemonicParsing="false" onAction="#setPolygonTool" text="P" />
+						<Button id="left-button" fx:id="btnSetSelectTool" mnemonicParsing="false" onAction="#setSelectTool" text="S" />
+						<Button id="left-button" fx:id="btnSetPolygonTool" mnemonicParsing="false" onAction="#setPolygonTool" text="P" />
 					</items>
 				</ToolBar>
 			</children>
 		</AnchorPane>
-		<ScrollPane layoutY="40.0" AnchorPane.bottomAnchor="60.0"
-			AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0"
-			AnchorPane.topAnchor="40.0">
+		<ScrollPane layoutY="40.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="40.0">
 			<content>
-				<AnchorPane id="border-pane" prefHeight="620.0"
-					prefWidth="1000.0">
+				<AnchorPane id="border-pane" prefHeight="620.0" prefWidth="1000.0">
 					<children>
 						<Group fx:id="elements" />
 					</children>
 				</AnchorPane>
 			</content>
 		</ScrollPane>
-		<AnchorPane layoutX="720.0" layoutY="561.0" styleClass="buttonPane"
-			AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-			AnchorPane.rightAnchor="0.0">
+		<AnchorPane layoutX="720.0" layoutY="561.0" styleClass="buttonPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
 			<children>
-				<Button fx:id="btnSave" mnemonicParsing="false" onAction="#save"
-					text="Sacuvajte" AnchorPane.bottomAnchor="14.0"
-					AnchorPane.rightAnchor="14.0" />
+				<Button fx:id="btnSave" mnemonicParsing="false" onAction="#save" text="Sacuvajte" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
 			</children>
 		</AnchorPane>
-		<AnchorPane id="center-pane" layoutX="957.0" layoutY="51.0"
-			prefHeight="200.0" prefWidth="400.0" AnchorPane.bottomAnchor="60.0"
-			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
+		<AnchorPane id="center-pane" layoutX="957.0" layoutY="51.0" maxWidth="400.0" minWidth="400.0" prefHeight="200.0" prefWidth="400.0" AnchorPane.bottomAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
 			<children>
-				<AnchorPane layoutX="74.0" layoutY="52.0" prefHeight="256.0"
-					prefWidth="256.0" style="-fx-border-color: #d9d9d9;"
-					AnchorPane.leftAnchor="74.0" AnchorPane.rightAnchor="74.0">
+				<AnchorPane layoutX="74.0" layoutY="52.0" prefHeight="256.0" prefWidth="256.0" style="-fx-border-color: #d9d9d9;" AnchorPane.rightAnchor="74.0">
 					<children>
-						<ImageView fx:id="imgPhoto" fitHeight="250.0" fitWidth="250.0"
-							pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="3.0"
-							AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0"
-							AnchorPane.topAnchor="3.0" />
+						<ImageView fx:id="imgPhoto" fitHeight="250.0" fitWidth="250.0" layoutX="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
 					</children>
 				</AnchorPane>
-				<Label fx:id="lblRegion" layoutX="73.0" layoutY="21.0"
-					style="-fx-alignment: CENTER; -fx-font-size: 14; -fx-font-family: arial; -fx-font-weight: bold;"
-					AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0" />
-				<Label fx:id="lblName" layoutX="190.0" layoutY="319.0"
-					style="-fx-alignment: center; -fx-font-weight: bold; -fx-font-family: arial;"
-					AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+				<Label fx:id="lblRegion" layoutX="73.0" layoutY="21.0" style="-fx-alignment: CENTER; -fx-font-size: 14; -fx-font-family: arial; -fx-font-weight: bold;" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="73.0" />
+				<Label fx:id="lblName" layoutX="190.0" layoutY="319.0" style="-fx-alignment: center; -fx-font-weight: bold; -fx-font-family: arial;" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label fx:id="lblPlantsNum" layoutX="68.0" layoutY="351.0" prefHeight="17.0" AnchorPane.leftAnchor="68.0" />
 			</children>
 		</AnchorPane>
 	</children>

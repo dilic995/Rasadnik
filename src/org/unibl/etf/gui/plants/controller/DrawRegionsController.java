@@ -1,6 +1,7 @@
 package org.unibl.etf.gui.plants.controller;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,7 +43,9 @@ public class DrawRegionsController extends BaseController {
 	private Label lblRegion;
 	@FXML
 	private Label lblName;
-
+	@FXML
+	private Label lblPlantsNum;
+	
 	private CanvasEditor canvasEditor;
 
 	@FXML
@@ -104,17 +108,19 @@ public class DrawRegionsController extends BaseController {
 	public void displayInfo(Region region) {
 		setValues(DisplayUtil.convertFromBlob(region.getBasis().getPlant().getImage()),
 				"REGION " + region.getRegionId(), region.getBasis().getPlant().getScientificName() + " ("
-						+ region.getBasis().getPlant().getKnownAs() + ")");
+						+ region.getBasis().getPlant().getKnownAs() + ")", 
+						"Broj biljaka: " + region.getNumberOfPlants());
 	}
 
 	public void clear() {
-		setValues(null, "", "");
+		setValues(null, "", "", "");
 	}
 
-	private void setValues(Image image, String region, String name) {
+	private void setValues(Image image, String region, String name, String num) {
 		imgPhoto.setImage(image);
 		lblRegion.setText(region);
 		lblName.setText(name);
+		lblPlantsNum.setText(num);
 	}
 
 	private Map<Polygon, Region> regionsMap;

@@ -115,6 +115,12 @@ public class Region {
 	}
 
 	public void setCoords(Double[] coords) {
-		this.coords = coords;
+		this.coords = new Double[8];
+		for(int i=0 ; i <8 ; i++) {
+			this.coords[i] = coords[i].doubleValue();
+		}
+	}
+	public boolean contains(Double x, Double y) {
+		
 	}
 }
