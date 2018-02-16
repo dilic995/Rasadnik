@@ -27,4 +27,6 @@ public interface PricelistHasPlantDAO {
 	public List<PricelistHasPlant> getByPricelistId(Integer pricelistId);
 
 	public List<PricelistHasPlant> getByPlantId(Integer plantId);
+	
+	public List<PricelistHasPlant> getByDeleted(Boolean deleted);
 }

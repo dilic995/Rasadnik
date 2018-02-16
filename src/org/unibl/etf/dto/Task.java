@@ -12,7 +12,7 @@ public class Task {
 	private Boolean done;
 	private Integer regionId;
 	private Region region;
-	private Boolean isDeleted;
+	private Boolean deleted;
 	private Integer plantMaintanceActivityId;
 	private PlantMaintanceActivity plantMaintanceActivity;
 
@@ -51,12 +51,12 @@ public class Task {
 		this.done = done;
 	}
 
-	public Boolean getIsDeleted() {
-		return isDeleted;
+	public Boolean getDeleted() {
+		return deleted;
 	}
 
-	public void setIsDeleted(Boolean isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public Region getRegion() {
@@ -133,7 +133,7 @@ public class Task {
 		buffer.append("[").append("dateFrom").append("=").append(dateFrom).append("]");
 		buffer.append("[").append("dateTo").append("=").append(dateTo).append("]");
 		buffer.append("[").append("done").append("=").append(done).append("]");
-		buffer.append("[").append("isDeleted").append("=").append(isDeleted).append("]");
+		buffer.append("[").append("isDeleted").append("=").append(deleted).append("]");
 		buffer.append("[").append("regionId").append("=").append(regionId).append("]");
 		buffer.append("[").append("plantMaintanceActivityId").append("=").append(plantMaintanceActivityId).append("]");
 

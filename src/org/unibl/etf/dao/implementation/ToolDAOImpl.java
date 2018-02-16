@@ -30,6 +30,7 @@ public class ToolDAOImpl implements ToolDAO
 		stdColumns.add("tool_name");
 		stdColumns.add("count");
 		stdColumns.add("is_machine");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -322,6 +323,29 @@ public class ToolDAOImpl implements ToolDAO
 
 		return ret;
 	}
+	
+	@Override
+	public List<Tool> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Tool> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(
+					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -336,6 +360,7 @@ public class ToolDAOImpl implements ToolDAO
 		DBUtil.bind(ps, pos++, obj.getToolName());
 		DBUtil.bind(ps, pos++, obj.getCount());
 		DBUtil.bind(ps, pos++, obj.getIsMachine());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 
 		return pos;
 	}
@@ -347,6 +372,7 @@ public class ToolDAOImpl implements ToolDAO
 		obj.setToolName(DBUtil.getString(rs, "tool_name"));
 		obj.setCount(DBUtil.getInt(rs, "count"));
 		obj.setIsMachine(DBUtil.getBooleanObject(rs, "is_machine"));
+		obj.setDeleted(DBUtil.getBooleanObject(rs, "deleted"));
 		return obj;
 	}
 

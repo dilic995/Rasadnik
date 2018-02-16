@@ -31,4 +31,6 @@ public interface EventDAO {
 	public List<Event> getByDate(Date date);
 
 	public List<Event> getByDone(Boolean done);
+	
+	public List<Event> getByDeleted(Boolean deleted);
 }

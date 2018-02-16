@@ -14,6 +14,7 @@ public class PriceHeightRatio {
 	private Date dateFrom;
 	private Integer plantId;
 	private Plant plant;
+	private Boolean deleted;
 
 	//
 	// constuctors
@@ -85,6 +86,14 @@ public class PriceHeightRatio {
 	public void setPlantId(Integer plantId) {
 		this.plantId = plantId;
 		this.plant = null;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public Plant getPlant() {

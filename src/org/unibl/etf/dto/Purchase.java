@@ -14,6 +14,7 @@ public class Purchase {
 	private Boolean paidOff;
 	private Customer customer;
 	private Integer customerId;
+	private Boolean deleted;
 
 	//
 	// getters / setters
@@ -24,6 +25,18 @@ public class Purchase {
 
 	public Integer getCustomerId() {
 		return customerId;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	public void setPurchaseId(Integer purchaseId) {
+		this.purchaseId = purchaseId;
 	}
 
 	public void setCustomerId(Integer customerId) {

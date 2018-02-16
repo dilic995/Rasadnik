@@ -29,6 +29,7 @@ public class PlantDAOImpl implements PlantDAO {
 		stdColumns.add("image");
 		stdColumns.add("is_conifer");
 		stdColumns.add("owned");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -410,6 +411,29 @@ public class PlantDAOImpl implements PlantDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<Plant> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Plant> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -427,6 +451,7 @@ public class PlantDAOImpl implements PlantDAO {
 		DBUtil.bind(ps, pos++, obj.getImage());
 		DBUtil.bind(ps, pos++, obj.getIsConifer());
 		DBUtil.bind(ps, pos++, obj.getOwned());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 
 		return pos;
 	}
@@ -441,6 +466,7 @@ public class PlantDAOImpl implements PlantDAO {
 		obj.setImage(DBUtil.getBlob(rs, "image"));
 		obj.setIsConifer(DBUtil.getBoolean(rs, "is_conifer"));
 		obj.setOwned(DBUtil.getBoolean(rs, "owned"));
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 
 		return obj;
 	}

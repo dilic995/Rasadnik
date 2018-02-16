@@ -25,6 +25,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		stdColumns.add("date_from");
 		stdColumns.add("date_to");
 		stdColumns.add("active");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -321,6 +322,29 @@ public class PricelistDAOImpl implements PricelistDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<Pricelist> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Pricelist> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -335,6 +359,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		DBUtil.bind(ps, pos++, obj.getDateFrom());
 		DBUtil.bind(ps, pos++, obj.getDateTo());
 		DBUtil.bind(ps, pos++, obj.getActive());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 
 		return pos;
 	}
@@ -346,6 +371,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		obj.setDateFrom(DBUtil.getDate(rs, "date_from"));
 		obj.setDateTo(DBUtil.getDate(rs, "date_to"));
 		obj.setActive(DBUtil.getBoolean(rs, "active"));
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 
 		return obj;
 	}

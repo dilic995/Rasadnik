@@ -30,6 +30,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		stdColumns.add("description");
 		stdColumns.add("amount");
 		stdColumns.add("up_to_date_service");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -378,6 +379,35 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<ToolMaintanceActivity> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<ToolMaintanceActivity> ret = new ArrayList<>();
+
+		try {
+			if (null == deleted) {
+				ps = getConn().prepareStatement(
+						DBUtil.selectNull(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			} else {
+				ps = getConn().prepareStatement(
+						DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+				DBUtil.bind(ps, 1, deleted);
+			}
+
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -393,6 +423,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		DBUtil.bind(ps, pos++, obj.getDescription());
 		DBUtil.bind(ps, pos++, obj.getAmount());
 		DBUtil.bind(ps, pos++, obj.getUpToDateService());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 
 		return pos;
 	}
@@ -406,6 +437,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 		obj.setDescription(DBUtil.getString(rs, "description"));
 		obj.setAmount(DBUtil.getBigDecimal(rs, "amount"));
 		obj.setUpToDateService(DBUtil.getBooleanObject(rs, "up_to_date_service"));
+		obj.setDeleted(DBUtil.getBooleanObject(rs, "deleted"));
 
 		return obj;
 	}

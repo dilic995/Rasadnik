@@ -14,6 +14,7 @@ public class EmployeeHasTask {
 	private Task task;
 	private Integer employeeId;
 	private Employee employee;
+	private Boolean deleted;
 
 	//
 	// getters / setters
@@ -29,6 +30,14 @@ public class EmployeeHasTask {
 
 	public Integer getHours() {
 		return this.hours;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public void setHours(Integer hours) {

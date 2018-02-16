@@ -14,6 +14,7 @@ public class Plant {
 	private Blob image;
 	private Boolean isConifer;
 	private Boolean owned;
+	private Boolean deleted;
 	private List<PriceHeightRatio> ratios;
 
 	//
@@ -98,6 +99,12 @@ public class Plant {
 		this.isConifer = isConifer;
 	}
 
+	public Boolean getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

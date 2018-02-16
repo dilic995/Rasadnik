@@ -22,11 +22,13 @@ public interface ToolDAO {
 	public Integer insert(Tool obj);
 
 	public Integer delete(Tool obj);
-	
-	public List<Tool> getByIsMachine(Boolean isMachine);
 
 	// Finders
 	public List<Tool> getByToolName(String toolName);
 
 	public List<Tool> getByCount(Integer count);
+	
+	public List<Tool> getByIsMachine(Boolean isMachine);
+	
+	public List<Tool> getByDeleted(Boolean deleted);
 }

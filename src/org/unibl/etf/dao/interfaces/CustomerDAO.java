@@ -30,4 +30,6 @@ public interface CustomerDAO {
 	public List<Customer> getByAddress(String address);
 
 	public List<Customer> getByIsSupplier(Boolean isSupplier);
+	
+	public List<Customer> getByIsDeleted(Boolean deleted);
 }

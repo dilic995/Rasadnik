@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`plant` (
   `image` MEDIUMBLOB NOT NULL,
   `is_conifer` TINYINT NOT NULL DEFAULT 0,
   `owned` TINYINT NOT NULL DEFAULT 0,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`plant_id`))
 ENGINE = InnoDB;
 
@@ -39,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`price_height_ratio` (
   `height_max` DECIMAL(10,2) NULL,
   `price` DECIMAL(10,2) NOT NULL,
   `active` TINYINT NOT NULL,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`date_from`, `height_min`, `plant_id`),
   CONSTRAINT `fk_price_height_ratio_plant`
     FOREIGN KEY (`plant_id`)
@@ -54,7 +56,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`basis` (
   `basis_id` INT NOT NULL AUTO_INCREMENT,
   `planting_date` DATE NOT NULL,
-  `active` TINYINT NOT NULL DEFAULT 1,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   `plant_id` INT NOT NULL,
   PRIMARY KEY (`basis_id`),
   INDEX `fk_basis_plant1_idx` (`plant_id` ASC),
@@ -74,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`reproduction_cutting` (
   `basis_id` INT NOT NULL,
   `produces` INT NOT NULL DEFAULT 0,
   `take_a_root` INT NOT NULL DEFAULT 0,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`basis_id`, `date`),
   CONSTRAINT `fk_reproduction_cutting_basis1`
     FOREIGN KEY (`basis_id`)
@@ -97,6 +100,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`region` (
   `y3` DOUBLE NOT NULL,
   `x4` DOUBLE NOT NULL,
   `y4` DOUBLE NOT NULL,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   `basis_id` INT NOT NULL,
   PRIMARY KEY (`region_id`),
   INDEX `fk_region_basis1_idx` (`basis_id` ASC),
@@ -126,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`task` (
   `date_from` DATE NOT NULL,
   `date_to` DATE NULL,
   `done` TINYINT NOT NULL DEFAULT 0,
-  `is_deleted` TINYINT NOT NULL DEFAULT 0,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   `region_id` INT NOT NULL,
   `plant_maintance_activity_id` INT NOT NULL,
   INDEX `fk_region_has_maintance_activity_maintance_activity1_idx` (`plant_maintance_activity_id` ASC),
@@ -152,7 +156,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`employee` (
   `employee_id` INT NOT NULL AUTO_INCREMENT,
   `first_name` VARCHAR(75) NOT NULL,
   `last_name` VARCHAR(100) NOT NULL,
-  `is_deleted` TINYINT NOT NULL DEFAULT 0,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`employee_id`))
 ENGINE = InnoDB;
 
@@ -165,6 +169,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`pricelist` (
   `date_from` DATE NOT NULL,
   `date_to` DATE NULL,
   `active` TINYINT NOT NULL,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`pricelist_id`))
 ENGINE = InnoDB;
 
@@ -175,6 +180,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`pricelist_has_plant` (
   `pricelist_id` INT NOT NULL,
   `plant_id` INT NOT NULL,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`pricelist_id`, `plant_id`),
   INDEX `fk_pricelist_has_plant_plant1_idx` (`plant_id` ASC),
   INDEX `fk_pricelist_has_plant_pricelist1_idx` (`pricelist_id` ASC),
@@ -201,6 +207,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`employee_has_task` (
   `hourly_wage` DECIMAL(10,2) NOT NULL,
   `hours` INT NOT NULL,
   `paid_off` TINYINT NOT NULL,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`date`, `task_id`, `employee_id`),
   INDEX `fk_task_has_employee_employee1_idx` (`employee_id` ASC),
   INDEX `fk_task_has_employee_task1_idx` (`task_id` ASC),
@@ -226,6 +233,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`customer` (
   `last_name` VARCHAR(100) NOT NULL,
   `address` VARCHAR(150) NOT NULL,
   `is_supplier` TINYINT NOT NULL DEFAULT 0,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`customer_id`))
 ENGINE = InnoDB;
 
@@ -239,6 +247,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`purchase` (
   `description` VARCHAR(500) NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
   `paid_off` TINYINT NOT NULL DEFAULT 0,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   `customer_id` INT NOT NULL,
   PRIMARY KEY (`purchase_id`),
   INDEX `fk_purchase_customer1_idx` (`customer_id` ASC),
@@ -258,6 +267,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`sale` (
   `date` DATE NOT NULL,
   `price` DECIMAL(10,2) NOT NULL DEFAULT 0,
   `paid_off` TINYINT NOT NULL,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   `customer_id` INT NOT NULL,
   PRIMARY KEY (`sale_id`),
   INDEX `fk_sale_customer1_idx` (`customer_id` ASC),
@@ -301,6 +311,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`transaction` (
   `amount` DECIMAL(10,2) NOT NULL,
   `type` TINYINT NOT NULL,
   `description` VARCHAR(500) NOT NULL,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`transaction_id`))
 ENGINE = InnoDB;
 
@@ -314,6 +325,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`event` (
   `description` VARCHAR(500) NOT NULL,
   `date` DATE NOT NULL,
   `done` TINYINT NOT NULL,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`event_id`))
 ENGINE = InnoDB;
 
@@ -326,6 +338,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool` (
   `tool_name` VARCHAR(100) NOT NULL,
   `count` INT NOT NULL DEFAULT 0,
   `is_machine` TINYINT NOT NULL,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`tool_id`),
   UNIQUE INDEX `tool_name_UNIQUE` (`tool_name` ASC))
 ENGINE = InnoDB;
@@ -347,7 +360,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool_item` (
   `tool_item_id` INT NOT NULL AUTO_INCREMENT,
   `next_service_date` DATE NOT NULL,
-  `is_deleted` TINYINT NOT NULL DEFAULT 0,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   `tool_id` INT NOT NULL,
   `item_condition_id` INT NOT NULL,
   PRIMARY KEY (`tool_item_id`),
@@ -375,6 +388,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool_maintance_activity` (
   `description` VARCHAR(500) NOT NULL,
   `amount` DECIMAL(10,2) NOT NULL,
   `up_to_date_service` TINYINT NOT NULL DEFAULT 0,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`date`, `tool_item_id`),
   INDEX `fk_tool_maintance_activity_tool_item1_idx` (`tool_item_id` ASC),
   CONSTRAINT `fk_tool_maintance_activity_tool_item1`

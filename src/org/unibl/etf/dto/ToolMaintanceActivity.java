@@ -14,6 +14,7 @@ public class ToolMaintanceActivity {
 	private ToolItem toolItem;
 	private Integer toolItemId;
 	private Boolean upToDateService;
+	private Boolean deleted;
 
 	//
 	// getters / setters
@@ -28,6 +29,14 @@ public class ToolMaintanceActivity {
 
 	public Date getDate() {
 		return this.date;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public void setDate(Date date) {

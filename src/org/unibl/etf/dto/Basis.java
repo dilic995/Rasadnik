@@ -6,12 +6,11 @@ import java.util.List;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class Basis {
-	public Basis(Integer basisId, Date plantingDate, Boolean active, Integer plantId, Plant plant,
+	public Basis(Integer basisId, Date plantingDate, Integer plantId, Plant plant,
 			List<ReproductionCutting> cuttings) {
 		super();
 		this.basisId = basisId;
 		this.plantingDate = plantingDate;
-		this.active = active;
 		this.plantId = plantId;
 		this.plant = plant;
 		this.cuttings = cuttings;
@@ -19,10 +18,10 @@ public class Basis {
 
 	private Integer basisId;
 	private Date plantingDate;
-	private Boolean active;
 	private Integer plantId;
 	private Plant plant;
 	private List<ReproductionCutting> cuttings;
+	private Boolean deleted;
 	
 	
 	public Basis() {
@@ -48,14 +47,6 @@ public class Basis {
 		this.plantingDate = plantingDate;
 	}
 
-	public Boolean getActive() {
-		return this.active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-
 	public Integer getPlantId() {
 		return this.plantId;
 	}
@@ -64,6 +55,16 @@ public class Basis {
 		this.plantId = plantId;
 		this.plant = null;
 	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
 
 	public Plant getPlant() {
 		if (this.plant == null) {
@@ -106,7 +107,6 @@ public class Basis {
 
 		buffer.append("[").append("basisId").append("=").append(basisId).append("]");
 		buffer.append("[").append("plantingDate").append("=").append(plantingDate).append("]");
-		buffer.append("[").append("active").append("=").append(active).append("]");
 		buffer.append("[").append("plantId").append("=").append(plantId).append("]");
 
 		return buffer.append(")").toString();

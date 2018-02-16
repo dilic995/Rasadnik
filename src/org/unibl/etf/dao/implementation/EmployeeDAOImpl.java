@@ -24,7 +24,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		pkColumns.add("employee_id");
 		stdColumns.add("first_name");
 		stdColumns.add("last_name");
-		stdColumns.add("is_deleted");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -315,7 +315,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 		try {
 			ps = getConn()
-					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_deleted" })));
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
 			DBUtil.bind(ps, 1, isDeleted);
 			rs = ps.executeQuery();
 
@@ -342,7 +342,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	protected int bindStdColumns(PreparedStatement ps, Employee obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getFirstName());
 		DBUtil.bind(ps, pos++, obj.getLastName());
-		DBUtil.bind(ps, pos++, obj.getIsDeleted());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 
 		return pos;
 	}
@@ -353,7 +353,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		obj.setEmployeeId(DBUtil.getInt(rs, "employee_id"));
 		obj.setFirstName(DBUtil.getString(rs, "first_name"));
 		obj.setLastName(DBUtil.getString(rs, "last_name"));
-		obj.setIsDeleted(DBUtil.getBooleanObject(rs, "is_deleted"));
+		obj.setDeleted(DBUtil.getBooleanObject(rs, "deleted"));
 
 		return obj;
 	}

@@ -8,6 +8,7 @@ public class Transaction {
 	private BigDecimal amount;
 	private Boolean type;
 	private String description;
+	private Boolean deleted;
 
 	//
 	// getters / setters
@@ -18,6 +19,14 @@ public class Transaction {
 
 	public void setTransactionId(Integer transactionId) {
 		this.transactionId = transactionId;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public BigDecimal getAmount() {

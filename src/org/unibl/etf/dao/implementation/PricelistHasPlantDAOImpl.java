@@ -24,6 +24,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 	static {
 		pkColumns.add("pricelist_id");
 		pkColumns.add("plant_id");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -291,6 +292,29 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<PricelistHasPlant> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<PricelistHasPlant> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -303,6 +327,8 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 	}
 
 	protected int bindStdColumns(PreparedStatement ps, PricelistHasPlant obj, int pos) throws SQLException {
+		DBUtil.bind(ps, pos++, obj.getDeleted());
+		
 		return pos;
 	}
 
@@ -311,7 +337,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 
 		obj.setPricelistId((DBUtil.getInt(rs, "pricelist_id")));
 		obj.setPlantId((DBUtil.getInt(rs, "plant_id")));
-		
+		obj.setDeleted((DBUtil.getBoolean(rs, "deleted")));
 
 		return obj;
 	}

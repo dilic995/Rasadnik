@@ -9,6 +9,7 @@ public class PricelistHasPlant {
 	private Plant plant;
 	private Integer pricelistId;
 	private Integer plantId;
+	private Boolean deleted;
 
 	//
 	// getters / setters
@@ -29,6 +30,14 @@ public class PricelistHasPlant {
 	public void setPlantId(Integer plantId) {
 		this.plantId = plantId;
 		this.plant = null;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public Pricelist getPricelist() {

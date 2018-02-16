@@ -29,6 +29,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		stdColumns.add("height_max");
 		stdColumns.add("price");
 		stdColumns.add("active");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -408,6 +409,29 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<PriceHeightRatio> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<PriceHeightRatio> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -424,6 +448,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		DBUtil.bind(ps, pos++, obj.getHeightMax());
 		DBUtil.bind(ps, pos++, obj.getPrice());
 		DBUtil.bind(ps, pos++, obj.getActive());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 
 		return pos;
 	}
@@ -437,6 +462,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		obj.setHeightMax(DBUtil.getBigDecimal(rs, "height_max"));
 		obj.setPrice(DBUtil.getBigDecimal(rs, "price"));
 		obj.setActive(DBUtil.getBoolean(rs, "active"));
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 
 		return obj;
 	}

@@ -29,6 +29,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 		stdColumns.add("hourly_wage");
 		stdColumns.add("hours");
 		stdColumns.add("paid_off");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -397,6 +398,29 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<EmployeeHasTask> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<EmployeeHasTask> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -413,6 +437,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 		DBUtil.bind(ps, pos++, obj.getHourlyWage());
 		DBUtil.bind(ps, pos++, obj.getHours());
 		DBUtil.bind(ps, pos++, obj.getPaidOff());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 
 		return pos;
 	}
@@ -426,6 +451,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 		obj.setHourlyWage(DBUtil.getBigDecimal(rs, "hourly_wage"));
 		obj.setHours(DBUtil.getInt(rs, "hours"));
 		obj.setPaidOff(DBUtil.getBoolean(rs, "paid_off"));
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 
 		return obj;
 	}

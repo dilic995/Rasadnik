@@ -7,6 +7,7 @@ public class Pricelist {
 	private Date dateFrom;
 	private Date dateTo;
 	private Boolean active;
+	private Boolean deleted;
 
 	//
 	// getters / setters
@@ -21,6 +22,14 @@ public class Pricelist {
 
 	public Date getDateFrom() {
 		return this.dateFrom;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public void setDateFrom(Date dateFrom) {

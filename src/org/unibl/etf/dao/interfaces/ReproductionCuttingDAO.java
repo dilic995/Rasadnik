@@ -32,4 +32,6 @@ public interface ReproductionCuttingDAO {
 	public List<ReproductionCutting> getByProduces(Integer produces);
 	
 	public List<ReproductionCutting> getByTakeARoot(Integer takeARoot);
+	
+	public List<ReproductionCutting> getByDeleted(Boolean deleted);
 }
