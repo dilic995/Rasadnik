@@ -27,6 +27,7 @@ public class EventDAOImpl implements EventDAO {
 		stdColumns.add("description");
 		stdColumns.add("date");
 		stdColumns.add("done");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -359,6 +360,29 @@ public class EventDAOImpl implements EventDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<Event> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Event> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -374,6 +398,7 @@ public class EventDAOImpl implements EventDAO {
 		DBUtil.bind(ps, pos++, obj.getDescription());
 		DBUtil.bind(ps, pos++, obj.getDate());
 		DBUtil.bind(ps, pos++, obj.getDone());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 
 		return pos;
 	}
@@ -386,6 +411,7 @@ public class EventDAOImpl implements EventDAO {
 		obj.setDescription(DBUtil.getString(rs, "description"));
 		obj.setDate(DBUtil.getDate(rs, "date"));
 		obj.setDone(DBUtil.getBoolean(rs, "done"));
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 
 		return obj;
 	}

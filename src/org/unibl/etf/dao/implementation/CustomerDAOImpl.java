@@ -26,6 +26,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		stdColumns.add("last_name");
 		stdColumns.add("address");
 		stdColumns.add("is_supplier");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -358,6 +359,29 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<Customer> getByIsDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Customer> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(
+					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -373,6 +397,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		DBUtil.bind(ps, pos++, obj.getLastName());
 		DBUtil.bind(ps, pos++, obj.getAddress());
 		DBUtil.bind(ps, pos++, obj.getIsSupplier());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 
 		return pos;
 	}
@@ -385,6 +410,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		obj.setLastName(DBUtil.getString(rs, "last_name"));
 		obj.setAddress(DBUtil.getString(rs, "address"));
 		obj.setIsSupplier(DBUtil.getBoolean(rs, "is_supplier"));
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 
 		return obj;
 	}

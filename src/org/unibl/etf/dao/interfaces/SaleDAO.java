@@ -33,4 +33,6 @@ public interface SaleDAO {
 	public List<Sale> getByPaidOff(Boolean paidOff);
 
 	public List<Sale> getByCustomer(Integer customerId);
+	
+	public List<Sale> getByDeleted(Boolean deleted);
 }

@@ -8,6 +8,7 @@ public class Event {
 	private String description;
 	private Date date;
 	private Boolean done;
+	private Boolean deleted;
 
 	//
 	// getters / setters
@@ -22,6 +23,14 @@ public class Event {
 
 	public String getName() {
 		return this.name;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public void setName(String name) {

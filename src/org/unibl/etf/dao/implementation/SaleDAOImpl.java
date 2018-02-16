@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.SaleDAO;
 import org.unibl.etf.dto.Sale;
 
@@ -29,6 +28,7 @@ public class SaleDAOImpl implements SaleDAO {
 		stdColumns.add("date");
 		stdColumns.add("price");
 		stdColumns.add("paid_off");
+		stdColumns.add("deleted");
 		stdColumns.add("customer_id");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
@@ -349,6 +349,29 @@ public class SaleDAOImpl implements SaleDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<Sale> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Sale> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -363,6 +386,7 @@ public class SaleDAOImpl implements SaleDAO {
 		DBUtil.bind(ps, pos++, obj.getDate());
 		DBUtil.bind(ps, pos++, obj.getPrice());
 		DBUtil.bind(ps, pos++, obj.getPaidOff());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 		DBUtil.bind(ps, pos++, obj.getCustomerId());
 
 		return pos;
@@ -375,6 +399,7 @@ public class SaleDAOImpl implements SaleDAO {
 		obj.setDate(DBUtil.getDate(rs, "date"));
 		obj.setPrice(DBUtil.getBigDecimal(rs, "price"));
 		obj.setPaidOff(DBUtil.getBooleanObject(rs, "paid_off"));
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 		obj.setCustomerId((DBUtil.getInt(rs, "customer_id")));
 		return obj;
 	}

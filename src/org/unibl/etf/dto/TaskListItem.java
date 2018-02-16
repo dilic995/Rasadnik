@@ -32,7 +32,7 @@ public class TaskListItem {
 	}
 
 	public Boolean getIsDeleted() {
-		return this.task.getIsDeleted();
+		return this.task.getDeleted();
 	}
 
 	public Integer getRegionId() {
@@ -69,7 +69,7 @@ public class TaskListItem {
 	}
 
 	public void setIsDeleted(Boolean isDeleted) {
-		this.task.setIsDeleted(isDeleted);
+		this.task.setDeleted(isDeleted);
 		this.changed = true;
 	}
 

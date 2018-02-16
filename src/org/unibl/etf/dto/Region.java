@@ -10,6 +10,7 @@ public class Region {
 	private Basis basis;
 	private Integer basisId;
 	private Double[] coords;
+	private Boolean deleted;
 
 	public Region() {
 		// TODO Auto-generated constructor stub
@@ -38,6 +39,14 @@ public class Region {
 
 	public Integer getRegionId() {
 		return this.regionId;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public void setRegionId(Integer regionId) {

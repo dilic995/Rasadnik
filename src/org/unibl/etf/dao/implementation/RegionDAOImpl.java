@@ -32,6 +32,7 @@ public class RegionDAOImpl implements RegionDAO {
 		stdColumns.add("y3");
 		stdColumns.add("x4");
 		stdColumns.add("y4");
+		stdColumns.add("deleted");
 		stdColumns.add("basis_id");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
@@ -299,6 +300,29 @@ public class RegionDAOImpl implements RegionDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<Region> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Region> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -315,6 +339,7 @@ public class RegionDAOImpl implements RegionDAO {
 		for(int i=0 ; i<8 ; i++) {
 			DBUtil.bind(ps, pos++, obj.getCoords()[i]);
 		}
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 		DBUtil.bind(ps, pos++, obj.getBasisId());
 		
 		return pos;
@@ -325,7 +350,6 @@ public class RegionDAOImpl implements RegionDAO {
 
 		obj.setRegionId(DBUtil.getInt(rs, "region_id"));
 		obj.setNumberOfPlants(DBUtil.getInt(rs, "number_of_plants"));
-		obj.setBasisId(DBUtil.getInt(rs, "basis_id"));
 		obj.setCoords(new Double[] {
 				DBUtil.getDouble(rs, "x1"),
 				DBUtil.getDouble(rs, "y1"),
@@ -336,6 +360,8 @@ public class RegionDAOImpl implements RegionDAO {
 				DBUtil.getDouble(rs, "x4"),
 				DBUtil.getDouble(rs, "y4"),
 		});
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
+		obj.setBasisId(DBUtil.getInt(rs, "basis_id"));
 		return obj;
 	}
 

@@ -4,7 +4,7 @@ public class Employee {
 	private Integer employeeId;
 	private String firstName;
 	private String lastName;
-	private Boolean isDeleted;
+	private Boolean deleted;
 
 	public Employee() {
 		super();
@@ -44,12 +44,12 @@ public class Employee {
 		this.lastName = lastName;
 	}
 
-	public Boolean getIsDeleted() {
-		return isDeleted;
+	public Boolean getDeleted() {
+		return deleted;
 	}
 
-	public void setIsDeleted(Boolean isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class Employee {
 		buffer.append("[").append("employeeId").append("=").append(employeeId).append("]");
 		buffer.append("[").append("firstName").append("=").append(firstName).append("]");
 		buffer.append("[").append("lastName").append("=").append(lastName).append("]");
-		buffer.append("[").append("isDeleted").append("=").append(isDeleted).append("]");
+		buffer.append("[").append("isDeleted").append("=").append(deleted).append("]");
 
 		return buffer.append(")").toString();
 	}

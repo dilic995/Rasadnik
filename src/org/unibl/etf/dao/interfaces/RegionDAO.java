@@ -27,4 +27,6 @@ public interface RegionDAO {
 	public List<Region> getByNumberOfPlants(Integer numberOfPlants);
 
 	public List<Region> getByBasis(Integer basisId);
+	
+	public List<Region> getByDeleted(Boolean deleted);
 }

@@ -81,7 +81,7 @@ public class EmployeeTableItem {
 		this.lastName.set(lastName);
 	}
 	public void setIsDeleted(Boolean isDeleted) {
-		this.employee.setIsDeleted(isDeleted);
+		this.employee.setDeleted(isDeleted);
 	}
 	
 	public void update() throws DAOException {

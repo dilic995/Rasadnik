@@ -29,4 +29,6 @@ public interface PricelistDAO {
 	public List<Pricelist> getByDateTo(Date dateTo);
 
 	public List<Pricelist> getByActive(Boolean active);
+	
+	public List<Pricelist> getByDeleted(Boolean deleted);
 }

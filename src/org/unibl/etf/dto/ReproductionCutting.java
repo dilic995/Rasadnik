@@ -19,6 +19,7 @@ public class ReproductionCutting {
 	private Integer produces;
 	private Integer takeARoot;
 	private Integer basisId;
+	private Boolean deleted;
 
 	public ReproductionCutting() {
 
@@ -69,6 +70,14 @@ public class ReproductionCutting {
 
 	public void setTakeARoot(Integer takeARoot) {
 		this.takeARoot = takeARoot;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override

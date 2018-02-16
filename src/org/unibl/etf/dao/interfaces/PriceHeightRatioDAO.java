@@ -36,4 +36,6 @@ public interface PriceHeightRatioDAO {
 	public List<PriceHeightRatio> getByPrice(BigDecimal price);
 
 	public List<PriceHeightRatio> getByActive(Boolean active);
+	
+	public List<PriceHeightRatio> getByDeleted(Boolean deleted);
 }

@@ -6,6 +6,7 @@ public class Customer {
 	private String lastName;
 	private String address;
 	private Boolean isSupplier;
+	private Boolean deleted;
 
 	//
 	// getters / setters
@@ -20,6 +21,14 @@ public class Customer {
 
 	public String getFirstName() {
 		return this.firstName;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public void setFirstName(String firstName) {

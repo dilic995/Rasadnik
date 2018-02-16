@@ -13,6 +13,7 @@ public class Sale {
 	private Boolean paidOff;
 	private Customer customer;
 	private Integer customerId;
+	private Boolean deleted;
 
 	//
 	// getters / setters
@@ -27,6 +28,14 @@ public class Sale {
 
 	public Date getDate() {
 		return this.date;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public void setDate(Date date) {

@@ -24,7 +24,7 @@ public class BasisDAOImpl implements BasisDAO {
 	static {
 		pkColumns.add("basis_id");
 		stdColumns.add("planting_date");
-		stdColumns.add("active");
+		stdColumns.add("deleted");
 		stdColumns.add("plant_id");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
@@ -289,7 +289,7 @@ public class BasisDAOImpl implements BasisDAO {
 
 		try {
 			ps = getConn()
-					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "active" })));
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
 			DBUtil.bind(ps, 1, active);
 			rs = ps.executeQuery();
 
@@ -337,7 +337,7 @@ public class BasisDAOImpl implements BasisDAO {
 
 	protected int bindStdColumns(PreparedStatement ps, Basis obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getPlantingDate());
-		DBUtil.bind(ps, pos++, obj.getActive());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 		DBUtil.bind(ps, pos++, obj.getPlantId());
 
 		return pos;
@@ -348,7 +348,7 @@ public class BasisDAOImpl implements BasisDAO {
 
 		obj.setBasisId(DBUtil.getInt(rs, "basis_id"));
 		obj.setPlantingDate(DBUtil.getDate(rs, "planting_date"));
-		obj.setActive(DBUtil.getBoolean(rs, "active"));
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 		obj.setPlantId(DBUtil.getInteger(rs, "plant_id"));
 
 		return obj;

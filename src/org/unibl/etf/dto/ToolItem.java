@@ -12,14 +12,14 @@ public class ToolItem {
 	private Condition condition;
 	private Integer toolId;
 	private Integer conditionId;
-	private Boolean isDeleted;
+	private Boolean deleted;
 
-	public Boolean getIsDeleted() {
-		return isDeleted;
+	public Boolean getDeleted() {
+		return deleted;
 	}
 
-	public void setIsDeleted(Boolean isDeleted) {
-		this.isDeleted = isDeleted;
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	//
@@ -114,7 +114,7 @@ public class ToolItem {
 		buffer.append("[").append("nextServiceDate").append("=").append(nextServiceDate).append("]");
 		buffer.append("[").append("toolId").append("=").append(toolId).append("]");
 		buffer.append("[").append("conditionId").append("=").append(conditionId).append("]");
-		buffer.append("[").append("isDeleted").append("=").append(isDeleted).append("]");
+		buffer.append("[").append("isDeleted").append("=").append(deleted).append("]");
 		return buffer.append(")").toString();
 	}
 }

@@ -30,4 +30,6 @@ public interface TransactionDAO {
 	public List<Transaction> getByType(Boolean type);
 
 	public List<Transaction> getByDescription(String description);
+	
+	public List<Transaction> getByDeleted(Boolean deleted);
 }

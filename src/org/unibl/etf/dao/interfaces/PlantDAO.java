@@ -35,4 +35,6 @@ public interface PlantDAO {
 	public List<Plant> getByIsConifer(Boolean isConifer);
 
 	public List<Plant> getByOwned(Boolean owned);
+	
+	public List<Plant> getByDeleted(Boolean deleted);
 }

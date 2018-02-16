@@ -6,6 +6,7 @@ public class Tool {
 	private String toolName;
 	private Integer count;
 	private Boolean isMachine;
+	private Boolean deleted;
 
 	//
 	// getters / setters
@@ -16,6 +17,14 @@ public class Tool {
 
 	public void setToolId(Integer toolId) {
 		this.toolId = toolId;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public String getToolName() {

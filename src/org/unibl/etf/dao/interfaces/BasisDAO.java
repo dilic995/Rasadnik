@@ -26,7 +26,7 @@ public interface BasisDAO {
 	// Finders
 	public List<Basis> getByPlantingDate(Date plantingDate);
 
-	public List<Basis> getByActive(Boolean active);
+	public List<Basis> getByActive(Boolean deleted);
 
 	public List<Basis> getByPlantId(Integer plantId);
 	

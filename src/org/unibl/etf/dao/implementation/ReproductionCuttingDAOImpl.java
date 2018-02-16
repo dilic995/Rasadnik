@@ -26,6 +26,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		pkColumns.add("basis_id");
 		stdColumns.add("produces");
 		stdColumns.add("take_a_root");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -340,6 +341,29 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<ReproductionCutting> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<ReproductionCutting> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(
+					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -353,6 +377,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 	protected int bindStdColumns(PreparedStatement ps, ReproductionCutting obj, int pos) throws SQLException {
 		DBUtil.bind(ps, pos++, obj.getProduces());
 		DBUtil.bind(ps, pos++, obj.getTakeARoot());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 		return pos;
 	}
 
@@ -363,6 +388,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		obj.setDate(DBUtil.getDate(rs, "date"));
 		obj.setProduces(DBUtil.getInt(rs, "produces"));
 		obj.setTakeARoot(DBUtil.getInt(rs, "take_a_root"));
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 		return obj;
 	}
 

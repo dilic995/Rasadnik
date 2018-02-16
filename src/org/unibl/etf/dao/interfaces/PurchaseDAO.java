@@ -33,6 +33,8 @@ public interface PurchaseDAO {
 	public List<Purchase> getByPrice(BigDecimal price) ;
 
 	public List<Purchase> getByPaidOff(Boolean paidOff) ;
+	
+	public List<Purchase> getByDeleted(Boolean deleted) ;
 
 	public List<Purchase> getByCustomerId(Integer customerId);
 }

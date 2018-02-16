@@ -36,4 +36,6 @@ public interface EmployeeHasTaskDAO {
 	public List<EmployeeHasTask> getByHours(Integer hours);
 
 	public List<EmployeeHasTask> getByPaidOff(Boolean paidOff);
+	
+	public List<EmployeeHasTask> getByDeleted(Boolean deleted);
 }

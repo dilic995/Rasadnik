@@ -35,4 +35,6 @@ public interface ToolMaintanceActivityDAO {
 	public List<ToolMaintanceActivity> getByAmount(BigDecimal amount);
 
 	public List<ToolMaintanceActivity> getByUpToDateService(Boolean upToDateService);
+	
+	public List<ToolMaintanceActivity> getByDeleted(Boolean deleted);
 }

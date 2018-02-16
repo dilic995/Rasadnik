@@ -28,6 +28,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		stdColumns.add("description");
 		stdColumns.add("price");
 		stdColumns.add("paid_off");
+		stdColumns.add("deleted");
 		stdColumns.add("customer_id");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
@@ -380,6 +381,29 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<Purchase> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Purchase> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -395,6 +419,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		DBUtil.bind(ps, pos++, obj.getDescription());
 		DBUtil.bind(ps, pos++, obj.getPrice());
 		DBUtil.bind(ps, pos++, obj.getPaidOff());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 		DBUtil.bind(ps, pos++, obj.getCustomerId());
 
 		return pos;
@@ -408,6 +433,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 		obj.setDescription(DBUtil.getString(rs, "description"));
 		obj.setPrice(DBUtil.getBigDecimal(rs, "price"));
 		obj.setPaidOff(DBUtil.getBooleanObject(rs, "paid_off"));
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 		obj.setCustomerId(DBUtil.getInt(rs, "customer_id"));
 		
 

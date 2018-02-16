@@ -28,6 +28,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		stdColumns.add("amount");
 		stdColumns.add("type");
 		stdColumns.add("description");
+		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -328,6 +329,29 @@ public class TransactionDAOImpl implements TransactionDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<Transaction> getByDeleted(Boolean deleted) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Transaction> ret = new ArrayList<>();
+
+		try {
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 
 	//
 	// helpers
@@ -342,6 +366,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		DBUtil.bind(ps, pos++, obj.getAmount());
 		DBUtil.bind(ps, pos++, obj.getType());
 		DBUtil.bind(ps, pos++, obj.getDescription());
+		DBUtil.bind(ps, pos++, obj.getDeleted());
 
 		return pos;
 	}
@@ -353,6 +378,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 		obj.setAmount(DBUtil.getBigDecimal(rs, "amount"));
 		obj.setType(DBUtil.getBoolean(rs, "type"));
 		obj.setDescription(DBUtil.getString(rs, "description"));
+		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 
 		return obj;
 	}
@@ -364,5 +390,4 @@ public class TransactionDAOImpl implements TransactionDAO {
 		
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
-
 }
