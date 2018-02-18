@@ -127,8 +127,10 @@ public class PricelistController extends PlantBrowserController {
 	@FXML
 	public void loadPricelist(ActionEvent event) {
 		Pricelist pricelist = cmbPricelist.getSelectionModel().getSelectedItem();
-		List<PricelistHasPlant> items = DAOFactory.getInstance().getPricelistHasPlantDAO().getByPricelistId(pricelist.getPricelistId());
-		DAOF
+		List<Plant> plants = DAOFactory.getInstance().getPlantDAO().getPlantByPricelistId(pricelist.getPricelistId());
+		container.setPlants(plants);
+		container.setCurrent(0);
+		populateTable();
 	}
 	private void bindDisable() {
 		btnDelete.disableProperty().bind(tblPlants.getSelectionModel().selectedItemProperty().isNull());

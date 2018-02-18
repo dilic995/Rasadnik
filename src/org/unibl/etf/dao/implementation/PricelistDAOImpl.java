@@ -127,7 +127,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 		ResultSet rs = null;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + "WHERE deleted=false");
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + " WHERE deleted=false");
 			rs = ps.executeQuery();
 
 			while (rs.next())
