@@ -20,6 +20,7 @@ public class PlantDAOImpl implements PlantDAO {
 	protected static List<String> stdColumns = new ArrayList<>();
 	protected static List<String> allColumns = new ArrayList<>();
 	protected static String tableName = "plant";
+	protected static String allPlantOnPricelist = "select php.plant_id, p.scientific_name, p.known_as, p.description, p.image, p.is_conifer, p.owned, p.deleted from pricelist_has_plant php inner join plant p on php.plant_id=p.plant_id and php.pricelist_id=?";
 
 	static {
 		pkColumns.add("plant_id");
@@ -80,7 +81,7 @@ public class PlantDAOImpl implements PlantDAO {
 		ResultSet rs = null;
 
 		try {
-			ps = getConn().prepareStatement("select count(*) from " + tableName);
+			ps = getConn().prepareStatement("select count(*) from " + tableName + " WHERE deleted=false");
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
@@ -106,7 +107,7 @@ public class PlantDAOImpl implements PlantDAO {
 		}
 
 		try {
-			ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement);
+			ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement + " AND deleted=false");
 
 			for (int i = 0; i < bindVariables.length; i++)
 				DBUtil.bind(ps, i + 1, bindVariables[i]);
@@ -131,7 +132,7 @@ public class PlantDAOImpl implements PlantDAO {
 		ResultSet rs = null;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns));
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + "WHERE deleted=false");
 			rs = ps.executeQuery();
 
 			while (rs.next())
@@ -157,7 +158,7 @@ public class PlantDAOImpl implements PlantDAO {
 		}
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement);
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement + " AND deleted=false");
 
 			for (int i = 0; i < bindVariables.length; i++)
 				DBUtil.bind(ps, i + 1, bindVariables[i]);
@@ -232,10 +233,13 @@ public class PlantDAOImpl implements PlantDAO {
 
 	public int delete(Plant obj) {
 		PreparedStatement ps = null;
+		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.delete(tableName, pkColumns));
-			bindPrimaryKey(ps, obj, 1);
+			obj.setDeleted(true);
+			ps = getConn().prepareStatement(DBUtil.update(tableName, stdColumns, pkColumns));
+			pos = bindStdColumns(ps, obj, pos);
+			bindPrimaryKey(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
 
@@ -422,6 +426,28 @@ public class PlantDAOImpl implements PlantDAO {
 			ps = getConn()
 					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
 			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+	
+	@Override
+	public List<Plant> getPlantByPricelistId(Integer pricelistId) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Plant> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(allPlantOnPricelist);
+			ps.setInt(1, pricelistId);
 			rs = ps.executeQuery();
 
 			while (rs.next())

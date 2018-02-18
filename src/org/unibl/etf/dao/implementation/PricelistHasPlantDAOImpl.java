@@ -76,7 +76,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 		ResultSet rs = null;
 
 		try {
-			ps = getConn().prepareStatement("select count(*) from " + tableName);
+			ps = getConn().prepareStatement("select count(*) from " + tableName + " WHERE deleted=false");
 			rs = ps.executeQuery();
 
 			if (rs.next()) {
@@ -102,7 +102,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 		}
 
 		try {
-			ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement);
+			ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement + " AND deleted=false");
 
 			for (int i = 0; i < bindVariables.length; i++)
 				DBUtil.bind(ps, i + 1, bindVariables[i]);
@@ -127,7 +127,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 		ResultSet rs = null;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns));
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + "WHERE deleted=false");
 			rs = ps.executeQuery();
 
 			while (rs.next())
@@ -153,7 +153,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 		}
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement);
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement + " AND deleted=false");
 
 			for (int i = 0; i < bindVariables.length; i++)
 				DBUtil.bind(ps, i + 1, bindVariables[i]);
@@ -226,10 +226,13 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 
 	public Integer delete(PricelistHasPlant obj)   {
 		PreparedStatement ps = null;
+		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.delete(tableName, pkColumns));
-			bindPrimaryKey(ps, obj, 1);
+			obj.setDeleted(true);
+			ps = getConn().prepareStatement(DBUtil.update(tableName, stdColumns, pkColumns));
+			pos = bindStdColumns(ps, obj, pos);
+			bindPrimaryKey(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
 

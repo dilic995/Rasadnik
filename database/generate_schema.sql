@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`plant` (
   `scientific_name` VARCHAR(100) NOT NULL,
   `known_as` VARCHAR(100) NOT NULL,
   `description` VARCHAR(500) NOT NULL,
-  `image` MEDIUMBLOB NOT NULL,
+  `image` MEDIUMBLOB NULL,
   `is_conifer` TINYINT NOT NULL DEFAULT 0,
   `owned` TINYINT NOT NULL DEFAULT 0,
   `deleted` TINYINT NOT NULL DEFAULT 0,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`reproduction_cutting` (
   `date` DATE NOT NULL,
   `basis_id` INT NOT NULL,
   `produces` INT NOT NULL DEFAULT 0,
-  `take_a_root` INT NOT NULL DEFAULT 0,
+  `take_a_root` INT NULL DEFAULT 0,
   `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`basis_id`, `date`),
   CONSTRAINT `fk_reproduction_cutting_basis1`

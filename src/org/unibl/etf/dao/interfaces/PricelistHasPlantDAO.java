@@ -2,7 +2,6 @@
 package org.unibl.etf.dao.interfaces;
 
 import java.util.List;
-
 import org.unibl.etf.dto.PricelistHasPlant;
 
 public interface PricelistHasPlantDAO {
