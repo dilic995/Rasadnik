@@ -14,7 +14,7 @@
 			<children>
 				<ToolBar id="toolbar" layoutX="28.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 					<items>
-						<Button id="left-button" fx:id="btnSetSelectTool" mnemonicParsing="false" onAction="#setSelectTool" text="S" />
+						<Button id="select-button" fx:id="btnSetSelectTool" mnemonicParsing="false" onAction="#setSelectTool" />
 						<Button id="left-button" fx:id="btnSetPolygonTool" mnemonicParsing="false" onAction="#setPolygonTool" text="P" />
 					</items>
 				</ToolBar>
@@ -22,7 +22,7 @@
 		</AnchorPane>
 		<ScrollPane layoutY="40.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="40.0">
 			<content>
-				<AnchorPane id="border-pane" prefHeight="620.0" prefWidth="1000.0">
+				<AnchorPane id="border-pane" prefHeight="620.0" prefWidth="1000.0" onMousePressed="#aPressed" onMouseReleased="#aReleased">
 					<children>
 						<Group fx:id="elements" />
 					</children>

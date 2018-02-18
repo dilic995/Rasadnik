@@ -7,13 +7,14 @@ import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class Basis {
 	public Basis(Integer basisId, Date plantingDate, Integer plantId, Plant plant,
-			List<ReproductionCutting> cuttings) {
+			List<ReproductionCutting> cuttings, Boolean deleted) {
 		super();
 		this.basisId = basisId;
 		this.plantingDate = plantingDate;
 		this.plantId = plantId;
 		this.plant = plant;
 		this.cuttings = cuttings;
+		this.deleted = deleted;
 	}
 
 	private Integer basisId;

@@ -135,7 +135,7 @@ public class RegionViewController extends BaseController implements Initializabl
 	public List<TaskListItem> pullDataTasks(int regionID) {
 		List<TaskListItem> retVal = new ArrayList<>();
 		List<Task> tmpList = DAOFactory.getInstance().getTaskDAO().getByRegionId(regionID);
-		tmpList = tmpList.stream().filter(x -> !x.getIsDeleted().booleanValue()).collect(Collectors.toList());
+		tmpList = tmpList.stream().filter(x -> !x.getDeleted().booleanValue()).collect(Collectors.toList());
 		retVal = TaskListItem.convert(tmpList);
 		return retVal;
 	}

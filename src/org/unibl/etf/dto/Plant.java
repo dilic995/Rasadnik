@@ -25,7 +25,7 @@ public class Plant {
 	}
 	// svi parametri
 	public Plant(Integer plantId, String scientificName, String knownAs, String description, Blob image,
-			Boolean isConifer, Boolean owned, List<PriceHeightRatio> ratios) {
+			Boolean isConifer, Boolean owned, List<PriceHeightRatio> ratios, Boolean deleted) {
 		super();
 		this.plantId = plantId;
 		this.scientificName = scientificName;
@@ -35,6 +35,7 @@ public class Plant {
 		this.isConifer = isConifer;
 		this.owned = owned;
 		this.ratios = ratios;
+		this.deleted = deleted;
 	}
 
 	//

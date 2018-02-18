@@ -101,7 +101,7 @@ public class BasesController extends BaseController {
 			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
 			Integer produced = Integer.parseInt(txtProducedNum.getText());
 			Integer takeARoot = Integer.parseInt(txtSuccessfulNum.getText());
-			ReproductionCutting cutting = new ReproductionCutting(basis, date, produced, takeARoot, basis.getBasisId());
+			ReproductionCutting cutting = new ReproductionCutting(basis, date, produced, takeARoot, basis.getBasisId(), false);
 			if (DAOFactory.getInstance().getReproductionCuttingDAO().insert(cutting) > 0) {
 				tblSeeds.getItems().add(new ReproductionCuttingTableItem(cutting));
 				tblBases.refresh();

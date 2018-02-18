@@ -97,7 +97,7 @@ public class AddPlantController extends BaseController {
 		// dodati provjeravanje opsega
 		PriceHeightRatio ratio = new PriceHeightRatio(new BigDecimal(txtFrom.getText()),
 				new BigDecimal(txtTo.getText()), new BigDecimal(txtPrice.getText()), true,
-				Calendar.getInstance().getTime(), 0, null);
+				Calendar.getInstance().getTime(), 0, null, false);
 		if (!lstRatios.getItems().contains(ratio)) {
 			lstRatios.getItems().add(ratio);
 			Collections.sort(lstRatios.getItems(), new PriceHeightRatioComparatorFrom());
@@ -135,7 +135,7 @@ public class AddPlantController extends BaseController {
 		String latin = txtLatinName.getText();
 		latin = latin.substring(0, 1).toUpperCase() + latin.substring(1);
 		Plant plant = new Plant(null, latin, txtCommonName.getText(), taDescription.getText(),
-				imageBlob, rbConifer.isSelected(), cbOwned.isSelected(), lstRatios.getItems());
+				imageBlob, rbConifer.isSelected(), cbOwned.isSelected(), lstRatios.getItems(), false);
 		if(DAOFactory.getInstance().getPlantDAO().insert(plant) > 0) {
 			List<PriceHeightRatio> ratios = lstRatios.getItems();
 			for(PriceHeightRatio ratio : ratios) {

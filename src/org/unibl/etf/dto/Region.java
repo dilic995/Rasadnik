@@ -16,13 +16,14 @@ public class Region {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Region(Integer regionId, Integer numberOfPlants, Basis basis, Integer basisId, Double[] coords) {
+	public Region(Integer regionId, Integer numberOfPlants, Basis basis, Integer basisId, Double[] coords, Boolean deleted) {
 		super();
 		this.regionId = regionId;
 		this.numberOfPlants = numberOfPlants;
 		this.basis = basis;
 		this.basisId = basisId;
 		this.setCoords(coords);
+		this.deleted = deleted;
 	}
 
 	//
@@ -128,8 +129,5 @@ public class Region {
 		for(int i=0 ; i <8 ; i++) {
 			this.coords[i] = coords[i].doubleValue();
 		}
-	}
-	public boolean contains(Double x, Double y) {
-		
 	}
 }

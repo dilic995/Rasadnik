@@ -137,8 +137,8 @@ public class CatalogueController extends PlantBrowserController {
 		if (container.current().getOwned() && bases.size() == 0) {
 			String message = "Biljka ne postoji u maticnjaku. Zelite li da je dodate?";
 			if (DisplayUtil.showConfirmationDialog(message) == ButtonType.YES) {
-				Basis basis = new Basis(null, Calendar.getInstance().getTime(), true, container.current().getPlantId(),
-						container.current(), null);
+				Basis basis = new Basis(null, Calendar.getInstance().getTime(), container.current().getPlantId(),
+						container.current(), null, false);
 				if (DAOFactory.getInstance().getBasisDAO().insert(basis) > 0) {
 					DisplayUtil.showMessageDialog("Dodavanje u maticnjak uspjesno");
 				} else {

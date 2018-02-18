@@ -24,6 +24,5 @@ public class Main extends Application {
 
 	public static void main(String[] args) throws Exception {
 		launch(args);
-		//System.out.println(DAOFactory.getInstance().getBasisDAO().getNum(2, "number_of_plants", "region"));
 	}
 }

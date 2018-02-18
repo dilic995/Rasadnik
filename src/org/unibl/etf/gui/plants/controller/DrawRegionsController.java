@@ -73,15 +73,19 @@ public class DrawRegionsController extends BaseController {
 	// Event Listener on AnchorPane[#parentPane].onMousePressed
 	@FXML
 	public void press(MouseEvent event) {
+	}
+	@FXML
+	public void aPressed(MouseEvent event) {
 		canvasEditor.startDrawing(event);
 	}
-
 	// Event Listener on AnchorPane[#parentPane].onMouseReleased
 	@FXML
 	public void release(MouseEvent event) {
+	}
+	@FXML
+	public void aReleased(MouseEvent event) {
 		canvasEditor.finishDrawing(event);
 	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		regionsMap = new HashMap<Polygon, Region>();

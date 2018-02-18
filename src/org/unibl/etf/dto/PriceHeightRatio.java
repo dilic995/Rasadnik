@@ -25,7 +25,7 @@ public class PriceHeightRatio {
 
 	// svi parametri
 	public PriceHeightRatio(BigDecimal heightMin, BigDecimal heightMax, BigDecimal price, Boolean active, Date dateFrom,
-			Integer plantId, Plant plant) {
+			Integer plantId, Plant plant, Boolean deleted) {
 		super();
 		this.heightMin = heightMin;
 		this.heightMax = heightMax;
@@ -34,6 +34,7 @@ public class PriceHeightRatio {
 		this.dateFrom = dateFrom;
 		this.plantId = plantId;
 		this.plant = plant;
+		this.deleted = deleted;
 	}
 
 	//

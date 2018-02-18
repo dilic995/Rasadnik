@@ -35,14 +35,14 @@ public class PolygonTool extends CanvasEditor {
 
 	@Override
 	public void startDrawing(MouseEvent event) {
-		this.coordinates[0] = this.coordinates[6] = event.getSceneX();
-		this.coordinates[1] = this.coordinates[3] = event.getSceneY() - 40;
+		this.coordinates[0] = this.coordinates[6] = event.getX() + 1;
+		this.coordinates[1] = this.coordinates[3] = event.getY() + 1;
 	}
 
 	@Override
 	public void finishDrawing(MouseEvent event) {
-		this.coordinates[2] = this.coordinates[4] = event.getSceneX();
-		this.coordinates[5] = this.coordinates[7] = event.getSceneY() - 40;
+		this.coordinates[2] = this.coordinates[4] = event.getX() + 1;
+		this.coordinates[5] = this.coordinates[7] = event.getY() + 1;
 		Polygon p = new Polygon();
 		Polyline pl = new Polyline();
 		p.getPoints().addAll(coordinates);
@@ -52,8 +52,8 @@ public class PolygonTool extends CanvasEditor {
 		p.getStyleClass().add("transparent-brown");
 		elements.getChildren().add(pl);
 		elements.getChildren().add(p);
-		Region region = new Region(null, 0, null, null, this.coordinates);
-		if(DisplayUtil.showConfirmationDialog("Zelite li da dodate biljke u region?").equals(ButtonType.YES)) {
+		Region region = new Region(null, 0, null, null, this.coordinates, false);
+		if (DisplayUtil.showConfirmationDialog("Zelite li da dodate biljke u region?").equals(ButtonType.YES)) {
 			FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
 					"org/unibl/etf/gui/plants/view/AddRegionView.fxml");
 			AnchorPane root = DisplayUtil.getAnchorPane(loader);
@@ -71,15 +71,16 @@ public class PolygonTool extends CanvasEditor {
 	private Double[] coordinates;
 	private Group elements;
 	private List<Polygon> newPolygons;
+
 	@Override
 	public void invalidate() {
-		if(newPolygons.size()>0) {
-			if(DisplayUtil.showConfirmationDialog("Zelite li sacuvai promjene?").equals(ButtonType.YES)) {
-				for(Polygon polygon : newPolygons) {
+		if (newPolygons.size() > 0) {
+			if (DisplayUtil.showConfirmationDialog("Zelite li sacuvai promjene?").equals(ButtonType.YES)) {
+				for (Polygon polygon : newPolygons) {
 					DAOFactory.getInstance().getRegionDAO().insert(regions.get(polygon));
 				}
 			} else {
-				for(Polygon polygon : newPolygons) {
+				for (Polygon polygon : newPolygons) {
 					elements.getChildren().remove(polygon);
 					elements.getChildren().remove(outlines.get(polygon));
 				}
