@@ -2,7 +2,9 @@ package org.unibl.etf.gui.plants.controller;
 
 import java.awt.Container;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -13,6 +15,7 @@ import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.PlantContainer;
 import org.unibl.etf.dto.PriceHeightRatio;
+import org.unibl.etf.dto.PriceHeightRatioComparatorFrom;
 import org.unibl.etf.dto.PriceHeightRatioTableItem;
 import org.unibl.etf.gui.util.CSSUtil;
 import org.unibl.etf.gui.util.DisplayUtil;
@@ -72,7 +75,8 @@ public class CatalogueController extends PlantBrowserController {
 	private Label lblTotal;
 	@FXML
 	private Button btnExport;
-
+	@FXML
+	private Button btnEditPlant;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize(location, resources);
@@ -82,6 +86,18 @@ public class CatalogueController extends PlantBrowserController {
 		update();
 	}
 
+	@FXML
+	public void editPlant(ActionEvent event) {
+		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
+				"org/unibl/etf/gui/plants/view/AddPlantView.fxml");
+		AnchorPane root = DisplayUtil.getAnchorPane(loader);
+		AddPlantController controller = DisplayUtil.<AddPlantController>getController(loader);
+		controller.setContainer(container);
+		controller.setPlant(container.current());
+		DisplayUtil.switchStage(root, 650, 600, true, "Dodavanje biljke", true);
+		update();
+	}
+	
 	// Event Listener on Button[#btnPrevious].onAction
 	@FXML
 	public void showPreviousPlant(ActionEvent event) {
@@ -97,12 +113,14 @@ public class CatalogueController extends PlantBrowserController {
 	// Event Listener on Button[#btnAdd].onAction
 	@FXML
 	public void addPlant(ActionEvent event) {
+		// TODO provjera za buildAll
 		buildAll = true;
 		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
 				"org/unibl/etf/gui/plants/view/AddPlantView.fxml");
 		AnchorPane root = DisplayUtil.getAnchorPane(loader);
 		AddPlantController controller = DisplayUtil.<AddPlantController>getController(loader);
 		controller.setContainer(container);
+		controller.setPlant(new Plant(null, "", "", "", null, true, false, new ArrayList<PriceHeightRatio>(), false));
 		DisplayUtil.switchStage(root, 650, 600, true, "Dodavanje biljke", true);
 	}
 
@@ -193,7 +211,9 @@ public class CatalogueController extends PlantBrowserController {
 			// TODO dodati provjeru za null
 			imgPhoto.setImage(DisplayUtil.convertFromBlob(plant.getImage()));
 			ObservableList<PriceHeightRatioTableItem> ratios = FXCollections.observableArrayList();
-			for (PriceHeightRatio ratio : plant.getRatios()) {
+			List<PriceHeightRatio> ratiosFromPlant = plant.getRatios();
+			Collections.sort(ratiosFromPlant, new PriceHeightRatioComparatorFrom());
+			for (PriceHeightRatio ratio : ratiosFromPlant) {
 				ratios.add(new PriceHeightRatioTableItem(ratio));
 			}
 			tblRatio.setItems(ratios);

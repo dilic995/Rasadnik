@@ -143,7 +143,7 @@ public class EmployeeViewController extends BaseController implements Initializa
 		for(Employee employee : tmpList) {
 			if(employee.getLastName().equals(txtPrezime.getText())) {
 				
-				Alert alert = new Alert(AlertType.WARNING, "Postoji radnik sa tim imenom i prezimenom. Da li ste sigurni da želite da nastavite?",
+				Alert alert = new Alert(AlertType.WARNING, "Postoji radnik sa tim imenom i prezimenom. Da li ste sigurni da ï¿½elite da nastavite?",
 						ButtonType.YES, ButtonType.NO);
 				alert.setTitle("Upozorenje");
 				alert.setHeaderText("Upozorenje!");
@@ -153,7 +153,7 @@ public class EmployeeViewController extends BaseController implements Initializa
 			}
 		}
 		Employee newEmployee = new Employee(null, txtIme.getText(), txtPrezime.getText());
-		newEmployee.setIsDeleted(false);
+		newEmployee.setDeleted(false);
 		int generatedId = DAOFactory.getInstance().getEmployeeDAO().insert(newEmployee);
 		newEmployee.setEmployeeId(generatedId);
 		

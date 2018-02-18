@@ -146,15 +146,6 @@ public class PriceHeightRatio {
 	}
 
 	public String toString() {
-		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("PriceHeightRatio").append("(");
-
-		buffer.append("[").append("heightMin").append("=").append(heightMin).append("]");
-		buffer.append("[").append("heightMax").append("=").append(heightMax).append("]");
-		buffer.append("[").append("price").append("=").append(price).append("]");
-		buffer.append("[").append("active").append("=").append(active).append("]");
-		buffer.append("[").append("dateFrom").append("=").append(dateFrom).append("]");
-		buffer.append("[").append("plantId").append("=").append(plantId).append("]");
-
-		return buffer.append(")").toString();
+		return heightMin + " cm - " + heightMax + " cm : " + price + " KM"; 
 	}
 }

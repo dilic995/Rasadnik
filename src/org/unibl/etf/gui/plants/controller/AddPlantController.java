@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -20,6 +21,8 @@ import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.util.OrBinder;
 import org.unibl.etf.gui.view.base.BaseController;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -32,6 +35,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+
+// TODO vidjeti sta sa slikom kad se izbrise u azuriranju
+// TODO svuda gdje se prikazuje slika napraviti da se prikazuje default image ako je slika null
 
 public class AddPlantController extends BaseController {
 	@FXML
@@ -67,10 +73,13 @@ public class AddPlantController extends BaseController {
 	@FXML
 	private TextArea taDescription;
 
+	public static final int INSERT = 1;
+	public static final int UPDATE = 2;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
-			defaultImage = new Image(new FileInputStream("resources/images/plus.png"));
+			defaultImage = new Image(new FileInputStream("resources/images/add_image.png"));
 			imgPhoto.setImage(defaultImage);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -101,6 +110,7 @@ public class AddPlantController extends BaseController {
 		if (!lstRatios.getItems().contains(ratio)) {
 			lstRatios.getItems().add(ratio);
 			Collections.sort(lstRatios.getItems(), new PriceHeightRatioComparatorFrom());
+			newRatios.add(ratio);
 		}
 	}
 
@@ -112,6 +122,11 @@ public class AddPlantController extends BaseController {
 		txtTo.setText(selected.getHeightMax() + "");
 		txtPrice.setText(selected.getPrice() + "");
 		lstRatios.getItems().remove(lstRatios.getItems().indexOf(selected));
+		if(!newRatios.contains(selected)) {
+			deletedRatios.add(selected);
+		} else {
+			newRatios.remove(selected);
+		}
 	}
 
 	@FXML
@@ -131,20 +146,48 @@ public class AddPlantController extends BaseController {
 	// Event Listener on Button[#btnSave].onAction
 	@FXML
 	public void save(ActionEvent event) {
-		Blob imageBlob = DisplayUtil.convertToBlob(imageFile);
+		Blob imageBlob = 
+				type == INSERT ? (imageFile == null ? null : DisplayUtil.convertToBlob(imageFile)) :
+					(imageFile == null ? plant.getImage() : DisplayUtil.convertToBlob(imageFile));
 		String latin = txtLatinName.getText();
 		latin = latin.substring(0, 1).toUpperCase() + latin.substring(1);
-		Plant plant = new Plant(null, latin, txtCommonName.getText(), taDescription.getText(),
-				imageBlob, rbConifer.isSelected(), cbOwned.isSelected(), lstRatios.getItems(), false);
-		if(DAOFactory.getInstance().getPlantDAO().insert(plant) > 0) {
-			List<PriceHeightRatio> ratios = lstRatios.getItems();
-			for(PriceHeightRatio ratio : ratios) {
-				ratio.setPlant(plant);
-				ratio.setPlantId(plant.getPlantId());
-				DAOFactory.getInstance().getPriceHeightRatioDAO().insert(ratio);
+		plant.setIsConifer(rbConifer.isSelected());
+		plant.setOwned(cbOwned.isSelected());
+		plant.setScientificName(latin);
+		plant.setKnownAs(txtCommonName.getText());
+		plant.setRatios(lstRatios.getItems());
+		plant.setDescription(taDescription.getText());
+		plant.setImage(imageBlob);
+		String message = "";
+		if (type == INSERT) {
+			if (DAOFactory.getInstance().getPlantDAO().insert(plant) > 0) {
+				List<PriceHeightRatio> ratios = lstRatios.getItems();
+				for (PriceHeightRatio ratio : ratios) {
+					ratio.setPlant(plant);
+					ratio.setPlantId(plant.getPlantId());
+					DAOFactory.getInstance().getPriceHeightRatioDAO().insert(ratio);
+				}
+				container.addPlant(plant);
+				message = "Dodavanje uspjesno!";
+			} else {
+				message = "Doslo je do greske prilikom dodavanja!";
 			}
-			container.addPlant(plant);
+		} else {
+			if (DAOFactory.getInstance().getPlantDAO().update(plant) > 0) {
+				for(PriceHeightRatio ratio : deletedRatios) {
+					DAOFactory.getInstance().getPriceHeightRatioDAO().delete(ratio);
+				}
+				for(PriceHeightRatio ratio: newRatios) {
+					ratio.setPlant(plant);
+					ratio.setPlantId(plant.getPlantId());
+					DAOFactory.getInstance().getPriceHeightRatioDAO().insert(ratio);
+				}
+				message = "Azuriranje uspjesno!";
+			} else {
+				message = "Doslo je do greske prilikom azuriranja";
+			}
 		}
+		DisplayUtil.showMessageDialog(message);
 		DisplayUtil.close(btnSave);
 	}
 
@@ -156,7 +199,34 @@ public class AddPlantController extends BaseController {
 		this.container = container;
 	}
 
+	public Plant getPlant() {
+		return plant;
+	}
+
+	public void setPlant(Plant plant) {
+		this.plant = plant;
+		rbConifer.setSelected(this.plant.getIsConifer());
+		rbDecidous.setSelected(!this.plant.getIsConifer());
+		cbOwned.setSelected(this.plant.getOwned());
+		txtLatinName.setText(this.plant.getScientificName());
+		txtCommonName.setText(this.plant.getKnownAs());
+		ObservableList<PriceHeightRatio> ratios = FXCollections.observableArrayList();
+		ratios.addAll(this.plant.getRatios());
+		lstRatios.setItems(ratios);
+		taDescription.setText(this.plant.getDescription());
+		imgPhoto.setImage(
+				this.plant.getImage() == null ? defaultImage : DisplayUtil.convertFromBlob(this.plant.getImage()));
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
 	private Image defaultImage;
 	private File imageFile = null;
 	private PlantContainer container;
+	private Plant plant;
+	private int type;
+	private List<PriceHeightRatio> newRatios = new ArrayList<PriceHeightRatio>();
+	private List<PriceHeightRatio> deletedRatios = new ArrayList<PriceHeightRatio>();
 }

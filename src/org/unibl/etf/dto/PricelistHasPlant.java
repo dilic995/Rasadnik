@@ -4,6 +4,18 @@ package org.unibl.etf.dto;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class PricelistHasPlant {
+	
+	public PricelistHasPlant() {
+		// TODO Auto-generated constructor stub
+	}
+	public PricelistHasPlant(Pricelist pricelist, Plant plant, Integer pricelistId, Integer plantId, Boolean deleted) {
+		super();
+		this.pricelist = pricelist;
+		this.plant = plant;
+		this.pricelistId = pricelistId;
+		this.plantId = plantId;
+		this.deleted = deleted;
+	}
 
 	private Pricelist pricelist;
 	private Plant plant;

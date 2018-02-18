@@ -3,12 +3,17 @@ package org.unibl.etf.gui.plants.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.PlantContainer;
 import org.unibl.etf.dto.PlantTableItem;
+import org.unibl.etf.dto.Pricelist;
+import org.unibl.etf.dto.PricelistHasPlant;
+import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.util.PDFCreator;
 
 import com.itextpdf.text.DocumentException;
@@ -18,6 +23,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -36,12 +43,22 @@ public class PricelistController extends PlantBrowserController {
 	private Button btnPrint;
 	@FXML
 	private Button btnDelete;
-
+	@FXML
+	private Button btnLoad;
+	@FXML
+	private ComboBox<Pricelist> cmbPricelist;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize(location, resources);
+		// TODO obrisati pa testirati
 		container.setPlants(DAOFactory.getInstance().getPlantDAO().selectAll());
+		ObservableList<Pricelist> pricelists = FXCollections.observableArrayList();
+		pricelists.addAll(DAOFactory.getInstance().getPricelistDAO().selectAll());
+		cmbPricelist.setItems(pricelists);
+		cmbPricelist.getSelectionModel().select(0);
 		buildTable();
+		bindDisable();
 	}
 
 	public void setContainer(PlantContainer container) {
@@ -75,6 +92,13 @@ public class PricelistController extends PlantBrowserController {
 			creator.open();
 			creator.createPricelist(container.getPlants());
 			creator.close();
+			if(DisplayUtil.showConfirmationDialog("Zelite li da sacuvate cjenovnik?").equals(ButtonType.YES)) {
+				Pricelist pricelist = new Pricelist(null, Calendar.getInstance().getTime(), null, true, false);
+				DAOFactory.getInstance().getPricelistDAO().insert(pricelist);
+				for(Plant plant : container.getPlants()) {
+					DAOFactory.getInstance().getPricelistHasPlantDAO().insert(new PricelistHasPlant(pricelist, plant, pricelist.getPricelistId(), plant.getPlantId(), false));
+				}
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (DocumentException e) {
@@ -99,5 +123,15 @@ public class PricelistController extends PlantBrowserController {
 			container.remove(container.current());
 			tblPlants.getItems().remove(tblPlants.getSelectionModel().getSelectedIndex());
 		}
+	}
+	@FXML
+	public void loadPricelist(ActionEvent event) {
+		Pricelist pricelist = cmbPricelist.getSelectionModel().getSelectedItem();
+		List<PricelistHasPlant> items = DAOFactory.getInstance().getPricelistHasPlantDAO().getByPricelistId(pricelist.getPricelistId());
+		DAOF
+	}
+	private void bindDisable() {
+		btnDelete.disableProperty().bind(tblPlants.getSelectionModel().selectedItemProperty().isNull());
+		btnLoad.disableProperty().bind(cmbPricelist.itemsProperty().isNull());
 	}
 }

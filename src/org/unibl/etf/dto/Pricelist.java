@@ -1,14 +1,27 @@
 package org.unibl.etf.dto;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Pricelist {
+	public Pricelist() {
+		// TODO Auto-generated constructor stub
+	}
+	public Pricelist(Integer pricelistId, Date dateFrom, Date dateTo, Boolean active, Boolean deleted) {
+		super();
+		this.pricelistId = pricelistId;
+		this.dateFrom = dateFrom;
+		this.dateTo = dateTo;
+		this.active = active;
+		this.deleted = deleted;
+	}
+
 	private Integer pricelistId;
 	private Date dateFrom;
 	private Date dateTo;
 	private Boolean active;
 	private Boolean deleted;
-
+	
 	//
 	// getters / setters
 	//
@@ -78,13 +91,7 @@ public class Pricelist {
 	}
 
 	public String toString() {
-		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Pricelist").append("(");
-
-		buffer.append("[").append("pricelistId").append("=").append(pricelistId).append("]");
-		buffer.append("[").append("dateFrom").append("=").append(dateFrom).append("]");
-		buffer.append("[").append("dateTo").append("=").append(dateTo).append("]");
-		buffer.append("[").append("active").append("=").append(active).append("]");
-
-		return buffer.append(")").toString();
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+		return pricelistId + ": " + format.format(dateFrom) + " - " + (dateTo == null ? "" : format.format(dateTo));
 	}
 }
