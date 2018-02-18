@@ -78,4 +78,3 @@ begin
     set out_amount=plus-minus;
 end$$
 delimiter ;
-

@@ -25,6 +25,8 @@ public interface PlantDAO {
 
 	// Finders
 	public List<Plant> getByScientificName(String scientificName);
+	
+	public List<Plant> getPlantByPricelistId(Integer pricelistId);
 
 	public List<Plant> getByKnownAs(String knownAs);
 

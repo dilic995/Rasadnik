@@ -20,6 +20,7 @@ public class PlantDAOImpl implements PlantDAO {
 	protected static List<String> stdColumns = new ArrayList<>();
 	protected static List<String> allColumns = new ArrayList<>();
 	protected static String tableName = "plant";
+	protected static String allPlantOnPricelist = "select php.plant_id, p.scientific_name, p.known_as, p.description, p.image, p.is_conifer, p.owned, p.deleted from pricelist_has_plant php inner join plant p on php.plant_id=p.plant_id and php.pricelist_id=?";
 
 	static {
 		pkColumns.add("plant_id");
@@ -425,6 +426,28 @@ public class PlantDAOImpl implements PlantDAO {
 			ps = getConn()
 					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
 			DBUtil.bind(ps, 1, deleted);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+	
+	@Override
+	public List<Plant> getPlantByPricelistId(Integer pricelistId) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Plant> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(allPlantOnPricelist);
+			ps.setInt(1, pricelistId);
 			rs = ps.executeQuery();
 
 			while (rs.next())
