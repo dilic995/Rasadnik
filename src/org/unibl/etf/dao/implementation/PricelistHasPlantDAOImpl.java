@@ -127,7 +127,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 		ResultSet rs = null;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + "WHERE deleted=false");
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + " WHERE deleted=false");
 			rs = ps.executeQuery();
 
 			while (rs.next())

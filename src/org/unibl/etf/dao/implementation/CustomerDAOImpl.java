@@ -128,7 +128,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		ResultSet rs = null;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + "WHERE deleted=false");
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + " WHERE deleted=false");
 			rs = ps.executeQuery();
 
 			while (rs.next())
