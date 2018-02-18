@@ -111,6 +111,10 @@ public class DBUtil {
 
 				buf.append(whereColumns.get(i)).append(" = ?");
 			}
+			
+			if(selectColumns.contains("deleted")) {
+				buf.append(" AND deleted=false");
+			}
 		}
 
 		return buf.toString();
@@ -138,6 +142,10 @@ public class DBUtil {
 				}
 
 				buf.append(whereColumns.get(i)).append(" IS NULL");
+			}
+			
+			if(selectColumns.contains("deleted")) {
+				buf.append(" AND deleted=false");
 			}
 		}
 
