@@ -94,6 +94,7 @@ public class CatalogueController extends PlantBrowserController {
 		AddPlantController controller = DisplayUtil.<AddPlantController>getController(loader);
 		controller.setContainer(container);
 		controller.setPlant(container.current());
+		controller.setType(AddPlantController.UPDATE);
 		DisplayUtil.switchStage(root, 650, 600, true, "Dodavanje biljke", true);
 		update();
 	}
@@ -121,16 +122,24 @@ public class CatalogueController extends PlantBrowserController {
 		AddPlantController controller = DisplayUtil.<AddPlantController>getController(loader);
 		controller.setContainer(container);
 		controller.setPlant(new Plant(null, "", "", "", null, true, false, new ArrayList<PriceHeightRatio>(), false));
+		controller.setType(AddPlantController.INSERT);
 		DisplayUtil.switchStage(root, 650, 600, true, "Dodavanje biljke", true);
 	}
 
 	// Event Listener on Button[#btnRemove].onAction
 	@FXML
 	public void removePlant(ActionEvent event) {
-		String message = "Da li ste sigurni?";
-		if (DisplayUtil.showConfirmationDialog(message) == ButtonType.YES) {
-			buildAll = true;
-			container.remove(container.current());
+		String prompt = "Da li ste sigurni?";
+		if (DisplayUtil.showConfirmationDialog(prompt) == ButtonType.YES) {
+			String message = "";
+			if(DAOFactory.getInstance().getPlantDAO().delete(container.current()) > 0) {
+				buildAll = true;
+				message = "Brisanje uspjesno!";
+				container.remove(container.current());
+			} else {
+				message = "Greska prilikom brisanja!";
+			}
+			DisplayUtil.showMessageDialog(message);
 		}
 	}
 

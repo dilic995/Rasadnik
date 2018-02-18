@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Region;
@@ -45,19 +46,31 @@ public class DrawRegionsController extends BaseController {
 	private Label lblName;
 	@FXML
 	private Label lblPlantsNum;
+	@FXML
+	private Button btnUndo;
+	@FXML
+	private Button btnRedo;
+	
+	@FXML
+	public void undo(ActionEvent event) {
+		canvasEditor.undo();
+	}
+	public void redo(ActionEvent event) {
+		canvasEditor.redo();
+	}
 	
 	private CanvasEditor canvasEditor;
 
 	@FXML
 	public void setSelectTool(ActionEvent event) {
 		canvasEditor.invalidate();
-		canvasEditor = new SelectTool(regionsMap, outlinesMap, this);
+		canvasEditor = new SelectTool(regionsMap, outlinesMap, this, undoCommands, redoCommands);
 	}
 
 	@FXML
 	public void setPolygonTool(ActionEvent event) {
 		canvasEditor.invalidate();
-		canvasEditor = new PolygonTool(regionsMap, outlinesMap, elements);
+		canvasEditor = new PolygonTool(regionsMap, outlinesMap, elements, undoCommands, redoCommands);
 	}
 
 	// Event Listener on AnchorPane[#parentPane].onMouseClicked
@@ -90,6 +103,8 @@ public class DrawRegionsController extends BaseController {
 	public void initialize(URL location, ResourceBundle resources) {
 		regionsMap = new HashMap<Polygon, Region>();
 		outlinesMap = new HashMap<Polygon, Polyline>();
+		undoCommands = new Stack<Command>();
+		redoCommands = new Stack<Command>();
 		List<Region> regions = DAOFactory.getInstance().getRegionDAO().selectAll();
 		for (Region r : regions) {
 			Polygon p = new Polygon();
@@ -106,7 +121,7 @@ public class DrawRegionsController extends BaseController {
 			regionsMap.put(p, r);
 			outlinesMap.put(p, pl);
 		}
-		canvasEditor = new SelectTool(regionsMap, outlinesMap, this);
+		canvasEditor = new SelectTool(regionsMap, outlinesMap, this, undoCommands, redoCommands);
 	}
 
 	public void displayInfo(Region region) {
@@ -129,5 +144,7 @@ public class DrawRegionsController extends BaseController {
 
 	private Map<Polygon, Region> regionsMap;
 	private Map<Polygon, Polyline> outlinesMap;
+	private Stack<Command> undoCommands;
+	private Stack<Command> redoCommands;
 	// TODO observer na evente
 }

@@ -120,6 +120,9 @@ public class BasisTableItem {
 
 	public void setBasis(Basis basis) {
 		this.basis = basis;
+		this.setknownAs(basis.getPlant().getKnownAs());
+		this.setscientificName(basis.getPlant().getScientificName());
+		this.settype(basis.getPlant().getIsConifer() ? "Cetinar" : "Liscar");
 	}
 	
 }

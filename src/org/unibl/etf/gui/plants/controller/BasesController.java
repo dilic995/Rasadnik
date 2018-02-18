@@ -12,24 +12,28 @@ import java.util.ResourceBundle;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.BasisTableItem;
+import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.ReproductionCutting;
 import org.unibl.etf.dto.ReproductionCuttingTableItem;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
 
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
+import javafx.fxml.FXMLLoader;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 
@@ -66,6 +70,49 @@ public class BasesController extends BaseController {
 	private TextField txtSuccessfulNum;
 	@FXML
 	private Button btnAddRep;
+	@FXML
+	private Button btnAddPlant;
+	@FXML
+	private Button btnEditPlant;
+	@FXML
+	private Button btnDeletePlant;
+
+	@FXML
+	public void addPlant(ActionEvent event) {
+
+	}
+
+	@FXML
+	public void editPlant(ActionEvent event) {
+		Plant plant = tblBases.getSelectionModel().getSelectedItem().getBasis().getPlant();
+		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
+				"org/unibl/etf/gui/plants/view/AddPlantView.fxml");
+		AnchorPane root = DisplayUtil.getAnchorPane(loader);
+		AddPlantController controller = DisplayUtil.<AddPlantController>getController(loader);
+		controller.setPlant(plant);
+		controller.setType(AddPlantController.UPDATE);
+		DisplayUtil.switchStage(root, 650, 600, true, "Dodavanje biljke", true);
+		Basis basis = tblBases.getSelectionModel().getSelectedItem().getBasis();
+		basis.setPlant(plant);
+		tblBases.getSelectionModel().getSelectedItem().setBasis(basis);
+		imgPhoto.setImage(DisplayUtil.convertFromBlob(plant.getImage()));
+	}
+
+	@FXML
+	public void deletePlant(ActionEvent event) {
+		// TODO kreirati triger koji ce setovati da nije u maticnjaku
+		if(DisplayUtil.showConfirmationDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
+			String message = "";
+			BasisTableItem bti = tblBases.getSelectionModel().getSelectedItem();
+			if(DAOFactory.getInstance().getBasisDAO().delete(bti.getBasis()) > 0) {
+				tblBases.getItems().remove(bti);
+				message = "Brisanje uspjesno!";
+			} else {
+				message = "Greska prilikom brisanja!";
+			}
+			DisplayUtil.showMessageDialog(message);
+		}
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -101,7 +148,8 @@ public class BasesController extends BaseController {
 			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
 			Integer produced = Integer.parseInt(txtProducedNum.getText());
 			Integer takeARoot = Integer.parseInt(txtSuccessfulNum.getText());
-			ReproductionCutting cutting = new ReproductionCutting(basis, date, produced, takeARoot, basis.getBasisId(), false);
+			ReproductionCutting cutting = new ReproductionCutting(basis, date, produced, takeARoot, basis.getBasisId(),
+					false);
 			if (DAOFactory.getInstance().getReproductionCuttingDAO().insert(cutting) > 0) {
 				tblSeeds.getItems().add(new ReproductionCuttingTableItem(cutting));
 				tblBases.refresh();
@@ -142,5 +190,8 @@ public class BasesController extends BaseController {
 	private void bindDisable() {
 		btnAddRep.disableProperty().bind(tblBases.getSelectionModel().selectedItemProperty().isNull()
 				.or(dpDate.valueProperty().isNull().or(txtProducedNum.textProperty().isEmpty())));
+		BooleanBinding binding = tblBases.getSelectionModel().selectedItemProperty().isNull();
+		btnEditPlant.disableProperty().bind(binding);
+		btnDeletePlant.disableProperty().bind(binding);
 	}
 }

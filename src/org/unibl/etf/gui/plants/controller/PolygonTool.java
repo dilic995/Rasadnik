@@ -3,6 +3,7 @@ package org.unibl.etf.gui.plants.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Region;
@@ -13,7 +14,6 @@ import javafx.scene.Group;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 
@@ -22,8 +22,9 @@ public class PolygonTool extends CanvasEditor {
 	public PolygonTool() {
 	}
 
-	public PolygonTool(Map<Polygon, Region> regions, Map<Polygon, Polyline> outlines, Group elements) {
-		super(regions, outlines);
+	public PolygonTool(Map<Polygon, Region> regions, Map<Polygon, Polyline> outlines, Group elements,
+			Stack<Command> undoCommands, Stack<Command> redoCommands) {
+		super(regions, outlines, undoCommands, redoCommands);
 		coordinates = new Double[8];
 		this.elements = elements;
 		this.newPolygons = new ArrayList<Polygon>();
@@ -43,28 +44,9 @@ public class PolygonTool extends CanvasEditor {
 	public void finishDrawing(MouseEvent event) {
 		this.coordinates[2] = this.coordinates[4] = event.getX() + 1;
 		this.coordinates[5] = this.coordinates[7] = event.getY() + 1;
-		Polygon p = new Polygon();
-		Polyline pl = new Polyline();
-		p.getPoints().addAll(coordinates);
-		pl.getPoints().addAll(coordinates);
-		pl.getPoints().addAll(coordinates[0], coordinates[1]);
-		p.getStyleClass().clear();
-		p.getStyleClass().add("transparent-brown");
-		elements.getChildren().add(pl);
-		elements.getChildren().add(p);
-		Region region = new Region(null, 0, null, null, this.coordinates, false);
-		if (DisplayUtil.showConfirmationDialog("Zelite li da dodate biljke u region?").equals(ButtonType.YES)) {
-			FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
-					"org/unibl/etf/gui/plants/view/AddRegionView.fxml");
-			AnchorPane root = DisplayUtil.getAnchorPane(loader);
-			AddRegionController controller = DisplayUtil.<AddRegionController>getController(loader);
-			controller.setRegion(region);
-			DisplayUtil.switchStage(root, 300, 150, false, "Dodavanje biljke", true);
-			System.out.println(region.getBasisId());
-		}
-		regions.put(p, region);
-		outlines.put(p, pl);
-		newPolygons.add(p);
+		Command command = new DrawCommand(coordinates, elements, regions, outlines, newPolygons);
+		command.execute();
+		undoCommands.push(command);
 	}
 
 	// TODO pokusati uopstiti
@@ -85,6 +67,26 @@ public class PolygonTool extends CanvasEditor {
 					elements.getChildren().remove(outlines.get(polygon));
 				}
 			}
+		}
+		undoCommands.clear();
+		redoCommands.clear();
+	}
+
+	@Override
+	public void undo() {
+		if (!undoCommands.isEmpty()) {
+			Command command = undoCommands.pop();
+			command.unexecute();
+			redoCommands.push(command);
+		}
+	}
+
+	@Override
+	public void redo() {
+		if (!redoCommands.isEmpty()) {
+			Command command = redoCommands.pop();
+			command.execute();
+			undoCommands.push(command);
 		}
 	}
 }

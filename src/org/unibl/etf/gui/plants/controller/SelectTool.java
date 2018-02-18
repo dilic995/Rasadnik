@@ -1,15 +1,13 @@
 package org.unibl.etf.gui.plants.controller;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import org.unibl.etf.dto.Region;
-import org.unibl.etf.gui.util.DisplayUtil;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
@@ -19,8 +17,9 @@ public class SelectTool extends CanvasEditor {
 	public SelectTool() {
 	}
 
-	public SelectTool(Map<Polygon, Region> regions, Map<Polygon, Polyline> outlines, DrawRegionsController controller) {
-		super(regions, outlines);
+	public SelectTool(Map<Polygon, Region> regions, Map<Polygon, Polyline> outlines, DrawRegionsController controller,
+			Stack<Command> undoCommands, Stack<Command> redoCommands) {
+		super(regions, outlines, undoCommands, redoCommands);
 		this.controller = controller;
 		for (Iterator<Polygon> it = regions.keySet().iterator(); it.hasNext();) {
 			Polygon p = it.next();
@@ -65,5 +64,17 @@ public class SelectTool extends CanvasEditor {
 			selected = null;
 		}
 		controller.clear();
+	}
+
+	@Override
+	public void undo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void redo() {
+		// TODO Auto-generated method stub
+		
 	}
 }
