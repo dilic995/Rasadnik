@@ -40,7 +40,11 @@ public abstract class DAOFactory {
 	public abstract EventDAO getEventDAO();
 
 	public abstract EventDAO getEventDAO(Connection conn);
+	
+	public abstract PlanDAO getPlanDAO();
 
+	public abstract PlanDAO getPlanDAO(Connection conn);
+	
 	public abstract PlantDAO getPlantDAO();
 
 	public abstract PlantDAO getPlantDAO(Connection conn);

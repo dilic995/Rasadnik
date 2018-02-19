@@ -34,6 +34,8 @@ public interface TaskDAO {
 	public List<Task> getByIsDeleted(Boolean isDeleted);
 
 	public List<Task> getByRegionId(Integer regionId);
+	
+	public List<Task> getByPlanId(Integer planId);
 
 	public List<Task> getByPlantMaintanceActivityId(Integer plantMaintanceActivityId);
 }
