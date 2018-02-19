@@ -1,5 +1,7 @@
 package org.unibl.etf.gui.plants.controller;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +11,7 @@ import java.util.ResourceBundle;
 import java.util.Stack;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
+import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.Region;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
@@ -50,15 +53,16 @@ public class DrawRegionsController extends BaseController {
 	private Button btnUndo;
 	@FXML
 	private Button btnRedo;
-	
+
 	@FXML
 	public void undo(ActionEvent event) {
 		canvasEditor.undo();
 	}
+
 	public void redo(ActionEvent event) {
 		canvasEditor.redo();
 	}
-	
+
 	private CanvasEditor canvasEditor;
 
 	@FXML
@@ -87,20 +91,29 @@ public class DrawRegionsController extends BaseController {
 	@FXML
 	public void press(MouseEvent event) {
 	}
+
 	@FXML
 	public void aPressed(MouseEvent event) {
 		canvasEditor.startDrawing(event);
 	}
+
 	// Event Listener on AnchorPane[#parentPane].onMouseReleased
 	@FXML
 	public void release(MouseEvent event) {
 	}
+
 	@FXML
 	public void aReleased(MouseEvent event) {
 		canvasEditor.finishDrawing(event);
 	}
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		try {
+			defaultImage = new Image(new FileInputStream("resources/images/add_image.png"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		regionsMap = new HashMap<Polygon, Region>();
 		outlinesMap = new HashMap<Polygon, Polyline>();
 		undoCommands = new Stack<Command>();
@@ -125,10 +138,16 @@ public class DrawRegionsController extends BaseController {
 	}
 
 	public void displayInfo(Region region) {
-		setValues(DisplayUtil.convertFromBlob(region.getBasis().getPlant().getImage()),
-				"REGION " + region.getRegionId(), region.getBasis().getPlant().getScientificName() + " ("
-						+ region.getBasis().getPlant().getKnownAs() + ")", 
-						"Broj biljaka: " + region.getNumberOfPlants());
+		Basis basis = region.getBasis();
+		setValues(
+				basis == null ? null
+						: (basis.getPlant().getImage() == null ? null
+								: DisplayUtil.convertFromBlob(region.getBasis().getPlant().getImage())),
+				"REGION " + region.getRegionId(),
+				basis == null ? "Nema biljaka"
+						: region.getBasis().getPlant().getScientificName() + " ("
+								+ region.getBasis().getPlant().getKnownAs() + ")",
+				"Broj biljaka: " + region.getNumberOfPlants());
 	}
 
 	public void clear() {
@@ -146,5 +165,6 @@ public class DrawRegionsController extends BaseController {
 	private Map<Polygon, Polyline> outlinesMap;
 	private Stack<Command> undoCommands;
 	private Stack<Command> redoCommands;
+	private Image defaultImage;
 	// TODO observer na evente
 }

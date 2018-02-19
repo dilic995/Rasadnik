@@ -9,3 +9,8 @@
 /src/test/
 /src/org/unibl/etf/util/config.properties
 /libs/i*
+src/org/unibl/etf/gui/plants/view/TestView\.fxml
+
+src/org/unibl/etf/gui/plants/view/TestViewController\.java
+
+css/a\.css
