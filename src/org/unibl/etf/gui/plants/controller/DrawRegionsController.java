@@ -3,7 +3,6 @@ package org.unibl.etf.gui.plants.controller;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,8 @@ import java.util.Stack;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Basis;
+import org.unibl.etf.dto.MaintenancePlan;
+import org.unibl.etf.dto.Plan;
 import org.unibl.etf.dto.Region;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
@@ -21,8 +22,10 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -53,7 +56,33 @@ public class DrawRegionsController extends BaseController {
 	private Button btnUndo;
 	@FXML
 	private Button btnRedo;
-
+	@FXML
+	private ListView<MaintenancePlan> lstActivePlans;
+	@FXML
+	private ListView<MaintenancePlan> lstDonePlans;
+	@FXML
+	private TableView<TaskTableItem> tblTasks;
+	@FXML
+	private TableColumn<TaskTableItem, String> colActivity;
+	@FXML
+	private TableColumn<TaskTableItem, String> colDateFrom;
+	@FXML
+	private TableColumn<TaskTableItem, String> colDateTo;
+	@FXML
+	private TableColumn<TaskTableItem, String> colDone;
+	
+	@FXML
+	public void selectActive(ActionEvent event) {
+		
+	}
+	@FXML
+	public void selectDone(ActionEvent event) {
+		
+	}
+	
+	
+	
+	
 	@FXML
 	public void undo(ActionEvent event) {
 		canvasEditor.undo();

@@ -54,7 +54,7 @@ public class TaskDAOImpl implements TaskDAO {
 	//
 	// CRUD methods
 	//
-	public Task getByPrimaryKey(Integer taskId)  {
+	public Task getByPrimaryKey(Integer taskId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -76,7 +76,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return null;
 	}
 
-	public Long selectCount()  {
+	public Long selectCount() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -96,7 +96,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return 0L;
 	}
 
-	public Long selectCount(String whereStatement, Object[] bindVariables)  {
+	public Long selectCount(String whereStatement, Object[] bindVariables) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 
@@ -107,7 +107,8 @@ public class TaskDAOImpl implements TaskDAO {
 		}
 
 		try {
-			ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement + " AND deleted=false");
+			ps = getConn()
+					.prepareStatement("select count(*) from " + tableName + whereStatement + " AND deleted=false");
 
 			for (int i = 0; i < bindVariables.length; i++)
 				DBUtil.bind(ps, i + 1, bindVariables[i]);
@@ -126,7 +127,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return 0L;
 	}
 
-	public List<Task> selectAll()  {
+	public List<Task> selectAll() {
 		List<Task> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -146,7 +147,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> select(String whereStatement, Object[] bindVariables)  {
+	public List<Task> select(String whereStatement, Object[] bindVariables) {
 		List<Task> ret = new ArrayList<>();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -158,7 +159,8 @@ public class TaskDAOImpl implements TaskDAO {
 		}
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement + " AND deleted=false");
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement + " AND deleted=false");
 
 			for (int i = 0; i < bindVariables.length; i++)
 				DBUtil.bind(ps, i + 1, bindVariables[i]);
@@ -176,7 +178,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public Integer update(Task obj)  {
+	public Integer update(Task obj) {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -188,7 +190,7 @@ public class TaskDAOImpl implements TaskDAO {
 			int rowCount = ps.executeUpdate();
 
 			if (rowCount != 1) {
-			return 0;
+				return 0;
 			}
 
 			return rowCount;
@@ -200,19 +202,20 @@ public class TaskDAOImpl implements TaskDAO {
 		return 0;
 	}
 
-	public Integer insert(Task obj)  {
+	public Integer insert(Task obj) {
 		PreparedStatement ps = null;
-		ResultSet rs=null;
+		ResultSet rs = null;
 		int pos = 1;
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns),PreparedStatement.RETURN_GENERATED_KEYS);
+			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns),
+					PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
 			bindStdColumns(ps, obj, pos);
 
 			int rowCount = ps.executeUpdate();
 			rs = ps.getGeneratedKeys();
-			if(rs.next()) {
+			if (rs.next()) {
 				obj.setTaskId(rs.getInt(1));
 			}
 			if (rowCount != 1) {
@@ -228,7 +231,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return 0;
 	}
 
-	public Integer delete(Task obj)  {
+	public Integer delete(Task obj) {
 		PreparedStatement ps = null;
 		int pos = 1;
 
@@ -256,7 +259,7 @@ public class TaskDAOImpl implements TaskDAO {
 	//
 	// finders
 	//
-	public List<Task> getByDateFrom(Date dateFrom)  {
+	public List<Task> getByDateFrom(Date dateFrom) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -284,7 +287,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> getByDateTo(Date dateTo)  {
+	public List<Task> getByDateTo(Date dateTo) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -311,8 +314,8 @@ public class TaskDAOImpl implements TaskDAO {
 
 		return ret;
 	}
-	
-	public List<Task> getByIsDeleted(Boolean isDeleted)  {
+
+	public List<Task> getByIsDeleted(Boolean isDeleted) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -334,7 +337,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> getByDone(Boolean done)  {
+	public List<Task> getByDone(Boolean done) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -356,7 +359,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> getByRegionId(Integer regionId)  {
+	public List<Task> getByRegionId(Integer regionId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -378,7 +381,7 @@ public class TaskDAOImpl implements TaskDAO {
 		return ret;
 	}
 
-	public List<Task> getByPlantMaintanceActivityId(Integer plantMaintanceActivityId)  {
+	public List<Task> getByPlantMaintanceActivityId(Integer plantMaintanceActivityId) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Task> ret = new ArrayList<>();
@@ -399,7 +402,7 @@ public class TaskDAOImpl implements TaskDAO {
 
 		return ret;
 	}
-	
+
 	@Override
 	public List<Task> getByPlanId(Integer planId) {
 		PreparedStatement ps = null;
@@ -407,8 +410,8 @@ public class TaskDAOImpl implements TaskDAO {
 		List<Task> ret = new ArrayList<>();
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns,
-					Arrays.asList(new String[] { "plan_id" })));
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "plan_id" })));
 			DBUtil.bind(ps, 1, planId);
 			rs = ps.executeQuery();
 
@@ -422,6 +425,7 @@ public class TaskDAOImpl implements TaskDAO {
 
 		return ret;
 	}
+
 	//
 	// helpers
 	//
@@ -439,12 +443,9 @@ public class TaskDAOImpl implements TaskDAO {
 		DBUtil.bind(ps, pos++, obj.getRegionId());
 		DBUtil.bind(ps, pos++, obj.getPlantMaintanceActivityId());
 		DBUtil.bind(ps, pos++, obj.getPlanId());
-		
 
 		return pos;
 	}
-
-	
 
 	protected Task fromResultSet(ResultSet rs) throws SQLException {
 		Task obj = new Task();
@@ -457,15 +458,15 @@ public class TaskDAOImpl implements TaskDAO {
 		obj.setRegionId((DBUtil.getInt(rs, "region_id")));
 		obj.setPlantMaintanceActivityId((DBUtil.getInt(rs, "plant_maintance_activity_id")));
 		obj.setPlanId((DBUtil.getInt(rs, "plan_id")));
-		
+
 		return obj;
 	}
 
 	protected Connection getConn() {
-		if(conn == null) {
+		if (conn == null) {
 			conn = DBUtil.getConnection();
 		}
-		
+
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
 }
