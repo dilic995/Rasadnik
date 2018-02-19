@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.TaskDAO;
 import org.unibl.etf.dto.Task;
 
@@ -31,6 +30,7 @@ public class TaskDAOImpl implements TaskDAO {
 		stdColumns.add("deleted");
 		stdColumns.add("region_id");
 		stdColumns.add("plant_maintance_activity_id");
+		stdColumns.add("plan_id");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
 	}
@@ -399,7 +399,29 @@ public class TaskDAOImpl implements TaskDAO {
 
 		return ret;
 	}
+	
+	@Override
+	public List<Task> getByPlanId(Integer planId) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Task> ret = new ArrayList<>();
 
+		try {
+			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns,
+					Arrays.asList(new String[] { "plan_id" })));
+			DBUtil.bind(ps, 1, planId);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 	//
 	// helpers
 	//
@@ -416,9 +438,13 @@ public class TaskDAOImpl implements TaskDAO {
 		DBUtil.bind(ps, pos++, obj.getDeleted());
 		DBUtil.bind(ps, pos++, obj.getRegionId());
 		DBUtil.bind(ps, pos++, obj.getPlantMaintanceActivityId());
+		DBUtil.bind(ps, pos++, obj.getPlanId());
+		
 
 		return pos;
 	}
+
+	
 
 	protected Task fromResultSet(ResultSet rs) throws SQLException {
 		Task obj = new Task();
@@ -430,6 +456,7 @@ public class TaskDAOImpl implements TaskDAO {
 		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 		obj.setRegionId((DBUtil.getInt(rs, "region_id")));
 		obj.setPlantMaintanceActivityId((DBUtil.getInt(rs, "plant_maintance_activity_id")));
+		obj.setPlanId((DBUtil.getInt(rs, "plan_id")));
 		
 		return obj;
 	}

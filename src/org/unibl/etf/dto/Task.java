@@ -7,6 +7,8 @@ import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class Task {
 	private Integer taskId;
+	private Integer planId;
+	private Plan plan;
 	private Date dateFrom;
 	private Date dateTo;
 	private Boolean done;
@@ -19,8 +21,28 @@ public class Task {
 	//
 	// getters / setters
 	//
+	
 	public Integer getTaskId() {
 		return this.taskId;
+	}
+
+	public Integer getPlanId() {
+		return planId;
+	}
+
+	public void setPlanId(Integer planId) {
+		this.planId = planId;
+	}
+
+	public Plan getPlan() {
+		if(plan==null) {
+			plan = DAOFactory.getInstance().getPlanDAO().getByPrimaryKey(planId);
+		}
+		return this.plan;
+	}
+
+	public void setPlan(Plan plan) {
+		this.plan = plan;
 	}
 
 	public void setTaskId(Integer taskId) {

@@ -9,6 +9,7 @@ import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.EmployeeDAO;
 import org.unibl.etf.dao.interfaces.EmployeeHasTaskDAO;
 import org.unibl.etf.dao.interfaces.EventDAO;
+import org.unibl.etf.dao.interfaces.PlanDAO;
 import org.unibl.etf.dao.interfaces.PlantDAO;
 import org.unibl.etf.dao.interfaces.PlantMaintanceActivityDAO;
 import org.unibl.etf.dao.interfaces.PriceHeightRatioDAO;
@@ -80,6 +81,14 @@ public class JDBCDAOFactory extends DAOFactory {
 
 	public PlantDAO getPlantDAO(Connection conn) {
 		return new PlantDAOImpl(conn);
+	}
+	
+	public PlanDAO getPlanDAO() {
+		return new PlanDAOImpl();
+	}
+
+	public PlanDAO getPlanDAO(Connection conn) {
+		return new PlanDAOImpl(conn);
 	}
 
 	public PlantMaintanceActivityDAO getPlantMaintanceActivityDAO() {

@@ -123,6 +123,20 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `rasadnik_db`.`plan`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `rasadnik_db`.`plan` (
+  `plan_id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `date_from` DATE NOT NULL,
+  `date_to` DATE NOT NULL,
+  `active` TINYINT NOT NULL DEFAULT 1,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`plan_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `rasadnik_db`.`task`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`task` (
@@ -133,9 +147,11 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`task` (
   `deleted` TINYINT NOT NULL DEFAULT 0,
   `region_id` INT NOT NULL,
   `plant_maintance_activity_id` INT NOT NULL,
+  `plan_id` INT NULL,
   INDEX `fk_region_has_maintance_activity_maintance_activity1_idx` (`plant_maintance_activity_id` ASC),
   INDEX `fk_region_has_maintance_activity_region1_idx` (`region_id` ASC),
   PRIMARY KEY (`task_id`),
+  INDEX `fk_task_plan1_idx` (`plan_id` ASC),
   CONSTRAINT `fk_region_has_maintance_activity_region1`
     FOREIGN KEY (`region_id`)
     REFERENCES `rasadnik_db`.`region` (`region_id`)
@@ -144,6 +160,11 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`task` (
   CONSTRAINT `fk_region_has_maintance_activity_maintance_activity1`
     FOREIGN KEY (`plant_maintance_activity_id`)
     REFERENCES `rasadnik_db`.`plant_maintance_activity` (`plant_maintance_activity_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_task_plan1`
+    FOREIGN KEY (`plan_id`)
+    REFERENCES `rasadnik_db`.`plan` (`plan_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
