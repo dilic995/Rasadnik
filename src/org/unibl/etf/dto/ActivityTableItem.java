@@ -37,7 +37,7 @@ public class ActivityTableItem {
 
 	public ActivityTableItem(EmployeeHasTask task) {
 		super();
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 		this.task = task;
 		region = new SimpleIntegerProperty(task.getTask().getRegionId());
 		date = new SimpleStringProperty(df.format(task.getDate()));
