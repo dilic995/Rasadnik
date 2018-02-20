@@ -119,3 +119,23 @@
 	-fx-opacity: 0.5;
 	-fx-fill: #00aa00;
 }
+
+.transparent-darkbrown{
+	-fx-opacity: 0.5;
+	-fx-fill: #331100;
+}
+
+.transparent-yellow{
+	-fx-opacity: 0.5;
+	-fx-fill: #aaaa00;
+}
+
+.transparent-red{
+	-fx-opacity: 0.5;
+	-fx-fill: #aa0000;
+}
+
+.transparent-blue{
+	-fx-opacity: 0.5;
+	-fx-fill: #0000aa;
+}

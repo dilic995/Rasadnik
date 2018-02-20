@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public abstract class State {
 
-	protected String name;
+	protected String style;
 
 	public State getNewState(MaintenancePlanItem item, Boolean active) {
 		if (!active) {
@@ -20,14 +20,14 @@ public abstract class State {
 		} else
 			return new PartialActiveState();
 	}
-
-	public String getName() {
-		return name;
+	
+	public String getStyle() {
+		return style;
 	}
 
-	public State(String name) {
+	public State(String style) {
 		super();
-		this.name = name;
+		this.style = style;
 	}
 
 	public State() {

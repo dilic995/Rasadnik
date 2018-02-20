@@ -11,6 +11,9 @@ public class MaintenancePlan {
 
 	public MaintenancePlan() {
 	}
+	
+	public MaintenancePlan(Plan plan) {
+	}
 
 	public MaintenancePlan(LocalDate dateFrom, LocalDate dateTo, Map<Region, MaintenancePlanItem> plannedTasks, Boolean active) {
 		super();
@@ -93,8 +96,14 @@ public class MaintenancePlan {
 		return res;
 	}
 	
-	private LocalDate dateFrom;
-	private LocalDate dateTo;
+	public static List<MaintenancePlan> convert(List<Plan> list) {
+		ArrayList<MaintenancePlan> result = new ArrayList<>();
+		for(Plan plan : list) {
+			result.add(new MaintenancePlan(dateFrom, dateTo, plannedTasks, active))
+		}
+	}
+	
+	private Plan plan;
 	private Map<Region, MaintenancePlanItem> plannedTasks;
-	private Boolean active;
+	
 }

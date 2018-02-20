@@ -7,11 +7,11 @@ public class FullyFinishedState extends State {
 
 	public FullyFinishedState() {
 		super();
-		name = "FullyFinishedState";
+		style = "transparent-red";
 	}
 
-	public FullyFinishedState(String name) {
-		super(name);
+	public FullyFinishedState(String style) {
+		super(style);
 		// TODO Auto-generated constructor stub
 	}
 	

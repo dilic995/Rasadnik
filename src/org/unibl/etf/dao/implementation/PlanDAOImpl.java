@@ -16,7 +16,7 @@ public class PlanDAOImpl implements PlanDAO {
 	protected static List<String> pkColumns = new ArrayList<>();
 	protected static List<String> stdColumns = new ArrayList<>();
 	protected static List<String> allColumns = new ArrayList<>();
-	protected static String tableName = "region";
+	protected static String tableName = "plan";
 
 	static {
 		pkColumns.add("plan_id");

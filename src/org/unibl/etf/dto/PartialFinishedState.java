@@ -7,11 +7,11 @@ public class PartialFinishedState extends State {
 
 	public PartialFinishedState() {
 		super();
-		name = "PartialFinishedState";
+		style = "transparent-blue";
 	}
 
-	public PartialFinishedState(String name) {
-		super(name);
+	public PartialFinishedState(String style) {
+		super(style);
 		// TODO Auto-generated constructor stub
 	}
 

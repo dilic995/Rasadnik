@@ -106,6 +106,11 @@ public class DisplayUtil {
 		Stage stage = (Stage)node.getScene().getWindow();
 		stage.close();
 	}
+	public static ButtonType showWarningDialog(String warning) {
+		Alert alert = new Alert(AlertType.WARNING, warning, ButtonType.YES, ButtonType.NO);
+		alert.showAndWait();
+		return alert.getResult();
+	}
 	public static ButtonType showConfirmationDialog(String question) {
 		Alert alert = new Alert(AlertType.CONFIRMATION, question, ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
 		alert.showAndWait();

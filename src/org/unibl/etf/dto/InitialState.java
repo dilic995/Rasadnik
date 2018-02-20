@@ -6,13 +6,13 @@ import java.util.stream.Collectors;
 
 public class InitialState extends State {
 
-	public InitialState(String name) {
-		super(name);
+	public InitialState(String style) {
+		super(style);
 	}
 
 	public InitialState() {
 		super();
-		name = "InitialState";
+		style = "transparent-green";
 	}
 
 	
