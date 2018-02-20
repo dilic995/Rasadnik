@@ -35,10 +35,18 @@ public class SelectTool extends CanvasEditor {
 					selected.getStyleClass().add("transparent-green");
 					Region region = regions.get(p);
 					SelectTool.this.controller.displayInfo(region);
+					SelectTool.this.controller.updateRegionLabel();
 				}
 
 			});
 		}
+		SelectTool.this.controller.updateRegionLabel();
+	}
+	
+	public Region getSelectedRegion() {
+		if(selected != null)
+			return regions.get(selected);
+		return null;
 	}
 
 	@Override

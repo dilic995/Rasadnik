@@ -76,7 +76,7 @@ public class MaintenancePlanItem {
 			Task t = it.next();
 			res += "\n" + t.getPlantMaintanceActivity().getActivity() + " - " + t.getDone();
 		}
-		res += "\n" + "Stanje : " + state.getName();
+		res += "\n" + "Stil : " + state.getStyle();
 		return res;
 	}
 	private Region region;

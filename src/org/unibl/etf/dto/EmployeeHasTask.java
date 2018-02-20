@@ -15,6 +15,27 @@ public class EmployeeHasTask {
 	private Integer employeeId;
 	private Employee employee;
 	private Boolean deleted;
+	
+	
+
+	public EmployeeHasTask() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public EmployeeHasTask(BigDecimal hourlyWage, Integer hours, Boolean paidOff, Date date, Integer taskId, Task task,
+			Integer employeeId, Employee employee, Boolean deleted) {
+		super();
+		this.hourlyWage = hourlyWage;
+		this.hours = hours;
+		this.paidOff = paidOff;
+		this.date = date;
+		this.taskId = taskId;
+		this.task = task;
+		this.employeeId = employeeId;
+		this.employee = employee;
+		this.deleted = deleted;
+	}
 
 	//
 	// getters / setters

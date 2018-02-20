@@ -116,6 +116,11 @@ public class DisplayUtil {
 		alert.showAndWait();
 		return alert.getResult();
 	}
+	public static ButtonType showErrorDialog(String error) {
+		Alert alert = new Alert(AlertType.ERROR, error, ButtonType.OK, ButtonType.CANCEL);
+		alert.showAndWait();
+		return alert.getResult();
+	}
 	public static void showMessageDialog(String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setHeaderText("");

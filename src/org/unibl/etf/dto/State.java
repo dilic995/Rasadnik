@@ -8,6 +8,7 @@ public abstract class State {
 	protected String style;
 
 	public State getNewState(MaintenancePlanItem item, Boolean active) {
+		//TODO popraviti
 		if (!active) {
 			return new PartialFinishedState();
 		}

@@ -2,22 +2,27 @@ package org.unibl.etf.gui.plants.controller;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 import java.util.Stack;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
-import org.unibl.etf.dto.ActivityTableItem;
 import org.unibl.etf.dto.Basis;
-import org.unibl.etf.dto.MaintenancePlan;
+import org.unibl.etf.dto.MaintenancePlanItem;
 import org.unibl.etf.dto.Plan;
+import org.unibl.etf.dto.PlantMaintanceActivity;
 import org.unibl.etf.dto.Region;
+import org.unibl.etf.dto.Task;
 import org.unibl.etf.dto.TaskTableItem;
+import org.unibl.etf.gui.task.controller.TaskDetailsViewController;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
 
@@ -26,14 +31,19 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,6 +51,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class DrawRegionsController extends BaseController {
 	@FXML
@@ -80,6 +92,27 @@ public class DrawRegionsController extends BaseController {
 	@FXML
 	private TableColumn<TaskTableItem, Boolean> colDone;
 
+	@FXML
+	private TextField txtPlanName;
+
+	@FXML
+	private DatePicker dpPlanDateFrom;
+
+	@FXML
+	private DatePicker dpPlanDateTo;
+
+	@FXML
+	private DatePicker dpTaskDateFrom;
+
+	@FXML
+	private ComboBox<PlantMaintanceActivity> cbActivity;
+
+	@FXML
+	private Label lblChosedRegion;
+
+	@FXML
+	private ListView<Task> lstChosedTasks;
+
 	private Plan currentPlan;
 
 	@FXML
@@ -112,12 +145,50 @@ public class DrawRegionsController extends BaseController {
 
 	@FXML
 	void taskDetails(ActionEvent event) {
-
+		TaskTableItem item = tblTasks.getSelectionModel().getSelectedItem();
+		if (item != null) {
+			try {
+				Stage stage = new Stage();
+				FXMLLoader loader = new FXMLLoader(
+						getClass().getClassLoader().getResource("org/unibl/etf/gui/task/view/TaskDetailsView.fxml"));
+				AnchorPane root;
+				root = (AnchorPane) loader.load();
+				TaskDetailsViewController control = loader.<TaskDetailsViewController>getController();
+				control.setTask(item.getTask());
+				control.initializeView();
+				control.setPrimaryStage(stage);
+				Scene scene = new Scene(root);
+				stage.setScene(scene);
+				stage.setTitle("Detalji");
+//				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+//					@Override
+//					public void handle(WindowEvent event) {
+//						event.consume();
+//					}
+//				});
+				stage.initModality(Modality.APPLICATION_MODAL);
+				stage.showAndWait();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
-	
+
 	@FXML
 	void deletePlan(ActionEvent event) {
-
+		if (DisplayUtil.showConfirmationDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
+			currentPlan.setDeleted(true);
+			DAOFactory.getInstance().getPlanDAO().update(currentPlan);
+			for (MaintenancePlanItem item : currentPlan.getTasks().values()) {
+				for (Task t : item.getPlannedTasks()) {
+					t.setDeleted(true);
+					DAOFactory.getInstance().getTaskDAO().update(t);
+				}
+			}
+			lstActivePlans.getItems().remove(currentPlan);
+			currentPlan = lstActivePlans.getSelectionModel().getSelectedItem();
+		}
 	}
 
 	@FXML
@@ -152,7 +223,7 @@ public class DrawRegionsController extends BaseController {
 	void setPlanDone(ActionEvent event) {
 		currentPlan = lstActivePlans.getSelectionModel().getSelectedItem();
 		if (currentPlan != null) {
-			if(DisplayUtil.showWarningDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
+			if (DisplayUtil.showWarningDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
 				currentPlan.setActive(false);
 				DAOFactory.getInstance().getPlanDAO().update(currentPlan);
 				lstActivePlans.getItems().remove(currentPlan);
@@ -258,6 +329,110 @@ public class DrawRegionsController extends BaseController {
 
 		// TABELA
 		initializeTable();
+
+		// COMBOBOX
+		ObservableList<PlantMaintanceActivity> activities = FXCollections
+				.observableArrayList(DAOFactory.getInstance().getPlantMaintanceActivityDAO().selectAll());
+		cbActivity.setItems(activities);
+
+		// DODAVANJE TASKA
+
+	}
+
+	private Map<Region, ObservableList<Task>> planedTasks = new HashMap<Region, ObservableList<Task>>();
+
+	public void updateRegionLabel() {
+		if (canvasEditor instanceof SelectTool) {
+			Region region = ((SelectTool) canvasEditor).getSelectedRegion();
+			lblChosedRegion.setText(region == null ? "" : "REGION " + region.getRegionId());
+			ObservableList<Task> list;
+			if (planedTasks.get(region) != null)
+				list = planedTasks.get(region);
+			else
+				list = FXCollections.observableArrayList();
+			lstChosedTasks.setItems(list);
+			lstChosedTasks.refresh();
+		}
+	}
+
+	@FXML
+	void addPlan(ActionEvent event) {
+		if (txtPlanName.getText() == "" || dpPlanDateFrom.getValue() == null || dpPlanDateTo.getValue() == null) {
+			DisplayUtil.showErrorDialog("Popunite sva polja!");
+			return;
+		}
+		boolean fleg = false;
+		for (ObservableList<Task> tasks : planedTasks.values()) {
+			if (tasks != null && tasks.size() > 0) {
+				fleg = true;
+				break;
+			}
+		}
+		if (!fleg) {
+			DisplayUtil.showErrorDialog("Mora postojati bar jedna aktivnost koja je ukljucena u plan!");
+			return;
+		}
+		if (dpPlanDateFrom.getValue().isAfter(dpPlanDateTo.getValue())
+				|| dpPlanDateFrom.getValue().isBefore(LocalDate.now())) {
+			DisplayUtil.showErrorDialog(
+					"Datumi nisu dobro uneseni! Datum pocetka mora biti prije datuma kraja. Isto tako datum pocetka mora biti veci od danasnjeg datuma.");
+			return;
+		}
+		String planName = txtPlanName.getText();
+		Date dateFrom = Date.from(dpPlanDateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+		Date dateTo = Date.from(dpPlanDateTo.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+		Plan plan = new Plan(null, planName, dateFrom, dateTo, true, false, null);
+		DAOFactory.getInstance().getPlanDAO().insert(plan);
+
+		for (ObservableList<Task> tasks : planedTasks.values()) {
+			if (tasks != null) {
+				for (Task t : tasks) {
+					t.setPlanId(plan.getPlanId());
+					t.setPlan(plan);
+					DAOFactory.getInstance().getTaskDAO().insert(t);
+				}
+			}
+		}
+
+		txtPlanName.clear();
+		dpPlanDateFrom.setValue(null);
+		dpPlanDateTo.setValue(null);
+		cbActivity.getSelectionModel().clearSelection();
+		dpTaskDateFrom.setValue(null);
+		planedTasks = new HashMap<Region, ObservableList<Task>>();
+	}
+
+	@FXML
+	void addTaskInPlan(ActionEvent event) {
+		if (lblChosedRegion.getText() == "" || cbActivity.getSelectionModel().getSelectedItem() == null
+				|| dpTaskDateFrom.getValue() == null) {
+			DisplayUtil.showErrorDialog("Odaberite region i popunite polja!");
+			return;
+		}
+		if (canvasEditor instanceof SelectTool) {
+			Region region = ((SelectTool) canvasEditor).getSelectedRegion();
+			PlantMaintanceActivity activity = cbActivity.getSelectionModel().getSelectedItem();
+			Date date = Date.from(dpTaskDateFrom.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+			Task task = new Task(0, 0, null, date, null, false, region.getRegionId(), region, false,
+					activity.getPlantMaintanceActivityId(), activity);
+			if (!planedTasks.keySet().contains(region)) {
+				planedTasks.put(region, FXCollections.observableArrayList());
+			}
+			planedTasks.get(region).add(task);
+			lstChosedTasks.setItems(planedTasks.get(region));
+			lstChosedTasks.refresh();
+		}
+	}
+
+	@FXML
+	void deleteTaskFromPlan(ActionEvent event) {
+		List<Integer> task = lstChosedTasks.getSelectionModel().getSelectedIndices();
+		if (task != null) {
+			for (int index : task) {
+				lstChosedTasks.getItems().remove(index);
+			}
+		}
 	}
 
 	private void initializeTable() {
