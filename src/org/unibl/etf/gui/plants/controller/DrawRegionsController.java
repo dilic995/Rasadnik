@@ -2,9 +2,11 @@ package org.unibl.etf.gui.plants.controller;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -16,7 +18,10 @@ import org.unibl.etf.dto.ActivityTableItem;
 import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.MaintenancePlan;
 import org.unibl.etf.dto.Plan;
+import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.Region;
+import org.unibl.etf.dto.Sale;
+import org.unibl.etf.dto.SaleItem;
 import org.unibl.etf.dto.TaskTableItem;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
@@ -27,16 +32,22 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Polygon;
@@ -79,8 +90,122 @@ public class DrawRegionsController extends BaseController {
 	private TableColumn<TaskTableItem, String> colDateTo;
 	@FXML
 	private TableColumn<TaskTableItem, Boolean> colDone;
-
+	@FXML
+	private TabPane tabPane;
+	@FXML
+	private Tab tabGeneral;
+	@FXML
+	private CheckBox cbShowGrid;
+	@FXML
+	private AnchorPane regionsPane;
+	@FXML
+	private Button btnCreateSale;
+	@FXML
+	private TextField txtNumSold;
+	@FXML
+	private TextField txtHeight;
+	@FXML
+	private ListView<SaleItem> lstSaleItems;
+	@FXML
+	private Button btnAddSaleItem;
+	@FXML
+	private Button btnRemoveSaleItem;
+	@FXML
+	private Button btnSaveSale;
+	@FXML
+	private CheckBox cbPaidOff;
 	private Plan currentPlan;
+
+	@FXML
+	public void createSale(ActionEvent event) {
+		setDisabled(false, txtHeight, txtNumSold, btnAddSaleItem, btnRemoveSaleItem, lstSaleItems, cbPaidOff,
+				btnSaveSale);
+		setDisabled(true, btnSetSelectTool, btnSetPolygonTool);
+	}
+
+	@FXML
+	public void keyTyped(KeyEvent event) {
+
+	}
+
+	@FXML
+	public void addSaleItem(ActionEvent event) {
+		if (selectedRegion != null) {
+			try {
+				Integer num = Integer.parseInt(txtNumSold.getText());
+				BigDecimal height = new BigDecimal(txtHeight.getText());
+				Plant plant = selectedRegion.getBasis().getPlant();
+				BigDecimal price = plant.getPrice(height).multiply(new BigDecimal(num));
+				BigDecimal heightMin = plant.getHeightMin(height);
+				SaleItem item = new SaleItem(num, plant, null, plant.getPlantId(), null, price, heightMin);
+				changedRegions.add(selectedRegion);
+				Command command = new AddSaleItemCommand(selectedRegion, item, lstSaleItems.getItems(), this);
+				command.execute();
+				canvasEditor.push(command);
+				canvasEditor.clearRedo();
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+		} else {
+		}
+	}
+
+	@FXML
+	public void removeSaleItem(ActionEvent event) {
+
+	}
+
+	@FXML
+	public void saveSale(ActionEvent event) {
+		setDisabled(true, txtHeight, txtNumSold, btnAddSaleItem, btnRemoveSaleItem, lstSaleItems, cbPaidOff,
+				btnSaveSale);
+		setDisabled(false, btnSetSelectTool, btnSetPolygonTool);
+		BigDecimal price = BigDecimal.ZERO;
+		for (SaleItem item : lstSaleItems.getItems()) {
+			price = price.add(item.getPrice());
+		}
+		if (lstSaleItems.getItems().size() > 0) {
+			Sale sale = new Sale(null, Calendar.getInstance().getTime(), price, cbPaidOff.isSelected(), null, 1, false);
+			if (DAOFactory.getInstance().getSaleDAO().insert(sale) > 0) {
+				for (SaleItem item : lstSaleItems.getItems()) {
+					item.setSaleId(sale.getSaleId());
+					DAOFactory.getInstance().getSaleItemDAO().insert(item);
+				}
+			}
+			for (Region reg : changedRegions) {
+				DAOFactory.getInstance().getRegionDAO().update(reg);
+			}
+		}
+		changedRegions.clear();
+		lstSaleItems.getItems().clear();
+		lstSaleItems.refresh();
+	}
+
+	@FXML
+	public void showGrid(ActionEvent event) {
+		String styleClass;
+		if (cbShowGrid.isSelected()) {
+			styleClass = "grid-bck";
+		} else {
+			styleClass = "white-bck";
+		}
+		regionsPane.getStyleClass().clear();
+		regionsPane.getStyleClass().add(styleClass);
+	}
+
+	@FXML
+	public void generalTabSelected() {
+		if (canvasEditor != null) {
+			canvasEditor.invalidate();
+			canvasEditor = new SelectTool(regionsMap, outlinesMap, this, undoCommands, redoCommands);
+		}
+		if (tabGeneral.isSelected()) {
+			initRegions();
+			setDisabled(false, btnSetSelectTool, btnSetPolygonTool, btnRedo, btnUndo);
+		} else {
+			setDisabled(true, btnSetSelectTool, btnSetPolygonTool, btnRedo, btnUndo);
+		}
+	}
 
 	@FXML
 	public void selectActive(MouseEvent event) {
@@ -114,7 +239,7 @@ public class DrawRegionsController extends BaseController {
 	void taskDetails(ActionEvent event) {
 
 	}
-	
+
 	@FXML
 	void deletePlan(ActionEvent event) {
 
@@ -152,7 +277,7 @@ public class DrawRegionsController extends BaseController {
 	void setPlanDone(ActionEvent event) {
 		currentPlan = lstActivePlans.getSelectionModel().getSelectedItem();
 		if (currentPlan != null) {
-			if(DisplayUtil.showWarningDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
+			if (DisplayUtil.showWarningDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
 				currentPlan.setActive(false);
 				DAOFactory.getInstance().getPlanDAO().update(currentPlan);
 				lstActivePlans.getItems().remove(currentPlan);
@@ -224,6 +349,69 @@ public class DrawRegionsController extends BaseController {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+
+		initRegions();
+
+		// TABOVI
+		ObservableList<Plan> activePlans = FXCollections.observableArrayList();
+		ObservableList<Plan> donePlans = FXCollections.observableArrayList();
+
+		activePlans.addAll(DAOFactory.getInstance().getPlanDAO().getByActive(true));
+		donePlans.addAll(DAOFactory.getInstance().getPlanDAO().getByActive(false));
+
+		lstActivePlans.setItems(activePlans);
+		lstDonePlans.setItems(donePlans);
+
+		// TABELA
+		initializeTable();
+		ObservableList<SaleItem> saleItems = FXCollections.observableArrayList();
+		lstSaleItems.setItems(saleItems);
+		setDisabled(true, txtHeight, txtNumSold, btnAddSaleItem, btnRemoveSaleItem, lstSaleItems, cbPaidOff,
+				btnSaveSale);
+	}
+
+	private void initializeTable() {
+		colActivity.setCellValueFactory(new PropertyValueFactory<TaskTableItem, String>("activity"));
+		colDateFrom.setCellValueFactory(new PropertyValueFactory<TaskTableItem, String>("date_from"));
+		colDateTo.setCellValueFactory(new PropertyValueFactory<TaskTableItem, String>("date_to"));
+		colDone.setCellValueFactory(new PropertyValueFactory<TaskTableItem, Boolean>("done"));
+		colDone.setCellFactory(col -> new TableCell<TaskTableItem, Boolean>() {
+			@Override
+			protected void updateItem(Boolean item, boolean empty) {
+				super.updateItem(item, empty);
+				setText(empty ? null : item ? "Da" : "Ne");
+			}
+		});
+	}
+
+	public void displayInfo(Region region) {
+		selectedRegion = region;
+		Basis basis = region.getBasis();
+		setValues(
+				basis == null ? null
+						: (basis.getPlant().getImage() == null ? null
+								: DisplayUtil.convertFromBlob(region.getBasis().getPlant().getImage())),
+				"REGION " + region.getRegionId(),
+				basis == null ? "Nema biljaka"
+						: region.getBasis().getPlant().getScientificName() + " ("
+								+ region.getBasis().getPlant().getKnownAs() + ")",
+				"" + region.getNumberOfPlants());
+	}
+
+	public void clear() {
+		setValues(null, "", "", "");
+		selectedRegion = null;
+	}
+
+	private void setValues(Image image, String region, String name, String num) {
+		imgPhoto.setImage(image);
+		lblRegion.setText(region);
+		lblName.setText(name);
+		lblPlantsNum.setText(num);
+	}
+
+	private void initRegions() {
+		elements.getChildren().clear();
 		regionsMap = new HashMap<Polygon, Region>();
 		outlinesMap = new HashMap<Polygon, Polyline>();
 		undoCommands = new Stack<Command>();
@@ -245,57 +433,22 @@ public class DrawRegionsController extends BaseController {
 			outlinesMap.put(p, pl);
 		}
 		canvasEditor = new SelectTool(regionsMap, outlinesMap, this, undoCommands, redoCommands);
-
-		// TABOVI
-		ObservableList<Plan> activePlans = FXCollections.observableArrayList();
-		ObservableList<Plan> donePlans = FXCollections.observableArrayList();
-
-		activePlans.addAll(DAOFactory.getInstance().getPlanDAO().getByActive(true));
-		donePlans.addAll(DAOFactory.getInstance().getPlanDAO().getByActive(false));
-
-		lstActivePlans.setItems(activePlans);
-		lstDonePlans.setItems(donePlans);
-
-		// TABELA
-		initializeTable();
 	}
 
-	private void initializeTable() {
-		colActivity.setCellValueFactory(new PropertyValueFactory<TaskTableItem, String>("activity"));
-		colDateFrom.setCellValueFactory(new PropertyValueFactory<TaskTableItem, String>("date_from"));
-		colDateTo.setCellValueFactory(new PropertyValueFactory<TaskTableItem, String>("date_to"));
-		colDone.setCellValueFactory(new PropertyValueFactory<TaskTableItem, Boolean>("done"));
-		colDone.setCellFactory(col -> new TableCell<TaskTableItem, Boolean>() {
-			@Override
-			protected void updateItem(Boolean item, boolean empty) {
-				super.updateItem(item, empty);
-				setText(empty ? null : item ? "Da" : "Ne");
-			}
-		});
+	private void setDisabled(boolean disabled, Node... buttons) {
+		for (Node button : buttons) {
+			button.setDisable(disabled);
+		}
 	}
 
-	public void displayInfo(Region region) {
-		Basis basis = region.getBasis();
-		setValues(
-				basis == null ? null
-						: (basis.getPlant().getImage() == null ? null
-								: DisplayUtil.convertFromBlob(region.getBasis().getPlant().getImage())),
-				"REGION " + region.getRegionId(),
-				basis == null ? "Nema biljaka"
-						: region.getBasis().getPlant().getScientificName() + " ("
-								+ region.getBasis().getPlant().getKnownAs() + ")",
-				"Broj biljaka: " + region.getNumberOfPlants());
+	private void setDisplayed(boolean displayed, Node... nodes) {
+		for (Node node : nodes) {
+			node.setVisible(displayed);
+		}
 	}
 
-	public void clear() {
-		setValues(null, "", "", "");
-	}
-
-	private void setValues(Image image, String region, String name, String num) {
-		imgPhoto.setImage(image);
-		lblRegion.setText(region);
-		lblName.setText(name);
-		lblPlantsNum.setText(num);
+	public void refreshList() {
+		lstSaleItems.refresh();
 	}
 
 	private Map<Polygon, Region> regionsMap;
@@ -303,5 +456,8 @@ public class DrawRegionsController extends BaseController {
 	private Stack<Command> undoCommands;
 	private Stack<Command> redoCommands;
 	private Image defaultImage;
+	private Region selectedRegion;
+	private Map<SaleItem, Region> soldItems = new HashMap<SaleItem, Region>();
+	private Set<Region> changedRegions = new HashSet<Region>();
 	// TODO observer na evente
 }

@@ -36,14 +36,14 @@ public class PolygonTool extends CanvasEditor {
 
 	@Override
 	public void startDrawing(MouseEvent event) {
-		this.coordinates[0] = this.coordinates[6] = event.getX() + 1;
-		this.coordinates[1] = this.coordinates[3] = event.getY() + 1;
+		this.coordinates[0] = this.coordinates[6] = event.getX() + 8;
+		this.coordinates[1] = this.coordinates[3] = event.getY() + 8;
 	}
 
 	@Override
 	public void finishDrawing(MouseEvent event) {
-		this.coordinates[2] = this.coordinates[4] = event.getX() + 1;
-		this.coordinates[5] = this.coordinates[7] = event.getY() + 1;
+		this.coordinates[2] = this.coordinates[4] = event.getX() + 8;
+		this.coordinates[5] = this.coordinates[7] = event.getY() + 8;
 		Command command = new DrawCommand(coordinates, elements, regions, outlines, newPolygons);
 		command.execute();
 		undoCommands.push(command);

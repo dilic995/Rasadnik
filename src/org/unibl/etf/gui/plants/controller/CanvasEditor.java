@@ -33,14 +33,22 @@ public abstract class CanvasEditor {
 	public abstract void startDrawing(MouseEvent event);
 
 	public abstract void finishDrawing(MouseEvent event);
-	
+
 	public abstract void undo();
+
 	public abstract void redo();
-	
+
 	public abstract void invalidate();
 
 	protected Map<Polygon, Region> regions;
 	protected Map<Polygon, Polyline> outlines;
 	protected Stack<Command> undoCommands;
 	protected Stack<Command> redoCommands;
+
+	public void push(Command command) {
+		undoCommands.push(command);
+	}
+	public void clearRedo() {
+		redoCommands.clear();
+	}
 }

@@ -7,6 +7,23 @@ import java.util.Date;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
 public class Sale {
+	
+	public Sale() {
+	}
+	
+	
+	public Sale(Integer saleId, Date date, BigDecimal price, Boolean paidOff, Customer customer, Integer customerId,
+			Boolean deleted) {
+		super();
+		this.saleId = saleId;
+		this.date = date;
+		this.price = price;
+		this.paidOff = paidOff;
+		this.customer = customer;
+		this.customerId = customerId;
+		this.deleted = deleted;
+	}
+
 	private Integer saleId;
 	private Date date;
 	private BigDecimal price;

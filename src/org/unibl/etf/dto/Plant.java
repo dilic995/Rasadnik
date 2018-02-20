@@ -1,6 +1,8 @@
 package org.unibl.etf.dto;
 
+import java.math.BigDecimal;
 import java.sql.Blob;
+import java.util.Collections;
 import java.util.List;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
@@ -23,6 +25,7 @@ public class Plant {
 	// podrazumijevani
 	public Plant() {
 	}
+
 	// svi parametri
 	public Plant(Integer plantId, String scientificName, String knownAs, String description, Blob image,
 			Boolean isConifer, Boolean owned, List<PriceHeightRatio> ratios, Boolean deleted) {
@@ -74,8 +77,8 @@ public class Plant {
 	}
 
 	public Blob getImage() {
-		if(this.image == null) {
-			
+		if (this.image == null) {
+
 		}
 		return this.image;
 	}
@@ -103,9 +106,11 @@ public class Plant {
 	public Boolean getDeleted() {
 		return deleted;
 	}
+
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -146,13 +151,37 @@ public class Plant {
 	}
 
 	public List<PriceHeightRatio> getRatios() {
-		if(ratios == null) {
+		if (ratios == null) {
 			ratios = DAOFactory.getInstance().getPriceHeightRatioDAO().getByPlantId(plantId);
+			Collections.sort(ratios, new PriceHeightRatioComparatorFrom());
 		}
 		return ratios;
 	}
 
 	public void setRatios(List<PriceHeightRatio> ratios) {
 		this.ratios = ratios;
+	}
+
+	public BigDecimal getPrice(BigDecimal height) {
+		BigDecimal result = null;
+		for (PriceHeightRatio ratio : getRatios()) {
+			if ((height.compareTo(ratio.getHeightMin()) >= 0)
+					&& ((ratio.getHeightMax() == null) || (height.compareTo(ratio.getHeightMax()) < 0))) {
+				result = ratio.getPrice();
+				break;
+			}
+		}
+		return result;
+	}
+	public BigDecimal getHeightMin(BigDecimal height) {
+		BigDecimal result = null;
+		for (PriceHeightRatio ratio : getRatios()) {
+			if ((height.compareTo(ratio.getHeightMin()) >= 0)
+					&& ((ratio.getHeightMax() == null) || (height.compareTo(ratio.getHeightMax()) < 0))) {
+				result = ratio.getHeightMin();
+				break;
+			}
+		}
+		return result;
 	}
 }

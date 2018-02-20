@@ -68,13 +68,19 @@ public class SelectTool extends CanvasEditor {
 
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
-		
+		if (!undoCommands.isEmpty()) {
+			Command command = undoCommands.pop();
+			command.unexecute();
+			redoCommands.push(command);
+		}
 	}
 
 	@Override
 	public void redo() {
-		// TODO Auto-generated method stub
-		
+		if (!redoCommands.isEmpty()) {
+			Command command = redoCommands.pop();
+			command.execute();
+			undoCommands.push(command);
+		}
 	}
 }
