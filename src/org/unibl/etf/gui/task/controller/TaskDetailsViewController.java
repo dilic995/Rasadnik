@@ -156,7 +156,8 @@ public class TaskDetailsViewController extends BaseController {
 		}
 	}
 	
-	void revokePayment() {
+	@FXML
+	void revokePayment(ActionEvent event) {
 		for(EngagementTableItem item : tvEngagement.getSelectionModel().getSelectedItems()) {
 			if(item.isPaidOff()) {
 				item.setPaidOff(false);

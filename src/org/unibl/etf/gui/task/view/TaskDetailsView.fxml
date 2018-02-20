@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="org.unibl.etf.gui.task.controller.TaskDetailsViewController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.task.controller.TaskDetailsViewController">
    <children>
       <TableView fx:id="tvEmployee" editable="true" layoutX="14.0" layoutY="141.0" prefHeight="319.0" prefWidth="313.0" AnchorPane.bottomAnchor="140.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="141.0">
          <columns>
@@ -55,6 +54,6 @@
       <TextField fx:id="txtHourlyWage" layoutX="97.0" layoutY="515.0" prefHeight="31.0" prefWidth="230.0" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="97.0" />
       <Button layoutX="921.0" layoutY="555.0" mnemonicParsing="false" onAction="#payWork" text="Isplatite" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
       <Button layoutX="615.0" layoutY="555.0" mnemonicParsing="false" onAction="#deleteWork" text="Obrišite angažman" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="240.0" />
-      <Button layoutX="771.0" layoutY="555.0" mnemonicParsing="false" onAction="#revokePayment" text="Obrišite plaćanje" />
+      <Button layoutX="771.0" layoutY="555.0" mnemonicParsing="false" onAction="#revokePayment" text="Obrišite plaćanje" AnchorPane.bottomAnchor="14.0" />
    </children>
 </AnchorPane>

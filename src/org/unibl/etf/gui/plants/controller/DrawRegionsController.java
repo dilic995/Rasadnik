@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.Stack;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
@@ -298,8 +299,6 @@ public class DrawRegionsController extends BaseController {
 				e.printStackTrace();
 			}
 		}
-	}
-
 	}
 	
 	@FXML
