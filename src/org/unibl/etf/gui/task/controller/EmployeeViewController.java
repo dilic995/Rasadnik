@@ -260,7 +260,7 @@ public class EmployeeViewController extends BaseController implements Initializa
 		
 		tcBrojSati.setOnEditCommit(
                 (TableColumn.CellEditEvent<ActivityTableItem, Integer> t) -> {
-                    t.getRowValue().setHours(t.getNewValue());
+                    t.getRowValue().setHours(t.getNewValue()==null?0:t.getNewValue());
                     tvAktivnosti.refresh();
                     try {
 						t.getRowValue().update();
@@ -271,7 +271,7 @@ public class EmployeeViewController extends BaseController implements Initializa
 		
 		tcSatnica.setOnEditCommit(
                 (TableColumn.CellEditEvent<ActivityTableItem, Double> t) -> {
-                    t.getRowValue().setHourlyWage(t.getNewValue());
+                    t.getRowValue().setHourlyWage(t.getNewValue()==null?0:t.getNewValue());
                     tvAktivnosti.refresh();
                     try {
 						t.getRowValue().update();

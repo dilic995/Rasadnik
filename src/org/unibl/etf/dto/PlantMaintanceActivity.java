@@ -49,12 +49,6 @@ public class PlantMaintanceActivity {
 	}
 
 	public String toString() {
-		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("PlantMaintanceActivity")
-				.append("(");
-
-		buffer.append("[").append("plantMaintanceActivityId").append("=").append(plantMaintanceActivityId).append("]");
-		buffer.append("[").append("activity").append("=").append(activity).append("]");
-
-		return buffer.append(")").toString();
+		return activity;
 	}
 }
