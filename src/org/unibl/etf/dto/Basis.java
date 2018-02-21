@@ -107,7 +107,7 @@ public class Basis {
 	@Override
 	public String toString() {
 		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy.");
-		return plantId + " [" + format.format(plantingDate) + "] - " + getPlant().toString();
+		return basisId + " [" + format.format(plantingDate) + "] - " + getPlant().toString();
 	}
 
 	public List<ReproductionCutting> getCuttings() {

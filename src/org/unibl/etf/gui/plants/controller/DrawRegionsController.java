@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -25,6 +27,7 @@ import org.unibl.etf.dto.Plan;
 import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.PlantMaintanceActivity;
 import org.unibl.etf.dto.Region;
+import org.unibl.etf.dto.ReproductionCutting;
 import org.unibl.etf.dto.Sale;
 import org.unibl.etf.dto.SaleItem;
 import org.unibl.etf.dto.Task;
@@ -128,6 +131,39 @@ public class DrawRegionsController extends BaseController {
 	private Button btnSaveSale;
 	@FXML
 	private CheckBox cbPaidOff;
+	@FXML
+	private ComboBox<Basis> cbBases;
+	@FXML
+	private DatePicker dpDate;
+	@FXML
+	private TextField txtProduced;
+	@FXML
+	private TextField txtSuccess;
+	@FXML
+	private Button btnAddPlants;
+
+	@FXML
+	public void addPlants(ActionEvent event) {
+		String dateString = dpDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		try {
+			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+			Basis basis = cbBases.getSelectionModel().getSelectedItem();
+			Integer produced = Integer.parseInt(txtProduced.getText());
+			Integer takeARoot = Integer.parseInt(txtSuccess.getText());
+			if (DAOFactory.getInstance().getReproductionCuttingDAO()
+					.insert(new ReproductionCutting(basis, date, produced, takeARoot, basis.getBasisId(), false)) > 0) {
+				if (selectedRegion.getBasis() == null) {
+					selectedRegion.setBasis(basis);
+					selectedRegion.setBasisId(basis.getBasisId());
+				}
+				selectedRegion.setNumberOfPlants(selectedRegion.getNumberOfPlants() + takeARoot);
+				DAOFactory.getInstance().getRegionDAO().update(selectedRegion);
+				displayInfo(selectedRegion);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@FXML
 	private TextField txtPlanName;
@@ -245,7 +281,7 @@ public class DrawRegionsController extends BaseController {
 
 	@FXML
 	public void selectActive(MouseEvent event) {
-		currentPlan = lstActivePlans.getSelectionModel().getSelectedItem();	
+		currentPlan = lstActivePlans.getSelectionModel().getSelectedItem();
 		if (currentPlan != null) {
 			List<Region> regions = DAOFactory.getInstance().getRegionDAO().getByPlanId(currentPlan.getPlanId());
 			initRegions(regions);
@@ -288,7 +324,7 @@ public class DrawRegionsController extends BaseController {
 			}
 		}
 	}
-	
+
 	@FXML
 	void deletePlan(ActionEvent event) {
 		if (DisplayUtil.showConfirmationDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
@@ -409,9 +445,12 @@ public class DrawRegionsController extends BaseController {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		ObservableList<Basis> basesItems = FXCollections.observableArrayList();
+		basesItems.addAll(DAOFactory.getInstance().getBasisDAO().selectAll());
+		cbBases.setItems(basesItems);
+		cbBases.getSelectionModel().select(0);
 		initRegions(DAOFactory.getInstance().getRegionDAO().selectAll());
-
+		cbBases.setDisable(true);
 		// TABOVI
 		ObservableList<Plan> activePlans = FXCollections.observableArrayList();
 		ObservableList<Plan> donePlans = FXCollections.observableArrayList();
@@ -435,75 +474,68 @@ public class DrawRegionsController extends BaseController {
 		cbActivity.setItems(activities);
 
 		// DODAVANJE TASKA
-		
-		
+
 		// DATE PICKER FORMAT
 		formatDatePicker();
 	}
-	
+
 	private void formatDatePicker() {
 		dpPlanDateFrom.setConverter(new StringConverter<LocalDate>() {
 			String pattern = "dd.MM.yyyy.";
 			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-			@Override
-		    public String toString(LocalDate localDate)
-		    {
-		        if(localDate==null)
-		            return "";
-		        return dateFormatter.format(localDate);
-		    }
 
-		    @Override
-		    public LocalDate fromString(String dateString)
-		    {
-		        if(dateString==null || dateString.trim().isEmpty())
-		        {
-		            return null;
-		        }
-		        return LocalDate.parse(dateString,dateFormatter);
-		    }
+			@Override
+			public String toString(LocalDate localDate) {
+				if (localDate == null)
+					return "";
+				return dateFormatter.format(localDate);
+			}
+
+			@Override
+			public LocalDate fromString(String dateString) {
+				if (dateString == null || dateString.trim().isEmpty()) {
+					return null;
+				}
+				return LocalDate.parse(dateString, dateFormatter);
+			}
 		});
 		dpPlanDateTo.setConverter(new StringConverter<LocalDate>() {
 			String pattern = "dd.MM.yyyy.";
 			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-			@Override
-		    public String toString(LocalDate localDate)
-		    {
-		        if(localDate==null)
-		            return "";
-		        return dateFormatter.format(localDate);
-		    }
 
-		    @Override
-		    public LocalDate fromString(String dateString)
-		    {
-		        if(dateString==null || dateString.trim().isEmpty())
-		        {
-		            return null;
-		        }
-		        return LocalDate.parse(dateString,dateFormatter);
-		    }
+			@Override
+			public String toString(LocalDate localDate) {
+				if (localDate == null)
+					return "";
+				return dateFormatter.format(localDate);
+			}
+
+			@Override
+			public LocalDate fromString(String dateString) {
+				if (dateString == null || dateString.trim().isEmpty()) {
+					return null;
+				}
+				return LocalDate.parse(dateString, dateFormatter);
+			}
 		});
 		dpTaskDateFrom.setConverter(new StringConverter<LocalDate>() {
 			String pattern = "dd.MM.yyyy.";
 			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-			@Override
-		    public String toString(LocalDate localDate)
-		    {
-		        if(localDate==null)
-		            return "";
-		        return dateFormatter.format(localDate);
-		    }
 
-		    @Override
-		    public LocalDate fromString(String dateString)
-		    {
-		        if(dateString==null || dateString.trim().isEmpty())
-		        {
-		            return null;
-		        }
-		        return LocalDate.parse(dateString,dateFormatter);
-		    }
+			@Override
+			public String toString(LocalDate localDate) {
+				if (localDate == null)
+					return "";
+				return dateFormatter.format(localDate);
+			}
+
+			@Override
+			public LocalDate fromString(String dateString) {
+				if (dateString == null || dateString.trim().isEmpty()) {
+					return null;
+				}
+				return LocalDate.parse(dateString, dateFormatter);
+			}
 		});
 
 	}
@@ -630,11 +662,19 @@ public class DrawRegionsController extends BaseController {
 						: region.getBasis().getPlant().getScientificName() + " ("
 								+ region.getBasis().getPlant().getKnownAs() + ")",
 				"" + region.getNumberOfPlants());
+		if (basis != null) {
+			cbBases.getSelectionModel().select(basis);
+			cbBases.setDisable(true);
+		} else {
+			cbBases.getSelectionModel().select(0);
+			cbBases.setDisable(false);
+		}
 	}
 
 	public void clear() {
 		setValues(null, "", "", "");
 		selectedRegion = null;
+		cbBases.setDisable(true);
 	}
 
 	private void setValues(Image image, String region, String name, String num) {
@@ -644,7 +684,6 @@ public class DrawRegionsController extends BaseController {
 		lblPlantsNum.setText(num);
 	}
 
-	
 	public void initRegions(List<Region> regions) {
 		elements.getChildren().clear();
 		regionsMap = new HashMap<Polygon, Region>();
@@ -668,7 +707,7 @@ public class DrawRegionsController extends BaseController {
 		}
 		canvasEditor = new SelectTool(regionsMap, outlinesMap, this, undoCommands, redoCommands);
 	}
-	
+
 	private void setDisabled(boolean disabled, Node... buttons) {
 		for (Node button : buttons) {
 			button.setDisable(disabled);
