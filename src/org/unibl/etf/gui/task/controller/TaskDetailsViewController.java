@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -36,6 +37,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -97,10 +99,28 @@ public class TaskDetailsViewController extends BaseController {
 
 	@FXML
 	private TextField txtHourlyWage;
+	
+	@FXML
+    private Button btnPay;
+
+    @FXML
+    private Button btnDeleteWork;
+
+    @FXML
+    private Button btnRevokePayment;
 
 	@FXML
 	void deleteWork(ActionEvent event) {
-		//TODO
+		EngagementTableItem item = tvEngagement.getSelectionModel().getSelectedItem();
+		if(item != null) {
+			if(item.getHours() != 0) {
+				DisplayUtil.showErrorDialog("Samo angažmani sa 0 sati mogu biti obrisani!");
+				return;
+			}
+			item.getTask().setDeleted(true);
+			DAOFactory.getInstance().getEmployeeHasTaskDAO().update(item.getTask());
+			tvEngagement.getItems().remove(item);
+		}
 	}
 
 	@FXML
@@ -200,8 +220,41 @@ public class TaskDetailsViewController extends BaseController {
 
 		// AKTIVNOST
 		DateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
-		lblAktivnost.setText(task.getPlantMaintanceActivity().getActivity() + " - [" + df.format(task.getDateFrom())
-				+ " - " + (task.getDateTo() == null ? "" : df.format(task.getDateTo()) + "]"));
+		lblAktivnost.setText(task.getPlantMaintanceActivity().getActivity() + " : [" + df.format(task.getDateFrom())
+				+ " - " + (task.getDateTo() == null ? "" : df.format(task.getDateTo())) + "]");
+		
+		// DISABLE BUTTONS IF TASK IS DONE
+		if(task.getDateTo() != null) {
+			btnAngazujte.setDisable(true);
+			btnDeleteWork.setDisable(true);
+			btnPay.setDisable(true);
+			btnRevokePayment.setDisable(true);
+			txtHourlyWage.setDisable(true);
+			dpDate.setDisable(true);
+		}
+		
+		// FORMAT DATE PICKER
+		dpDate.setConverter(new StringConverter<LocalDate>() {
+			String pattern = "dd.MM.yyyy.";
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+			@Override
+		    public String toString(LocalDate localDate)
+		    {
+		        if(localDate==null)
+		            return "";
+		        return dateFormatter.format(localDate);
+		    }
+
+		    @Override
+		    public LocalDate fromString(String dateString)
+		    {
+		        if(dateString==null || dateString.trim().isEmpty())
+		        {
+		            return null;
+		        }
+		        return LocalDate.parse(dateString,dateFormatter);
+		    }
+		});
 	}
 
 	public void initializeTableEngagement() {
