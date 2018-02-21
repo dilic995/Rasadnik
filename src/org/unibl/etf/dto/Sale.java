@@ -3,6 +3,7 @@ package org.unibl.etf.dto;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
@@ -31,7 +32,8 @@ public class Sale {
 	private Customer customer;
 	private Integer customerId;
 	private Boolean deleted;
-
+	private List<SaleItem> saleItems = null;
+	
 	//
 	// getters / setters
 	//
@@ -130,5 +132,18 @@ public class Sale {
 		buffer.append("[").append("customerId").append("=").append(customerId).append("]");
 
 		return buffer.append(")").toString();
+	}
+
+
+	public List<SaleItem> getSaleItems() {
+		if(saleItems == null) {
+			saleItems = DAOFactory.getInstance().getSaleItemDAO().getBySaleId(saleId);
+		}
+		return saleItems;
+	}
+
+
+	public void setSaleItems(List<SaleItem> saleItems) {
+		this.saleItems = saleItems;
 	}
 }
