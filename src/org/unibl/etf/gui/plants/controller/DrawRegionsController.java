@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +28,7 @@ import org.unibl.etf.dto.Plan;
 import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.PlantMaintanceActivity;
 import org.unibl.etf.dto.Region;
+import org.unibl.etf.dto.ReproductionCutting;
 import org.unibl.etf.dto.Sale;
 import org.unibl.etf.dto.SaleItem;
 import org.unibl.etf.dto.Task;
@@ -133,6 +136,39 @@ public class DrawRegionsController extends BaseController {
 	private Button btnSaveSale;
 	@FXML
 	private CheckBox cbPaidOff;
+	@FXML
+	private ComboBox<Basis> cbBases;
+	@FXML
+	private DatePicker dpDate;
+	@FXML
+	private TextField txtProduced;
+	@FXML
+	private TextField txtSuccess;
+	@FXML
+	private Button btnAddPlants;
+
+	@FXML
+	public void addPlants(ActionEvent event) {
+		String dateString = dpDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		try {
+			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+			Basis basis = cbBases.getSelectionModel().getSelectedItem();
+			Integer produced = Integer.parseInt(txtProduced.getText());
+			Integer takeARoot = Integer.parseInt(txtSuccess.getText());
+			if (DAOFactory.getInstance().getReproductionCuttingDAO()
+					.insert(new ReproductionCutting(basis, date, produced, takeARoot, basis.getBasisId(), false)) > 0) {
+				if (selectedRegion.getBasis() == null) {
+					selectedRegion.setBasis(basis);
+					selectedRegion.setBasisId(basis.getBasisId());
+				}
+				selectedRegion.setNumberOfPlants(selectedRegion.getNumberOfPlants() + takeARoot);
+				DAOFactory.getInstance().getRegionDAO().update(selectedRegion);
+				displayInfo(selectedRegion);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@FXML
 	private TextField txtPlanName;
@@ -452,9 +488,12 @@ public class DrawRegionsController extends BaseController {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		ObservableList<Basis> basesItems = FXCollections.observableArrayList();
+		basesItems.addAll(DAOFactory.getInstance().getBasisDAO().selectAll());
+		cbBases.setItems(basesItems);
+		cbBases.getSelectionModel().select(0);
 		initRegions(DAOFactory.getInstance().getRegionDAO().selectAll());
-
+		cbBases.setDisable(true);
 		// TABOVI
 		initializeMaintenanceTab();
 
@@ -730,11 +769,19 @@ public class DrawRegionsController extends BaseController {
 						: region.getBasis().getPlant().getScientificName() + " ("
 								+ region.getBasis().getPlant().getKnownAs() + ")",
 				"" + region.getNumberOfPlants());
+		if (basis != null) {
+			cbBases.getSelectionModel().select(basis);
+			cbBases.setDisable(true);
+		} else {
+			cbBases.getSelectionModel().select(0);
+			cbBases.setDisable(false);
+		}
 	}
 
 	public void clear() {
 		setValues(null, "", "", "");
 		selectedRegion = null;
+		cbBases.setDisable(true);
 	}
 
 	private void setValues(Image image, String region, String name, String num) {
