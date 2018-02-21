@@ -227,8 +227,8 @@ public class TaskDetailsViewController extends BaseController {
 		if(task.getDateTo() != null) {
 			btnAngazujte.setDisable(true);
 			btnDeleteWork.setDisable(true);
-			btnPay.setDisable(true);
-			btnRevokePayment.setDisable(true);
+//			btnPay.setDisable(true);
+//			btnRevokePayment.setDisable(true);
 			txtHourlyWage.setDisable(true);
 			dpDate.setDisable(true);
 		}

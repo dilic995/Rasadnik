@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Basis;
@@ -150,6 +151,12 @@ public class DrawRegionsController extends BaseController {
 	@FXML
 	private ListView<Task> lstChosedTasks;
 
+	@FXML
+	private ComboBox<PlantMaintanceActivity> cbSearchCategory;
+
+	@FXML
+	private Button btnAddMaintanceActivity;
+
 	private Plan currentPlan;
 
 	@FXML
@@ -245,7 +252,7 @@ public class DrawRegionsController extends BaseController {
 
 	@FXML
 	public void selectActive(MouseEvent event) {
-		currentPlan = lstActivePlans.getSelectionModel().getSelectedItem();	
+		currentPlan = lstActivePlans.getSelectionModel().getSelectedItem();
 		if (currentPlan != null) {
 			List<Region> regions = DAOFactory.getInstance().getRegionDAO().getByPlanId(currentPlan.getPlanId());
 			initRegions(regions);
@@ -288,7 +295,7 @@ public class DrawRegionsController extends BaseController {
 			}
 		}
 	}
-	
+
 	@FXML
 	void deletePlan(ActionEvent event) {
 		if (DisplayUtil.showConfirmationDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
@@ -430,80 +437,122 @@ public class DrawRegionsController extends BaseController {
 				btnSaveSale);
 
 		// COMBOBOX
+		initializeComboBox();
+
+		// DODAVANJE TASKA
+
+		// DATE PICKER FORMAT
+		formatDatePicker();
+
+		// TABELA SELEKTOVANIH TASKOVA
+		listaTaskova = FXCollections.observableArrayList();
+	}
+	
+	private void initializeComboBox() {
 		ObservableList<PlantMaintanceActivity> activities = FXCollections
 				.observableArrayList(DAOFactory.getInstance().getPlantMaintanceActivityDAO().selectAll());
 		cbActivity.setItems(activities);
 
-		// DODAVANJE TASKA
-		
-		
-		// DATE PICKER FORMAT
-		formatDatePicker();
+		cbSearchCategory.setItems(activities);
 	}
-	
+
+	@FXML
+	void addMaintanceActivity(ActionEvent event) {
+		try {
+			Stage stage = new Stage();
+			FXMLLoader loader = new FXMLLoader(getClass().getClassLoader()
+					.getResource("org/unibl/etf/gui/plants/view/AddNewMaintanceActivityDialog.fxml"));
+			AnchorPane root;
+			root = (AnchorPane) loader.load();
+			AddNewMaintanceActivityDialogController control = loader
+					.<AddNewMaintanceActivityDialogController>getController();
+			control.setPrimaryStage(stage);
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.setTitle("Dodavanje aktivnosti");
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.showAndWait();
+			if(control.getResult().equals(ButtonType.OK)) {
+				initializeComboBox();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static ObservableList<TaskTableItem> listaTaskova;
+
+	public static void setListaTaskova(ObservableList<TaskTableItem> list) {
+		listaTaskova = list;
+	}
+
+	@FXML
+	void filterTasks(ActionEvent event) {
+		PlantMaintanceActivity item = cbSearchCategory.getValue();
+		if (item != null) {
+			ObservableList<TaskTableItem> items = FXCollections.observableArrayList(listaTaskova.stream()
+					.filter(x -> x.getActivity().equals(item.getActivity())).collect(Collectors.toList()));
+			tblTasks.setItems(items);
+		}
+	}
+
 	private void formatDatePicker() {
 		dpPlanDateFrom.setConverter(new StringConverter<LocalDate>() {
 			String pattern = "dd.MM.yyyy.";
 			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-			@Override
-		    public String toString(LocalDate localDate)
-		    {
-		        if(localDate==null)
-		            return "";
-		        return dateFormatter.format(localDate);
-		    }
 
-		    @Override
-		    public LocalDate fromString(String dateString)
-		    {
-		        if(dateString==null || dateString.trim().isEmpty())
-		        {
-		            return null;
-		        }
-		        return LocalDate.parse(dateString,dateFormatter);
-		    }
+			@Override
+			public String toString(LocalDate localDate) {
+				if (localDate == null)
+					return "";
+				return dateFormatter.format(localDate);
+			}
+
+			@Override
+			public LocalDate fromString(String dateString) {
+				if (dateString == null || dateString.trim().isEmpty()) {
+					return null;
+				}
+				return LocalDate.parse(dateString, dateFormatter);
+			}
 		});
 		dpPlanDateTo.setConverter(new StringConverter<LocalDate>() {
 			String pattern = "dd.MM.yyyy.";
 			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-			@Override
-		    public String toString(LocalDate localDate)
-		    {
-		        if(localDate==null)
-		            return "";
-		        return dateFormatter.format(localDate);
-		    }
 
-		    @Override
-		    public LocalDate fromString(String dateString)
-		    {
-		        if(dateString==null || dateString.trim().isEmpty())
-		        {
-		            return null;
-		        }
-		        return LocalDate.parse(dateString,dateFormatter);
-		    }
+			@Override
+			public String toString(LocalDate localDate) {
+				if (localDate == null)
+					return "";
+				return dateFormatter.format(localDate);
+			}
+
+			@Override
+			public LocalDate fromString(String dateString) {
+				if (dateString == null || dateString.trim().isEmpty()) {
+					return null;
+				}
+				return LocalDate.parse(dateString, dateFormatter);
+			}
 		});
 		dpTaskDateFrom.setConverter(new StringConverter<LocalDate>() {
 			String pattern = "dd.MM.yyyy.";
 			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-			@Override
-		    public String toString(LocalDate localDate)
-		    {
-		        if(localDate==null)
-		            return "";
-		        return dateFormatter.format(localDate);
-		    }
 
-		    @Override
-		    public LocalDate fromString(String dateString)
-		    {
-		        if(dateString==null || dateString.trim().isEmpty())
-		        {
-		            return null;
-		        }
-		        return LocalDate.parse(dateString,dateFormatter);
-		    }
+			@Override
+			public String toString(LocalDate localDate) {
+				if (localDate == null)
+					return "";
+				return dateFormatter.format(localDate);
+			}
+
+			@Override
+			public LocalDate fromString(String dateString) {
+				if (dateString == null || dateString.trim().isEmpty()) {
+					return null;
+				}
+				return LocalDate.parse(dateString, dateFormatter);
+			}
 		});
 
 	}
@@ -644,7 +693,6 @@ public class DrawRegionsController extends BaseController {
 		lblPlantsNum.setText(num);
 	}
 
-	
 	public void initRegions(List<Region> regions) {
 		elements.getChildren().clear();
 		regionsMap = new HashMap<Polygon, Region>();
@@ -668,7 +716,7 @@ public class DrawRegionsController extends BaseController {
 		}
 		canvasEditor = new SelectTool(regionsMap, outlinesMap, this, undoCommands, redoCommands);
 	}
-	
+
 	private void setDisabled(boolean disabled, Node... buttons) {
 		for (Node button : buttons) {
 			button.setDisable(disabled);
