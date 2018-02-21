@@ -110,6 +110,10 @@ public class DrawRegionsController extends BaseController {
 	@FXML
 	private Tab tabGeneral;
 	@FXML
+	private Tab tabMaintenance;
+	@FXML
+	private Tab tabPlaning;
+	@FXML
 	private CheckBox cbShowGrid;
 	@FXML
 	private AnchorPane regionsPane;
@@ -249,6 +253,25 @@ public class DrawRegionsController extends BaseController {
 			setDisabled(true, btnSetSelectTool, btnSetPolygonTool, btnRedo, btnUndo);
 		}
 	}
+	
+	@FXML
+	public void planingTabSelected() {
+		if (canvasEditor != null) {
+			canvasEditor.invalidate();
+			canvasEditor = new SelectTool(regionsMap, outlinesMap, this, undoCommands, redoCommands);
+		}
+		if (tabPlaning.isSelected()) {
+			initRegions(DAOFactory.getInstance().getRegionDAO().selectAll());
+			setDisabled(false, btnSetSelectTool, btnSetPolygonTool, btnRedo, btnUndo);
+		} else {
+			setDisabled(true, btnSetSelectTool, btnSetPolygonTool, btnRedo, btnUndo);
+		}
+	}
+	
+	@FXML
+	public void maintenanceTabSelected() {
+		initializeMaintenanceTab();
+	}
 
 	@FXML
 	public void selectActive(MouseEvent event) {
@@ -264,9 +287,13 @@ public class DrawRegionsController extends BaseController {
 
 	@FXML
 	public void selectDone(MouseEvent event) {
-		Plan plan = lstDonePlans.getSelectionModel().getSelectedItem();
-		if (plan != null) {
-
+		currentPlan = lstDonePlans.getSelectionModel().getSelectedItem();
+		if (currentPlan != null) {
+			List<Region> regions = DAOFactory.getInstance().getRegionDAO().getByPlanId(currentPlan.getPlanId());
+			initRegions(regions);
+			currentPlan.updateState();
+			this.canvasEditor.invalidate();
+			this.canvasEditor = new EmptyTool(regionsMap, tblTasks, currentPlan);
 		}
 	}
 
@@ -316,6 +343,15 @@ public class DrawRegionsController extends BaseController {
 	void taskSetDone(ActionEvent event) {
 		TaskTableItem task = tblTasks.getSelectionModel().getSelectedItem();
 		if (task != null) {
+			if (DAOFactory.getInstance().getEmployeeHasTaskDAO().getByTaskId(task.getTask().getTaskId()).size() == 0) {
+				ButtonType result = DisplayUtil.showWarningDialog(
+						"Nemoguće je zaključiti aktivnost ukoliko na toj aktivnosti nije angažovan niti jedan radnik. Bićete preusmjereni na formu za dodavanje.");
+				if (result.equals(ButtonType.YES)) {
+					taskDetails(event);
+				}
+				return;
+			}
+
 			currentPlan.setDone(task.getTask().getRegion(), task.getTask(), true);
 			task.setDone(true);
 			task.setDate_to(Calendar.getInstance().getTime());
@@ -420,14 +456,7 @@ public class DrawRegionsController extends BaseController {
 		initRegions(DAOFactory.getInstance().getRegionDAO().selectAll());
 
 		// TABOVI
-		ObservableList<Plan> activePlans = FXCollections.observableArrayList();
-		ObservableList<Plan> donePlans = FXCollections.observableArrayList();
-
-		activePlans.addAll(DAOFactory.getInstance().getPlanDAO().getByActive(true));
-		donePlans.addAll(DAOFactory.getInstance().getPlanDAO().getByActive(false));
-
-		lstActivePlans.setItems(activePlans);
-		lstDonePlans.setItems(donePlans);
+		initializeMaintenanceTab();
 
 		// TABELA
 		initializeTable();
@@ -448,6 +477,17 @@ public class DrawRegionsController extends BaseController {
 		listaTaskova = FXCollections.observableArrayList();
 	}
 	
+	private void initializeMaintenanceTab() {
+		ObservableList<Plan> activePlans = FXCollections.observableArrayList();
+		ObservableList<Plan> donePlans = FXCollections.observableArrayList();
+
+		activePlans.addAll(DAOFactory.getInstance().getPlanDAO().getByActive(true));
+		donePlans.addAll(DAOFactory.getInstance().getPlanDAO().getByActive(false));
+
+		lstActivePlans.setItems(activePlans);
+		lstDonePlans.setItems(donePlans);
+	}
+
 	private void initializeComboBox() {
 		ObservableList<PlantMaintanceActivity> activities = FXCollections
 				.observableArrayList(DAOFactory.getInstance().getPlantMaintanceActivityDAO().selectAll());
@@ -472,7 +512,7 @@ public class DrawRegionsController extends BaseController {
 			stage.setTitle("Dodavanje aktivnosti");
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
-			if(control.getResult().equals(ButtonType.OK)) {
+			if (control.getResult().equals(ButtonType.OK)) {
 				initializeComboBox();
 			}
 		} catch (Exception e) {
@@ -628,6 +668,17 @@ public class DrawRegionsController extends BaseController {
 			DisplayUtil.showErrorDialog("Odaberite region i popunite polja!");
 			return;
 		}
+		
+		if(dpPlanDateFrom.getValue() == null || dpPlanDateTo.getValue() == null) {
+			DisplayUtil.showErrorDialog("Molimo unesite datume početka i kraja plana!");
+			return;
+		}
+		
+		if(dpPlanDateFrom.getValue().isAfter(dpTaskDateFrom.getValue()) || dpPlanDateTo.getValue().isBefore(dpTaskDateFrom.getValue())) {
+			DisplayUtil.showErrorDialog("Datum početka aktivnosti mora biti u toku plana!");
+			return;
+		}
+		
 		if (canvasEditor instanceof SelectTool) {
 			Region region = ((SelectTool) canvasEditor).getSelectedRegion();
 			PlantMaintanceActivity activity = cbActivity.getSelectionModel().getSelectedItem();
