@@ -1,13 +1,11 @@
 package org.unibl.etf.gui.plants.controller;
 
-import java.awt.Container;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
@@ -88,6 +86,7 @@ public class CatalogueController extends PlantBrowserController {
 
 	@FXML
 	public void editPlant(ActionEvent event) {
+		buildAll = true;
 		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
 				"org/unibl/etf/gui/plants/view/AddPlantView.fxml");
 		AnchorPane root = DisplayUtil.getAnchorPane(loader);

@@ -38,6 +38,15 @@
     -fx-background-repeat: no-repeat;
 	-fx-background-position: center 3px;
 }
+#pricelist-button{
+	-fx-min-height: 20px;
+    -fx-min-width: 23px;
+	-fx-background-color: #ffffff;
+	-fx-background-image: url('pricelist.png');
+	-fx-background-size: 18px 18px;
+    -fx-background-repeat: no-repeat;
+	-fx-background-position: center 3px;
+}
 #select-button{
 	-fx-min-height: 20px;
     -fx-min-width: 23px;
@@ -84,7 +93,16 @@
     -fx-background-repeat: no-repeat;
 	-fx-background-position: center 3px;
 }
-#left-button:hover, #right-button:hover, #select-button:hover, #draw-tool:hover, #plus-button:hover, #delete-button:hover{
+#edit-button{
+	-fx-min-height: 20px;
+    -fx-min-width: 23px;
+	-fx-background-color: #ffffff;
+	-fx-background-image: url('modify.png');
+	-fx-background-size: 18px 18px;
+    -fx-background-repeat: no-repeat;
+	-fx-background-position: center 3px;
+}
+#left-button:hover, #right-button:hover, #select-button:hover, #draw-tool:hover, #plus-button:hover, #delete-button:hover, #pricelist-button:hover, #edit-button:hover{
 	-fx-background-color:  #b3d1ff;
 	-fx-cursor: hand;
 }
