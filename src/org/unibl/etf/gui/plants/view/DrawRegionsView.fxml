@@ -29,7 +29,7 @@
 						<Button id="left-button" fx:id="btnSetPolygonTool" mnemonicParsing="false" onAction="#setPolygonTool" text="P" />
 						<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="6.0" />
 						<Button id="left-button" fx:id="btnUndo" mnemonicParsing="false" onAction="#undo" text="&lt;" />
-						<Button id="right-button" fx:id="btnRedo" mnemonicParsing="false" onAction="#redo" text="&gt;" />
+						<Button id="right-button" fx:id="btnRedo" mnemonicParsing="false" onAction="#redo" text="" />
 					</items>
 				</ToolBar>
 			</children>
