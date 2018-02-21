@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -64,6 +65,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class DrawRegionsController extends BaseController {
 	@FXML
@@ -248,16 +250,6 @@ public class DrawRegionsController extends BaseController {
 			currentPlan.updateState();
 			this.canvasEditor.invalidate();
 			this.canvasEditor = new EmptyTool(regionsMap, tblTasks, currentPlan);
-			// Set<Region> setRegiona = currentPlan.getTasks().keySet();
-			// for (Region r : setRegiona) {
-			// for (Polygon p : regionsMap.keySet()) {
-			// if (r.equals(regionsMap.get(p))) {
-			// p.getStyleClass().clear();
-			// p.getStyleClass().add(currentPlan.getTasks().get(r).getState().getStyle());
-			// break;
-			// }
-			// }
-			// }
 		}
 	}
 
@@ -286,12 +278,6 @@ public class DrawRegionsController extends BaseController {
 				Scene scene = new Scene(root);
 				stage.setScene(scene);
 				stage.setTitle("Detalji");
-//				stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-//					@Override
-//					public void handle(WindowEvent event) {
-//						event.consume();
-//					}
-//				});
 				stage.initModality(Modality.APPLICATION_MODAL);
 				stage.showAndWait();
 			} catch (IOException e) {
@@ -447,6 +433,76 @@ public class DrawRegionsController extends BaseController {
 		cbActivity.setItems(activities);
 
 		// DODAVANJE TASKA
+		
+		
+		// DATE PICKER FORMAT
+		formatDatePicker();
+	}
+	
+	private void formatDatePicker() {
+		dpPlanDateFrom.setConverter(new StringConverter<LocalDate>() {
+			String pattern = "dd.MM.yyyy.";
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+			@Override
+		    public String toString(LocalDate localDate)
+		    {
+		        if(localDate==null)
+		            return "";
+		        return dateFormatter.format(localDate);
+		    }
+
+		    @Override
+		    public LocalDate fromString(String dateString)
+		    {
+		        if(dateString==null || dateString.trim().isEmpty())
+		        {
+		            return null;
+		        }
+		        return LocalDate.parse(dateString,dateFormatter);
+		    }
+		});
+		dpPlanDateTo.setConverter(new StringConverter<LocalDate>() {
+			String pattern = "dd.MM.yyyy.";
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+			@Override
+		    public String toString(LocalDate localDate)
+		    {
+		        if(localDate==null)
+		            return "";
+		        return dateFormatter.format(localDate);
+		    }
+
+		    @Override
+		    public LocalDate fromString(String dateString)
+		    {
+		        if(dateString==null || dateString.trim().isEmpty())
+		        {
+		            return null;
+		        }
+		        return LocalDate.parse(dateString,dateFormatter);
+		    }
+		});
+		dpTaskDateFrom.setConverter(new StringConverter<LocalDate>() {
+			String pattern = "dd.MM.yyyy.";
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+			@Override
+		    public String toString(LocalDate localDate)
+		    {
+		        if(localDate==null)
+		            return "";
+		        return dateFormatter.format(localDate);
+		    }
+
+		    @Override
+		    public LocalDate fromString(String dateString)
+		    {
+		        if(dateString==null || dateString.trim().isEmpty())
+		        {
+		            return null;
+		        }
+		        return LocalDate.parse(dateString,dateFormatter);
+		    }
+		});
 
 	}
 
