@@ -29,4 +29,6 @@ public interface RegionDAO {
 	public List<Region> getByBasis(Integer basisId);
 	
 	public List<Region> getByDeleted(Boolean deleted);
+	
+	public List<Region> getByPlanId(Integer planId);
 }

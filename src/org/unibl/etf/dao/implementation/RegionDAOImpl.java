@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.unibl.etf.dao.interfaces.RegionDAO;
+import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.Region;
 
 
@@ -20,7 +21,10 @@ public class RegionDAOImpl implements RegionDAO {
 	protected static List<String> stdColumns = new ArrayList<>();
 	protected static List<String> allColumns = new ArrayList<>();
 	protected static String tableName = "region";
-
+	
+	private static final String SELECT_BY_PLAN_ID = "\r\n" + 
+			"select r.region_id, r.number_of_plants, r.x1, r.y1, r.x2, r.y2, r.x3, r.y3, r.x4, r.y4, r.deleted, r.basis_id from region r inner join task t on r.region_id=t.region_id where t.plan_id=? group by r.region_id;";
+	
 	static {
 		pkColumns.add("region_id");
 		stdColumns.add("number_of_plants");
@@ -374,5 +378,27 @@ public class RegionDAOImpl implements RegionDAO {
 		}
 		
 		return (conn == null) ? DBUtil.getConnection() : conn;
+	}
+
+	@Override
+	public List<Region> getByPlanId(Integer planId) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Region> ret = new ArrayList<>();
+
+		try {
+			ps = getConn().prepareStatement(SELECT_BY_PLAN_ID);
+			ps.setInt(1, planId);
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
 	}
 }

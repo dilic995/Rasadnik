@@ -137,17 +137,7 @@ public class Plant {
 	}
 
 	public String toString() {
-		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Plant").append("(");
-
-		buffer.append("[").append("plantId").append("=").append(plantId).append("]");
-		buffer.append("[").append("scientificName").append("=").append(scientificName).append("]");
-		buffer.append("[").append("knownAs").append("=").append(knownAs).append("]");
-		buffer.append("[").append("description").append("=").append(description).append("]");
-		buffer.append("[").append("image").append("=").append(image).append("]");
-		buffer.append("[").append("isConifer").append("=").append(isConifer).append("]");
-		buffer.append("[").append("owned").append("=").append(owned).append("]");
-
-		return buffer.append(")").toString();
+		return scientificName + " (" + knownAs + ")";
 	}
 
 	public List<PriceHeightRatio> getRatios() {

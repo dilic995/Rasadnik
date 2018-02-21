@@ -236,7 +236,7 @@ public class DrawRegionsController extends BaseController {
 			canvasEditor = new SelectTool(regionsMap, outlinesMap, this, undoCommands, redoCommands);
 		}
 		if (tabGeneral.isSelected()) {
-			initRegions();
+			initRegions(DAOFactory.getInstance().getRegionDAO().selectAll());
 			setDisabled(false, btnSetSelectTool, btnSetPolygonTool, btnRedo, btnUndo);
 		} else {
 			setDisabled(true, btnSetSelectTool, btnSetPolygonTool, btnRedo, btnUndo);
@@ -245,8 +245,10 @@ public class DrawRegionsController extends BaseController {
 
 	@FXML
 	public void selectActive(MouseEvent event) {
-		currentPlan = lstActivePlans.getSelectionModel().getSelectedItem();
+		currentPlan = lstActivePlans.getSelectionModel().getSelectedItem();	
 		if (currentPlan != null) {
+			List<Region> regions = DAOFactory.getInstance().getRegionDAO().getByPlanId(currentPlan.getPlanId());
+			initRegions(regions);
 			currentPlan.updateState();
 			this.canvasEditor.invalidate();
 			this.canvasEditor = new EmptyTool(regionsMap, tblTasks, currentPlan);
@@ -408,7 +410,7 @@ public class DrawRegionsController extends BaseController {
 			e.printStackTrace();
 		}
 
-		initRegions();
+		initRegions(DAOFactory.getInstance().getRegionDAO().selectAll());
 
 		// TABOVI
 		ObservableList<Plan> activePlans = FXCollections.observableArrayList();
@@ -642,13 +644,13 @@ public class DrawRegionsController extends BaseController {
 		lblPlantsNum.setText(num);
 	}
 
-	private void initRegions() {
+	
+	public void initRegions(List<Region> regions) {
 		elements.getChildren().clear();
 		regionsMap = new HashMap<Polygon, Region>();
 		outlinesMap = new HashMap<Polygon, Polyline>();
 		undoCommands = new Stack<Command>();
 		redoCommands = new Stack<Command>();
-		List<Region> regions = DAOFactory.getInstance().getRegionDAO().selectAll();
 		for (Region r : regions) {
 			Polygon p = new Polygon();
 			p.getPoints().addAll(r.getCoords());
@@ -666,7 +668,7 @@ public class DrawRegionsController extends BaseController {
 		}
 		canvasEditor = new SelectTool(regionsMap, outlinesMap, this, undoCommands, redoCommands);
 	}
-
+	
 	private void setDisabled(boolean disabled, Node... buttons) {
 		for (Node button : buttons) {
 			button.setDisable(disabled);

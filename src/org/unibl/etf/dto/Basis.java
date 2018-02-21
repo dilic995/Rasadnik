@@ -1,5 +1,6 @@
 package org.unibl.etf.dto;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -103,14 +104,10 @@ public class Basis {
 		return true;
 	}
 
+	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Basis").append("(");
-
-		buffer.append("[").append("basisId").append("=").append(basisId).append("]");
-		buffer.append("[").append("plantingDate").append("=").append(plantingDate).append("]");
-		buffer.append("[").append("plantId").append("=").append(plantId).append("]");
-
-		return buffer.append(")").toString();
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy.");
+		return plantId + " [" + format.format(plantingDate) + "] - " + getPlant().toString();
 	}
 
 	public List<ReproductionCutting> getCuttings() {
