@@ -54,6 +54,7 @@ public class EmptyTool extends CanvasEditor {
 						// ObservableList<TaskTableItem> items = FXCollections
 						// .observableArrayList(TaskTableItem.convert(plan.getTasks().get(reg).getPlannedTasks()));
 						 tblTasks.setItems(items);
+						 DrawRegionsController.setListaTaskova(items);
 					}
 				});
 			} else {
