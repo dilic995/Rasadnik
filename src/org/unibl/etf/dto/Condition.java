@@ -49,11 +49,6 @@ public class Condition {
 	}
 
 	public String toString() {
-		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Condition").append("(");
-
-		buffer.append("[").append("conditionId").append("=").append(conditionId).append("]");
-		buffer.append("[").append("condition").append("=").append(condition).append("]");
-
-		return buffer.append(")").toString();
+		return condition;
 	}
 }

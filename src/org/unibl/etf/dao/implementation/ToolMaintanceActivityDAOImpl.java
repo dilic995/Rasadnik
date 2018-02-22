@@ -15,6 +15,8 @@ import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.ToolMaintanceActivityDAO;
 import org.unibl.etf.dto.ToolMaintanceActivity;
 
+import javafx.collections.FXCollections;
+
 public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 	//
 	// static data

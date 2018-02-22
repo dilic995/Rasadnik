@@ -14,6 +14,8 @@ import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.ToolItemDAO;
 import org.unibl.etf.dto.ToolItem;
 
+import javafx.collections.FXCollections;
+
 
 public class ToolItemDAOImpl implements ToolItemDAO
 {
@@ -286,8 +288,8 @@ public class ToolItemDAOImpl implements ToolItemDAO
 	public List<ToolItem> getByToolId(Integer toolId)  {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		List<ToolItem> ret = new ArrayList<>();
-
+		//List<ToolItem> ret = new ArrayList<>();
+		List<ToolItem> ret = FXCollections.observableArrayList();
 		try {
 			ps = getConn()
 					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "tool_id" })));
@@ -375,7 +377,6 @@ public class ToolItemDAOImpl implements ToolItemDAO
     obj.setDeleted(DBUtil.getBooleanObject(rs, "deleted"));
     obj.setToolId((DBUtil.getInt(rs, "tool_id")));
     obj.setConditionId((DBUtil.getInt(rs, "condition_id")));
-    
     return obj;
   }
 
@@ -386,5 +387,4 @@ public class ToolItemDAOImpl implements ToolItemDAO
 		
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
-
 }
