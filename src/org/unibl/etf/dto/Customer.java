@@ -8,6 +8,22 @@ public class Customer {
 	private Boolean isSupplier;
 	private Boolean deleted;
 
+	public Customer(Integer customerId, String firstName, String lastName, String address, Boolean isSupplier,
+			Boolean deleted) {
+		super();
+		this.customerId = customerId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.isSupplier = isSupplier;
+		this.deleted = deleted;
+	}
+
+	public Customer() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	//
 	// getters / setters
 	//

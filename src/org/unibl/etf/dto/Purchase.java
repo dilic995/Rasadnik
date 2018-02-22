@@ -23,6 +23,23 @@ public class Purchase {
 		return this.purchaseId;
 	}
 
+	public Purchase(Date date, String description, BigDecimal price, Boolean paidOff, Customer customer,
+			Integer customerId) {
+		super();
+		this.date = date;
+		this.description = description;
+		this.price = price;
+		this.paidOff = paidOff;
+		this.customer = customer;
+		this.customerId = customerId;
+		this.deleted = false;
+	}
+
+	public Purchase() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public Integer getCustomerId() {
 		return customerId;
 	}
