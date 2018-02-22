@@ -13,6 +13,8 @@ import java.util.List;
 import org.unibl.etf.dao.interfaces.PriceHeightRatioDAO;
 import org.unibl.etf.dto.PriceHeightRatio;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 	//
 	// static data
@@ -206,7 +208,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int pos = 1;
-
+		int result = 0;
 		try {
 			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns), PreparedStatement.RETURN_GENERATED_KEYS);
 			pos = bindPrimaryKey(ps, obj, pos);
@@ -221,16 +223,18 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			}
 			
 			if (rowCount != 1) {
-				return 0;
+				result = 0;
 			}
 			
-			return rowCount;
+			result = rowCount;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if(e instanceof MySQLIntegrityConstraintViolationException) {
+				result = DBUtil.DUPLICATE_KEYS;
+			}
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
-		return 0;
+		return result;
 	}
 	
 

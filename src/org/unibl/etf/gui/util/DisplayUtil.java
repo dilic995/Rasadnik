@@ -1,6 +1,8 @@
 package org.unibl.etf.gui.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Blob;
@@ -27,7 +29,6 @@ import javafx.stage.Stage;
 public class DisplayUtil {
 	public static Map<String, String> IMAGE_EXTENSIONS = new HashMap<String, String>();
 	static {
-		IMAGE_EXTENSIONS.put("All Images", "*.*");
 		IMAGE_EXTENSIONS.put("JPG", "*.jpg");
 		IMAGE_EXTENSIONS.put("JPEG", "*.jpeg");
 		IMAGE_EXTENSIONS.put("PNG", "*.png");
@@ -47,8 +48,14 @@ public class DisplayUtil {
 	public static Image convertFromBlob(Blob blob) {
 		Image result = null;
 		try {
-			result = new Image(blob.getBinaryStream());
+			if (blob != null) {
+				result = new Image(blob.getBinaryStream());
+			} else {
+				result = getDefaultImage();
+			}
 		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		return result;
@@ -103,33 +110,48 @@ public class DisplayUtil {
 			stage.show();
 		}
 	}
+
 	public static void close(Node node) {
-		Stage stage = (Stage)node.getScene().getWindow();
+		Stage stage = (Stage) node.getScene().getWindow();
 		stage.close();
 	}
+
 	public static ButtonType showWarningDialog(String warning) {
 		Alert alert = new Alert(AlertType.WARNING, warning, ButtonType.YES, ButtonType.NO);
 		alert.showAndWait();
 		return alert.getResult();
 	}
+
 	public static ButtonType showConfirmationDialog(String question) {
 		Alert alert = new Alert(AlertType.CONFIRMATION, question, ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
 		alert.showAndWait();
 		return alert.getResult();
 	}
+
 	public static ButtonType showErrorDialog(String error) {
 		Alert alert = new Alert(AlertType.ERROR, error, ButtonType.OK, ButtonType.CANCEL);
 		alert.showAndWait();
 		return alert.getResult();
 	}
+
 	public static void showMessageDialog(String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setHeaderText("");
 		alert.setContentText(message);
 		alert.setTitle("Obavjestenje");
-		ButtonType okButton=new ButtonType("U redu", ButtonData.OK_DONE);
+		ButtonType okButton = new ButtonType("U redu", ButtonData.OK_DONE);
 		alert.getButtonTypes().clear();
 		alert.getButtonTypes().add(okButton);
 		alert.showAndWait();
 	}
+
+	public static Image getDefaultImage() throws FileNotFoundException {
+		if (defaultImage == null) {
+			defaultImage = new Image(new FileInputStream("resources/images/add_image.png"));
+		}
+		return defaultImage;
+	}
+
+	private static Image defaultImage = null;
+
 }

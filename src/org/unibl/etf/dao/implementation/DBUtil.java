@@ -17,6 +17,9 @@ import java.util.List;
 import org.unibl.etf.util.ConnectionPool;
 
 public class DBUtil {
+	
+	public static final int DUPLICATE_KEYS = -2;
+	
 	//
 	// helpers for closing, etc
 	//
@@ -198,7 +201,6 @@ public class DBUtil {
 
 			buf.append(pkColumns.get(i)).append(" = ?");
 		}
-
 		return buf.toString();
 	}
 

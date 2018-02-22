@@ -43,7 +43,7 @@ public class SaleItem {
 
 	public Plant getPlant() {
 		if (plant == null) {
-			plant = DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(plantId);
+			plant = DAOFactory.getInstance().getPlantDAO().getAllByPrimaryKey(plantId);
 		}
 		return plant;
 	}

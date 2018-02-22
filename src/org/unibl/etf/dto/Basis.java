@@ -70,7 +70,7 @@ public class Basis {
 
 	public Plant getPlant() {
 		if (this.plant == null) {
-			this.plant = DAOFactory.getInstance().getPlantDAO().getByPrimaryKey(this.plantId);
+			this.plant = DAOFactory.getInstance().getPlantDAO().getAllByPrimaryKey(this.plantId);
 		}
 		return plant;
 	}
