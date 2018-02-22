@@ -87,7 +87,33 @@ public class DBUtil {
 	public static String select(String tableName, List<String> selectColumns) {
 		return select(tableName, selectColumns, new ArrayList<>());
 	}
+	public static String selectAll(String tableName, List<String> selectColumns, List<String> whereColumns) {
+		StringBuffer buf = new StringBuffer("SELECT ");
 
+		for (int i = 0; i < selectColumns.size(); i++) {
+			if (i > 0) {
+				buf.append(", ");
+			}
+
+			buf.append(selectColumns.get(i));
+		}
+
+		buf.append(" FROM ").append(tableName);
+
+		if (whereColumns.size() > 0) {
+			buf.append(" WHERE ");
+
+			for (int i = 0; i < whereColumns.size(); i++) {
+				if (i > 0) {
+					buf.append(" AND ");
+				}
+
+				buf.append(whereColumns.get(i)).append(" = ?");
+			}
+		}
+		
+		return buf.toString();
+	}
 	public static String select(String tableName, List<String> selectColumns, List<String> whereColumns) {
 		StringBuffer buf = new StringBuffer("SELECT ");
 

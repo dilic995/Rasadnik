@@ -528,4 +528,27 @@ public class PlantDAOImpl implements PlantDAO {
 
 		return (conn == null) ? DBUtil.getConnection() : conn;
 	}
+
+	@Override
+	public Plant getAllByPrimaryKey(Integer plantId) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			int pos = 1;
+			ps = getConn().prepareStatement(DBUtil.selectAll(tableName, allColumns, pkColumns));
+			DBUtil.bind(ps, pos++, plantId);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return fromResultSet(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return null;
+	}
 }

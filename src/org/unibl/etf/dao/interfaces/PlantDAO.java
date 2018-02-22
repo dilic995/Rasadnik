@@ -8,6 +8,8 @@ import org.unibl.etf.dto.Plant;
 public interface PlantDAO {
 	// CRUD methods
 	public Plant getByPrimaryKey(Integer plantId);
+	
+	public Plant getAllByPrimaryKey(Integer plantId);
 
 	public List<Plant> selectAll();
 
