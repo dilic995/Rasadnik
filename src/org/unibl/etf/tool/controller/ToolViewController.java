@@ -131,25 +131,19 @@ public class ToolViewController extends BaseController{
 		if(radioMachine.isSelected())
 			masina=true;
 		Tool tool = new Tool(null,name,0,masina);
-		try {
+		
 			DAOFactory.getInstance().getToolDAO().insert(tool);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		 
 		listTool.add(tool);
 	}
 	// Event Listener on Button[#btnDelete].onAction
 	@FXML
 	public void deleteTool(ActionEvent event) {
 		ToolItem toolItem = tableToolItems.getSelectionModel().getSelectedItem();
-		toolItem.setIsDeleted(true);
-		try {
+		toolItem.setDeleted(true);
+		
 			DAOFactory.getInstance().getToolItemDAO().update(toolItem);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		listToolItems.remove(toolItem);
 		tableToolItems.refresh();
 	}
@@ -165,12 +159,9 @@ public class ToolViewController extends BaseController{
 		Condition condition = comboBoxCondition.getSelectionModel().getSelectedItem();
 		toolItem.setCondition(condition);
 		toolItem.setConditionId(condition.getConditionId());
-		try {
+		
 			DAOFactory.getInstance().getToolItemDAO().update(toolItem);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 		tableToolItems.refresh();
 	}
 	// Event Listener on Button[#btnAdd].onAction
@@ -189,12 +180,9 @@ public class ToolViewController extends BaseController{
 			date = Date.from(instant);
 		}
 		ToolItem toolItem = new ToolItem(null,date,tool,tool.getToolId(),2,false);
-		try {
+		
 			DAOFactory.getInstance().getToolItemDAO().insert(toolItem);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		listToolItems.add(toolItem);
 		tool.setCount(tool.getCount()+1);
 		lblCount.setText(tool.getCount().toString());
@@ -222,13 +210,13 @@ public class ToolViewController extends BaseController{
 		boolean service = checkBoxService.isSelected() ? true : false;
 		String description = txtDescription.getText();
 		ToolMaintanceActivity activity = new ToolMaintanceActivity(description,new BigDecimal(amount),date,toolItem, toolItem.getToolItemId(),service);
-		try {
+		//try {
 			DAOFactory.getInstance().getToolMaintanceActivityDAO().insert(activity);
-		} catch (DAOException e) {
+		/*} catch (DAOException e) {
 			Alert alert = new Alert(AlertType.INFORMATION,"Nije moguce unijeti vise aktivnosti za jedan dan.");
 			alert.showAndWait();
 			return;
-		}
+		}*/
 		listActivities.add(activity);
 		tableActivities.refresh();
 		tableToolItems.refresh();
@@ -243,7 +231,7 @@ public class ToolViewController extends BaseController{
 		radioMachine.setToggleGroup(group);
 		radioTool.setToggleGroup(group);
 		radioMachine.setSelected(true);
-		try {
+		
 			listTool = (ObservableList<Tool>)DAOFactory.getInstance().getToolDAO().selectAll();
 			comboBoxTool.setItems(listTool);
 			comboBoxTool.getSelectionModel().select(0);
@@ -252,10 +240,7 @@ public class ToolViewController extends BaseController{
 			listConditions = (ObservableList<Condition>) DAOFactory.getInstance().getConditionDAO().selectAll();
 			comboBoxCondition.setItems(listConditions);
 			comboBoxCondition.getSelectionModel().select(0);
-		} catch (DAOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<ToolItem, Integer>("toolItemId"));
 		tableColumnCondition.setCellValueFactory(new PropertyValueFactory<ToolItem,String>("condition"));
 		tableColumnAmount.setCellValueFactory(new PropertyValueFactory<ToolMaintanceActivity,Double>("amount"));

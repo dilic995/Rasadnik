@@ -28,7 +28,7 @@ public class ToolItem {
 		this.tool = tool;
 		this.toolId = toolId;
 		this.conditionId = conditionId;
-		this.isDeleted = isDeleted;
+		this.deleted = isDeleted;
 	}
 
 	public ToolItem() {
@@ -36,8 +36,6 @@ public class ToolItem {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Boolean getIsDeleted() {
-		return isDeleted;
 	public Boolean getDeleted() {
 		return deleted;
 	}
