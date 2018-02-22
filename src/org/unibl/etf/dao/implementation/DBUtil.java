@@ -116,7 +116,7 @@ public class DBUtil {
 				buf.append(" AND deleted=false");
 			}
 		}
-
+		
 		return buf.toString();
 	}
 
