@@ -385,4 +385,27 @@ public class BasisDAOImpl implements BasisDAO {
 		}
 		return result;
 	}
+
+	@Override
+	public Basis getAllByPrimaryKey(Integer basisId) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			int pos = 1;
+			ps = getConn().prepareStatement(DBUtil.selectAll(tableName, allColumns, pkColumns));
+			DBUtil.bind(ps, pos++, basisId);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				return fromResultSet(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return null;
+	}
 }

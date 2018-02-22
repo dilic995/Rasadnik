@@ -8,7 +8,9 @@ import org.unibl.etf.dto.Basis;
 public interface BasisDAO {
 	// CRUD methods
 	public Basis getByPrimaryKey(Integer basisId);
-
+	
+	public Basis getAllByPrimaryKey(Integer basisId);
+	
 	public List<Basis> selectAll();
 
 	public List<Basis> select(String whereStatement, Object[] bindVariables);

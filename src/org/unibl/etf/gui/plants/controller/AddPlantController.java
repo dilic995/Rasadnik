@@ -8,14 +8,15 @@ import java.net.URL;
 import java.sql.Blob;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.unibl.etf.dao.implementation.DBUtil;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.Plant;
@@ -42,10 +43,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-// TODO vidjeti sta sa slikom kad se izbrise u azuriranju
 // TODO svuda gdje se prikazuje slika napraviti da se prikazuje default image ako je slika null
 
 public class AddPlantController extends BaseController {
+
+	public static final int INSERT = 1;
+	public static final int UPDATE = 2;
+
 	@FXML
 	private ImageView imgPhoto;
 	@FXML
@@ -80,29 +84,21 @@ public class AddPlantController extends BaseController {
 	private TextArea taDescription;
 	@FXML
 	private DatePicker dpDateFrom;
-	
-	
-	public static final int INSERT = 1;
-	public static final int UPDATE = 2;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		try {
-			defaultImage = new Image(new FileInputStream("resources/images/add_image.png"));
+			defaultImage = DisplayUtil.getDefaultImage();
 			imgPhoto.setImage(defaultImage);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		/*
 		btnSave.disableProperty()
-				.bind(new OrBinder().bindAll(txtCommonName.textProperty().isEmpty(),
-						txtLatinName.textProperty().isEmpty(), taDescription.textProperty().isEmpty(),
-						imgPhoto.imageProperty().isEqualTo(defaultImage)));*/
-		btnSave.disableProperty().bind(txtCommonName.textProperty().isEmpty().or(txtLatinName.textProperty().isEmpty().
-				or(taDescription.textProperty().isEmpty())).or(cbOwned.selectedProperty().and(dpDateFrom.valueProperty().isNull())));
+				.bind(txtCommonName.textProperty().isEmpty()
+						.or(txtLatinName.textProperty().isEmpty().or(taDescription.textProperty().isEmpty()))
+						.or(cbOwned.selectedProperty().and(dpDateFrom.valueProperty().isNull())));
 		btnRemoveRatio.disableProperty().bind(lstRatios.getSelectionModel().selectedItemProperty().isNull());
-		btnAddRatio.disableProperty().bind(new OrBinder().bindAll(txtFrom.textProperty().isEmpty(),
-				txtTo.textProperty().isEmpty(), txtPrice.textProperty().isEmpty()));
+		btnAddRatio.disableProperty().bind(new OrBinder().bindAll(txtFrom.textProperty().isEmpty(), txtPrice.textProperty().isEmpty()));
 		dpDateFrom.disableProperty().bind(cbOwned.selectedProperty().not());
 	}
 
@@ -111,34 +107,8 @@ public class AddPlantController extends BaseController {
 	public void removeImage(ActionEvent event) {
 		imgPhoto.setImage(defaultImage);
 		imageFile = null;
-	}
-
-	// Event Listener on Button[#btnAddRatio].onAction
-	@FXML
-	public void addRatio(ActionEvent event) {
-		// dodati provjeravanje opsega
-		PriceHeightRatio ratio = new PriceHeightRatio(new BigDecimal(txtFrom.getText()),
-				new BigDecimal(txtTo.getText()), new BigDecimal(txtPrice.getText()), true,
-				Calendar.getInstance().getTime(), 0, null, false);
-		if (!lstRatios.getItems().contains(ratio)) {
-			lstRatios.getItems().add(ratio);
-			Collections.sort(lstRatios.getItems(), new PriceHeightRatioComparatorFrom());
-			newRatios.add(ratio);
-		}
-	}
-
-	// Event Listener on Button[#btnRemoveRatio].onAction
-	@FXML
-	public void removeRatio(ActionEvent event) {
-		PriceHeightRatio selected = lstRatios.getSelectionModel().getSelectedItem();
-		txtFrom.setText(selected.getHeightMin() + "");
-		txtTo.setText(selected.getHeightMax() + "");
-		txtPrice.setText(selected.getPrice() + "");
-		lstRatios.getItems().remove(lstRatios.getItems().indexOf(selected));
-		if(!newRatios.contains(selected)) {
-			deletedRatios.add(selected);
-		} else {
-			newRatios.remove(selected);
+		if (type == UPDATE && !imageUpdated) {
+			imageUpdated = true;
 		}
 	}
 
@@ -156,21 +126,63 @@ public class AddPlantController extends BaseController {
 		}
 	}
 
+	// Event Listener on Button[#btnAddRatio].onAction
+	@FXML
+	public void addRatio(ActionEvent event) {
+		// TODO dodati provjeravanje opsega
+		try {
+			LocalDate today = LocalDate.now();
+			String todayString = today.getYear() + "-" + today.getMonthValue() + "-" + today.getDayOfMonth();
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = format.parse(todayString);
+			BigDecimal from = new BigDecimal(txtFrom.getText());
+			BigDecimal to = "".equals(txtTo.getText()) ? null : new BigDecimal(txtTo.getText()); 
+			PriceHeightRatio ratio = new PriceHeightRatio(from, to, new BigDecimal(txtPrice.getText()), true,
+					date, 0, null, false);
+			if (!lstRatios.getItems().contains(ratio)) {
+				lstRatios.getItems().add(ratio);
+				Collections.sort(lstRatios.getItems(), new PriceHeightRatioComparatorFrom());
+				newRatios.add(ratio);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	// Event Listener on Button[#btnRemoveRatio].onAction
+	@FXML
+	public void removeRatio(ActionEvent event) {
+		PriceHeightRatio selected = lstRatios.getSelectionModel().getSelectedItem();
+		txtFrom.setText(selected.getHeightMin() + "");
+		txtTo.setText(selected.getHeightMax() + "");
+		txtPrice.setText(selected.getPrice() + "");
+		lstRatios.getItems().remove(lstRatios.getItems().indexOf(selected));
+		if (!newRatios.contains(selected)) {
+			deletedRatios.add(selected);
+		} else {
+			newRatios.remove(selected);
+		}
+	}
+
 	// Event Listener on Button[#btnSave].onAction
 	@FXML
 	public void save(ActionEvent event) {
-		Blob imageBlob = 
-				type == INSERT ? (imageFile == null ? null : DisplayUtil.convertToBlob(imageFile)) :
-					(imageFile == null ? plant.getImage() : DisplayUtil.convertToBlob(imageFile));
+		
+		Blob imageBlob = type == INSERT ? (imageFile == null ? null : DisplayUtil.convertToBlob(imageFile))
+				: (imageFile == null ? (imageUpdated ? null : plant.getImage()) : DisplayUtil.convertToBlob(imageFile));
 		String latin = txtLatinName.getText();
 		latin = latin.substring(0, 1).toUpperCase() + latin.substring(1);
 		plant.setIsConifer(rbConifer.isSelected());
-		plant.setOwned(cbOwned.isSelected());
+		if(type == INSERT) {
+			plant.setOwned(cbOwned.isSelected());
+		}
 		plant.setScientificName(latin);
 		plant.setKnownAs(txtCommonName.getText());
 		plant.setRatios(lstRatios.getItems());
 		plant.setDescription(taDescription.getText());
 		plant.setImage(imageBlob);
+		plant.setDeleted(false);
 		String message = "";
 		if (type == INSERT) {
 			if (DAOFactory.getInstance().getPlantDAO().insert(plant) > 0) {
@@ -187,20 +199,24 @@ public class AddPlantController extends BaseController {
 			}
 		} else {
 			if (DAOFactory.getInstance().getPlantDAO().update(plant) > 0) {
-				for(PriceHeightRatio ratio : deletedRatios) {
+				for (PriceHeightRatio ratio : deletedRatios) {
 					DAOFactory.getInstance().getPriceHeightRatioDAO().delete(ratio);
 				}
-				for(PriceHeightRatio ratio: newRatios) {
+				for (PriceHeightRatio ratio : newRatios) {
 					ratio.setPlant(plant);
 					ratio.setPlantId(plant.getPlantId());
-					DAOFactory.getInstance().getPriceHeightRatioDAO().insert(ratio);
+					if(DAOFactory.getInstance().getPriceHeightRatioDAO().insert(ratio) == DBUtil.DUPLICATE_KEYS) {
+						System.out.println("AAAAAAAAAAAAAAA");
+						System.out.println(ratio.getDateFrom());
+						System.out.println(DAOFactory.getInstance().getPriceHeightRatioDAO().update(ratio));
+					}
 				}
 				message = "Azuriranje uspjesno!";
 			} else {
 				message = "Doslo je do greske prilikom azuriranja";
 			}
 		}
-		if(cbOwned.isSelected() && (type==INSERT || (type==UPDATE && !plant.getOwned()))) {
+		if (cbOwned.isSelected() && type == INSERT) {
 			try {
 				String dateString = dpDateFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
@@ -243,6 +259,10 @@ public class AddPlantController extends BaseController {
 
 	public void setType(int type) {
 		this.type = type;
+		if(type == UPDATE) {
+			cbOwned.setSelected(false);
+			cbOwned.setDisable(true);
+		}
 	}
 
 	private Image defaultImage;
@@ -250,6 +270,7 @@ public class AddPlantController extends BaseController {
 	private PlantContainer container;
 	private Plant plant;
 	private int type;
+	private boolean imageUpdated = false;
 	private List<PriceHeightRatio> newRatios = new ArrayList<PriceHeightRatio>();
 	private List<PriceHeightRatio> deletedRatios = new ArrayList<PriceHeightRatio>();
 }

@@ -146,6 +146,6 @@ public class PriceHeightRatio {
 	}
 
 	public String toString() {
-		return heightMin + " cm - " + heightMax + " cm : " + price + " KM"; 
+		return heightMin + " cm - " + (heightMax == null ? "" : heightMax) + " cm : " + price + " KM";
 	}
 }
