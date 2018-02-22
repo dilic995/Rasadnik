@@ -19,6 +19,7 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -87,7 +88,7 @@ public class DisplayUtil {
 		return result;
 	}
 
-	public static void switchStage(AnchorPane root, double width, double height, boolean resizable, String title,
+	public static void switchStage(Pane root, double width, double height, boolean resizable, String title,
 			boolean modal) {
 		Stage stage = null;
 		stage = new Stage();

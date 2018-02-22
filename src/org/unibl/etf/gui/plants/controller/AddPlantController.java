@@ -6,13 +6,18 @@ import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Blob;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
+import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.PlantContainer;
 import org.unibl.etf.dto.PriceHeightRatio;
@@ -27,6 +32,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
@@ -72,7 +78,10 @@ public class AddPlantController extends BaseController {
 	private Button btnSave;
 	@FXML
 	private TextArea taDescription;
-
+	@FXML
+	private DatePicker dpDateFrom;
+	
+	
 	public static final int INSERT = 1;
 	public static final int UPDATE = 2;
 
@@ -84,13 +93,17 @@ public class AddPlantController extends BaseController {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		/*
 		btnSave.disableProperty()
 				.bind(new OrBinder().bindAll(txtCommonName.textProperty().isEmpty(),
 						txtLatinName.textProperty().isEmpty(), taDescription.textProperty().isEmpty(),
-						imgPhoto.imageProperty().isEqualTo(defaultImage)));
+						imgPhoto.imageProperty().isEqualTo(defaultImage)));*/
+		btnSave.disableProperty().bind(txtCommonName.textProperty().isEmpty().or(txtLatinName.textProperty().isEmpty().
+				or(taDescription.textProperty().isEmpty())).or(cbOwned.selectedProperty().and(dpDateFrom.valueProperty().isNull())));
 		btnRemoveRatio.disableProperty().bind(lstRatios.getSelectionModel().selectedItemProperty().isNull());
 		btnAddRatio.disableProperty().bind(new OrBinder().bindAll(txtFrom.textProperty().isEmpty(),
 				txtTo.textProperty().isEmpty(), txtPrice.textProperty().isEmpty()));
+		dpDateFrom.disableProperty().bind(cbOwned.selectedProperty().not());
 	}
 
 	// Event Listener on Button[#btnRemoveImage].onAction
@@ -185,6 +198,16 @@ public class AddPlantController extends BaseController {
 				message = "Azuriranje uspjesno!";
 			} else {
 				message = "Doslo je do greske prilikom azuriranja";
+			}
+		}
+		if(cbOwned.isSelected() && (type==INSERT || (type==UPDATE && !plant.getOwned()))) {
+			try {
+				String dateString = dpDateFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+				Basis basis = new Basis(null, date, plant.getPlantId(), plant, null, false);
+				DAOFactory.getInstance().getBasisDAO().insert(basis);
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
 		}
 		DisplayUtil.showMessageDialog(message);

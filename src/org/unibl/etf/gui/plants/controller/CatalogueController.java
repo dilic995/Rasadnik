@@ -75,6 +75,11 @@ public class CatalogueController extends PlantBrowserController {
 	private Button btnExport;
 	@FXML
 	private Button btnEditPlant;
+	@FXML
+	private Label lblCanSell;
+	@FXML
+	private Circle canSellIndicator;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize(location, resources);
@@ -225,6 +230,16 @@ public class CatalogueController extends PlantBrowserController {
 				ratios.add(new PriceHeightRatioTableItem(ratio));
 			}
 			tblRatio.setItems(ratios);
+			int count = DAOFactory.getInstance().getPlantDAO().getNumInRegions(plant);
+			if(count > 0) {
+				CSSUtil.setNewStyleClass(canSellIndicator, "green-fill");
+				CSSUtil.setNewStyleClass(lblCanSell, "plantOwned");
+				lblCanSell.setText("Na stanju: " + count);
+			} else {
+				CSSUtil.setNewStyleClass(canSellIndicator, "red-fill");
+				CSSUtil.setNewStyleClass(lblCanSell, "plant-not-owned");
+				lblCanSell.setText("Nema na stanju");
+			}
 		}
 	}
 
@@ -263,7 +278,7 @@ public class CatalogueController extends PlantBrowserController {
 			}
 		}
 		treePlants.setRoot(rootItem);
-
+		lblTotal.setText(DAOFactory.getInstance().getPlantDAO().selectCount() + "");
 	}
 
 	@Override

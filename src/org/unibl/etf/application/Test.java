@@ -19,9 +19,9 @@ import com.itextpdf.text.pdf.PdfPTable;
 
 public class Test {
 	public static void main(String[] args) throws DAOException {
-		List<Region> regions = DAOFactory.getInstance().getRegionDAO().getByPlanId(2);
-		for(Region r : regions) {
-			System.out.println(r.getRegionId());
+		List<Plant> plants = DAOFactory.getInstance().getPlantDAO().selectAll();
+		for(Plant plant : plants) {
+			System.out.println(DAOFactory.getInstance().getPlantDAO().getNumInRegions(plant));
 		}
 	}
 }

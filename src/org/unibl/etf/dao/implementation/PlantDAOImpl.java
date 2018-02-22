@@ -21,7 +21,9 @@ public class PlantDAOImpl implements PlantDAO {
 	protected static List<String> allColumns = new ArrayList<>();
 	protected static String tableName = "plant";
 	protected static String allPlantOnPricelist = "select php.plant_id, p.scientific_name, p.known_as, p.description, p.image, p.is_conifer, p.owned, p.deleted from pricelist_has_plant php inner join plant p on php.plant_id=p.plant_id and php.pricelist_id=?";
-
+	protected static String NUM_IN_REGIONS = "select sum(r.number_of_plants) as total from basis b inner join region r on b.basis_id=r.basis_id where b.plant_id=? and r.number_of_plants>0 and r.deleted=false;";
+	
+	
 	static {
 		pkColumns.add("plant_id");
 		stdColumns.add("scientific_name");
@@ -460,7 +462,29 @@ public class PlantDAOImpl implements PlantDAO {
 
 		return ret;
 	}
+	@Override
+	public int getNumInRegions(Plant plant) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int ret = 0;
 
+		try {
+			ps = getConn().prepareStatement(NUM_IN_REGIONS);
+			ps.setInt(1, plant.getPlantId());
+			rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				ret = rs.getInt("total");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
 	//
 	// helpers
 	//

@@ -13,7 +13,7 @@ public interface PlantDAO {
 
 	public List<Plant> select(String whereStatement, Object[] bindVariables);
 
-	public long selectCount() throws DAOException;
+	public long selectCount();
 
 	public long selectCount(String whereStatement, Object[] bindVariables);
 
@@ -39,4 +39,7 @@ public interface PlantDAO {
 	public List<Plant> getByOwned(Boolean owned);
 	
 	public List<Plant> getByDeleted(Boolean deleted);
+	
+	public int getNumInRegions(Plant plant);
+	
 }

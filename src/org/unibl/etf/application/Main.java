@@ -12,7 +12,8 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BaseController.changeScene("/org/unibl/etf/gui/plants/view/CatalogueView.fxml", primaryStage);
+			BaseController.changeScene("/org/unibl/etf/application/EntryView.fxml", primaryStage);
+//			BaseController.changeScene("/org/unibl/etf/gui/plants/view/CatalogueView.fxml", primaryStage);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println(e.getCause());
