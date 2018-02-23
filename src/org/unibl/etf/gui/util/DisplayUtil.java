@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +28,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 public class DisplayUtil {
 	private static final String messages = "org/unibl/etf/util/messages";
@@ -36,6 +39,29 @@ public class DisplayUtil {
 		IMAGE_EXTENSIONS.put("JPEG", "*.jpeg");
 		IMAGE_EXTENSIONS.put("JPG", "*.jpg");
 		IMAGE_EXTENSIONS.put("PNG", "*.png");
+	}
+	
+	public static StringConverter<LocalDate> datePickerConverter() {
+		StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
+			String pattern = "dd.MM.yyyy.";
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+			@Override
+			public String toString(LocalDate localDate) {
+				if (localDate == null)
+					return "";
+				return dateFormatter.format(localDate);
+			}
+
+			@Override
+			public LocalDate fromString(String dateString) {
+				if (dateString == null || dateString.trim().isEmpty()) {
+					return null;
+				}
+				return LocalDate.parse(dateString, dateFormatter);
+			}
+		};
+		return converter;
 	}
 
 	public static FileChooser configureFileChooser(String title, Map<String, String> extensions) {
