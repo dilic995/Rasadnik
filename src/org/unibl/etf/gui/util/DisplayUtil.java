@@ -29,8 +29,10 @@ import javafx.stage.Stage;
 public class DisplayUtil {
 	public static Map<String, String> IMAGE_EXTENSIONS = new HashMap<String, String>();
 	static {
-		IMAGE_EXTENSIONS.put("JPG", "*.jpg");
+		IMAGE_EXTENSIONS.put("BMP", "*.bmp");
+		IMAGE_EXTENSIONS.put("GIF", "*.gif");
 		IMAGE_EXTENSIONS.put("JPEG", "*.jpeg");
+		IMAGE_EXTENSIONS.put("JPG", "*.jpg");
 		IMAGE_EXTENSIONS.put("PNG", "*.png");
 	}
 

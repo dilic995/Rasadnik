@@ -2,6 +2,7 @@ package org.unibl.etf.dto;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
@@ -127,11 +128,6 @@ public class PriceHeightRatio {
 		if (getClass() != obj.getClass())
 			return false;
 		PriceHeightRatio other = (PriceHeightRatio) obj;
-		if (dateFrom == null) {
-			if (other.dateFrom != null)
-				return false;
-		} else if (!dateFrom.equals(other.dateFrom))
-			return false;
 		if (plantId == null) {
 			if (other.plantId != null)
 				return false;
@@ -147,5 +143,17 @@ public class PriceHeightRatio {
 
 	public String toString() {
 		return heightMin + " cm - " + (heightMax == null ? "" : heightMax) + " cm : " + price + " KM";
+	}
+
+	public boolean overlaps(List<PriceHeightRatio> ratios) {
+		for (PriceHeightRatio ratio : ratios) {
+			if ((heightMin.compareTo(ratio.getHeightMin()) >= 0
+					&& (ratio.getHeightMax() != null && heightMin.compareTo(ratio.getHeightMax()) < 0))
+					|| (heightMax != null &&  heightMax.compareTo(ratio.getHeightMin()) > 0
+							&& (ratio.getHeightMax() != null && heightMax.compareTo(ratio.getHeightMax()) <= 0))) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

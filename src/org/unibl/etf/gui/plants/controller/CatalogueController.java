@@ -162,12 +162,12 @@ public class CatalogueController extends PlantBrowserController {
 	// Event Listener on Circle[#ownedIndicator].onMouseClicked
 	@FXML
 	public void setOwned(MouseEvent event) {
-		List<Basis> bases = DAOFactory.getInstance().getBasisDAO().getByPlantId(container.current().getPlantId());
-		container.current().setOwned(!container.current().getOwned());
-		DAOFactory.getInstance().getPlantDAO().update(container.current());
-		if (container.current().getOwned() && bases.size() == 0) {
+		
+		if(!container.current().getOwned()) {
 			String message = "Biljka ne postoji u maticnjaku. Zelite li da je dodate?";
 			if (DisplayUtil.showConfirmationDialog(message) == ButtonType.YES) {
+				container.current().setOwned(true);
+				DAOFactory.getInstance().getPlantDAO().update(container.current());
 				Basis basis = new Basis(null, Calendar.getInstance().getTime(), container.current().getPlantId(),
 						container.current(), null, false);
 				if (DAOFactory.getInstance().getBasisDAO().insert(basis) > 0) {
@@ -175,9 +175,9 @@ public class CatalogueController extends PlantBrowserController {
 				} else {
 					DisplayUtil.showMessageDialog("Dodavanje u maticnjak neuspjesno");
 				}
+				displaySelectedItem();
 			}
 		}
-		displaySelectedItem();
 	}
 
 	@FXML
@@ -192,7 +192,18 @@ public class CatalogueController extends PlantBrowserController {
 			}
 		}
 	}
-
+	
+	@Override
+	public void update() {
+		if (buildAll) {
+			// TODO napraviti dodavanje i brisanje iz treeviewA
+			populateTreeView();
+			buildAll = false;
+		}
+		displaySelectedItem();
+		setSelected();
+	}
+	
 	private void buildTable() {
 		colMinHeight.setCellValueFactory(new PropertyValueFactory<PriceHeightRatioTableItem, String>("minHeight"));
 		colMaxHeight.setCellValueFactory(new PropertyValueFactory<PriceHeightRatioTableItem, String>("maxHeight"));
@@ -203,15 +214,14 @@ public class CatalogueController extends PlantBrowserController {
 		if (condition) {
 			CSSUtil.setNewStyleClass(ownedIndicator, "green-fill");
 			CSSUtil.setNewStyleClass(lblOwned, "plantOwned");
-			lblOwned.setText("U posjedu");
+			lblOwned.setText("U maticnjaku");
 		} else {
 			CSSUtil.setNewStyleClass(ownedIndicator, "red-fill");
 			CSSUtil.setNewStyleClass(lblOwned, "plant-not-owned");
-			lblOwned.setText("Nije u posjedu");
+			lblOwned.setText("Nije u maticnjaku");
 		}
 	}
-
-	///
+	
 	private void displaySelectedItem() {
 		Plant plant = container.current();
 		// TODO dodati else kad je prazna
@@ -221,7 +231,6 @@ public class CatalogueController extends PlantBrowserController {
 			taDescription.getChildren().clear();
 			taDescription.getChildren().add(new Text(plant.getDescription()));
 			setPlantOwned(plant.getOwned());
-			// TODO dodati provjeru za null
 			imgPhoto.setImage(DisplayUtil.convertFromBlob(plant.getImage()));
 			ObservableList<PriceHeightRatioTableItem> ratios = FXCollections.observableArrayList();
 			List<PriceHeightRatio> ratiosFromPlant = plant.getRatios();
@@ -279,16 +288,5 @@ public class CatalogueController extends PlantBrowserController {
 		}
 		treePlants.setRoot(rootItem);
 		lblTotal.setText(DAOFactory.getInstance().getPlantDAO().selectCount() + "");
-	}
-
-	@Override
-	public void update() {
-		if (buildAll) {
-			// TODO napraviti dodavanje i brisanje iz treeviewA
-			populateTreeView();
-			buildAll = false;
-		}
-		displaySelectedItem();
-		setSelected();
 	}
 }
