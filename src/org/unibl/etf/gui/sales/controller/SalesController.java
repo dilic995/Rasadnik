@@ -17,7 +17,9 @@ import org.unibl.etf.dto.Sale;
 import org.unibl.etf.dto.SaleItem;
 import org.unibl.etf.dto.SaleItemTableItem;
 import org.unibl.etf.dto.SaleTableItem;
+import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
+import org.unibl.etf.util.ResourceBundleManager;
 
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
@@ -41,6 +43,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 
 public class SalesController extends BaseController {
+	private static final String messages = "org/unibl/etf/util/messages";
 	@FXML
 	private Label lblError;
 	@FXML
@@ -214,8 +217,9 @@ public class SalesController extends BaseController {
 	public void previewDescription(ActionEvent event) {
 		PurchaseTableItem purchase = tblPurchase.getSelectionModel().getSelectedItem();
 		if (purchase != null) {
-			Alert alert = new Alert(AlertType.INFORMATION, "Napomena: "+purchase.getPurchase().getDescription());
-			alert.showAndWait();
+			//Alert alert = new Alert(AlertType.INFORMATION, "Napomena: "+purchase.getPurchase().getDescription());
+			//alert.showAndWait();
+			DisplayUtil.showMessageDialog("Napomena: "+purchase.getPurchase().getDescription());
 		}
 	}
 
@@ -247,8 +251,11 @@ public class SalesController extends BaseController {
 			DAOFactory.getInstance().getPurchaseDAO().insert(purchase);
 			tblPurchase.getItems().add(new PurchaseTableItem(purchase));
 			tblPurchase.refresh();
+			String message = ResourceBundleManager.getString("insertOk", messages);
+			clearTextFields();
+			DisplayUtil.showMessageDialog(message);
 		} catch (NumberFormatException ex) {
-			lblError.setText("Iznos mora biti broj!");
+			lblError.setText(ResourceBundleManager.getString("numberFormat", messages));
 		}
 
 	}

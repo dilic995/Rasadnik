@@ -24,7 +24,7 @@ public class ToolMaintanceActivity {
 	private ToolItem toolItem;
 	private Integer toolItemId;
 	private Boolean upToDateService;
-	private Boolean deleted;
+	private Boolean deleted = false;
 
 	//
 	// getters / setters

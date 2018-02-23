@@ -376,7 +376,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
     obj.setNextServiceDate(DBUtil.getDate(rs, "next_service_date"));
     obj.setDeleted(DBUtil.getBooleanObject(rs, "deleted"));
     obj.setToolId((DBUtil.getInt(rs, "tool_id")));
-    obj.setConditionId((DBUtil.getInt(rs, "condition_id")));
+    obj.setConditionId((DBUtil.getInt(rs, "item_condition_id")));
     return obj;
   }
 

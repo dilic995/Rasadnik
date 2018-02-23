@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.unibl.etf.util.ConnectionPool;
+import org.unibl.etf.util.ResourceBundleManager;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -27,6 +28,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class DisplayUtil {
+	private static final String messages = "org/unibl/etf/util/messages";
 	public static Map<String, String> IMAGE_EXTENSIONS = new HashMap<String, String>();
 	static {
 		IMAGE_EXTENSIONS.put("BMP", "*.bmp");
@@ -39,7 +41,7 @@ public class DisplayUtil {
 	public static FileChooser configureFileChooser(String title, Map<String, String> extensions) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(title);
-		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		fileChooser.setInitialDirectory(new File(System.getProperty(ResourceBundleManager.getString("home",messages ))));
 		for (String key : extensions.keySet()) {
 			String value = extensions.get(key);
 			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(key, value));
@@ -140,8 +142,8 @@ public class DisplayUtil {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setHeaderText("");
 		alert.setContentText(message);
-		alert.setTitle("Obavjestenje");
-		ButtonType okButton = new ButtonType("U redu", ButtonData.OK_DONE);
+		alert.setTitle(ResourceBundleManager.getString("information",messages));
+		ButtonType okButton = new ButtonType(ResourceBundleManager.getString("ok",messages), ButtonData.OK_DONE);
 		alert.getButtonTypes().clear();
 		alert.getButtonTypes().add(okButton);
 		alert.showAndWait();
@@ -149,7 +151,8 @@ public class DisplayUtil {
 
 	public static Image getDefaultImage() throws FileNotFoundException {
 		if (defaultImage == null) {
-			defaultImage = new Image(new FileInputStream("resources/images/add_image.png"));
+		//	defaultImage = new Image(new FileInputStream("resources/images/add_image.png"));
+			defaultImage = new Image(new FileInputStream(ResourceBundleManager.getString("defaultMessage",messages )));
 		}
 		return defaultImage;
 	}

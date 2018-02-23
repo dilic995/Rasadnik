@@ -25,7 +25,8 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 	protected static List<String> stdColumns = new ArrayList<>();
 	protected static List<String> allColumns = new ArrayList<>();
 	protected static String tableName = "tool_maintance_activity";
-
+	public static final int DUPLICATE_KEYS = -2;
+	
 	static {
 		pkColumns.add("date");
 		pkColumns.add("tool_item_id");
@@ -203,6 +204,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 	}
 
 	public Integer insert(ToolMaintanceActivity obj)  {
+		int res = 0;
 		PreparedStatement ps = null;
 		ResultSet rs=null;
 		int pos = 1;
@@ -219,15 +221,15 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				obj.setToolItemId(rs.getInt(2));
 			}
 			if (rowCount != 1) {
-				return 0;}
+				res = rowCount;}
 
-			return rowCount;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			res = DUPLICATE_KEYS;
+			//e.printStackTrace();
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
-		return 0;
+		return res;
 	}
 
 	public Integer delete(ToolMaintanceActivity obj)  {

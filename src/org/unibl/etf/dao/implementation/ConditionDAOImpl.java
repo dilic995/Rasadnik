@@ -299,7 +299,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 	protected Condition fromResultSet(ResultSet rs) throws SQLException {
 		Condition obj = new Condition();
 
-		obj.setConditionId(DBUtil.getInt(rs, "condition_id"));
+		obj.setConditionId(DBUtil.getInt(rs, "item_condition_id"));
 		obj.setCondition(DBUtil.getString(rs, "item_condition"));//promijenjeno
 
 		return obj;

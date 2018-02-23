@@ -1,4 +1,4 @@
-package org.unibl.etf.tool.controller;
+package org.unibl.etf.gui.tool.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -11,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -20,12 +21,16 @@ import java.util.ResourceBundle;
 
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
+import org.unibl.etf.dao.interfaces.ToolMaintanceActivityDAO;
 import org.unibl.etf.dto.Condition;
 import org.unibl.etf.dto.Tool;
 import org.unibl.etf.dto.ToolItem;
 import org.unibl.etf.dto.ToolMaintanceActivity;
+import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
+import org.unibl.etf.util.ResourceBundleManager;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
@@ -44,6 +49,10 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 
 public class ToolViewController extends BaseController{
+	
+	private static final String messages = "org/unibl/etf/util/messages";
+	@FXML
+	private Label lblError;
 	@FXML
 	private RadioButton radioMachine;
 	@FXML
@@ -98,10 +107,10 @@ public class ToolViewController extends BaseController{
 	private Button btnAddActivity;
 
 	
-	private ObservableList<Tool> listTool;
-	private ObservableList<ToolItem> listToolItems;
-	private ObservableList<ToolMaintanceActivity> listActivities;
-	private ObservableList<Condition> listConditions;
+	private ObservableList<Tool> listTool = FXCollections.observableArrayList();
+	private ObservableList<ToolItem> listToolItems= FXCollections.observableArrayList();
+	private ObservableList<ToolMaintanceActivity> listActivities= FXCollections.observableArrayList();
+	private ObservableList<Condition> listConditions= FXCollections.observableArrayList();
 	// Event Listener on ComboBox[#comboBoxTool].onAction
 	@FXML
 	public void selectToolItems() {
@@ -111,7 +120,9 @@ public class ToolViewController extends BaseController{
 			lblCount.setText(tool.getCount().toString());
 			try {
 				Object[] pom = {tool.getToolId(),false};
-				listToolItems =(ObservableList<ToolItem>) DAOFactory.getInstance().getToolItemDAO().select(" tool_id=? and is_deleted=?", pom);
+				//listToolItems =(ObservableList<ToolItem>) DAOFactory.getInstance().getToolItemDAO().select(" tool_id=? and is_deleted=?", pom);
+				listToolItems = FXCollections.observableArrayList();
+				listToolItems.addAll(DAOFactory.getInstance().getToolItemDAO().select(" tool_id=? and deleted=?", pom));
 				tableToolItems.setItems(listToolItems);
 				tableToolItems.getSelectionModel().select(0);
 				showActivities();
@@ -131,9 +142,7 @@ public class ToolViewController extends BaseController{
 		if(radioMachine.isSelected())
 			masina=true;
 		Tool tool = new Tool(null,name,0,masina);
-		
-			DAOFactory.getInstance().getToolDAO().insert(tool);
-		 
+		DAOFactory.getInstance().getToolDAO().insert(tool);
 		listTool.add(tool);
 	}
 	// Event Listener on Button[#btnDelete].onAction
@@ -179,13 +188,15 @@ public class ToolViewController extends BaseController{
 			instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
 			date = Date.from(instant);
 		}
-		ToolItem toolItem = new ToolItem(null,date,tool,tool.getToolId(),2,false);
-		
-			DAOFactory.getInstance().getToolItemDAO().insert(toolItem);
-		
-		listToolItems.add(toolItem);
+		ToolItem toolItem = new ToolItem(null,date,tool,tool.getToolId(),1,false); //dodati u bazu stanje ispravno sa id=1
+		DAOFactory.getInstance().getToolItemDAO().insert(toolItem);
 		tool.setCount(tool.getCount()+1);
-		lblCount.setText(tool.getCount().toString());
+		if(tool.equals(comboBoxTool.getSelectionModel().getSelectedItem())) {
+			lblCount.setText(tool.getCount().toString());
+			listToolItems.add(toolItem);
+		}
+		DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertOk", messages));	
+		txtTool.setText("");
 	}
 	// Event Listener on Button[#btnAddActivity].onAction
 	@FXML
@@ -203,43 +214,45 @@ public class ToolViewController extends BaseController{
 		try {
 			amount = Double.parseDouble(txtAmount.getText());
 		}catch(NumberFormatException ex){
-			Alert alert = new Alert(AlertType.INFORMATION,"Niste ispravno unijeli iznos!");
-			alert.showAndWait();
+			
+			lblError.setText(ResourceBundleManager.getString("numberFormat", messages));
 			return;
 		}
 		boolean service = checkBoxService.isSelected() ? true : false;
 		String description = txtDescription.getText();
 		ToolMaintanceActivity activity = new ToolMaintanceActivity(description,new BigDecimal(amount),date,toolItem, toolItem.getToolItemId(),service);
-		//try {
-			DAOFactory.getInstance().getToolMaintanceActivityDAO().insert(activity);
-		/*} catch (DAOException e) {
-			Alert alert = new Alert(AlertType.INFORMATION,"Nije moguce unijeti vise aktivnosti za jedan dan.");
-			alert.showAndWait();
-			return;
-		}*/
-		listActivities.add(activity);
-		tableActivities.refresh();
-		tableToolItems.refresh();
-		Alert alert = new Alert(AlertType.INFORMATION,"Uspjesno dodavanje aktivnosti.");
-		alert.showAndWait();
+		
+		int rowCount = DAOFactory.getInstance().getToolMaintanceActivityDAO().insert(activity);
+		if(rowCount==-2) {
+			DisplayUtil.showErrorDialog(ResourceBundleManager.getString("duplicateActivity", messages));
+		}else {
+			listActivities.add(activity);
+			tableActivities.refresh();
+			tableToolItems.refresh();
+			
+			DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertOk",messages));
+		}	
 	}
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		lblError.setText("");
 		ToggleGroup group = new ToggleGroup();
 		radioMachine.setToggleGroup(group);
 		radioTool.setToggleGroup(group);
 		radioMachine.setSelected(true);
-		
-			listTool = (ObservableList<Tool>)DAOFactory.getInstance().getToolDAO().selectAll();
-			comboBoxTool.setItems(listTool);
+		listTool.addAll(DAOFactory.getInstance().getToolDAO().selectAll());
+		comboBoxTool.setItems(listTool);
+		if(listTool.size()>0) {
 			comboBoxTool.getSelectionModel().select(0);
 			comboBoxToolAdd.setItems(listTool);
 			comboBoxToolAdd.getSelectionModel().select(0);
-			listConditions = (ObservableList<Condition>) DAOFactory.getInstance().getConditionDAO().selectAll();
-			comboBoxCondition.setItems(listConditions);
-			comboBoxCondition.getSelectionModel().select(0);
+		}
+		listConditions.addAll(DAOFactory.getInstance().getConditionDAO().selectAll());
+		
+		comboBoxCondition.setItems(listConditions);
+		comboBoxCondition.getSelectionModel().select(0);
 		
 		tableColumnId.setCellValueFactory(new PropertyValueFactory<ToolItem, Integer>("toolItemId"));
 		tableColumnCondition.setCellValueFactory(new PropertyValueFactory<ToolItem,String>("condition"));
@@ -282,17 +295,32 @@ public class ToolViewController extends BaseController{
 		tableColumnNextServiceDate.setCellValueFactory(new PropertyValueFactory<ToolItem,Date>("nextServiceDate"));
 
 		selectToolItems();
+		btnAddActivity.disableProperty().bind(txtAmount.textProperty().isEmpty().or(txtDescription.textProperty().isEmpty().or(datePicker.valueProperty().isNull())));
+		btnUpdateCondition.disableProperty().bind(tableToolItems.getSelectionModel().selectedItemProperty().isNull());
+		btnDelete.disableProperty().bind(tableToolItems.getSelectionModel().selectedItemProperty().isNull());
+		btnDeleteActivity.disableProperty().bind(tableActivities.getSelectionModel().selectedItemProperty().isNull());
+		btnAddTool.disableProperty().bind(txtTool.textProperty().isEmpty());
 	}
 	public void showActivities() throws DAOException {
 		Integer id=null;
 		if(tableToolItems.getSelectionModel().getSelectedItem()!=null) {
 			id = tableToolItems.getSelectionModel().getSelectedItem().getToolItemId();
 		}
+		
 		Object[] pomActivity = {id};
 		if(pomActivity[0]!=null) {
-			listActivities = (ObservableList<ToolMaintanceActivity>)DAOFactory.getInstance().getToolMaintanceActivityDAO().select(" tool_item_id=?", pomActivity);
+			listActivities = FXCollections.observableArrayList();
+			listActivities.addAll(DAOFactory.getInstance().getToolMaintanceActivityDAO().select(" tool_item_id=?", pomActivity));
 			tableActivities.setItems(listActivities);
 			tableActivities.getSelectionModel().select(0);
 		}
+	}
+	public void deleteActivity() {
+		ToolMaintanceActivity activity = tableActivities.getSelectionModel().getSelectedItem();
+		DAOFactory.getInstance().getToolMaintanceActivityDAO().delete(activity);
+		listActivities.remove(activity);
+		tableActivities.refresh();
+		Tool tool = comboBoxTool.getSelectionModel().getSelectedItem();
+		lblCount.setText(tool.getCount().toString());
 	}
 }
