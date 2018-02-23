@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -99,21 +100,30 @@ public class TaskDetailsViewController extends BaseController {
 
 	@FXML
 	private TextField txtHourlyWage;
-	
+
 	@FXML
-    private Button btnPay;
+	private Button btnPay;
 
-    @FXML
-    private Button btnDeleteWork;
+	@FXML
+	private Button btnDeleteWork;
 
-    @FXML
-    private Button btnRevokePayment;
+	@FXML
+	private Button btnRevokePayment;
+
+	@FXML
+	private DatePicker dpDatumOd;
+
+	@FXML
+	private DatePicker dpDatumDo;
+
+	@FXML
+	private Button btnPretrazite;
 
 	@FXML
 	void deleteWork(ActionEvent event) {
 		EngagementTableItem item = tvEngagement.getSelectionModel().getSelectedItem();
-		if(item != null) {
-			if(item.getHours() != 0) {
+		if (item != null) {
+			if (item.getHours() != 0) {
 				DisplayUtil.showErrorDialog("Samo angažmani sa 0 sati mogu biti obrisani!");
 				return;
 			}
@@ -138,24 +148,26 @@ public class TaskDetailsViewController extends BaseController {
 			return;
 		}
 		Date date = Date.from(dpDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-		
-		if(dpDate.getValue().isBefore(LocalDate.now())) {
+
+		if (dpDate.getValue().isBefore(LocalDate.now())) {
 			DisplayUtil.showErrorDialog("Datum može biti današnji ili stariji!");
 			return;
 		}
-		for(EngagementTableItem item : tvEngagement.getItems()) {
-			if(item.getId() == employeeTableItem.getId() && item.getTask().getDate().equals(date)) {
+		for (EngagementTableItem item : tvEngagement.getItems()) {
+			if (item.getId() == employeeTableItem.getId() && item.getTask().getDate().equals(date)) {
 				DisplayUtil.showErrorDialog("Nemoguće je angažovati radnika na isti dan više puta!");
 				return;
 			}
 		}
-		
+
 		EmployeeHasTask employeeHasTask = new EmployeeHasTask(BigDecimal.valueOf(hourlyWage), 0, false, date,
-				task.getTaskId(), task, employeeTableItem.getEmployee().getEmployeeId(), employeeTableItem.getEmployee(), false);
+				task.getTaskId(), task, employeeTableItem.getEmployee().getEmployeeId(),
+				employeeTableItem.getEmployee(), false);
 		EngagementTableItem item = new EngagementTableItem(employeeHasTask);
 		tvEngagement.getItems().add(item);
-		DAOFactory.getInstance().getEmployeeHasTaskDAO().insert(employeeHasTask);
-		
+		int result = DAOFactory.getInstance().getEmployeeHasTaskDAO().insert(employeeHasTask);
+		if(result == 0)
+			DAOFactory.getInstance().getEmployeeHasTaskDAO().update(employeeHasTask);
 		txtHourlyWage.clear();
 		dpDate.setValue(null);
 		tvEmployee.getSelectionModel().clearSelection();
@@ -163,8 +175,8 @@ public class TaskDetailsViewController extends BaseController {
 
 	@FXML
 	void payWork(ActionEvent event) {
-		for(EngagementTableItem item : tvEngagement.getSelectionModel().getSelectedItems()) {
-			if(!item.isPaidOff()) {
+		for (EngagementTableItem item : tvEngagement.getSelectionModel().getSelectedItems()) {
+			if (!item.isPaidOff()) {
 				item.setPaidOff(true);
 				try {
 					item.update();
@@ -175,11 +187,11 @@ public class TaskDetailsViewController extends BaseController {
 			}
 		}
 	}
-	
+
 	@FXML
 	void revokePayment(ActionEvent event) {
-		for(EngagementTableItem item : tvEngagement.getSelectionModel().getSelectedItems()) {
-			if(item.isPaidOff()) {
+		for (EngagementTableItem item : tvEngagement.getSelectionModel().getSelectedItems()) {
+			if (item.isPaidOff()) {
 				item.setPaidOff(false);
 				try {
 					item.update();
@@ -193,18 +205,23 @@ public class TaskDetailsViewController extends BaseController {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-
+		btnPretrazite.disableProperty()
+				.bind(dpDatumOd.valueProperty().isNull().and(dpDatumDo.valueProperty().isNull()));
+		btnAngazujte.disableProperty().bind(dpDate.valueProperty().isNull().or(txtHourlyWage.textProperty().isEmpty()
+				.or(tvEmployee.getSelectionModel().selectedItemProperty().isNull())));
+		btnPay.disableProperty().bind(tvEngagement.getSelectionModel().selectedItemProperty().isNull());
+		btnRevokePayment.disableProperty().bind(tvEngagement.getSelectionModel().selectedItemProperty().isNull());
+		btnDeleteWork.disableProperty().bind(tvEngagement.getSelectionModel().selectedItemProperty().isNull());
 	}
-	
+
 	public void initializeSearch() {
 		txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
-			if("".equals(newValue)) {
+			if ("".equals(newValue)) {
 				tvEmployee.setItems(employeeList);
-			}
-			else {
-				ObservableList<EmployeeTableItem> tempList = FXCollections.observableArrayList(employeeList.stream()
-						.filter(x -> (x.getFirstName() + " " + x.getLastName()).toLowerCase().contains(newValue.toLowerCase())).collect(Collectors.toList()));
+			} else {
+				ObservableList<EmployeeTableItem> tempList = FXCollections.observableArrayList(
+						employeeList.stream().filter(x -> (x.getFirstName() + " " + x.getLastName()).toLowerCase()
+								.contains(newValue.toLowerCase())).collect(Collectors.toList()));
 				tvEmployee.setItems(tempList);
 			}
 		});
@@ -222,39 +239,62 @@ public class TaskDetailsViewController extends BaseController {
 		DateFormat df = new SimpleDateFormat("dd.MM.yyyy.");
 		lblAktivnost.setText(task.getPlantMaintanceActivity().getActivity() + " : [" + df.format(task.getDateFrom())
 				+ " - " + (task.getDateTo() == null ? "" : df.format(task.getDateTo())) + "]");
-		
-		// DISABLE BUTTONS IF TASK IS DONE
-		if(task.getDateTo() != null) {
-			btnAngazujte.setDisable(true);
-			btnDeleteWork.setDisable(true);
-//			btnPay.setDisable(true);
-//			btnRevokePayment.setDisable(true);
-			txtHourlyWage.setDisable(true);
-			dpDate.setDisable(true);
-		}
-		
-		// FORMAT DATE PICKER
-		dpDate.setConverter(new StringConverter<LocalDate>() {
-			String pattern = "dd.MM.yyyy.";
-			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
-			@Override
-		    public String toString(LocalDate localDate)
-		    {
-		        if(localDate==null)
-		            return "";
-		        return dateFormatter.format(localDate);
-		    }
 
-		    @Override
-		    public LocalDate fromString(String dateString)
-		    {
-		        if(dateString==null || dateString.trim().isEmpty())
-		        {
-		            return null;
-		        }
-		        return LocalDate.parse(dateString,dateFormatter);
-		    }
-		});
+		// DISABLE BUTTONS IF TASK IS DONE
+		if (task.getDateTo() != null || task.getPlan().getActive() == false) {
+			btnAngazujte.disableProperty().unbind();
+			btnAngazujte.setDisable(true);
+			btnDeleteWork.disableProperty().unbind();
+			btnDeleteWork.setDisable(true);
+			dpDate.setDisable(true);
+			txtHourlyWage.setDisable(true);
+		}
+
+		// FORMAT DATE PICKER
+		dpDate.setConverter(DisplayUtil.datePickerConverter());
+		dpDate.setValue(LocalDate.now());
+		dpDatumDo.setConverter(DisplayUtil.datePickerConverter());
+		dpDatumOd.setConverter(DisplayUtil.datePickerConverter());
+
+	}
+
+	@FXML
+	public void pretrazivanjePoDatumu(ActionEvent event) {
+		try {
+			String statement = " task_id = ? and";
+			List<Object> variables = new ArrayList<Object>();
+			variables.add(task.getTaskId());
+			if (dpDatumOd.getValue() != null) {
+				statement += " date >= ?";
+				String dateString = dpDatumOd.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+				variables.add(date);
+			}
+			if (dpDatumDo.getValue() != null) {
+				if (dpDatumDo.getValue() != null) {
+					statement += " and";
+				}
+				statement += " date <= ?";
+				String dateString = dpDatumDo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+				variables.add(date);
+			}
+
+			List<EmployeeHasTask> list = DAOFactory.getInstance().getEmployeeHasTaskDAO().select(statement,
+					variables.toArray());
+			engagementList = FXCollections.observableArrayList(EngagementTableItem.convert(list));
+			tvEngagement.setItems(engagementList);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@FXML
+	public void refreshTable() {
+		List<EmployeeHasTask> list = DAOFactory.getInstance().getEmployeeHasTaskDAO().getByTaskId(task.getTaskId());
+		engagementList = FXCollections.observableArrayList(EngagementTableItem.convert(list));
+		tvEngagement.setItems(engagementList);
 	}
 
 	public void initializeTableEngagement() {
@@ -298,7 +338,8 @@ public class TaskDetailsViewController extends BaseController {
 		}));
 
 		colHours.setOnEditCommit((TableColumn.CellEditEvent<EngagementTableItem, Integer> t) -> {
-			t.getRowValue().setHours(t.getNewValue() == null || t.getNewValue() < 0? t.getOldValue() : t.getNewValue());
+			t.getRowValue()
+					.setHours(t.getNewValue() == null || t.getNewValue() < 0 ? t.getOldValue() : t.getNewValue());
 			tvEngagement.refresh();
 			try {
 				t.getRowValue().update();
@@ -308,7 +349,8 @@ public class TaskDetailsViewController extends BaseController {
 		});
 
 		colHourlyWage.setOnEditCommit((TableColumn.CellEditEvent<EngagementTableItem, Double> t) -> {
-			t.getRowValue().setHourlyWage(t.getNewValue() == null || t.getNewValue() < 0? t.getOldValue() : t.getNewValue());
+			t.getRowValue()
+					.setHourlyWage(t.getNewValue() == null || t.getNewValue() < 0 ? t.getOldValue() : t.getNewValue());
 			tvEngagement.refresh();
 			try {
 				t.getRowValue().update();
