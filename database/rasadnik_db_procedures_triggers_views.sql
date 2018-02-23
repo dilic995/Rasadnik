@@ -64,6 +64,30 @@ begin
 end$$
 delimiter ;
 
+drop trigger if exists update_plant_own;
+delimiter $$
+create trigger update_plant_own after update on basis for each row
+begin
+	if (new.deleted=true) then
+		begin
+			if((select count(basis_id) from basis where plant_id=new.plant_id and deleted=false)=0) then
+				update plant p set p.owned=0 where p.plant_id=new.plant_id;
+			end if;
+        end;
+	end if;
+end$$
+delimiter ;
+
+drop trigger if exists update_tool_after_update_tool_item;
+delimiter $$
+create trigger update_tool_after_update_tool_item after update on tool_item for each row
+begin
+	update tool t
+	set count = count - 1 
+	where t.tool_id = new.tool_id; 
+end$$
+delimiter ;
+
 
 -- PROCEDURE
 
