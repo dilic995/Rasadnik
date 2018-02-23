@@ -36,7 +36,7 @@
 				<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
 			</columnResizePolicy>
 		</TableView>
-      <Button fx:id="btnIsplati" layoutX="348.0" layoutY="223.0" mnemonicParsing="false" onAction="#isplati" text="Isplati" AnchorPane.rightAnchor="400.0" />
+      <Button fx:id="btnIsplati" layoutX="348.0" layoutY="223.0" mnemonicParsing="false" onAction="#isplati" prefHeight="25.0" prefWidth="126.0" text="Isplati" AnchorPane.rightAnchor="400.0" />
       <TableView fx:id="tblPurchase" layoutX="14.0" layoutY="264.0" prefHeight="212.0" prefWidth="386.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="264.0">
         <columns>
           <TableColumn fx:id="colDatePurchase" prefWidth="75.0" text="Datum" />
@@ -49,7 +49,7 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <Button fx:id="btnPaid" layoutX="346.0" layoutY="496.0" mnemonicParsing="false" onAction="#payOffPurchase" text="Isplati" AnchorPane.rightAnchor="406.0" />
+      <Button fx:id="btnPaid" layoutX="346.0" layoutY="496.0" mnemonicParsing="false" onAction="#payOffPurchase" prefHeight="25.0" prefWidth="126.0" text="Isplati" AnchorPane.rightAnchor="406.0" />
       <Label layoutX="424.0" layoutY="264.0" text="Dobavljac:" AnchorPane.rightAnchor="321.0" />
       <RadioButton fx:id="rbExisting" layoutX="491.0" layoutY="264.0" mnemonicParsing="false" text="Postojeci" AnchorPane.rightAnchor="240.0" />
       <RadioButton fx:id="rbNew" layoutX="491.0" layoutY="300.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="69.0" text="Novi" AnchorPane.rightAnchor="240.0" />
@@ -69,5 +69,7 @@
       <TextField fx:id="txtDescription" layoutX="599.0" layoutY="516.0" prefHeight="25.0" prefWidth="189.0" AnchorPane.rightAnchor="14.0" />
       <Button fx:id="btnAddPurchase" layoutX="646.0" layoutY="552.0" mnemonicParsing="false" onAction="#addPurchase" prefHeight="25.0" prefWidth="189.0" text="Dodaj kupovinu" AnchorPane.rightAnchor="14.0" />
       <DatePicker fx:id="datePicker" layoutX="598.0" layoutY="450.0" prefHeight="25.0" prefWidth="189.0" AnchorPane.rightAnchor="14.0" />
+      <Label fx:id="lblError" layoutX="597.0" layoutY="309.0" prefHeight="17.0" prefWidth="189.0" text="Label" textFill="RED" AnchorPane.rightAnchor="14.0" />
+    
 	</children>
 </AnchorPane>

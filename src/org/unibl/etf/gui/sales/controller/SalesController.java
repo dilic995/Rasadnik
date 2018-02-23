@@ -19,6 +19,7 @@ import org.unibl.etf.dto.SaleItemTableItem;
 import org.unibl.etf.dto.SaleTableItem;
 import org.unibl.etf.gui.view.base.BaseController;
 
+import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,10 +36,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 
 public class SalesController extends BaseController {
+	@FXML
+	private Label lblError;
 	@FXML
 	private DatePicker datePicker;
 	@FXML
@@ -68,15 +72,15 @@ public class SalesController extends BaseController {
 	@FXML
 	private TableView<PurchaseTableItem> tblPurchase;
 	@FXML
-	private TableColumn<PurchaseTableItem,String> colDatePurchase;
+	private TableColumn<PurchaseTableItem, String> colDatePurchase;
 	@FXML
 	private TableColumn<PurchaseTableItem, String> colPricePurchase;
 	@FXML
-	private TableColumn<PurchaseTableItem,String> colNamePurchase;
+	private TableColumn<PurchaseTableItem, String> colNamePurchase;
 	@FXML
-	private TableColumn<PurchaseTableItem,String> colAddressPurchase;
+	private TableColumn<PurchaseTableItem, String> colAddressPurchase;
 	@FXML
-	private TableColumn<PurchaseTableItem,String> colPaidOffPurchase;
+	private TableColumn<PurchaseTableItem, String> colPaidOffPurchase;
 	@FXML
 	private Button btnPaid;
 	@FXML
@@ -105,13 +109,13 @@ public class SalesController extends BaseController {
 	@FXML
 	public void isplati(ActionEvent event) {
 		SaleTableItem sale = tblSales.getSelectionModel().getSelectedItem();
-		if(sale != null) {
+		if (sale != null) {
 			sale.setPaidOff(!sale.getPaidOff());
 			DAOFactory.getInstance().getSaleDAO().update(sale.getSale());
 			tblSales.refresh();
 		}
 	}
-	
+
 	// Event Listener on TableView[#tblSales].onMouseClicked
 	@FXML
 	public void setItems(MouseEvent event) {
@@ -133,8 +137,17 @@ public class SalesController extends BaseController {
 		populateTablePurchase();
 		prepareFields();
 	}
+
 	private void prepareFields() {
-		btnAddPurchase.disableProperty().bind(txtFirstName.textProperty().isEmpty().and(txtLastName.textProperty().isEmpty().or(txtAddress.textProperty().isEmpty().or(txtDescription.textProperty().isEmpty().or(txtPrice.textProperty().isEmpty().or(datePicker.valueProperty().isNull()))))));
+		lblError.setText("");
+		BooleanBinding bindExisting = datePicker.valueProperty().isNull().or(txtDescription.textProperty().isEmpty()
+				.or(txtPrice.textProperty().isEmpty().or(cbCustomer.valueProperty().isNull())));
+		BooleanBinding bindNew = datePicker.valueProperty().isNull()
+				.or(txtDescription.textProperty().isEmpty()
+						.or(txtPrice.textProperty().isEmpty().or(txtFirstName.textProperty().isEmpty()
+								.or(txtLastName.textProperty().isEmpty().or(txtAddress.textProperty().isEmpty())))));
+		btnAddPurchase.disableProperty()
+				.bind((rbNew.selectedProperty().and(bindNew)).or(rbExisting.selectedProperty().and(bindExisting)));
 		ToggleGroup group = new ToggleGroup();
 		rbExisting.setToggleGroup(group);
 		rbNew.setToggleGroup(group);
@@ -142,8 +155,12 @@ public class SalesController extends BaseController {
 		txtFirstName.disableProperty().bind(rbNew.selectedProperty().not());
 		txtLastName.disableProperty().bind(rbNew.selectedProperty().not());
 		txtAddress.disableProperty().bind(rbNew.selectedProperty().not());
-		cbCustomer.setItems(FXCollections.observableArrayList(DAOFactory.getInstance().getCustomerDAO().selectAll()));
+		Object[] pom = { true };
+		cbCustomer.setItems(FXCollections
+				.observableArrayList(DAOFactory.getInstance().getCustomerDAO().select("is_supplier=?", pom)));
+		cbCustomer.getSelectionModel().select(0);
 	}
+
 	private void buildTable() {
 		colDate.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("date"));
 		colPriceSale.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("price"));
@@ -155,14 +172,13 @@ public class SalesController extends BaseController {
 		colHeight.setCellValueFactory(new PropertyValueFactory<SaleItemTableItem, String>("height"));
 		colCount.setCellValueFactory(new PropertyValueFactory<SaleItemTableItem, Integer>("count"));
 		colPriceItem.setCellValueFactory(new PropertyValueFactory<SaleItemTableItem, String>("price"));
-		
+
 		colDatePurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("date"));
 		colPricePurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("price"));
 		colNamePurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("name"));
 		colAddressPurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("address"));
 		colPaidOffPurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("paidOff"));
 	}
-	
 
 	private void populateTable() {
 		ObservableList<SaleTableItem> items = FXCollections.observableArrayList();
@@ -172,64 +188,77 @@ public class SalesController extends BaseController {
 		}
 		tblSales.setItems(items);
 	}
-		private void populateTablePurchase() {
-			ObservableList<PurchaseTableItem> items = FXCollections.observableArrayList();
-			List<Purchase> purchases = DAOFactory.getInstance().getPurchaseDAO().selectAll();
-			for(Purchase purchase : purchases) {
-				items.add(new PurchaseTableItem(purchase));
-			}
-			tblPurchase.setItems(items);
+
+	private void populateTablePurchase() {
+		ObservableList<PurchaseTableItem> items = FXCollections.observableArrayList();
+		List<Purchase> purchases = DAOFactory.getInstance().getPurchaseDAO().selectAll();
+		for (Purchase purchase : purchases) {
+			items.add(new PurchaseTableItem(purchase));
 		}
-		// Event Listener on Button[#btnPaid].onAction
-		@FXML
-		public void payOffPurchase(ActionEvent event) {
-			PurchaseTableItem purchase = tblPurchase.getSelectionModel().getSelectedItem();
-			if(purchase != null) {
-				purchase.setPaidOff(!purchase.getPaidOff());
-				DAOFactory.getInstance().getPurchaseDAO().update(purchase.getPurchase());
-				tblPurchase.refresh();
-			}
+		tblPurchase.setItems(items);
+	}
+
+	// Event Listener on Button[#btnPaid].onAction
+	@FXML
+	public void payOffPurchase(ActionEvent event) {
+		PurchaseTableItem purchase = tblPurchase.getSelectionModel().getSelectedItem();
+		if (purchase != null) {
+			purchase.setPaidOff(!purchase.getPaidOff());
+			DAOFactory.getInstance().getPurchaseDAO().update(purchase.getPurchase());
+			tblPurchase.refresh();
 		}
-		// Event Listener on Button[#btnPreviewDescription].onAction
-		@FXML
-		public void previewDescription(ActionEvent event) {
-			PurchaseTableItem purchase = tblPurchase.getSelectionModel().getSelectedItem();
-			if(purchase != null) {
-				Alert alert = new Alert(AlertType.INFORMATION,purchase.getPurchase().getDescription());
-				alert.showAndWait();
-			}
+	}
+
+	// Event Listener on Button[#btnPreviewDescription].onAction
+	@FXML
+	public void previewDescription(ActionEvent event) {
+		PurchaseTableItem purchase = tblPurchase.getSelectionModel().getSelectedItem();
+		if (purchase != null) {
+			Alert alert = new Alert(AlertType.INFORMATION, "Napomena: "+purchase.getPurchase().getDescription());
+			alert.showAndWait();
 		}
-		// Event Listener on Button[#btnAddPurchase].onAction
-		@FXML
-		public void addPurchase(ActionEvent event) {
-			// TODO Autogenerated
-			LocalDate localDate = datePicker.getValue();
-			Instant instant = null;
-			Date date = null;
-			if(localDate!=null) {
-				instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
-				date = Date.from(instant);
-			}
-			Customer customer = null;
-			if(rbExisting.isSelected()) {
-				customer = cbCustomer.getSelectionModel().getSelectedItem();
-			}else if(rbNew.isSelected()){
-				customer = new Customer(null, txtFirstName.getText(), txtLastName.getText(), txtAddress.getText(), true, false);
-				DAOFactory.getInstance().getCustomerDAO().insert(customer);
-				cbCustomer.getItems().add(customer);
-			}
-			
-			Purchase purchase = new Purchase(date, txtDescription.getText(),new BigDecimal(txtPrice.getText()), false, customer, customer.getCustomerId());
+	}
+
+	// Event Listener on Button[#btnAddPurchase].onAction
+	@FXML
+	public void addPurchase(ActionEvent event) {
+		// TODO Autogenerated
+		LocalDate localDate = datePicker.getValue();
+		Instant instant = null;
+		Date date = null;
+		if (localDate != null) {
+			instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+			date = Date.from(instant);
+		}
+		Customer customer = null;
+		if (rbExisting.isSelected()) {
+			customer = cbCustomer.getSelectionModel().getSelectedItem();
+		} else if (rbNew.isSelected()) {
+			customer = new Customer(null, txtFirstName.getText(), txtLastName.getText(), txtAddress.getText(), true,
+					false);
+			DAOFactory.getInstance().getCustomerDAO().insert(customer);
+			cbCustomer.getItems().add(customer);
+		}
+		BigDecimal price = null;
+		try {
+			price = new BigDecimal(txtPrice.getText());
+			Purchase purchase = new Purchase(date, txtDescription.getText(), price, false, customer,
+					customer.getCustomerId());
 			DAOFactory.getInstance().getPurchaseDAO().insert(purchase);
 			tblPurchase.getItems().add(new PurchaseTableItem(purchase));
 			tblPurchase.refresh();
+		} catch (NumberFormatException ex) {
+			lblError.setText("Iznos mora biti broj!");
 		}
-		private void clearTextFields() {
-			txtFirstName.setText("");
-			txtLastName.setText("");
-			txtAddress.setText("");
-			txtDescription.setText("");
-			txtPrice.setText("");
-			
-		}
+
+	}
+
+	private void clearTextFields() {
+		txtFirstName.setText("");
+		txtLastName.setText("");
+		txtAddress.setText("");
+		txtDescription.setText("");
+		txtPrice.setText("");
+
+	}
 }
