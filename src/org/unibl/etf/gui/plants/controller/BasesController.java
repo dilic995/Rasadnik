@@ -1,5 +1,6 @@
 package org.unibl.etf.gui.plants.controller;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -76,33 +77,50 @@ public class BasesController extends BaseController {
 
 	@FXML
 	public void addPlant(ActionEvent event) {
-
+		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
+				"org/unibl/etf/gui/plants/view/AddBasisView.fxml");
+		AnchorPane root = DisplayUtil.getAnchorPane(loader);
+		AddBasisController controller = DisplayUtil.<AddBasisController>getController(loader);
+		DisplayUtil.switchStage(root, 600, 350, true, "Dodavanje biljke u maticnjak", true);
+		Basis basis = controller.getBasis();
+		if (basis != null) {
+			tblBases.getItems().add(new BasisTableItem(basis));
+			tblBases.refresh();
+		}
 	}
 
 	@FXML
 	public void editPlant(ActionEvent event) {
-		Plant plant = tblBases.getSelectionModel().getSelectedItem().getBasis().getPlant();
-		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
-				"org/unibl/etf/gui/plants/view/AddPlantView.fxml");
-		AnchorPane root = DisplayUtil.getAnchorPane(loader);
-		AddPlantController controller = DisplayUtil.<AddPlantController>getController(loader);
-		controller.setPlant(plant);
-		controller.setType(AddPlantController.UPDATE);
-		DisplayUtil.switchStage(root, 650, 600, true, "Dodavanje biljke", true);
 		Basis basis = tblBases.getSelectionModel().getSelectedItem().getBasis();
-		basis.setPlant(plant);
+		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
+				"org/unibl/etf/gui/plants/view/EditBasisView.fxml");
+		AnchorPane root = DisplayUtil.getAnchorPane(loader);
+		EditBasisController controller = DisplayUtil.<EditBasisController>getController(loader);
+		controller.setBasis(basis);
+		DisplayUtil.switchStage(root, 250, 110, false, "Azuriranje biljke iz maticnjaka", true);
 		tblBases.getSelectionModel().getSelectedItem().setBasis(basis);
-		imgPhoto.setImage(DisplayUtil.convertFromBlob(plant.getImage()));
+		tblBases.getSelectionModel().getSelectedItem().setdate(basis.getPlantingDate());
+		displayInfo(basis);
+		tblBases.refresh();
 	}
 
 	@FXML
 	public void deletePlant(ActionEvent event) {
 		// TODO kreirati triger koji ce setovati da nije u maticnjaku
-		if(DisplayUtil.showConfirmationDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
+		if (DisplayUtil.showConfirmationDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
 			String message = "";
 			BasisTableItem bti = tblBases.getSelectionModel().getSelectedItem();
-			if(DAOFactory.getInstance().getBasisDAO().delete(bti.getBasis()) > 0) {
+			int index = tblBases.getSelectionModel().getSelectedIndex();
+			if (DAOFactory.getInstance().getBasisDAO().delete(bti.getBasis()) > 0) {
 				tblBases.getItems().remove(bti);
+				if (index >= tblBases.getItems().size()) {
+					index--;
+				}
+				Basis item = null;
+				if (index >= 0) {
+					item = tblBases.getSelectionModel().getSelectedItem().getBasis();
+				}
+				displayInfo(item);
 				message = "Brisanje uspjesno!";
 			} else {
 				message = "Greska prilikom brisanja!";
@@ -122,14 +140,7 @@ public class BasesController extends BaseController {
 	public void select(MouseEvent event) {
 		BasisTableItem selectedItem = tblBases.getSelectionModel().getSelectedItem();
 		if (selectedItem != null) {
-			imgPhoto.setImage(DisplayUtil.convertFromBlob(selectedItem.getBasis().getPlant().getImage()));
-			List<ReproductionCutting> rcItems = DAOFactory.getInstance().getReproductionCuttingDAO()
-					.getByBasisId(selectedItem.getBasis().getBasisId());
-			ObservableList<ReproductionCuttingTableItem> rctItems = FXCollections.observableArrayList();
-			for (ReproductionCutting item : rcItems) {
-				rctItems.add(new ReproductionCuttingTableItem(item));
-			}
-			tblSeeds.setItems(rctItems);
+			displayInfo(selectedItem.getBasis());
 		}
 	}
 
@@ -138,13 +149,15 @@ public class BasesController extends BaseController {
 		// TODO promjena na bazi - ne mora se unijeti koliko se primilo
 		// TODO provjera za datum i primilo < posijano
 		// TODO dodavanje na isti dan
-		// TODO veza regiona i sijanja
 		try {
 			Basis basis = tblBases.getSelectionModel().getSelectedItem().getBasis();
 			String dateString = dpDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
 			Integer produced = Integer.parseInt(txtProducedNum.getText());
 			Integer takeARoot = Integer.parseInt(txtSuccessfulNum.getText());
+			
+			
+			
 			ReproductionCutting cutting = new ReproductionCutting(basis, date, produced, takeARoot, basis.getBasisId(),
 					false);
 			if (DAOFactory.getInstance().getReproductionCuttingDAO().insert(cutting) > 0) {
@@ -158,8 +171,6 @@ public class BasesController extends BaseController {
 			ex.printStackTrace();
 		}
 	}
-
-	private List<Basis> bases;
 
 	private void buildTable() {
 		colLatin.setCellValueFactory(new PropertyValueFactory<BasisTableItem, String>("scientificName"));
@@ -182,6 +193,26 @@ public class BasesController extends BaseController {
 			tableItems.add(new BasisTableItem(basis));
 		}
 		tblBases.setItems(tableItems);
+	}
+
+	private void displayInfo(Basis basis) {
+		try {
+			if (basis != null) {
+				imgPhoto.setImage(DisplayUtil.convertFromBlob(basis.getPlant().getImage()));
+				List<ReproductionCutting> rcItems = DAOFactory.getInstance().getReproductionCuttingDAO()
+						.getByBasisId(basis.getBasisId());
+				ObservableList<ReproductionCuttingTableItem> rctItems = FXCollections.observableArrayList();
+				for (ReproductionCutting item : rcItems) {
+					rctItems.add(new ReproductionCuttingTableItem(item));
+				}
+				tblSeeds.setItems(rctItems);
+			} else {
+				imgPhoto.setImage(DisplayUtil.getDefaultImage());
+				tblSeeds.setItems(FXCollections.observableArrayList());
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void bindDisable() {
