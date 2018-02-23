@@ -156,6 +156,7 @@ public class CatalogueController extends PlantBrowserController {
 		PlantContainer newContainer = new PlantContainer(
 				container.getPlants().stream().filter(x -> x.getOwned() == true).collect(Collectors.toList()));
 		controller.setContainer(newContainer);
+		System.out.println(root);
 		DisplayUtil.switchStage(root, 800, 500, true, "Pregled cjenovnika", true);
 	}
 

@@ -93,6 +93,24 @@
     -fx-background-repeat: no-repeat;
 	-fx-background-position: center 3px;
 }
+#save-button{
+	-fx-min-height: 20px;
+    -fx-min-width: 23px;
+	-fx-background-color: #ffffff;
+	-fx-background-image: url('save.png');
+	-fx-background-size: 18px 18px;
+    -fx-background-repeat: no-repeat;
+	-fx-background-position: center 3px;
+}
+#print-button{
+	-fx-min-height: 20px;
+    -fx-min-width: 23px;
+	-fx-background-color: #ffffff;
+	-fx-background-image: url('print.png');
+	-fx-background-size: 18px 18px;
+    -fx-background-repeat: no-repeat;
+	-fx-background-position: center 3px;
+}
 #edit-button{
 	-fx-min-height: 20px;
     -fx-min-width: 23px;
@@ -102,7 +120,26 @@
     -fx-background-repeat: no-repeat;
 	-fx-background-position: center 3px;
 }
-#left-button:hover, #right-button:hover, #select-button:hover, #draw-tool:hover, #plus-button:hover, #delete-button:hover, #pricelist-button:hover, #edit-button:hover{
+#search-button{
+	-fx-min-height: 20px;
+    -fx-min-width: 23px;
+	-fx-background-color: #ffffff;
+	-fx-background-image: url('search.png');
+	-fx-background-size: 18px 18px;
+    -fx-background-repeat: no-repeat;
+	-fx-background-position: center 3px;
+}
+#refresh-button{
+	-fx-min-height: 20px;
+    -fx-min-width: 23px;
+	-fx-background-color: #ffffff;
+	-fx-background-image: url('refresh.png');
+	-fx-background-size: 18px 18px;
+    -fx-background-repeat: no-repeat;
+	-fx-background-position: center 3px;
+}
+#left-button:hover, #right-button:hover, #select-button:hover, #draw-tool:hover, #plus-button:hover, #delete-button:hover, #pricelist-button:hover, #edit-button:hover,
+#save-button:hover, #print-button:hover, #search-button:hover, #refresh-button:hover{
 	-fx-background-color:  #b3d1ff;
 	-fx-cursor: hand;
 }

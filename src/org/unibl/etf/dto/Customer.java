@@ -101,14 +101,9 @@ public class Customer {
 	}
 
 	public String toString() {
-		StringBuffer buffer = new StringBuffer("org.unibl.etf.dto").append(".").append("Customer").append("(");
+		
 
-		buffer.append("[").append("customerId").append("=").append(customerId).append("]");
-		buffer.append("[").append("firstName").append("=").append(firstName).append("]");
-		buffer.append("[").append("lastName").append("=").append(lastName).append("]");
-		buffer.append("[").append("address").append("=").append(address).append("]");
-		buffer.append("[").append("isSupplier").append("=").append(isSupplier).append("]");
-
-		return buffer.append(")").toString();
+		return firstName+" "+lastName;
 	}
+	
 }
