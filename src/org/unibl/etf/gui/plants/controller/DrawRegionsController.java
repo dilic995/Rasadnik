@@ -2,8 +2,8 @@ package org.unibl.etf.gui.plants.controller;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.math.BigDecimal;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
+import org.unibl.etf.dao.implementation.DBUtil;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.EmployeeHasTask;
@@ -36,11 +37,12 @@ import org.unibl.etf.dto.Sale;
 import org.unibl.etf.dto.SaleItem;
 import org.unibl.etf.dto.Task;
 import org.unibl.etf.dto.TaskTableItem;
-import org.unibl.etf.gui.task.controller.EngagementTableItem;
 import org.unibl.etf.gui.task.controller.TaskDetailsViewController;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
+import org.unibl.etf.util.ResourceBundleManager;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -51,6 +53,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
@@ -66,7 +69,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -77,7 +79,6 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 public class DrawRegionsController extends BaseController {
 	@FXML
@@ -129,8 +130,6 @@ public class DrawRegionsController extends BaseController {
 	@FXML
 	private AnchorPane regionsPane;
 	@FXML
-	private Button btnCreateSale;
-	@FXML
 	private TextField txtNumSold;
 	@FXML
 	private TextField txtHeight;
@@ -158,103 +157,259 @@ public class DrawRegionsController extends BaseController {
 	private Button btnZavrsiAktivnost;
 	@FXML
 	private Button btnAktivirajAktivnost;
+	@FXML
+	private TextField txtPlanName;
+	@FXML
+	private DatePicker dpPlanDateFrom;
+	@FXML
+	private DatePicker dpPlanDateTo;
+	@FXML
+	private DatePicker dpTaskDateFrom;
+	@FXML
+	private ComboBox<PlantMaintanceActivity> cbActivity;
+	@FXML
+	private Label lblChosedRegion;
+	@FXML
+	private ListView<Task> lstChosedTasks;
+	@FXML
+	private ComboBox<PlantMaintanceActivity> cbSearchCategory;
+	@FXML
+	private Button btnAddMaintanceActivity;
+	@FXML
+	private Label lblError;
+	@FXML
+	private Button btnDelete;
+	@FXML
+	private Button btnClear;
+	@FXML
+	private Tab tabSale;
+	@FXML
+	private ImageView imgRegionSale;
+	@FXML
+	private Label lblRegionSale;
+	@FXML
+	private Label lblPlantSale;
+	@FXML
+	private Label lblNumSale;
+	@FXML
+	private Label lblErrorSale;
 
 	@FXML
-	public void addPlants(ActionEvent event) {
-		String dateString = dpDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		try {
-			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
-			Basis basis = cbBases.getSelectionModel().getSelectedItem();
-			Integer produced = Integer.parseInt(txtProduced.getText());
-			Integer takeARoot = Integer.parseInt(txtSuccess.getText());
-			if (DAOFactory.getInstance().getReproductionCuttingDAO()
-					.insert(new ReproductionCutting(basis, date, produced, takeARoot, basis.getBasisId(), false)) > 0) {
-				if (selectedRegion.getBasis() == null) {
-					selectedRegion.setBasis(basis);
-					selectedRegion.setBasisId(basis.getBasisId());
-				}
-				selectedRegion.setNumberOfPlants(selectedRegion.getNumberOfPlants() + takeARoot);
+	public void clean(ActionEvent event) {
+		if (selectedRegion != null && selectedRegion.getBasisId() != null) {
+			if (ButtonType.YES
+					.equals(DisplayUtil.showConfirmationDialog(ResourceBundleManager.getString("confirmQuestion")))) {
+				selectedRegion.setNumberOfPlants(0);
+				selectedRegion.setBasisId(0);
 				DAOFactory.getInstance().getRegionDAO().update(selectedRegion);
 				displayInfo(selectedRegion);
 			}
+		}
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		try {
+			defaultImage = DisplayUtil.getDefaultImage();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		ObservableList<Basis> basesItems = FXCollections.observableArrayList();
+		basesItems.addAll(DAOFactory.getInstance().getBasisDAO().selectAll());
+		cbBases.setItems(basesItems);
+		cbBases.getSelectionModel().select(0);
+		initRegions(DAOFactory.getInstance().getRegionDAO().selectAll());
+		cbBases.setDisable(true);
+		// TABOVI
+		initializeMaintenanceTab();
+
+		// TABELA
+		initializeTable();
+		ObservableList<SaleItem> saleItems = FXCollections.observableArrayList();
+		lstSaleItems.setItems(saleItems);
+
+		// COMBOBOX
+		initializeComboBox();
+
+		// DODAVANJE TASKA
+
+		// DATE PICKER FORMAT
+		formatDatePicker();
+
+		// TABELA SELEKTOVANIH TASKOVA
+		listaTaskova = FXCollections.observableArrayList();
+
+		// BINDING - TAB PLANIRANJE
+		btnDodajAktivnost.disableProperty()
+				.bind(lblChosedRegion.textProperty().isEmpty()
+						.or(dpTaskDateFrom.valueProperty().isNull()
+								.or(dpPlanDateFrom.valueProperty().isNull().or(dpPlanDateTo.valueProperty().isNull()
+										.or(cbActivity.getSelectionModel().selectedItemProperty().isNull())))));
+		btnDodajPlan.disableProperty().bind(txtPlanName.textProperty().isEmpty()
+				.or(dpPlanDateFrom.valueProperty().isNull().or(dpPlanDateTo.valueProperty().isNull())));
+		btnUkloniAktivnost.disableProperty().bind(lstChosedTasks.getSelectionModel().selectedItemProperty().isNull());
+
+		// BINDING - TAB ODRZAVANJE
+		btnObrisitePlan.disableProperty().bind(lstActivePlans.getSelectionModel().selectedItemProperty().isNull());
+		btnZakljucitePlan.disableProperty().bind(lstActivePlans.getSelectionModel().selectedItemProperty().isNull());
+		btnDetalji.disableProperty().bind(tblTasks.getSelectionModel().selectedItemProperty().isNull());
+		btnPretrazitePlanove.disableProperty()
+				.bind(dpDatumOdPretraga.valueProperty().isNull().and(dpDatumDoPretraga.valueProperty().isNull()));
+
+		// RADIO BUTTON
+		ToggleGroup group = new ToggleGroup();
+		rbAktivni.setToggleGroup(group);
+		rbZakljuceni.setToggleGroup(group);
+
+		btnAddPlants.disableProperty().bind(dpDate.valueProperty().isNull()
+				.or(txtProduced.textProperty().isEmpty().or(txtSuccess.textProperty().isEmpty())));
+		btnAddSaleItem.disableProperty()
+				.bind(txtHeight.textProperty().isEmpty().or(txtNumSold.textProperty().isEmpty()));
+		btnSaveSale.disableProperty().bind(Bindings.isEmpty(lstSaleItems.getItems()));
+	}
+
+	// TODO <toolbar>
+	@FXML
+	public void setSelectTool(ActionEvent event) {
+		canvasEditor.invalidate();
+		canvasEditor = new SelectTool(regionsMap, outlinesMap, this, undoCommands, redoCommands);
+	}
+
+	@FXML
+	public void setPolygonTool(ActionEvent event) {
+		canvasEditor.invalidate();
+		canvasEditor = new PolygonTool(regionsMap, outlinesMap, elements, undoCommands, redoCommands);
+	}
+
+	@FXML
+	public void undo(ActionEvent event) {
+		canvasEditor.undo();
+	}
+
+	public void redo(ActionEvent event) {
+		canvasEditor.redo();
+	}
+	// TODO </toolbar><events>
+
+	@FXML
+	public void click(MouseEvent event) {
+		canvasEditor.click(event);
+	}
+
+	@FXML
+	public void pressed(MouseEvent event) {
+		canvasEditor.startDrawing(event);
+	}
+
+	@FXML
+	public void released(MouseEvent event) {
+		canvasEditor.finishDrawing(event);
+	}
+	// TODO <events/>
+
+	@FXML
+	public void addPlants(ActionEvent event) {
+		try {
+			if (selectedRegion != null) {
+				Date date = DisplayUtil.convert(dpDate.getValue());
+				Basis basis = cbBases.getSelectionModel().getSelectedItem();
+				Integer produced = Integer.parseInt(txtProduced.getText());
+				Integer takeARoot = Integer.parseInt(txtSuccess.getText());
+				if (produced < 0) {
+					lblError.setText("Broj posijanih mora biti veci od 0");
+				} else if (produced < takeARoot) {
+					lblError.setText("Broj uspjelih ne moze biti veci od broja posijanih");
+				} else if (dpDate.getValue().compareTo(LocalDate.now()) > 0) {
+					lblError.setText("Datum ne moze biti poslije danasnjeg");
+				} else {
+					if (DAOFactory.getInstance().getReproductionCuttingDAO().insert(
+							new ReproductionCutting(basis, date, produced, takeARoot, basis.getBasisId(), false)) > 0) {
+						if (selectedRegion.getBasis() == null) {
+							selectedRegion.setBasis(basis);
+							selectedRegion.setBasisId(basis.getBasisId());
+						}
+						selectedRegion.setNumberOfPlants(selectedRegion.getNumberOfPlants() + takeARoot);
+						DAOFactory.getInstance().getRegionDAO().update(selectedRegion);
+						displayInfo(selectedRegion);
+					}
+					lblError.setText("");
+				}
+			} else {
+				lblError.setText("Morate oznaciti region");
+			}
 		} catch (ParseException e) {
 			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			lblError.setText(ResourceBundleManager.getString("numberFormat"));
 		}
 	}
 
 	@FXML
-	private TextField txtPlanName;
-
-	@FXML
-	private DatePicker dpPlanDateFrom;
-
-	@FXML
-	private DatePicker dpPlanDateTo;
-
-	@FXML
-	private DatePicker dpTaskDateFrom;
-
-	@FXML
-	private ComboBox<PlantMaintanceActivity> cbActivity;
-
-	@FXML
-	private Label lblChosedRegion;
-
-	@FXML
-	private ListView<Task> lstChosedTasks;
-
-	@FXML
-	private ComboBox<PlantMaintanceActivity> cbSearchCategory;
-
-	@FXML
-	private Button btnAddMaintanceActivity;
+	public void delete(ActionEvent event) {
+		if (selectedRegion != null) {
+			if (ButtonType.YES
+					.equals(DisplayUtil.showConfirmationDialog(ResourceBundleManager.getString("confirmQuestion")))) {
+				if (DAOFactory.getInstance().getRegionDAO().delete(selectedRegion) > 0) {
+					Polygon poly = null;
+					for (Polygon p : regionsMap.keySet()) {
+						if (selectedRegion.equals(regionsMap.get(p))) {
+							poly = p;
+							break;
+						}
+					}
+					regionsMap.remove(poly);
+					Polyline outline = outlinesMap.get(poly);
+					elements.getChildren().remove(outline);
+					elements.getChildren().remove(poly);
+					outlinesMap.remove(poly);
+					clear();
+				}
+			}
+		}
+	}
 
 	private Plan currentPlan;
 
-	@FXML
-	public void createSale(ActionEvent event) {
-		setDisabled(false, txtHeight, txtNumSold, btnAddSaleItem, btnRemoveSaleItem, lstSaleItems, cbPaidOff,
-				btnSaveSale);
-		setDisabled(true, btnSetSelectTool, btnSetPolygonTool);
-	}
-
-	@FXML
-	public void keyTyped(KeyEvent event) {
-
-	}
+	/*
+	 * @FXML public void createSale(ActionEvent event) { setDisabled(false,
+	 * txtHeight, txtNumSold, btnAddSaleItem, lstSaleItems, cbPaidOff, btnSaveSale);
+	 * setDisabled(true, btnSetSelectTool, btnSetPolygonTool); }
+	 */
 
 	@FXML
 	public void addSaleItem(ActionEvent event) {
-		if (selectedRegion != null) {
+		if (selectedRegion != null && selectedRegion.getBasis() != null) {
 			try {
+				System.out.println("AA");
 				Integer num = Integer.parseInt(txtNumSold.getText());
 				BigDecimal height = new BigDecimal(txtHeight.getText());
-				Plant plant = selectedRegion.getBasis().getPlant();
-				BigDecimal price = plant.getPrice(height).multiply(new BigDecimal(num));
-				BigDecimal heightMin = plant.getHeightMin(height);
-				SaleItem item = new SaleItem(num, plant, null, plant.getPlantId(), null, price, heightMin);
-				changedRegions.add(selectedRegion);
-				Command command = new AddSaleItemCommand(selectedRegion, item, lstSaleItems.getItems(), this);
-				command.execute();
-				canvasEditor.push(command);
-				canvasEditor.clearRedo();
+				if (num.compareTo(Integer.valueOf(0)) <= 0) {
+					lblErrorSale.setText("Broj prodatih mora biti veci od 0");
+				} else if (num.compareTo(selectedRegion.getNumberOfPlants()) > 0) {
+					lblErrorSale.setText("Nema dovoljno biljaka u regionu");
+				} else if (txtHeight.getText().startsWith("-")) {
+					lblErrorSale.setText("Visina ne moze biti manja od 0");
+				} else {
+					Plant plant = selectedRegion.getBasis().getPlant();
+					BigDecimal price = plant.getPrice(height).multiply(new BigDecimal(num));
+					BigDecimal heightMin = plant.getHeightMin(height);
+					SaleItem item = new SaleItem(num, plant, null, plant.getPlantId(), null, price, heightMin);
+					changedRegions.add(selectedRegion);
+					Command command = new AddSaleItemCommand(selectedRegion, item, lstSaleItems.getItems(), this);
+					command.execute();
+					canvasEditor.push(command);
+					canvasEditor.clearRedo();
+					lblErrorSale.setText("");
+				}
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
+				lblErrorSale.setText(ResourceBundleManager.getString("numberFormat"));
 			}
 		} else {
 		}
 	}
 
 	@FXML
-	public void removeSaleItem(ActionEvent event) {
-
-	}
-
-	@FXML
 	public void saveSale(ActionEvent event) {
-		setDisabled(true, txtHeight, txtNumSold, btnAddSaleItem, btnRemoveSaleItem, lstSaleItems, cbPaidOff,
-				btnSaveSale);
-		setDisabled(false, btnSetSelectTool, btnSetPolygonTool);
 		BigDecimal price = BigDecimal.ZERO;
 		for (SaleItem item : lstSaleItems.getItems()) {
 			price = price.add(item.getPrice());
@@ -300,6 +455,12 @@ public class DrawRegionsController extends BaseController {
 		} else {
 			setDisabled(true, btnSetSelectTool, btnSetPolygonTool, btnRedo, btnUndo);
 		}
+	}
+
+	@FXML
+	public void createSale() {
+		setDisabled(true, btnSetSelectTool, btnSetPolygonTool, btnDelete, btnClear);
+		setDisabled(false, btnUndo, btnRedo);
 	}
 
 	@FXML
@@ -371,7 +532,6 @@ public class DrawRegionsController extends BaseController {
 				stage.initModality(Modality.APPLICATION_MODAL);
 				stage.showAndWait();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -394,10 +554,10 @@ public class DrawRegionsController extends BaseController {
 			initRegions(DAOFactory.getInstance().getRegionDAO().selectAll());
 		}
 	}
-	
+
 	@FXML
 	void tblTasksClicked(ActionEvent event) {
-		
+
 	}
 
 	@FXML
@@ -436,8 +596,8 @@ public class DrawRegionsController extends BaseController {
 			alert.getButtonTypes().add(ButtonType.NO);
 			alert.getButtonTypes().add(ButtonType.CANCEL);
 			Optional<ButtonType> result = alert.showAndWait();
-			
-			if(result.get().equals(ButtonType.YES)) {
+
+			if (result.get().equals(ButtonType.YES)) {
 				currentPlan.setDone(task.getTask().getRegion(), task.getTask(), false);
 				task.setDone(false);
 				task.setDate_to(null);
@@ -445,12 +605,12 @@ public class DrawRegionsController extends BaseController {
 				tblTasks.refresh();
 				this.canvasEditor.invalidate();
 				this.canvasEditor = new EmptyTool(regionsMap, tblTasks, currentPlan);
-				List<EmployeeHasTask> list = DAOFactory.getInstance().getEmployeeHasTaskDAO().getByTaskId(task.getTask().getTaskId());
-				for(EmployeeHasTask em : list) {
+				List<EmployeeHasTask> list = DAOFactory.getInstance().getEmployeeHasTaskDAO()
+						.getByTaskId(task.getTask().getTaskId());
+				for (EmployeeHasTask em : list) {
 					DAOFactory.getInstance().getEmployeeHasTaskDAO().delete(em);
 				}
-			}
-			else if(result.get().equals(ButtonType.NO)) {
+			} else if (result.get().equals(ButtonType.NO)) {
 				currentPlan.setDone(task.getTask().getRegion(), task.getTask(), false);
 				task.setDone(false);
 				task.setDate_to(null);
@@ -478,116 +638,7 @@ public class DrawRegionsController extends BaseController {
 		}
 	}
 
-	@FXML
-	public void undo(ActionEvent event) {
-		canvasEditor.undo();
-	}
-
-	public void redo(ActionEvent event) {
-		canvasEditor.redo();
-	}
-
 	private CanvasEditor canvasEditor;
-
-	@FXML
-	public void setSelectTool(ActionEvent event) {
-		canvasEditor.invalidate();
-		canvasEditor = new SelectTool(regionsMap, outlinesMap, this, undoCommands, redoCommands);
-	}
-
-	@FXML
-	public void setPolygonTool(ActionEvent event) {
-		canvasEditor.invalidate();
-		canvasEditor = new PolygonTool(regionsMap, outlinesMap, elements, undoCommands, redoCommands);
-	}
-
-	// Event Listener on AnchorPane[#parentPane].onMouseClicked
-	@FXML
-	public void click(MouseEvent event) {
-		canvasEditor.click(event);
-	}
-
-	@FXML
-	public void save(Event event) {
-	}
-
-	// Event Listener on AnchorPane[#parentPane].onMousePressed
-	@FXML
-	public void press(MouseEvent event) {
-	}
-
-	@FXML
-	public void aPressed(MouseEvent event) {
-		canvasEditor.startDrawing(event);
-	}
-
-	// Event Listener on AnchorPane[#parentPane].onMouseReleased
-	@FXML
-	public void release(MouseEvent event) {
-	}
-
-	@FXML
-	public void aReleased(MouseEvent event) {
-		canvasEditor.finishDrawing(event);
-	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		try {
-			defaultImage = new Image(new FileInputStream("resources/images/add_image.png"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		ObservableList<Basis> basesItems = FXCollections.observableArrayList();
-		basesItems.addAll(DAOFactory.getInstance().getBasisDAO().selectAll());
-		cbBases.setItems(basesItems);
-		cbBases.getSelectionModel().select(0);
-		initRegions(DAOFactory.getInstance().getRegionDAO().selectAll());
-		cbBases.setDisable(true);
-		// TABOVI
-		initializeMaintenanceTab();
-
-		// TABELA
-		initializeTable();
-		ObservableList<SaleItem> saleItems = FXCollections.observableArrayList();
-		lstSaleItems.setItems(saleItems);
-		setDisabled(true, txtHeight, txtNumSold, btnAddSaleItem, lstSaleItems, cbPaidOff,
-				btnSaveSale);
-
-		// COMBOBOX
-		initializeComboBox();
-
-		// DODAVANJE TASKA
-
-		// DATE PICKER FORMAT
-		formatDatePicker();
-
-		// TABELA SELEKTOVANIH TASKOVA
-		listaTaskova = FXCollections.observableArrayList();
-
-		// BINDING - TAB PLANIRANJE
-		btnDodajAktivnost.disableProperty()
-				.bind(lblChosedRegion.textProperty().isEmpty()
-						.or(dpTaskDateFrom.valueProperty().isNull()
-								.or(dpPlanDateFrom.valueProperty().isNull().or(dpPlanDateTo.valueProperty().isNull()
-										.or(cbActivity.getSelectionModel().selectedItemProperty().isNull())))));
-		btnDodajPlan.disableProperty().bind(txtPlanName.textProperty().isEmpty()
-				.or(dpPlanDateFrom.valueProperty().isNull().or(dpPlanDateTo.valueProperty().isNull())));
-		btnUkloniAktivnost.disableProperty().bind(lstChosedTasks.getSelectionModel().selectedItemProperty().isNull());
-		
-		// BINDING - TAB ODRZAVANJE
-		btnObrisitePlan.disableProperty().bind(lstActivePlans.getSelectionModel().selectedItemProperty().isNull());
-		btnZakljucitePlan.disableProperty().bind(lstActivePlans.getSelectionModel().selectedItemProperty().isNull());
-		btnDetalji.disableProperty().bind(tblTasks.getSelectionModel().selectedItemProperty().isNull());
-		btnPretrazitePlanove.disableProperty().bind(dpDatumOdPretraga.valueProperty().isNull().and(dpDatumDoPretraga.valueProperty().isNull()));
-		
-		// RADIO BUTTON
-		ToggleGroup group = new ToggleGroup();
-		rbAktivni.setToggleGroup(group);
-		rbZakljuceni.setToggleGroup(group);
-		
-		
-	}
 
 	@FXML
 	private Button btnDodajAktivnost;
@@ -611,13 +662,13 @@ public class DrawRegionsController extends BaseController {
 	private DatePicker dpDatumOdPretraga;
 	@FXML
 	private DatePicker dpDatumDoPretraga;
-	
+
 	@FXML
 	public void pretragaPlanova() {
 		String statement = null;
-		if(rbAktivni.isSelected()) 
+		if (rbAktivni.isSelected())
 			statement = " active = true and";
-		else 
+		else
 			statement = " active = false and";
 		try {
 			List<Object> variables = new ArrayList<Object>();
@@ -636,15 +687,14 @@ public class DrawRegionsController extends BaseController {
 				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
 				variables.add(date);
 			}
-			
+
 			ObservableList<Plan> activePlans = FXCollections.observableArrayList();
 			ObservableList<Plan> donePlans = FXCollections.observableArrayList();
 
-			if(rbAktivni.isSelected()) {
+			if (rbAktivni.isSelected()) {
 				activePlans.addAll(DAOFactory.getInstance().getPlanDAO().select(statement, variables.toArray()));
 				lstActivePlans.setItems(activePlans);
-			}
-			else {
+			} else {
 				donePlans.addAll(DAOFactory.getInstance().getPlanDAO().select(statement, variables.toArray()));
 				lstDonePlans.setItems(donePlans);
 			}
@@ -652,12 +702,11 @@ public class DrawRegionsController extends BaseController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@FXML
 	public void refreshTabOdrzavanje() {
 		initializeMaintenanceTab();
 	}
-	
 
 	private void initializeMaintenanceTab() {
 		ObservableList<Plan> activePlans = FXCollections.observableArrayList();
@@ -816,7 +865,7 @@ public class DrawRegionsController extends BaseController {
 			DisplayUtil.showErrorDialog("Datum početka aktivnosti mora biti u toku plana!");
 			return;
 		}
-		if(dpTaskDateFrom.getValue().isBefore(LocalDate.now())) {
+		if (dpTaskDateFrom.getValue().isBefore(LocalDate.now())) {
 			DisplayUtil.showErrorDialog("Datum početka aktivnosti ne može biti prije današnjeg!");
 			return;
 		}
@@ -889,9 +938,13 @@ public class DrawRegionsController extends BaseController {
 
 	private void setValues(Image image, String region, String name, String num) {
 		imgPhoto.setImage(image);
+		imgRegionSale.setImage(image);
 		lblRegion.setText(region);
+		lblRegionSale.setText(region);
 		lblName.setText(name);
+		lblPlantSale.setText(name);
 		lblPlantsNum.setText(num);
+		lblNumSale.setText(num);
 	}
 
 	public void initRegions(List<Region> regions) {

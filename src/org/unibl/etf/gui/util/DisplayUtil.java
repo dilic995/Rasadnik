@@ -7,8 +7,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +31,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 
 public class DisplayUtil {
@@ -181,7 +185,13 @@ public class DisplayUtil {
 		}
 		return defaultImage;
 	}
-
+	
+	public static Date convert(LocalDate date) throws ParseException {
+		String todayString = date.getYear() + "-" + date.getMonthValue() + "-" + date.getDayOfMonth();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		return format.parse(todayString);
+	}
+	
 	private static Image defaultImage = null;
 	
 }

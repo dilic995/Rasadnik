@@ -34,7 +34,7 @@ public class Region {
 	}
 
 	public void setBasisId(Integer basisId) {
-		this.basisId = basisId;
+		this.basisId = (basisId == 0 ? null : basisId);
 		basis = null;
 	}
 
