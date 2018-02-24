@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`region` (
   `x4` DOUBLE NOT NULL,
   `y4` DOUBLE NOT NULL,
   `deleted` TINYINT NOT NULL DEFAULT 0,
-  `basis_id` INT NOT NULL,
+  `basis_id` INT NULL,
   PRIMARY KEY (`region_id`),
   INDEX `fk_region_basis1_idx` (`basis_id` ASC),
   CONSTRAINT `fk_region_basis1`
