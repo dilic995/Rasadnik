@@ -15,11 +15,19 @@ import org.unibl.etf.gui.view.base.BaseController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 
 public class EntryViewController extends BaseController{
 
+	@FXML
+	private Button btnLogout;
+	@FXML
+	public void logout(ActionEvent event) {
+		
+	}
+	
 	// Event Listener on Button.onAction
 	@FXML
 	public void showCatalogue(ActionEvent event) {
