@@ -430,6 +430,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`account` (
   `username` VARCHAR(100) NOT NULL,
   `hash` VARCHAR(100) NULL,
   `first_login` TINYINT NOT NULL DEFAULT 1,
+  `is_admin` TINYINT NOT NULL DEFAULT 0,
   `deleted` TINYINT NOT NULL DEFAULT 0,
   PRIMARY KEY (`account_id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC))

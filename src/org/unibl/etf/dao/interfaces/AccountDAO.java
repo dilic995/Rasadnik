@@ -30,5 +30,7 @@ public interface AccountDAO {
 
 		public List<Account> getByFirstLogin(Boolean firstLogin);
 		
+		public List<Account> getByIsAdmin(Boolean isAdmin);
+		
 		public List<Account> getByDeleted(Boolean deleted);
 }
