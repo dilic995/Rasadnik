@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`region` (
   `x4` DOUBLE NOT NULL,
   `y4` DOUBLE NOT NULL,
   `deleted` TINYINT NOT NULL DEFAULT 0,
-  `basis_id` INT NOT NULL,
+  `basis_id` INT NULL,
   PRIMARY KEY (`region_id`),
   INDEX `fk_region_basis1_idx` (`basis_id` ASC),
   CONSTRAINT `fk_region_basis1`
@@ -419,6 +419,21 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool_maintance_activity` (
     REFERENCES `rasadnik_db`.`tool_item` (`tool_item_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `rasadnik_db`.`account`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `rasadnik_db`.`account` (
+  `account_id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(100) NOT NULL,
+  `hash` VARCHAR(100) NULL,
+  `first_login` TINYINT NOT NULL DEFAULT 1,
+  `is_admin` TINYINT NOT NULL DEFAULT 0,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`account_id`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC))
 ENGINE = InnoDB;
 
 

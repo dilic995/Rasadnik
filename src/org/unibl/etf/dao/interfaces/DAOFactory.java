@@ -16,6 +16,8 @@ public abstract class DAOFactory {
 
 		return singleton;
 	}
+	
+	public abstract AccountDAO getAccountDAO();
 
 	public abstract BasisDAO getBasisDAO();
 

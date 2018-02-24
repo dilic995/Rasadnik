@@ -2,6 +2,7 @@ package org.unibl.etf.dao.implementation;
 
 import java.sql.Connection;
 
+import org.unibl.etf.dao.interfaces.AccountDAO;
 import org.unibl.etf.dao.interfaces.BasisDAO;
 import org.unibl.etf.dao.interfaces.ConditionDAO;
 import org.unibl.etf.dao.interfaces.CustomerDAO;
@@ -27,6 +28,11 @@ import org.unibl.etf.dao.interfaces.ToolMaintanceActivityDAO;
 import org.unibl.etf.dao.interfaces.TransactionDAO;
 
 public class JDBCDAOFactory extends DAOFactory {
+	
+	public AccountDAO getAccountDAO() {
+		return new AccountDAOImpl();
+	}
+	
 	public BasisDAO getBasisDAO() {
 		return new BasisDAOImpl();
 	}
