@@ -92,6 +92,12 @@ public class Account {
 		result = prime * result + ((accountId == null) ? 0 : accountId.hashCode());
 		return result;
 	}
+	
+	@Override
+	public String toString() {
+		return "Account [accountId=" + accountId + ", username=" + username + ", hash=" + hash + ", firstLogin="
+				+ firstLogin + ", isAdmin=" + isAdmin + ", deleted=" + deleted + "]";
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -109,4 +115,5 @@ public class Account {
 			return false;
 		return true;
 	}
+	
 }

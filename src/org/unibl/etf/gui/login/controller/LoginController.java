@@ -2,28 +2,23 @@ package org.unibl.etf.gui.login.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import org.unibl.etf.dao.implementation.JDBCDAOFactory;
 import org.unibl.etf.dto.Account;
+import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
 import org.unibl.etf.util.BCryptHash;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class LoginController extends BaseController {
-
-	private enum Login{
-		OK,FIRSTLOGIN,NOK;
-	}
 	@FXML
 	private Button btnPrijaviSe;
 	@FXML
@@ -32,36 +27,61 @@ public class LoginController extends BaseController {
 	private PasswordField txtLozinka;
 	@FXML
 	private Label lblStatus;
-	private StringProperty status=new SimpleStringProperty();
+	private StringProperty status = new SimpleStringProperty();
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		btnPrijaviSe.disableProperty().bind(txtKorisnickoIme.textProperty().isEmpty());
 		lblStatus.textProperty().bind(status);
 	}
+
 	@FXML
-	private void login() {
-		Login result=check(txtKorisnickoIme.getText(),txtLozinka.getText());
-		if(result==Login.NOK) {
-			status.set("Pogresno korisnicko ime ili lozinka");
-		}else if(result==Login.FIRSTLOGIN) {
-			//prikazati formu za prvu prijavu
-		}else {
-			//prikazati pocetnu formu
-			new Alert(AlertType.CONFIRMATION,"Prijava uspjesna",ButtonType.OK);
-		}
+	private void login(ActionEvent e) {
+		String password = txtLozinka.getText().isEmpty() ? null : txtLozinka.getText();
+		check(txtKorisnickoIme.getText(), password, status);
 	}
+
 	private void clear() {
 		txtKorisnickoIme.clear();
 		txtLozinka.clear();
 		status.set(null);
 	}
-	private Login check(String username,String password) {
-		Account account=JDBCDAOFactory.getInstance().getAccountDAO().getByUsername(username);
-		if(password==null && account.getFirstLogin()) {
-			return Login.FIRSTLOGIN;
+
+	private void check(String username, String password, StringProperty message) {
+		Account account = JDBCDAOFactory.getInstance().getAccountDAO().getByUsername(username);
+		if (account != null) {
+			BCryptHash crypt = BCryptHash.getInstance();
+			if (password == null && account.getFirstLogin() && account.getHash()==null) {
+				firstLogin(account);
+				clear();
+				return;
+			} else if (password != null)
+				if (account.getUsername().equals(username) && crypt.check(password, account.getHash())) {
+					clear();
+					if (account.getIsAdmin()) {
+						// predji na panel za administratora
+					}
+					mainForm();
+					return;
+				}
 		}
-		
-		return Login.NOK;
+		message.set("Pogresno korisnicko ime ili lozinka");
 	}
+
+	public void firstLogin(Account account) {
+		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
+				"org/unibl/etf/gui/login/view/FirstLoginView.fxml");
+		AnchorPane root = DisplayUtil.getAnchorPane(loader);
+		FirstLoginController controller = DisplayUtil.<FirstLoginController>getController(loader);
+		controller.setAccount(account);
+		DisplayUtil.switchStage(root, 650, 600, true, "Promjenite lozinku", true);
+	}
+	public void mainForm() {
+		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
+				"org/unibl/etf/application/EntryView.fxml");
+		AnchorPane root = DisplayUtil.getAnchorPane(loader);
+		DisplayUtil.switchStage(root, 650, 600, true, "Glavna forma", true);
+	}
+
 
 }
