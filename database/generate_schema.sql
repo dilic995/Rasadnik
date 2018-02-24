@@ -422,6 +422,20 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool_maintance_activity` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `rasadnik_db`.`account`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `rasadnik_db`.`account` (
+  `account_id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(100) NOT NULL,
+  `hash` VARCHAR(100) NULL,
+  `first_login` TINYINT NOT NULL DEFAULT 1,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`account_id`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC))
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
