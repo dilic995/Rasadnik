@@ -266,10 +266,10 @@ public class AccountDAOImpl implements AccountDAO{
 	}
 
 	@Override
-	public List<Account> getByUsername(String username) {
+	public Account getByUsername(String username) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		List<Account> ret = new ArrayList<>();
+		Account ret = null;
 
 		try {
 			if (null == username) {
@@ -284,7 +284,7 @@ public class AccountDAOImpl implements AccountDAO{
 			rs = ps.executeQuery();
 
 			while (rs.next())
-				ret.add(fromResultSet(rs));
+				ret=fromResultSet(rs);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {

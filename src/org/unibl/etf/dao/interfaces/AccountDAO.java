@@ -24,7 +24,7 @@ public interface AccountDAO {
 		public int delete(Account obj);
 
 		// Finders
-		public List<Account> getByUsername(String username);
+		public Account getByUsername(String username);
 
 		public List<Account> getByHash(String hash);
 
