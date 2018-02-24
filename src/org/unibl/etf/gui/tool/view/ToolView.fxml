@@ -61,7 +61,7 @@
       <Button fx:id="btnAddActivity" layoutX="586.0" layoutY="686.0" mnemonicParsing="false" onAction="#addActivity" prefHeight="25.0" prefWidth="136.0" text="Dodajte aktivnost" AnchorPane.rightAnchor="30.0" />
       <RadioButton fx:id="radioMachine" layoutX="373.0" layoutY="72.0" mnemonicParsing="false" text="Masina" />
       <RadioButton fx:id="radioTool" layoutX="446.0" layoutY="72.0" mnemonicParsing="false" text="Alat" />
-      <Button fx:id="btnDeleteActivity" layoutX="668.0" layoutY="401.0" mnemonicParsing="false" text="Obrisite aktivnost" AnchorPane.rightAnchor="20.0" />
+      <Button fx:id="btnDeleteActivity" layoutX="668.0" layoutY="401.0" mnemonicParsing="false" onAction="#deleteActivity" text="Obrisite aktivnost" AnchorPane.rightAnchor="20.0" />
       <Label fx:id="lblError" layoutX="405.0" layoutY="690.0" prefHeight="17.0" prefWidth="175.0" text="Label" textFill="RED" AnchorPane.rightAnchor="172.0" />
    </children>
 </AnchorPane>
