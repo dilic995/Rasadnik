@@ -13,8 +13,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 		 // BaseController.changeScene("/org/unibl/etf/application/EntryView.fxml", primaryStage);
-		//	BaseController.changeScene("/org/unibl/etf/gui/tool/view/ToolView.fxml", primaryStage);
-		  BaseController.changeScene("/org/unibl/etf/gui/login/view/FirstLoginView.fxml", primaryStage);
+			BaseController.changeScene("/org/unibl/etf/gui/sales/view/SalesView.fxml", primaryStage);
+		//  BaseController.changeScene("/org/unibl/etf/gui/login/view/FirstLoginView.fxml", primaryStage);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println(e.getCause());
