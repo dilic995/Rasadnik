@@ -5,13 +5,13 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.login.controller.FirstLoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.login.controller.FirstLoginController">
    <children>
       <PasswordField fx:id="txtNovaLozinka" layoutX="236.0" layoutY="91.0" prefHeight="31.0" prefWidth="256.0" />
       <PasswordField fx:id="txtProvjeraLozinke" layoutX="236.0" layoutY="146.0" prefHeight="31.0" prefWidth="256.0" />
       <Label layoutX="33.0" layoutY="91.0" prefHeight="31.0" prefWidth="196.0" text="Nova loznika:" />
       <Label layoutX="33.0" layoutY="146.0" prefHeight="31.0" prefWidth="196.0" text="Nova lozinka ponovo:" />
-      <Button fx:id="btnSacuvajLozinku" defaultButton="true" layoutX="323.0" layoutY="222.0" mnemonicParsing="false" onAction="#save" prefHeight="31.0" prefWidth="169.0" text="Sacuvajte lozinku" />
+      <Button fx:id="btnSacuvajLozinku" defaultButton="true" layoutX="323.0" layoutY="222.0" mnemonicParsing="false" onAction="#save" prefHeight="31.0" prefWidth="169.0" text="Sačuvajte lozinku" />
       <Label layoutX="33.0" layoutY="37.0" prefHeight="31.0" prefWidth="196.0" text="Unesite novu lozinku" />
       <Label fx:id="lblStatus" layoutX="33.0" layoutY="317.0" prefHeight="31.0" prefWidth="464.0" />
    </children>
