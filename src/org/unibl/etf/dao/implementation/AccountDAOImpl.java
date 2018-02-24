@@ -11,6 +11,8 @@ import java.util.List;
 import org.unibl.etf.dao.interfaces.AccountDAO;
 import org.unibl.etf.dto.Account;
 import org.unibl.etf.gui.util.DisplayUtil;
+import org.unibl.etf.util.ErrorLogger;
+import org.unibl.etf.util.ResourceBundleManager;
 
 public class AccountDAOImpl implements AccountDAO{
 	//
@@ -69,6 +71,7 @@ public class AccountDAOImpl implements AccountDAO{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -90,6 +93,7 @@ public class AccountDAOImpl implements AccountDAO{
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -121,6 +125,7 @@ public class AccountDAOImpl implements AccountDAO{
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -142,6 +147,7 @@ public class AccountDAOImpl implements AccountDAO{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -173,6 +179,7 @@ public class AccountDAOImpl implements AccountDAO{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -199,6 +206,7 @@ public class AccountDAOImpl implements AccountDAO{
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -231,7 +239,8 @@ public class AccountDAOImpl implements AccountDAO{
 
 			return rowCount;
 		} catch (SQLException e) {
-			DisplayUtil.showErrorDialog("Korisnicko ime vec postoji.");
+			DisplayUtil.showErrorDialog(ResourceBundleManager.getString("usernameExists"));
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -259,6 +268,7 @@ public class AccountDAOImpl implements AccountDAO{
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -317,6 +327,7 @@ public class AccountDAOImpl implements AccountDAO{
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -346,6 +357,7 @@ public class AccountDAOImpl implements AccountDAO{
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -375,6 +387,7 @@ public class AccountDAOImpl implements AccountDAO{
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -404,6 +417,7 @@ public class AccountDAOImpl implements AccountDAO{
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

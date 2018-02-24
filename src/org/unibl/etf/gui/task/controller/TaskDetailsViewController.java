@@ -22,6 +22,7 @@ import org.unibl.etf.dto.EmployeeTableItem;
 import org.unibl.etf.dto.Task;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
+import org.unibl.etf.util.ErrorLogger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -182,6 +183,7 @@ public class TaskDetailsViewController extends BaseController {
 					item.update();
 				} catch (DAOException e) {
 					e.printStackTrace();
+					new ErrorLogger().log(e);
 				}
 				tvEngagement.refresh();
 			}
@@ -197,6 +199,7 @@ public class TaskDetailsViewController extends BaseController {
 					item.update();
 				} catch (DAOException e) {
 					e.printStackTrace();
+					new ErrorLogger().log(e);
 				}
 				tvEngagement.refresh();
 			}
@@ -287,6 +290,7 @@ public class TaskDetailsViewController extends BaseController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 	}
 
@@ -321,6 +325,7 @@ public class TaskDetailsViewController extends BaseController {
 					return super.fromString(value);
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
+					new ErrorLogger().log(e);
 				}
 				return null;
 			}
@@ -345,6 +350,7 @@ public class TaskDetailsViewController extends BaseController {
 				t.getRowValue().update();
 			} catch (DAOException e) {
 				e.printStackTrace();
+				new ErrorLogger().log(e);
 			}
 		});
 
@@ -356,6 +362,7 @@ public class TaskDetailsViewController extends BaseController {
 				t.getRowValue().update();
 			} catch (DAOException e) {
 				e.printStackTrace();
+				new ErrorLogger().log(e);
 			}
 		});
 

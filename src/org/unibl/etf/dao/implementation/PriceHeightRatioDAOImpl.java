@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.unibl.etf.dao.interfaces.PriceHeightRatioDAO;
 import org.unibl.etf.dto.PriceHeightRatio;
+import org.unibl.etf.util.ErrorLogger;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
@@ -72,6 +73,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -92,6 +94,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -122,6 +125,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -142,6 +146,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -172,6 +177,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -197,6 +203,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -257,6 +264,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -282,6 +290,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -304,6 +313,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -332,6 +342,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -360,6 +371,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -388,6 +400,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -410,6 +423,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -433,6 +447,7 @@ public class PriceHeightRatioDAOImpl implements PriceHeightRatioDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

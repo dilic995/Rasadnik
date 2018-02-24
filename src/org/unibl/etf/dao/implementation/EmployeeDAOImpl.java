@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.unibl.etf.dao.interfaces.EmployeeDAO;
 import org.unibl.etf.dto.Employee;
+import org.unibl.etf.util.ErrorLogger;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 	//
@@ -63,6 +64,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -83,6 +85,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -113,6 +116,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -133,6 +137,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -163,6 +168,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -188,6 +194,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -219,6 +226,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -245,6 +253,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -276,6 +285,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -304,6 +314,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -326,6 +337,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

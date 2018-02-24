@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.unibl.etf.util.ConnectionPool;
+import org.unibl.etf.util.ErrorLogger;
 import org.unibl.etf.util.ResourceBundleManager;
 
 import javafx.fxml.FXMLLoader;
@@ -88,8 +89,10 @@ public class DisplayUtil {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 		return result;
 	}
@@ -103,8 +106,10 @@ public class DisplayUtil {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} catch (IOException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 		return result;
 	}
@@ -119,6 +124,7 @@ public class DisplayUtil {
 			result = (AnchorPane) loader.load();
 		} catch (IOException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 		return result;
 	}

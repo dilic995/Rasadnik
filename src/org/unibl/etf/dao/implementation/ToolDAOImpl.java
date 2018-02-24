@@ -14,6 +14,7 @@ import javax.swing.plaf.synth.SynthSpinnerUI;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.ToolDAO;
 import org.unibl.etf.dto.Tool;
+import org.unibl.etf.util.ErrorLogger;
 
 import javafx.collections.FXCollections;
 
@@ -73,6 +74,7 @@ public class ToolDAOImpl implements ToolDAO
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -93,6 +95,7 @@ public class ToolDAOImpl implements ToolDAO
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -123,6 +126,7 @@ public class ToolDAOImpl implements ToolDAO
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -143,6 +147,7 @@ public class ToolDAOImpl implements ToolDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -173,6 +178,7 @@ public class ToolDAOImpl implements ToolDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -198,6 +204,7 @@ public class ToolDAOImpl implements ToolDAO
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -226,6 +233,7 @@ public class ToolDAOImpl implements ToolDAO
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -251,6 +259,7 @@ public class ToolDAOImpl implements ToolDAO
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -281,6 +290,7 @@ public class ToolDAOImpl implements ToolDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -303,6 +313,7 @@ public class ToolDAOImpl implements ToolDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -324,6 +335,7 @@ public class ToolDAOImpl implements ToolDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -347,6 +359,7 @@ public class ToolDAOImpl implements ToolDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

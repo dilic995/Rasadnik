@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import org.unibl.etf.dao.interfaces.PricelistDAO;
 import org.unibl.etf.dto.Pricelist;
+import org.unibl.etf.util.ErrorLogger;
 
 public class PricelistDAOImpl implements PricelistDAO {
 	//
@@ -64,6 +65,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -84,6 +86,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -114,6 +117,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -134,6 +138,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -164,6 +169,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -189,6 +195,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -218,6 +225,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -239,6 +247,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -269,6 +278,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -297,6 +307,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -319,6 +330,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -342,6 +354,7 @@ public class PricelistDAOImpl implements PricelistDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.unibl.etf.util.ConnectionPool;
+import org.unibl.etf.util.ErrorLogger;
 
 public class DBUtil {
 	
@@ -39,6 +40,7 @@ public class DBUtil {
 			ConnectionPool.getInstance().checkIn(c);
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 	}
 
@@ -47,6 +49,7 @@ public class DBUtil {
 			return ConnectionPool.getInstance().checkOut();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 
 		return null;

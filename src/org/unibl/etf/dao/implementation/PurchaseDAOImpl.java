@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import org.unibl.etf.dao.interfaces.PurchaseDAO;
 import org.unibl.etf.dto.Purchase;
+import org.unibl.etf.util.ErrorLogger;
 
 public class PurchaseDAOImpl implements PurchaseDAO {
 	//
@@ -68,6 +69,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -88,6 +90,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -118,6 +121,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -138,6 +142,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -168,6 +173,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -194,6 +200,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -222,6 +229,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -247,6 +255,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -277,6 +286,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -305,6 +315,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -333,6 +344,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -355,6 +367,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -377,6 +390,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 
@@ -401,6 +415,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.unibl.etf.dao.interfaces.ConditionDAO;
 import org.unibl.etf.dto.Condition;
+import org.unibl.etf.util.ErrorLogger;
 
 import javafx.collections.FXCollections;
 
@@ -63,6 +64,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -83,6 +85,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -113,6 +116,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -134,6 +138,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -164,6 +169,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -189,6 +195,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -220,6 +227,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -243,6 +251,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -274,6 +283,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.unibl.etf.dao.interfaces.PricelistHasPlantDAO;
 import org.unibl.etf.dto.PricelistHasPlant;
+import org.unibl.etf.util.ErrorLogger;
 
 public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 	//
@@ -64,6 +65,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -84,6 +86,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -114,6 +117,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -134,6 +138,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -164,6 +169,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -189,6 +195,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -218,6 +225,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -243,6 +251,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -267,6 +276,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -289,6 +299,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -312,6 +323,7 @@ public class PricelistHasPlantDAOImpl implements PricelistHasPlantDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

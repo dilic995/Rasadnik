@@ -45,6 +45,7 @@ public class ConnectionPool {
 			connectCount = preconnectCount;
 		} catch (Exception e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 	}
 
@@ -75,6 +76,7 @@ public class ConnectionPool {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 	}
 
@@ -95,6 +97,7 @@ public class ConnectionPool {
 					usedConnections.add(conn);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
+					new ErrorLogger().log(e);
 				}
 			}
 		}
@@ -114,6 +117,7 @@ public class ConnectionPool {
 					c.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
+					new ErrorLogger().log(e);
 				}
 			}
 			notify();
@@ -135,6 +139,7 @@ public class ConnectionPool {
 				s.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				new ErrorLogger().log(e);
 			}
 	}
 
@@ -144,6 +149,7 @@ public class ConnectionPool {
 				rs.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				new ErrorLogger().log(e);
 			}
 	}
 

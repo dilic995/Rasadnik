@@ -3,6 +3,7 @@ package org.unibl.etf.application;
 import java.io.IOException;
 
 import org.unibl.etf.gui.view.base.BaseController;
+import org.unibl.etf.util.ErrorLogger;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -18,6 +19,7 @@ public class Main extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println(e.getCause());
+			new ErrorLogger().log(e);
 		}
 		primaryStage.setResizable(true);
 		primaryStage.show();
