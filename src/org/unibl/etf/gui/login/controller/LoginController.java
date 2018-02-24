@@ -59,7 +59,8 @@ public class LoginController extends BaseController {
 				if (account.getUsername().equals(username) && crypt.check(password, account.getHash())) {
 					clear();
 					if (account.getIsAdmin()) {
-						// predji na panel za administratora
+						adminForm();
+						return;
 					}
 					mainForm();
 					return;
@@ -74,14 +75,28 @@ public class LoginController extends BaseController {
 		AnchorPane root = DisplayUtil.getAnchorPane(loader);
 		FirstLoginController controller = DisplayUtil.<FirstLoginController>getController(loader);
 		controller.setAccount(account);
+		primaryStage.hide();
 		DisplayUtil.switchStage(root, 650, 600, true, "Promjenite lozinku", true);
+		primaryStage.show();
 	}
 	public void mainForm() {
 		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
 				"org/unibl/etf/application/EntryView.fxml");
 		AnchorPane root = DisplayUtil.getAnchorPane(loader);
+		primaryStage.hide();
 		DisplayUtil.switchStage(root, 650, 600, true, "Glavna forma", true);
+		primaryStage.show();
 	}
+	public void adminForm() {
+		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
+				"org/unibl/etf/gui/login/view/AdminView.fxml");
+		AnchorPane root = DisplayUtil.getAnchorPane(loader);
+		primaryStage.hide();
+		DisplayUtil.switchStage(root, 650, 600, true, "Glavna forma", true);
+		primaryStage.show();
+	}
+	
+
 
 
 }

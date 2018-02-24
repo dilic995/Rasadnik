@@ -32,6 +32,8 @@ public class AdminController extends BaseController{
 	private TextField txtUsername;
 	@FXML
 	private Button btnAddNewAccount;
+	@FXML
+	private Button btnRemoveAccount;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -43,6 +45,7 @@ public class AdminController extends BaseController{
 	public void bind() {
 		btnResetPassword.disableProperty().bind(tblAccount.getSelectionModel().selectedItemProperty().isNull());
 		btnAddNewAccount.disableProperty().bind(txtUsername.textProperty().isEmpty());
+		btnRemoveAccount.disableProperty().bind(tblAccount.getSelectionModel().selectedItemProperty().isNull());
 	}
 	
 	public void addNewAccount() {
@@ -59,8 +62,17 @@ public class AdminController extends BaseController{
 	public void resetPassword() {
 		Account account = tblAccount.getSelectionModel().getSelectedItems().get(0);
 		account.setHash(null);
+		account.setFirstLogin(true);
 		DAOFactory.getInstance().getAccountDAO().update(account);
 		DisplayUtil.showMessageDialog("Uspjesno resetovana lozinka.");
+	}
+	
+	public void deleteAccount() {
+		Account account = tblAccount.getSelectionModel().getSelectedItems().get(0);
+		account.setDeleted(true);
+		DAOFactory.getInstance().getAccountDAO().update(account);
+		tblAccount.getItems().remove(account);
+		DisplayUtil.showMessageDialog("Uspjesno obrisan korisnik.");
 	}
 	
 	public void load() {
