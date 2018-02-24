@@ -7,6 +7,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema rasadnik_db
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `rasadnik_db` ;
 
 -- -----------------------------------------------------
 -- Schema rasadnik_db
@@ -304,21 +305,22 @@ ENGINE = InnoDB;
 -- Table `rasadnik_db`.`sale_item`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`sale_item` (
-  `pricelist_id` INT NOT NULL,
   `plant_id` INT NOT NULL,
   `sale_id` INT NOT NULL,
+  `height_min` DECIMAL(10,2) NOT NULL,
   `count` INT NOT NULL DEFAULT 1,
-  PRIMARY KEY (`pricelist_id`, `plant_id`, `sale_id`),
+  `price` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`plant_id`, `sale_id`, `height_min`),
   INDEX `fk_pricelist_has_plant_has_sale_sale1_idx` (`sale_id` ASC),
-  INDEX `fk_pricelist_has_plant_has_sale_pricelist_has_plant1_idx` (`pricelist_id` ASC, `plant_id` ASC),
-  CONSTRAINT `fk_pricelist_has_plant_has_sale_pricelist_has_plant1`
-    FOREIGN KEY (`pricelist_id` , `plant_id`)
-    REFERENCES `rasadnik_db`.`pricelist_has_plant` (`pricelist_id` , `plant_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  INDEX `fk_sale_item_plant1_idx` (`plant_id` ASC),
   CONSTRAINT `fk_pricelist_has_plant_has_sale_sale1`
     FOREIGN KEY (`sale_id`)
     REFERENCES `rasadnik_db`.`sale` (`sale_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sale_item_plant1`
+    FOREIGN KEY (`plant_id`)
+    REFERENCES `rasadnik_db`.`plant` (`plant_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
