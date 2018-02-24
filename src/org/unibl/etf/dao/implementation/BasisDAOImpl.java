@@ -373,7 +373,7 @@ public class BasisDAOImpl implements BasisDAO {
 		Integer result = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String querry = "select sum(" + type + ") as broj from " + tableName + " where basis_id=?";
+		String querry = "select sum(" + type + ") as broj from " + tableName + " where basis_id=? and deleted=false";
 		try {
 			ps = getConn().prepareStatement(querry);
 			DBUtil.bind(ps, 1, basis_id);
