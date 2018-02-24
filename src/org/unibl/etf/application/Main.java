@@ -14,7 +14,7 @@ public class Main extends Application {
 		try {
 		 // BaseController.changeScene("/org/unibl/etf/application/EntryView.fxml", primaryStage);
 		//	BaseController.changeScene("/org/unibl/etf/gui/tool/view/ToolView.fxml", primaryStage);
-		  BaseController.changeScene("/org/unibl/etf/gui/login/view/FirstLoginView.fxml", primaryStage);
+		  BaseController.changeScene("/org/unibl/etf/gui/login/view/AdminView.fxml", primaryStage);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println(e.getCause());
