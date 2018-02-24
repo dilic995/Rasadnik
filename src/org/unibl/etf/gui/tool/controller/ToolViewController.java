@@ -50,7 +50,6 @@ import javafx.scene.control.TableColumn;
 
 public class ToolViewController extends BaseController{
 	
-	private static final String messages = "org/unibl/etf/util/messages";
 	@FXML
 	private Label lblError;
 	@FXML
@@ -195,7 +194,7 @@ public class ToolViewController extends BaseController{
 			lblCount.setText(tool.getCount().toString());
 			listToolItems.add(toolItem);
 		}
-		DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertOk", messages));	
+		DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertOk"));	
 		txtTool.setText("");
 	}
 	// Event Listener on Button[#btnAddActivity].onAction
@@ -215,7 +214,7 @@ public class ToolViewController extends BaseController{
 			amount = Double.parseDouble(txtAmount.getText());
 		}catch(NumberFormatException ex){
 			
-			lblError.setText(ResourceBundleManager.getString("numberFormat", messages));
+			lblError.setText(ResourceBundleManager.getString("numberFormat"));
 			return;
 		}
 		boolean service = checkBoxService.isSelected() ? true : false;
@@ -224,13 +223,13 @@ public class ToolViewController extends BaseController{
 		
 		int rowCount = DAOFactory.getInstance().getToolMaintanceActivityDAO().insert(activity);
 		if(rowCount==-2) {
-			DisplayUtil.showErrorDialog(ResourceBundleManager.getString("duplicateActivity", messages));
+			DisplayUtil.showErrorDialog(ResourceBundleManager.getString("duplicateActivity"));
 		}else {
 			listActivities.add(activity);
 			tableActivities.refresh();
 			tableToolItems.refresh();
 			
-			DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertOk",messages));
+			DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertOk"));
 		}	
 	}
 	

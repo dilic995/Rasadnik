@@ -51,8 +51,7 @@ public class AddPlantController extends BaseController {
 
 	public static final int INSERT = 1;
 	public static final int UPDATE = 2;
-	private static final String messages = "org/unibl/etf/util/messages";
-
+	
 	@FXML
 	private ImageView imgPhoto;
 	@FXML
@@ -134,13 +133,13 @@ public class AddPlantController extends BaseController {
 			BigDecimal price = new BigDecimal(txtPrice.getText());
 			if (from.compareTo(BigDecimal.ZERO) < 0) {
 				//errorLabel.setText("Pocetna visina ne moze biti manja od 0");
-				errorLabel.setText(ResourceBundleManager.getString("startHeight", messages));
+				errorLabel.setText(ResourceBundleManager.getString("startHeight"));
 			} else if (to != null && to.compareTo(from) <= 0) {
 				//errorLabel.setText("Krajnja visina ne moze biti manja od pocetne");
-				errorLabel.setText(ResourceBundleManager.getString("endHeight", messages));
+				errorLabel.setText(ResourceBundleManager.getString("endHeight"));
 			} else if (price.compareTo(BigDecimal.ZERO) <= 0) {
 				//errorLabel.setText("Cijena ne moze biti manja ili jednaka od 0");
-				errorLabel.setText(ResourceBundleManager.getString("price", messages));
+				errorLabel.setText(ResourceBundleManager.getString("price"));
 			} else {
 				LocalDate today = LocalDate.now();
 				String todayString = today.getYear() + "-" + today.getMonthValue() + "-" + today.getDayOfMonth();
@@ -149,10 +148,10 @@ public class AddPlantController extends BaseController {
 				PriceHeightRatio ratio = new PriceHeightRatio(from, to, price, true, date, 0, null, false);
 				if (lstRatios.getItems().contains(ratio)) {
 					//errorLabel.setText("Unos vec postoji");
-					errorLabel.setText(ResourceBundleManager.getString("inputExists", messages));
+					errorLabel.setText(ResourceBundleManager.getString("inputExists"));
 				} else if (ratio.overlaps(lstRatios.getItems())) {
 					//errorLabel.setText("Unos se preklapa sa postojecim");
-					errorLabel.setText(ResourceBundleManager.getString("inputOverrides", messages));
+					errorLabel.setText(ResourceBundleManager.getString("inputOverrides"));
 				} else {
 					lstRatios.getItems().add(ratio);
 					Collections.sort(lstRatios.getItems(), new PriceHeightRatioComparatorFrom());
@@ -162,7 +161,7 @@ public class AddPlantController extends BaseController {
 			}
 		} catch (NumberFormatException e) {
 			//errorLabel.setText("Pogresan format broja!");
-			errorLabel.setText(ResourceBundleManager.getString("numberFormat", messages));
+			errorLabel.setText(ResourceBundleManager.getString("numberFormat"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -207,7 +206,7 @@ public class AddPlantController extends BaseController {
 		if (type == INSERT) {
 			LocalDate today = LocalDate.now();
 			if (cbOwned.isSelected() && dpDateFrom.getValue().compareTo(today) > 0) {
-				message = ResourceBundleManager.getString("date", messages);
+				message = ResourceBundleManager.getString("date");
 				ok = false;
 			} else {
 				if (DAOFactory.getInstance().getPlantDAO().insert(plant) > 0) {
@@ -228,9 +227,9 @@ public class AddPlantController extends BaseController {
 							e.printStackTrace();
 						}
 					}
-					message =ResourceBundleManager.getString("insertOk", messages);
+					message =ResourceBundleManager.getString("insertOk");
 				} else {
-					message = ResourceBundleManager.getString("insertNotOk", messages);
+					message = ResourceBundleManager.getString("insertNotOk");
 				}
 			}
 		} else {
@@ -245,9 +244,9 @@ public class AddPlantController extends BaseController {
 						DAOFactory.getInstance().getPriceHeightRatioDAO().update(ratio);
 					}
 				}
-				message = ResourceBundleManager.getString("updateOk", messages);
+				message = ResourceBundleManager.getString("updateOk");
 			} else {
-				message = ResourceBundleManager.getString("updateNotOk", messages);
+				message = ResourceBundleManager.getString("updateNotOk");
 			}
 		}
 		DisplayUtil.showMessageDialog(message);

@@ -5,6 +5,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -12,7 +13,6 @@ import java.util.ResourceBundle;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.BasisTableItem;
-import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.ReproductionCutting;
 import org.unibl.etf.dto.ReproductionCuttingTableItem;
 import org.unibl.etf.gui.util.DisplayUtil;
@@ -26,6 +26,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -74,7 +75,27 @@ public class BasesController extends BaseController {
 	private Button btnEditPlant;
 	@FXML
 	private Button btnDeletePlant;
+	@FXML
+	private Button btnLoad;
+	@FXML
+	private Button btnSearch;
+	@FXML
+	private TextField txtParam;
+	@FXML
+	private ComboBox<String> cbModes;
+	@FXML
+	private DatePicker dpFrom;
+	@FXML
+	private DatePicker dpTo;
 
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		buildTable();
+		bindDisable();
+		cbModes.setItems(cbItems);
+		cbModes.getSelectionModel().select(0);
+	}
+	
 	@FXML
 	public void addPlant(ActionEvent event) {
 		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
@@ -88,25 +109,9 @@ public class BasesController extends BaseController {
 			tblBases.refresh();
 		}
 	}
-
-	@FXML
-	public void editPlant(ActionEvent event) {
-		Basis basis = tblBases.getSelectionModel().getSelectedItem().getBasis();
-		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
-				"org/unibl/etf/gui/plants/view/EditBasisView.fxml");
-		AnchorPane root = DisplayUtil.getAnchorPane(loader);
-		EditBasisController controller = DisplayUtil.<EditBasisController>getController(loader);
-		controller.setBasis(basis);
-		DisplayUtil.switchStage(root, 250, 110, false, "Azuriranje biljke iz maticnjaka", true);
-		tblBases.getSelectionModel().getSelectedItem().setBasis(basis);
-		tblBases.getSelectionModel().getSelectedItem().setdate(basis.getPlantingDate());
-		displayInfo(basis);
-		tblBases.refresh();
-	}
-
+	
 	@FXML
 	public void deletePlant(ActionEvent event) {
-		// TODO kreirati triger koji ce setovati da nije u maticnjaku
 		if (DisplayUtil.showConfirmationDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
 			String message = "";
 			BasisTableItem bti = tblBases.getSelectionModel().getSelectedItem();
@@ -128,14 +133,67 @@ public class BasesController extends BaseController {
 			DisplayUtil.showMessageDialog(message);
 		}
 	}
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		buildTable();
-		populateTable();
-		bindDisable();
+	
+	@FXML
+	public void editPlant(ActionEvent event) {
+		Basis basis = tblBases.getSelectionModel().getSelectedItem().getBasis();
+		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
+				"org/unibl/etf/gui/plants/view/EditBasisView.fxml");
+		AnchorPane root = DisplayUtil.getAnchorPane(loader);
+		EditBasisController controller = DisplayUtil.<EditBasisController>getController(loader);
+		controller.setBasis(basis);
+		DisplayUtil.switchStage(root, 250, 110, false, "Azuriranje biljke iz maticnjaka", true);
+		tblBases.getSelectionModel().getSelectedItem().setBasis(basis);
+		tblBases.getSelectionModel().getSelectedItem().setdate(basis.getPlantingDate());
+		displayInfo(basis);
+		tblBases.refresh();
+	}
+	
+	@FXML
+	public void load(ActionEvent event) {
+		populateTable(DAOFactory.getInstance().getBasisDAO().selectAll());
 	}
 
+	@FXML
+	public void search(ActionEvent event) {
+		try {
+			String statement = "";
+			int index = cbModes.getSelectionModel().getSelectedIndex();
+			List<Basis> bases = new ArrayList<Basis>();
+			if (index == 0 || index == 1) {
+				boolean scientific = (index == 0 ? true : false);
+				bases = DAOFactory.getInstance().getBasisDAO().getByName(txtParam.getText(), scientific);
+			} else {
+				List<Object> variables = new ArrayList<Object>();
+				if (dpFrom.getValue() != null) {
+					statement += " planting_date >= ?";
+					String dateString = dpFrom.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+					variables.add(date);
+				}
+				if (dpTo.getValue() != null) {
+					if (dpFrom.getValue() != null) {
+						statement += " and";
+					}
+					statement += " planting_date <= ?";
+					String dateString = dpTo.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+					Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+					variables.add(date);
+				}
+				Object[] vars = new Object[variables.size()];
+				vars = variables.toArray(vars);
+				bases = DAOFactory.getInstance().getBasisDAO().select(statement, vars);
+			}
+			ObservableList<BasisTableItem> basisItems = FXCollections.observableArrayList();
+			for (Basis b : bases) {
+				basisItems.add(new BasisTableItem(b));
+			}
+			tblBases.setItems(basisItems);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@FXML
 	public void select(MouseEvent event) {
 		BasisTableItem selectedItem = tblBases.getSelectionModel().getSelectedItem();
@@ -155,9 +213,7 @@ public class BasesController extends BaseController {
 			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
 			Integer produced = Integer.parseInt(txtProducedNum.getText());
 			Integer takeARoot = Integer.parseInt(txtSuccessfulNum.getText());
-			
-			
-			
+
 			ReproductionCutting cutting = new ReproductionCutting(basis, date, produced, takeARoot, basis.getBasisId(),
 					false);
 			if (DAOFactory.getInstance().getReproductionCuttingDAO().insert(cutting) > 0) {
@@ -186,8 +242,7 @@ public class BasesController extends BaseController {
 				.setCellValueFactory(new PropertyValueFactory<ReproductionCuttingTableItem, Integer>("takeARoot"));
 	}
 
-	private void populateTable() {
-		List<Basis> bases = DAOFactory.getInstance().getBasisDAO().selectAll();
+	private void populateTable(List<Basis> bases) {
 		ObservableList<BasisTableItem> tableItems = FXCollections.observableArrayList();
 		for (Basis basis : bases) {
 			tableItems.add(new BasisTableItem(basis));
@@ -221,5 +276,24 @@ public class BasesController extends BaseController {
 		BooleanBinding binding = tblBases.getSelectionModel().selectedItemProperty().isNull();
 		btnEditPlant.disableProperty().bind(binding);
 		btnDeletePlant.disableProperty().bind(binding);
+		txtParam.disableProperty().bind(cbModes.getSelectionModel().selectedIndexProperty().isEqualTo(2));
+		dpFrom.disableProperty().bind(cbModes.getSelectionModel().selectedIndexProperty().isEqualTo(0)
+				.or(cbModes.getSelectionModel().selectedIndexProperty().isEqualTo(1)));
+		dpTo.disableProperty().bind(cbModes.getSelectionModel().selectedIndexProperty().isEqualTo(0)
+				.or(cbModes.getSelectionModel().selectedIndexProperty().isEqualTo(1)));
+
+		btnSearch.disableProperty()
+				.bind(cbModes.getSelectionModel().selectedIndexProperty().isEqualTo(0)
+						.or(cbModes.getSelectionModel().selectedIndexProperty().isEqualTo(1))
+						.and(txtParam.textProperty().isEmpty()).or(cbModes.getSelectionModel().selectedIndexProperty()
+								.isEqualTo(2).and(dpFrom.valueProperty().isNull().and(dpTo.valueProperty().isNull()))));
+
+	}
+
+	private static ObservableList<String> cbItems = FXCollections.observableArrayList();
+	static {
+		cbItems.add("Nazivu (latinski)");
+		cbItems.add("Nazivu (lokalni)");
+		cbItems.add("Datumu");
 	}
 }

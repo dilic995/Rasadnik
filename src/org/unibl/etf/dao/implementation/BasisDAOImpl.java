@@ -20,7 +20,10 @@ public class BasisDAOImpl implements BasisDAO {
 	protected static List<String> stdColumns = new ArrayList<>();
 	protected static List<String> allColumns = new ArrayList<>();
 	protected static String tableName = "basis";
-
+	protected static String SELECT_BY_NAME = "select b.basis_id, b.planting_date, b.deleted, b.plant_id "
+			+ "from basis b inner join plant p on b.plant_id=p.plant_id where ";
+	
+	
 	static {
 		pkColumns.add("basis_id");
 		stdColumns.add("planting_date");
@@ -407,5 +410,28 @@ public class BasisDAOImpl implements BasisDAO {
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<Basis> getByName(String name, Boolean scientific) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Basis> ret = new ArrayList<>();
+
+		try {
+			String sql = SELECT_BY_NAME + (scientific ? "scientific_name" : "known_as") + " like ? and b.deleted=false";
+			ps = getConn().prepareStatement(sql);
+			DBUtil.bind(ps, 1, "%" + name + "%");
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
 	}
 }

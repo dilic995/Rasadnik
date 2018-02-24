@@ -81,8 +81,6 @@ public class CatalogueController extends PlantBrowserController {
 	@FXML
 	private Circle canSellIndicator;
 	
-	private static final String messages = "org/unibl/etf/util/messages";
-	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		super.initialize(location, resources);
@@ -136,17 +134,17 @@ public class CatalogueController extends PlantBrowserController {
 	// Event Listener on Button[#btnRemove].onAction
 	@FXML
 	public void removePlant(ActionEvent event) {
-		String prompt = "Da li ste sigurni?";
+		String prompt = ResourceBundleManager.getString("confirmQuestion");
 		if (DisplayUtil.showConfirmationDialog(prompt) == ButtonType.YES) {
 			String message = "";
 			if(DAOFactory.getInstance().getPlantDAO().delete(container.current()) > 0) {
 				buildAll = true;
 				//message = "Brisanje uspjesno!";
-				message =  ResourceBundleManager.getString("deleteOk", messages);
+				message =  ResourceBundleManager.getString("deleteOk");
 				container.remove(container.current());
 			} else {
 				//message = "Greska prilikom brisanja!";
-				 ResourceBundleManager.getString("deleteNotOk", messages);
+				 ResourceBundleManager.getString("deleteNotOk");
 			}
 			DisplayUtil.showMessageDialog(message);
 		}
@@ -171,7 +169,7 @@ public class CatalogueController extends PlantBrowserController {
 		
 		if(!container.current().getOwned()) {
 			//String message = "Biljka ne postoji u maticnjaku. Zelite li da je dodate?";
-			String message =  ResourceBundleManager.getString("addPlantQuestion", messages);;
+			String message =  ResourceBundleManager.getString("addPlantQuestion");;
 			if (DisplayUtil.showConfirmationDialog(message) == ButtonType.YES) {
 				container.current().setOwned(true);
 				DAOFactory.getInstance().getPlantDAO().update(container.current());
@@ -179,10 +177,10 @@ public class CatalogueController extends PlantBrowserController {
 						container.current(), null, false);
 				if (DAOFactory.getInstance().getBasisDAO().insert(basis) > 0) {
 				//	DisplayUtil.showMessageDialog("Dodavanje u maticnjak uspjesno");
-					DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertOk", messages));
+					DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertOk"));
 				} else {
 				//	DisplayUtil.showMessageDialog("Dodavanje u maticnjak neuspjesno");
-					DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertNotOk", messages));
+					DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertNotOk"));
 				}
 				displaySelectedItem();
 			}

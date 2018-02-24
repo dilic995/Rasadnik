@@ -26,24 +26,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
-import javafx.scene.input.MouseEvent;
-
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 public class SalesController extends BaseController {
-	private static final String messages = "org/unibl/etf/util/messages";
+	
 	@FXML
 	private Label lblError;
 	@FXML
@@ -251,11 +247,11 @@ public class SalesController extends BaseController {
 			DAOFactory.getInstance().getPurchaseDAO().insert(purchase);
 			tblPurchase.getItems().add(new PurchaseTableItem(purchase));
 			tblPurchase.refresh();
-			String message = ResourceBundleManager.getString("insertOk", messages);
+			String message = ResourceBundleManager.getString("insertOk");
 			clearTextFields();
 			DisplayUtil.showMessageDialog(message);
 		} catch (NumberFormatException ex) {
-			lblError.setText(ResourceBundleManager.getString("numberFormat", messages));
+			lblError.setText(ResourceBundleManager.getString("numberFormat"));
 		}
 
 	}
