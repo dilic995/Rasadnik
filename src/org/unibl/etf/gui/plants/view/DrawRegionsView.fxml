@@ -20,7 +20,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="parentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#click" onMousePressed="#press" onMouseReleased="#release" prefHeight="900.0" prefWidth="1200.0" stylesheets="@../../../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.plants.controller.DrawRegionsController">
+<AnchorPane fx:id="parentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#click" onMousePressed="#press" onMouseReleased="#release" prefHeight="700.0" prefWidth="1200.0" stylesheets="@../../../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.plants.controller.DrawRegionsController">
 	<children>
 		<AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" styleClass="toolbarPane" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<children>
@@ -55,35 +55,25 @@
 			<tabs>
 				<Tab fx:id="tabGeneral" closable="false" onSelectionChanged="#generalTabSelected" text="Opste informacije">
 					<content>
-						<AnchorPane id="center-pane" maxWidth="400.0" minWidth="400.0" prefHeight="200.0" prefWidth="400.0">
+						<AnchorPane id="center-pane">
 							<children>
-								<AnchorPane layoutX="74.0" layoutY="52.0" prefHeight="206.0" prefWidth="206.0" style="-fx-border-color: #d9d9d9;" AnchorPane.rightAnchor="20.0">
+								<Label fx:id="lblRegion" layoutX="19.0" layoutY="14.0" prefHeight="16.0" prefWidth="210.0" style="-fx-alignment: CENTER; -fx-font-size: 14; -fx-font-family: arial; -fx-font-weight: bold;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="14.0" />
+								<AnchorPane layoutX="73.0" layoutY="47.0" prefHeight="256.0" prefWidth="256.0" style="-fx-border-color: #d9d9d9;" AnchorPane.leftAnchor="73.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="47.0">
 									<children>
-										<ImageView fx:id="imgPhoto" fitHeight="200.0" fitWidth="200.0" layoutX="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
+										<ImageView fx:id="imgPhoto" fitHeight="250.0" fitWidth="250.0" layoutX="4.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
 									</children>
 								</AnchorPane>
-								<Label fx:id="lblRegion" layoutX="169.0" layoutY="21.0" prefHeight="16.0" prefWidth="212.0" style="-fx-alignment: CENTER; -fx-font-size: 14; -fx-font-family: arial; -fx-font-weight: bold;" AnchorPane.leftAnchor="171.0" AnchorPane.rightAnchor="20.0" />
-								<Label fx:id="lblName" layoutX="11.0" layoutY="271.0" style="-fx-alignment: center; -fx-font-weight: bold; -fx-font-family: arial;" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="10.0" />
-								<Label fx:id="lblPlantsNum" layoutX="15.0" layoutY="52.0" AnchorPane.leftAnchor="15.0" />
-								<Label layoutX="81.0" layoutY="351.0" text="Broj biljaka:" AnchorPane.leftAnchor="81.0" />
-								<TextField fx:id="txtNumSold" layoutX="148.0" layoutY="347.0" onKeyTyped="#keyTyped" prefHeight="25.0" prefWidth="66.0" AnchorPane.leftAnchor="148.0" />
-								<Label layoutX="217.0" layoutY="351.0" text="Visina:" AnchorPane.leftAnchor="217.0" />
-								<TextField fx:id="txtHeight" layoutX="260.0" layoutY="347.0" prefHeight="25.0" prefWidth="66.0" AnchorPane.leftAnchor="260.0" />
-								<ListView fx:id="lstSaleItems" layoutX="14.0" layoutY="386.0" prefHeight="78.0" prefWidth="200.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-								<Button fx:id="btnAddSaleItem" layoutX="331.0" layoutY="347.0" mnemonicParsing="false" onAction="#addSaleItem" text="+" AnchorPane.rightAnchor="44.0" />
-								<Button fx:id="btnRemoveSaleItem" layoutX="334.0" layoutY="347.0" mnemonicParsing="false" onAction="#removeSaleItem" text="-" AnchorPane.rightAnchor="14.0" />
-								<Button fx:id="btnSaveSale" layoutX="327.0" layoutY="482.0" mnemonicParsing="false" onAction="#saveSale" text="Sacuvajte prodaju" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-								<CheckBox fx:id="cbPaidOff" layoutX="179.0" layoutY="485.0" mnemonicParsing="false" text="Isplaceno" AnchorPane.rightAnchor="148.0" />
-								<Label layoutX="16.0" layoutY="80.0" text="Dodavanje:" AnchorPane.leftAnchor="16.0" />
-								<Label layoutX="14.0" layoutY="109.0" text="Biljka:" AnchorPane.leftAnchor="14.0" />
-								<ComboBox fx:id="cbBases" layoutX="57.0" layoutY="105.0" prefHeight="25.0" prefWidth="105.0" AnchorPane.leftAnchor="57.0" />
-								<DatePicker fx:id="dpDate" layoutX="58.0" layoutY="138.0" prefHeight="25.0" prefWidth="105.0" AnchorPane.leftAnchor="58.0" />
-								<Label layoutX="11.0" layoutY="142.0" text="Datum:" AnchorPane.leftAnchor="14.0" />
-								<Label layoutX="19.0" layoutY="176.0" text="Posijano:" AnchorPane.leftAnchor="14.0" />
-								<Label layoutX="17.0" layoutY="209.0" text="Uspjelo:" AnchorPane.leftAnchor="14.0" />
-								<TextField fx:id="txtProduced" layoutX="69.0" layoutY="172.0" prefHeight="25.0" prefWidth="92.0" AnchorPane.leftAnchor="70.0" />
-								<TextField fx:id="txtSuccess" layoutX="75.0" layoutY="205.0" prefHeight="25.0" prefWidth="92.0" AnchorPane.leftAnchor="70.0" />
-								<Button fx:id="btnAddPlants" layoutX="137.0" layoutY="236.0" mnemonicParsing="false" onAction="#addPlants" text="+" AnchorPane.leftAnchor="137.0" />
+								<Label fx:id="lblName" layoutX="12.0" layoutY="325.0" style="-fx-alignment: center; -fx-font-weight: bold; -fx-font-family: arial;" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="325.0" />
+								<Label fx:id="lblPlantsNum" alignment="CENTER" layoutX="22.0" layoutY="375.0" style="-fx-font-size: 30; -fx-font-weight: bold;" AnchorPane.leftAnchor="22.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="355.0" />
+								<Label layoutX="32.0" layoutY="419.0" text="Biljka:" AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="420.0" />
+								<ComboBox fx:id="cbBases" layoutX="74.0" layoutY="414.0" prefHeight="25.0" prefWidth="150.0" AnchorPane.rightAnchor="179.0" AnchorPane.topAnchor="415.0" />
+								<Label layoutX="234.0" layoutY="420.0" text="Datum:" AnchorPane.topAnchor="420.0" />
+								<DatePicker fx:id="dpDate" layoutX="279.0" layoutY="415.0" prefHeight="25.0" prefWidth="110.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="415.0" />
+								<Label layoutX="14.0" layoutY="504.0" text="Posijano:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="455.0" />
+								<TextField fx:id="txtProduced" layoutX="74.0" layoutY="451.0" prefHeight="25.0" prefWidth="110.0" AnchorPane.topAnchor="450.0" />
+								<Label layoutX="220.0" layoutY="502.0" text="Uspjelo:" AnchorPane.topAnchor="455.0" />
+								<TextField fx:id="txtSuccess" layoutX="297.0" layoutY="498.0" prefHeight="25.0" prefWidth="110.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="450.0" />
+								<Button fx:id="btnAddPlants" layoutX="327.0" layoutY="518.0" mnemonicParsing="false" onAction="#addPlants" text="Dodajte" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="330.0" AnchorPane.rightAnchor="14.0" />
 							</children>
 						</AnchorPane>
 					</content>
@@ -94,7 +84,7 @@
 							<children>
 								<ListView fx:id="lstActivePlans" layoutX="14.0" layoutY="141.0" onMouseClicked="#selectActive" prefHeight="132.0" prefWidth="372.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="141.0" />
 								<ListView fx:id="lstDonePlans" layoutX="14.0" layoutY="343.0" onMouseClicked="#selectDone" prefHeight="134.0" prefWidth="372.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="343.0" />
-								<TableView fx:id="tblTasks" layoutX="14.0" layoutY="532.0" onMouseClicked="#tblTasksClicked" prefHeight="172.0" prefWidth="372.0" AnchorPane.bottomAnchor="57.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="532.0">
+								<TableView fx:id="tblTasks" layoutX="14.0" layoutY="532.0" prefHeight="172.0" prefWidth="372.0" AnchorPane.bottomAnchor="57.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
 									<columns>
 										<TableColumn fx:id="colActivity" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Aktivnost" />
 										<TableColumn fx:id="colDateFrom" prefWidth="75.0" text="Datum od" />
@@ -119,14 +109,14 @@
 								</Button>
 								<ComboBox fx:id="cbSearchCategory" layoutX="236.0" layoutY="488.0" onAction="#filterTasks" prefWidth="150.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="488.0" />
 								<Label layoutX="14.0" layoutY="493.0" text="Filtriranje po aktivnostima:" />
-                        <DatePicker fx:id="dpDatumOdPretraga" layoutX="66.0" layoutY="22.0" prefHeight="31.0" prefWidth="222.0" AnchorPane.leftAnchor="66.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="22.0" />
-                        <DatePicker fx:id="dpDatumDoPretraga" layoutX="66.0" layoutY="55.0" prefHeight="31.0" prefWidth="222.0" AnchorPane.leftAnchor="66.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="55.0" />
-                        <RadioButton fx:id="rbAktivni" layoutX="14.0" layoutY="118.0" mnemonicParsing="false" text="Aktivni planovi" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="118.0" />
-                        <RadioButton fx:id="rbZakljuceni" layoutX="14.0" layoutY="322.0" mnemonicParsing="false" text="Zaključeni planovi" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="322.0" />
-                        <Label layoutX="14.0" layoutY="27.0" text="Od:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="27.0" />
-                        <Label layoutX="15.0" layoutY="60.0" text="Do:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="60.0" />
-                        <Button fx:id="btnPretrazitePlanove" layoutX="300.0" layoutY="55.0" mnemonicParsing="false" onAction="#pretragaPlanova" prefHeight="31.0" prefWidth="83.0" text="Pretražite" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="55.0" />
-                        <Button fx:id="osvjezavanjePlanova" layoutX="300.0" layoutY="22.0" mnemonicParsing="false" onAction="#refreshTabOdrzavanje" prefHeight="31.0" prefWidth="83.0" text="Osvježite" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="22.0" />
+								<DatePicker fx:id="dpDatumOdPretraga" layoutX="66.0" layoutY="22.0" prefHeight="31.0" prefWidth="222.0" AnchorPane.leftAnchor="66.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="22.0" />
+								<DatePicker fx:id="dpDatumDoPretraga" layoutX="66.0" layoutY="55.0" prefHeight="31.0" prefWidth="222.0" AnchorPane.leftAnchor="66.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="55.0" />
+								<RadioButton fx:id="rbAktivni" layoutX="14.0" layoutY="118.0" mnemonicParsing="false" text="Aktivni planovi" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="118.0" />
+								<RadioButton fx:id="rbZakljuceni" layoutX="14.0" layoutY="322.0" mnemonicParsing="false" text="Zaključeni planovi" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="322.0" />
+								<Label layoutX="14.0" layoutY="27.0" text="Od:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="27.0" />
+								<Label layoutX="15.0" layoutY="60.0" text="Do:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="60.0" />
+								<Button fx:id="btnPretrazitePlanove" layoutX="300.0" layoutY="55.0" mnemonicParsing="false" onAction="#pretragaPlanova" prefHeight="31.0" prefWidth="83.0" text="Pretražite" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="55.0" />
+								<Button fx:id="osvjezavanjePlanova" layoutX="300.0" layoutY="22.0" mnemonicParsing="false" onAction="#refreshTabOdrzavanje" prefHeight="31.0" prefWidth="83.0" text="Osvježite" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="22.0" />
 							</children>
 						</AnchorPane>
 					</content>
@@ -156,6 +146,29 @@
 								<Button fx:id="btnAddMaintanceActivity" layoutX="356.0" layoutY="183.0" mnemonicParsing="false" onAction="#addMaintanceActivity" text="+" />
 							</children>
 						</AnchorPane>
+					</content>
+				</Tab>
+				<Tab closable="false" text="Prodaja">
+					<content>
+						<AnchorPane maxWidth="400.0" minHeight="0.0" minWidth="400.0" prefHeight="200.0" prefWidth="400.0">
+                     <children>
+                        <AnchorPane layoutX="72.0" layoutY="49.0" prefHeight="256.0" prefWidth="256.0" style="-fx-border-color: grey;" AnchorPane.leftAnchor="72.0" AnchorPane.rightAnchor="72.0" AnchorPane.topAnchor="49.0">
+                           <children>
+                              <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
+                           </children>
+                        </AnchorPane>
+                        <Label layoutX="186.0" layoutY="21.0" text="Label" />
+                        <Label layoutX="186.0" layoutY="319.0" text="Label" />
+                        <Label layoutX="186.0" layoutY="350.0" text="Label" />
+								<Label layoutX="14.0" layoutY="395.0" text="Broj biljaka:" AnchorPane.leftAnchor="14.0" />
+								<TextField fx:id="txtNumSold" layoutX="82.0" layoutY="391.0" onKeyTyped="#keyTyped" prefHeight="25.0" prefWidth="66.0" AnchorPane.leftAnchor="82.0" />
+								<Label layoutX="180.0" layoutY="395.0" text="Visina:" AnchorPane.leftAnchor="180.0" />
+								<TextField fx:id="txtHeight" layoutX="225.0" layoutY="391.0" prefHeight="25.0" prefWidth="66.0" AnchorPane.leftAnchor="225.0" />
+								<ListView fx:id="lstSaleItems" layoutX="14.0" layoutY="426.0" prefHeight="78.0" prefWidth="200.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+								<Button fx:id="btnAddSaleItem" layoutX="361.0" layoutY="391.0" mnemonicParsing="false" onAction="#addSaleItem" text="+" AnchorPane.rightAnchor="14.0" />
+								<Button fx:id="btnSaveSale" mnemonicParsing="false" onAction="#saveSale" text="Sacuvajte prodaju" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+								<CheckBox fx:id="cbPaidOff" layoutX="190.0" layoutY="736.0" mnemonicParsing="false" text="Isplaceno" AnchorPane.rightAnchor="139.0" />
+                     </children></AnchorPane>
 					</content>
 				</Tab>
 			</tabs>

@@ -551,7 +551,7 @@ public class DrawRegionsController extends BaseController {
 		initializeTable();
 		ObservableList<SaleItem> saleItems = FXCollections.observableArrayList();
 		lstSaleItems.setItems(saleItems);
-		setDisabled(true, txtHeight, txtNumSold, btnAddSaleItem, btnRemoveSaleItem, lstSaleItems, cbPaidOff,
+		setDisabled(true, txtHeight, txtNumSold, btnAddSaleItem, lstSaleItems, cbPaidOff,
 				btnSaveSale);
 
 		// COMBOBOX
