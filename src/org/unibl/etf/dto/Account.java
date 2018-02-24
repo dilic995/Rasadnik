@@ -6,6 +6,7 @@ public class Account {
 	private String username;
 	private String hash;
 	private Boolean firstLogin;
+	private Boolean isAdmin;
 	private Boolean deleted;
 	
 	public Integer getAccountId() {
@@ -40,6 +41,14 @@ public class Account {
 		this.firstLogin = firstLogin;
 	}
 	
+	public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 	public Boolean getDeleted() {
 		return deleted;
 	}

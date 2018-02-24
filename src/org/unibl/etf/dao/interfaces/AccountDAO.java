@@ -24,11 +24,13 @@ public interface AccountDAO {
 		public int delete(Account obj);
 
 		// Finders
-		public List<Account> getByUsername(String username);
+		public Account getByUsername(String username);
 
 		public List<Account> getByHash(String hash);
 
 		public List<Account> getByFirstLogin(Boolean firstLogin);
+		
+		public List<Account> getByIsAdmin(Boolean isAdmin);
 		
 		public List<Account> getByDeleted(Boolean deleted);
 }

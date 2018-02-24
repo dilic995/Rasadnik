@@ -26,6 +26,7 @@ public class AccountDAOImpl implements AccountDAO{
 		stdColumns.add("username");
 		stdColumns.add("hash");
 		stdColumns.add("first_login");
+		stdColumns.add("is_admin");
 		stdColumns.add("deleted");
 		allColumns.addAll(pkColumns);
 		allColumns.addAll(stdColumns);
@@ -265,10 +266,10 @@ public class AccountDAOImpl implements AccountDAO{
 	}
 
 	@Override
-	public List<Account> getByUsername(String username) {
+	public Account getByUsername(String username) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		List<Account> ret = new ArrayList<>();
+		Account ret = null;
 
 		try {
 			if (null == username) {
@@ -283,7 +284,7 @@ public class AccountDAOImpl implements AccountDAO{
 			rs = ps.executeQuery();
 
 			while (rs.next())
-				ret.add(fromResultSet(rs));
+				ret=fromResultSet(rs);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -336,6 +337,35 @@ public class AccountDAOImpl implements AccountDAO{
 				ps = getConn().prepareStatement(
 						DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "first_login" })));
 				DBUtil.bind(ps, 1, firstLogin);
+			}
+
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
+	}
+	
+	@Override
+	public List<Account> getByIsAdmin(Boolean isAdmin) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Account> ret = new ArrayList<>();
+
+		try {
+			if (null == isAdmin) {
+				ps = getConn().prepareStatement(
+						DBUtil.selectNull(tableName, allColumns, Arrays.asList(new String[] { "is_admin" })));
+			} else {
+				ps = getConn().prepareStatement(
+						DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "is_admin" })));
+				DBUtil.bind(ps, 1, isAdmin);
 			}
 
 			rs = ps.executeQuery();
