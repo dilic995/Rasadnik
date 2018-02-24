@@ -167,8 +167,6 @@ public class SalesController extends BaseController {
 	public void previewDescription(ActionEvent event) {
 		PurchaseTableItem purchase = tblPurchase.getSelectionModel().getSelectedItem();
 		if (purchase != null) {
-			//Alert alert = new Alert(AlertType.INFORMATION, "Napomena: "+purchase.getPurchase().getDescription());
-			//alert.showAndWait();
 			DisplayUtil.showMessageDialog("Napomena: "+purchase.getPurchase().getDescription());
 		}
 	}
@@ -215,7 +213,6 @@ public class SalesController extends BaseController {
 		Integer year = spinnerYearSale.getValue();
 		List<Sale> sales = DAOFactory.getInstance().getSaleDAO().selectAll();
 		ObservableList<SaleTableItem> listSales = FXCollections.observableArrayList();
-		
 		for(Sale s : sales) {
 			Date date = s.getDate();
 			LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -230,21 +227,17 @@ public class SalesController extends BaseController {
 	public void searchPurchase() {
 		Integer month = spinnerMonthPurchase.getValue();
 		Integer year = spinnerYearPurchase.getValue();
-		System.out.println(month+" "+year);
 		List<Purchase> purchases = DAOFactory.getInstance().getPurchaseDAO().selectAll();
 		ObservableList<PurchaseTableItem> listSales = FXCollections.observableArrayList();
-		
 		for(Purchase s : purchases) {
 			Date date = s.getDate();
 			LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			Integer monthSale = localDate.getMonthValue();
 			Integer yearSale = localDate.getYear();
-			System.out.println(monthSale+" "+yearSale);
 			if(monthSale.equals(month) && yearSale.equals(year)) {
 				listSales.add(new PurchaseTableItem(s));
 			}
 		}
-		System.out.println(listSales.size());
 		tblPurchase.setItems(listSales);
 		tblPurchase.refresh();
 	}
