@@ -53,6 +53,7 @@ public class FirstLoginController extends BaseController {
 		String checkPassword = txtProvjeraLozinke.getText();
 		Boolean result = check(newPassword, checkPassword, status);
 		if (result) {
+			DisplayUtil.showMessageDialog("Uspjesno ste setovali lozinku");
 			DisplayUtil.close(btnSacuvajLozinku);
 		}
 	}
