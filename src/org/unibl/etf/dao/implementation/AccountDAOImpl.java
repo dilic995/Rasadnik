@@ -423,6 +423,7 @@ public class AccountDAOImpl implements AccountDAO{
 		DBUtil.bind(ps, pos++, obj.getUsername());
 		DBUtil.bind(ps, pos++, obj.getHash());
 		DBUtil.bind(ps, pos++, obj.getFirstLogin());
+		DBUtil.bind(ps,pos++,obj.getIsAdmin());
 		DBUtil.bind(ps, pos++, obj.getDeleted());
 
 		return pos;
@@ -435,6 +436,7 @@ public class AccountDAOImpl implements AccountDAO{
 		obj.setUsername(DBUtil.getString(rs, "username"));
 		obj.setHash(DBUtil.getString(rs, "hash"));
 		obj.setFirstLogin(DBUtil.getBoolean(rs, "first_login"));
+		obj.setIsAdmin(DBUtil.getBoolean(rs, "is_admin"));
 		obj.setDeleted(DBUtil.getBoolean(rs, "deleted"));
 
 		return obj;
