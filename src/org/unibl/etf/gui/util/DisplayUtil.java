@@ -44,7 +44,7 @@ public class DisplayUtil {
 		IMAGE_EXTENSIONS.put("JPG", "*.jpg");
 		IMAGE_EXTENSIONS.put("PNG", "*.png");
 	}
-	
+
 	public static StringConverter<LocalDate> datePickerConverter() {
 		StringConverter<LocalDate> converter = new StringConverter<LocalDate>() {
 			String pattern = "dd.MM.yyyy.";
@@ -142,6 +142,11 @@ public class DisplayUtil {
 		stage.setScene(scene);
 		stage.setTitle(title);
 		stage.setResizable(resizable);
+		try {
+			stage.getIcons().add(new Image(new FileInputStream("./resources/icon.png")));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		if (modal) {
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.showAndWait();
@@ -156,19 +161,25 @@ public class DisplayUtil {
 	}
 
 	public static ButtonType showWarningDialog(String warning) {
-		Alert alert = new Alert(AlertType.WARNING, warning, ButtonType.YES, ButtonType.NO);
+		Alert alert = new Alert(AlertType.WARNING, warning,  ButtonType.YES, ButtonType.NO);
+		alert.setHeaderText("");
+		alert.setTitle("Upozorenje");
 		alert.showAndWait();
 		return alert.getResult();
 	}
 
 	public static ButtonType showConfirmationDialog(String question) {
-		Alert alert = new Alert(AlertType.CONFIRMATION, question, ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+		Alert alert = new Alert(AlertType.CONFIRMATION, question, ButtonType.YES, ButtonType.NO);
+		alert.setTitle("Potvrdite");
+		alert.setHeaderText("");
 		alert.showAndWait();
 		return alert.getResult();
 	}
 
 	public static ButtonType showErrorDialog(String error) {
-		Alert alert = new Alert(AlertType.ERROR, error, ButtonType.OK, ButtonType.CANCEL);
+		Alert alert = new Alert(AlertType.ERROR, error, ButtonType.OK);
+		alert.setTitle("Greška");
+		alert.setHeaderText("");
 		alert.showAndWait();
 		return alert.getResult();
 	}
@@ -181,23 +192,25 @@ public class DisplayUtil {
 		ButtonType okButton = new ButtonType(ResourceBundleManager.getString("ok"), ButtonData.OK_DONE);
 		alert.getButtonTypes().clear();
 		alert.getButtonTypes().add(okButton);
+		alert.setTitle("Poruka");
 		alert.showAndWait();
 	}
 
 	public static Image getDefaultImage() throws FileNotFoundException {
 		if (defaultImage == null) {
-		//	defaultImage = new Image(new FileInputStream("resources/images/add_image.png"));
+			// defaultImage = new Image(new
+			// FileInputStream("resources/images/add_image.png"));
 			defaultImage = new Image(new FileInputStream(ResourceBundleManager.getString("defaultMessage")));
 		}
 		return defaultImage;
 	}
-	
+
 	public static Date convert(LocalDate date) throws ParseException {
 		String todayString = date.getYear() + "-" + date.getMonthValue() + "-" + date.getDayOfMonth();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		return format.parse(todayString);
 	}
-	
+
 	private static Image defaultImage = null;
-	
+
 }
