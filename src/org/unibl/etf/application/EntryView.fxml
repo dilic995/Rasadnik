@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.application.EntryViewController">
+<AnchorPane prefHeight="600.0" prefWidth="600.0" stylesheets="@../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.application.EntryViewController">
 	<children>
 		<GridPane layoutX="234.0" layoutY="167.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<columnConstraints>
@@ -21,7 +21,7 @@
 				<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 			</rowConstraints>
 			<children>
-				<Button mnemonicParsing="false" onAction="#showCatalogue" prefHeight="200.0" prefWidth="200.0" text="Katalog" GridPane.rowIndex="1" />
+				<Button id="catalogue-button" mnemonicParsing="false" onAction="#showCatalogue" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
 				<Button mnemonicParsing="false" onAction="#showBases" prefHeight="200.0" prefWidth="200.0" text="Maticnjak" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 				<Button mnemonicParsing="false" onAction="#showRegions" prefHeight="200.0" prefWidth="200.0" text="Regioni" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 				<Button mnemonicParsing="false" onAction="#showSales" prefHeight="200.0" prefWidth="200.0" text="Sredstva" GridPane.rowIndex="2" />
