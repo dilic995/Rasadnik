@@ -53,7 +53,7 @@ public class DrawCommand implements Command {
 			AddRegionController controller = DisplayUtil.<AddRegionController>getController(loader);
 			controller.setRegion(region);
 			controller.setCutting(cutting);
-			DisplayUtil.switchStage(root, 300, 150, false, "Dodavanje biljke", true);
+			DisplayUtil.switchStage(root, 300, 200, false, "Dodavanje biljke", true);
 		}
 		regions.put(polygon, region);
 		outlines.put(polygon, pl);
@@ -70,7 +70,7 @@ public class DrawCommand implements Command {
 		elements.getChildren().remove(outlines.get(polygon));
 		outlines.remove(polygon);
 	}
-	// TODO Uopstiti
+
 	private Polygon polygon;
 	private Double[] coordinates;
 	private Group elements;

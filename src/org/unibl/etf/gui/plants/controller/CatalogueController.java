@@ -119,7 +119,6 @@ public class CatalogueController extends PlantBrowserController {
 	// Event Listener on Button[#btnAdd].onAction
 	@FXML
 	public void addPlant(ActionEvent event) {
-		// TODO provjera za buildAll
 		buildAll = true;
 		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
 				"org/unibl/etf/gui/plants/view/AddPlantView.fxml");
@@ -203,7 +202,6 @@ public class CatalogueController extends PlantBrowserController {
 	@Override
 	public void update() {
 		if (buildAll) {
-			// TODO napraviti dodavanje i brisanje iz treeviewA
 			populateTreeView();
 			buildAll = false;
 		}
@@ -221,17 +219,16 @@ public class CatalogueController extends PlantBrowserController {
 		if (condition) {
 			CSSUtil.setNewStyleClass(ownedIndicator, "green-fill");
 			CSSUtil.setNewStyleClass(lblOwned, "plantOwned");
-			lblOwned.setText("U maticnjaku");
+			lblOwned.setText("U matičnjaku");
 		} else {
 			CSSUtil.setNewStyleClass(ownedIndicator, "red-fill");
 			CSSUtil.setNewStyleClass(lblOwned, "plant-not-owned");
-			lblOwned.setText("Nije u maticnjaku");
+			lblOwned.setText("Nije u matičnjaku");
 		}
 	}
 	
 	private void displaySelectedItem() {
 		Plant plant = container.current();
-		// TODO dodati else kad je prazna
 		if (plant != null) {
 			lblLatinName.setText(plant.getScientificName());
 			lblCommonName.setText(plant.getKnownAs());

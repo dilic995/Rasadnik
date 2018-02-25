@@ -58,7 +58,7 @@ public class PolygonTool extends CanvasEditor {
 	@Override
 	public void invalidate() {
 		if (newPolygons.size() > 0) {
-			if (DisplayUtil.showConfirmationDialog("Zelite li sacuvati promjene?").equals(ButtonType.YES)) {
+			if (DisplayUtil.showConfirmationDialog("Želite li sacuvati promjene?").equals(ButtonType.YES)) {
 				for (Polygon polygon : newPolygons) {
 					DAOFactory.getInstance().getRegionDAO().insert(regions.get(polygon));
 					System.out.println(cuttings.get(polygon));

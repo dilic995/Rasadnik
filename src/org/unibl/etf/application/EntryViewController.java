@@ -40,7 +40,6 @@ public class EntryViewController extends BaseController{
 			CatalogueController controller = DisplayUtil.<CatalogueController>getController(loader);
 			DisplayUtil.switchStage(root, 800, 600, true, "Katalog", true);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			new ErrorLogger().log(e);
 		}
@@ -55,9 +54,8 @@ public class EntryViewController extends BaseController{
 		try {
 			root = (BorderPane)loader.load();
 			BasesController controller = DisplayUtil.<BasesController>getController(loader);
-			DisplayUtil.switchStage(root, 900, 600, true, "Katalog", true);
+			DisplayUtil.switchStage(root, 900, 600, true, "Pregled matičnjaka", true);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			new ErrorLogger().log(e);
 		}
@@ -71,9 +69,8 @@ public class EntryViewController extends BaseController{
 		try {
 			root = (AnchorPane)loader.load();
 			DrawRegionsController controller = DisplayUtil.<DrawRegionsController>getController(loader);
-			DisplayUtil.switchStage(root, 1200, 650, true, "Katalog", true);
+			DisplayUtil.switchStage(root, 1200, 650, true, "Pregled regiona", true);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			new ErrorLogger().log(e);
 		}
@@ -87,9 +84,8 @@ public class EntryViewController extends BaseController{
 		try {
 			root = (AnchorPane)loader.load();
 			SalesController controller = DisplayUtil.<SalesController>getController(loader);
-			DisplayUtil.switchStage(root, 800, 600, true, "Katalog", true);
+			DisplayUtil.switchStage(root, 800, 600, true, "Novčana sredstva", true);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			new ErrorLogger().log(e);
 		}
@@ -102,9 +98,8 @@ public class EntryViewController extends BaseController{
 		try {
 			root = (AnchorPane)loader.load();
 			ToolViewController controller = DisplayUtil.<ToolViewController>getController(loader);
-			DisplayUtil.switchStage(root, 752, 746, true, "Katalog", true);
+			DisplayUtil.switchStage(root, 752, 746, true, "Pregled alata", true);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			new ErrorLogger().log(e);
 		}

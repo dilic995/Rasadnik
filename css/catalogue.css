@@ -22,7 +22,7 @@
 }
 
 #plus-button, #delete-button, #left-button, #right-button, #pricelist-button, #select-button, #draw-tool, #save-button, #print-button,
-#edit-button, #clear-button{
+#edit-button, #clear-button, #search-button, #refresh-button{
 	-fx-min-height: 20px;
     -fx-min-width: 23px;
 	-fx-background-color: #f5f5f0;
@@ -72,22 +72,10 @@
 	-fx-background-image: url('modify.png');
 }
 #search-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('search.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #refresh-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('refresh.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #load-button{
 	-fx-min-height: 20px;
@@ -206,4 +194,20 @@
 
 .tree-cell:filled:selected{
     -fx-background-color:#bfbfbf;
+}
+.title-region{
+	-fx-alignment: center;
+	-fx-font-size: 14;
+	-fx-font-family: arial;
+	-fx-font-weight: bold;
+}
+.title-region-plant{
+	-fx-alignment: center;
+	-fx-font-weight: bold;
+	-fx-font-family: arial;
+}
+.region-plants-num{
+	-fx-font-size: 30;
+	-fx-font-weight: bold;
+	-fx-alignment: center;
 }
