@@ -44,6 +44,7 @@ public class PolygonTool extends CanvasEditor {
 	public void finishDrawing(MouseEvent event) {
 		this.coordinates[2] = this.coordinates[4] = event.getX() + 1;
 		this.coordinates[5] = this.coordinates[7] = event.getY() + 1;
+		//TODO ovdje provjeriti tacke
 		Command command = new DrawCommand(coordinates, elements, regions, outlines, newPolygons);
 		command.execute();
 		undoCommands.push(command);
