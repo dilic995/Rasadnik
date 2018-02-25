@@ -13,7 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="650.0" prefWidth="650.0" stylesheets="@../../../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.plants.controller.AddPlantController">
+<AnchorPane prefHeight="650.0" prefWidth="650.0" stylesheets="catalogue.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.plants.controller.AddPlantController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" style="-fx-font-size: 25;" text="Dodavanje biljke" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="10.0" />
       <Separator layoutX="16.0" layoutY="45.0" prefWidth="200.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="50.0" />
@@ -30,7 +30,7 @@
       <TextField fx:id="txtCommonName" layoutX="123.0" layoutY="146.0" prefHeight="25.0" prefWidth="230.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="247.0" AnchorPane.topAnchor="146.0" />
       <Label layoutX="28.0" layoutY="193.0" text="Datum sađenja:" />
       <DatePicker fx:id="dpDateFrom" layoutX="123.0" layoutY="189.0" AnchorPane.leftAnchor="123.0" AnchorPane.topAnchor="189.0" />
-      <Label alignment="CENTER_RIGHT" layoutX="51.0" layoutY="246.0" prefHeight="20.0" prefWidth="41.0" styleClass="prompt-label" stylesheets="@../../../../../../../css/catalogue.css" text="Od:" AnchorPane.topAnchor="246.0" />
+      <Label alignment="CENTER_RIGHT" layoutX="51.0" layoutY="246.0" prefHeight="20.0" prefWidth="41.0" styleClass="prompt-label" stylesheets="catalogue.css" text="Od:" AnchorPane.topAnchor="246.0" />
       <TextField fx:id="txtFrom" layoutX="101.0" layoutY="244.0" prefHeight="25.0" prefWidth="60.0" AnchorPane.topAnchor="244.0" />
       <Label layoutX="166.0" layoutY="247.0" styleClass="prompt-label" text="cm" AnchorPane.topAnchor="247.0" />
       <Label alignment="CENTER_RIGHT" layoutX="51.0" layoutY="281.0" prefHeight="20.0" prefWidth="41.0" styleClass="prompt-label" text="Do:" AnchorPane.topAnchor="281.0" />

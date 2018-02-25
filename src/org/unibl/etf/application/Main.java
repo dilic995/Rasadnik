@@ -22,7 +22,6 @@ public class Main extends Application {
 			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println(e.getCause());
 			new ErrorLogger().log(e);
 		}
 	}

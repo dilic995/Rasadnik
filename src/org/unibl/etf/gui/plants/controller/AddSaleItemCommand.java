@@ -26,7 +26,6 @@ public class AddSaleItemCommand implements Command {
 
 	@Override
 	public void execute() {
-		System.out.println(this.item);
 		region.setNumberOfPlants(region.getNumberOfPlants() - this.count);
 		boolean contains = false;
 		for (SaleItem itemInList : items) {
@@ -61,7 +60,6 @@ public class AddSaleItemCommand implements Command {
 				break;
 			}
 		}
-		System.out.println(this.item);
 		controller.displayInfo(region);
 		controller.refreshList();
 	}

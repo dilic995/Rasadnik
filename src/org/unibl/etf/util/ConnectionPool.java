@@ -1,5 +1,6 @@
 package org.unibl.etf.util;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -50,14 +51,9 @@ public class ConnectionPool {
 	}
 
 	private void readConfiguration() {
-		/*
-		 * System.out.println(System.getProperty("user.dir")); ResourceBundle bundle =
-		 * PropertyResourceBundle
-		 * 
-		 * .getBundle("resources.config.properties");
-		 */
+		
 		try {
-			InputStream in = this.getClass().getResourceAsStream("/org/unibl/etf/util/config.properties");
+			InputStream in = new FileInputStream("./resources/config.properties");
 			Properties bundle = new Properties();
 
 			bundle.load(in);

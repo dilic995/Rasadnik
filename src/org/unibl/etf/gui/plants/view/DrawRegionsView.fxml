@@ -23,7 +23,7 @@
 <AnchorPane fx:id="parentPane" maxHeight="-Infinity"
 	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
 	onMouseClicked="#click" prefHeight="700.0" prefWidth="1200.0"
-	stylesheets="@../../../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/8.0.111"
+	stylesheets="catalogue.css" xmlns="http://javafx.com/javafx/8.0.111"
 	xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.plants.controller.DrawRegionsController">
 	<children>
 		<AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="200.0"
