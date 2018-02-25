@@ -13,12 +13,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.Alert.AlertType;
 
 public class FirstLoginController extends BaseController {
 	@FXML
@@ -53,7 +50,7 @@ public class FirstLoginController extends BaseController {
 		String checkPassword = txtProvjeraLozinke.getText();
 		Boolean result = check(newPassword, checkPassword, status);
 		if (result) {
-			DisplayUtil.showMessageDialog("Uspjesno ste setovali lozinku");
+			DisplayUtil.showMessageDialog("Uspješno ste postavili lozinku");
 			DisplayUtil.close(btnSacuvajLozinku);
 		}
 	}
@@ -70,7 +67,7 @@ public class FirstLoginController extends BaseController {
 			clear();
 			return true;
 		}
-		status.set("Loznika nije promjenjena pokusajte opet");
+		status.set("Loznika nije promijenjena pokušajte opet");
 		return false;
 	}
 

@@ -48,7 +48,6 @@ public class AddSaleItemCommand implements Command {
 
 	@Override
 	public void unexecute() {
-		//System.out.println(this.item);
 		region.setNumberOfPlants(region.getNumberOfPlants() + count);
 		for (Iterator<SaleItem> it = items.iterator(); it.hasNext();) {
 			SaleItem itemInList = it.next();
