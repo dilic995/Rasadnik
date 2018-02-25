@@ -20,7 +20,7 @@ public class Main extends Application {
 			// BaseController.changeScene("/org/unibl/etf/gui/tool/view/ToolView.fxml",
 			// primaryStage);
 			BaseController.changeScene("/org/unibl/etf/gui/login/view/LoginView.fxml", primaryStage);
-			primaryStage.getIcons().add(new Image(new FileInputStream("./resources/icon.ico")));
+			primaryStage.getIcons().add(new Image(new FileInputStream("./resources/icon.png")));
 			primaryStage.setResizable(false);
 			primaryStage.setTitle("Prijava");
 			primaryStage.show();
