@@ -56,7 +56,6 @@ public class AddBasisController extends BaseController {
 				lstPlants.getSelectionModel().selectedItemProperty().isNull().or(dpDate.valueProperty().isNull()));
 	}
 
-	// Event Listener on ListView[#lstPlants].onMouseClicked
 	@FXML
 	public void setImage(MouseEvent event) {
 		Plant plant = lstPlants.getSelectionModel().getSelectedItem();
@@ -65,7 +64,6 @@ public class AddBasisController extends BaseController {
 		}
 	}
 
-	// Event Listener on Button[#btnSave].onAction
 	@FXML
 	public void save(ActionEvent event) {
 		boolean ok = true;
@@ -78,6 +76,10 @@ public class AddBasisController extends BaseController {
 				String message = ResourceBundleManager.getString("insertNotOk");
 				if (DAOFactory.getInstance().getBasisDAO().insert(basis) > 0) {
 					message = ResourceBundleManager.getString("insertOk");
+					if(!plant.getOwned()) {
+						plant.setOwned(true);
+						DAOFactory.getInstance().getPlantDAO().update(plant);
+					}
 				}
 				DisplayUtil.showMessageDialog(message);
 			} else {

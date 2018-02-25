@@ -45,7 +45,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-// TODO svuda gdje se prikazuje slika napraviti da se prikazuje default image ako je slika null
 
 public class AddPlantController extends BaseController {
 
@@ -100,7 +99,6 @@ public class AddPlantController extends BaseController {
 		bindDisable();
 	}
 
-	// Event Listener on Button[#btnRemoveImage].onAction
 	@FXML
 	public void removeImage(ActionEvent event) {
 		imgPhoto.setImage(defaultImage);
@@ -124,7 +122,6 @@ public class AddPlantController extends BaseController {
 		}
 	}
 
-	// Event Listener on Button[#btnAddRatio].onAction
 	@FXML
 	public void addRatio(ActionEvent event) {
 		try {
@@ -168,7 +165,6 @@ public class AddPlantController extends BaseController {
 
 	}
 
-	// Event Listener on Button[#btnRemoveRatio].onAction
 	@FXML
 	public void removeRatio(ActionEvent event) {
 		PriceHeightRatio selected = lstRatios.getSelectionModel().getSelectedItem();
@@ -183,7 +179,6 @@ public class AddPlantController extends BaseController {
 		}
 	}
 
-	// Event Listener on Button[#btnSave].onAction
 	@FXML
 	public void save(ActionEvent event) {
 

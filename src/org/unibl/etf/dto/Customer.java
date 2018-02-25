@@ -101,9 +101,8 @@ public class Customer {
 	}
 
 	public String toString() {
-		
 
-		return firstName+" "+lastName;
+		return firstName + " " + lastName + ", " + address;
 	}
-	
+
 }

@@ -12,7 +12,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="643.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.sales.controller.SalesController">
+<AnchorPane prefHeight="643.0" prefWidth="800.0" stylesheets="@../../../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.sales.controller.SalesController">
 	<children>
 		<TableView fx:id="tblSales" layoutX="15.0" layoutY="60.0" onMouseClicked="#setItems" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="399.0" AnchorPane.topAnchor="60.0">
 			<columns>
@@ -81,8 +81,8 @@
       <Label layoutX="221.0" layoutY="331.0" text="Godina" AnchorPane.leftAnchor="203.0" />
       <Spinner fx:id="spinnerMonthPurchase" layoutX="133.0" layoutY="327.0" prefHeight="25.0" prefWidth="69.0" AnchorPane.leftAnchor="125.0" />
       <Spinner fx:id="spinnerYearPurchase" layoutX="283.0" layoutY="327.0" prefHeight="25.0" prefWidth="69.0" AnchorPane.leftAnchor="261.0" />
-      <Button fx:id="btnSearchSales" layoutX="348.0" layoutY="21.0" mnemonicParsing="false" onAction="#searchSale" text="Button" AnchorPane.leftAnchor="348.0" />
-      <Button fx:id="btnSearchPurchase" layoutX="348.0" layoutY="327.0" mnemonicParsing="false" onAction="#searchPurchase" text="Button" AnchorPane.leftAnchor="348.0" />
+      <Button id="search-button" fx:id="btnSearchSales" layoutX="348.0" layoutY="21.0" mnemonicParsing="false" onAction="#searchSale" AnchorPane.leftAnchor="348.0" />
+      <Button id="search-button" fx:id="btnSearchPurchase" layoutX="348.0" layoutY="327.0" mnemonicParsing="false" onAction="#searchPurchase" AnchorPane.leftAnchor="348.0" />
     
 	</children>
 </AnchorPane>

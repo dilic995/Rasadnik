@@ -62,14 +62,6 @@ public class BasesController extends BaseController {
 	@FXML
 	private TableColumn<ReproductionCuttingTableItem, Integer> colSuccessfulNum;
 	@FXML
-	private DatePicker dpDate;
-	@FXML
-	private TextField txtProducedNum;
-	@FXML
-	private TextField txtSuccessfulNum;
-	@FXML
-	private Button btnAddRep;
-	@FXML
 	private Button btnAddPlant;
 	@FXML
 	private Button btnEditPlant;
@@ -95,21 +87,21 @@ public class BasesController extends BaseController {
 		cbModes.setItems(cbItems);
 		cbModes.getSelectionModel().select(0);
 	}
-	
+
 	@FXML
 	public void addPlant(ActionEvent event) {
 		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
 				"org/unibl/etf/gui/plants/view/AddBasisView.fxml");
 		AnchorPane root = DisplayUtil.getAnchorPane(loader);
 		AddBasisController controller = DisplayUtil.<AddBasisController>getController(loader);
-		DisplayUtil.switchStage(root, 600, 350, true, "Dodavanje biljke u maticnjak", true);
+		DisplayUtil.switchStage(root, 600, 350, true, "Dodavanje biljke u matičnjak", true);
 		Basis basis = controller.getBasis();
 		if (basis != null) {
 			tblBases.getItems().add(new BasisTableItem(basis));
 			tblBases.refresh();
 		}
 	}
-	
+
 	@FXML
 	public void deletePlant(ActionEvent event) {
 		if (DisplayUtil.showConfirmationDialog("Da li ste sigurni?").equals(ButtonType.YES)) {
@@ -133,7 +125,7 @@ public class BasesController extends BaseController {
 			DisplayUtil.showMessageDialog(message);
 		}
 	}
-	
+
 	@FXML
 	public void editPlant(ActionEvent event) {
 		Basis basis = tblBases.getSelectionModel().getSelectedItem().getBasis();
@@ -142,13 +134,13 @@ public class BasesController extends BaseController {
 		AnchorPane root = DisplayUtil.getAnchorPane(loader);
 		EditBasisController controller = DisplayUtil.<EditBasisController>getController(loader);
 		controller.setBasis(basis);
-		DisplayUtil.switchStage(root, 250, 110, false, "Azuriranje biljke iz maticnjaka", true);
+		DisplayUtil.switchStage(root, 250, 110, false, "Ažuriranje biljke iz matičnjaka", true);
 		tblBases.getSelectionModel().getSelectedItem().setBasis(basis);
 		tblBases.getSelectionModel().getSelectedItem().setdate(basis.getPlantingDate());
 		displayInfo(basis);
 		tblBases.refresh();
 	}
-	
+
 	@FXML
 	public void load(ActionEvent event) {
 		populateTable(DAOFactory.getInstance().getBasisDAO().selectAll());
@@ -193,38 +185,12 @@ public class BasesController extends BaseController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@FXML
 	public void select(MouseEvent event) {
 		BasisTableItem selectedItem = tblBases.getSelectionModel().getSelectedItem();
 		if (selectedItem != null) {
 			displayInfo(selectedItem.getBasis());
-		}
-	}
-
-	@FXML
-	public void addRep(ActionEvent event) {
-		// TODO promjena na bazi - ne mora se unijeti koliko se primilo
-		// TODO provjera za datum i primilo < posijano
-		// TODO dodavanje na isti dan
-		try {
-			Basis basis = tblBases.getSelectionModel().getSelectedItem().getBasis();
-			String dateString = dpDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
-			Integer produced = Integer.parseInt(txtProducedNum.getText());
-			Integer takeARoot = Integer.parseInt(txtSuccessfulNum.getText());
-
-			ReproductionCutting cutting = new ReproductionCutting(basis, date, produced, takeARoot, basis.getBasisId(),
-					false);
-			if (DAOFactory.getInstance().getReproductionCuttingDAO().insert(cutting) > 0) {
-				tblSeeds.getItems().add(new ReproductionCuttingTableItem(cutting));
-				tblBases.refresh();
-				DisplayUtil.showMessageDialog("Dodavanje uspjesno!");
-			}
-		} catch (ParseException ex) {
-			ex.printStackTrace();
-		} catch (NumberFormatException ex) {
-			ex.printStackTrace();
 		}
 	}
 
@@ -271,8 +237,6 @@ public class BasesController extends BaseController {
 	}
 
 	private void bindDisable() {
-		btnAddRep.disableProperty().bind(tblBases.getSelectionModel().selectedItemProperty().isNull()
-				.or(dpDate.valueProperty().isNull().or(txtProducedNum.textProperty().isEmpty())));
 		BooleanBinding binding = tblBases.getSelectionModel().selectedItemProperty().isNull();
 		btnEditPlant.disableProperty().bind(binding);
 		btnDeletePlant.disableProperty().bind(binding);

@@ -1,185 +1,146 @@
 .toolbarPane{
-	-fx-pref-height: 40;
-	-fx-border-width: 2 0 1 0;
+	-fx-pref-height: 40.0;
+	-fx-border-width: 2.0 0.0 1.0 0.0;
 	-fx-border-color: #d9d9d9;
 }
 .statusBarPane{
-	-fx-pref-height: 30;
-	-fx-border-width: 1 0 0 0;
+	-fx-pref-height: 30.0;
+	-fx-border-width: 1.0 0.0 0.0 0.0;
 	-fx-border-color: #d9d9d9;
 }
 .buttonPane{
-	-fx-pref-height: 60;
-	-fx-border-width: 1 0 0 0;
+	-fx-pref-height: 60.0;
+	-fx-border-width: 1.0 0.0 0.0 0.0;
 	-fx-border-color: #d9d9d9;
 }
 #toolbar{
-	-fx-background-color: #ffffff;
+	-fx-background-color: #f5f5f0;
 }
 .tree-view{
-	-fx-border-width: 1 1 1 1;
+	-fx-border-width: 1.0 1.0 1.0 1.0;
 	-fx-border-color: #d9d9d9;
 }
-#plus-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
-	-fx-background-image: url('add.png');
-	-fx-background-size: 18px 18px;
+
+#plus-button, #delete-button, #left-button, #right-button, #pricelist-button, #select-button, #draw-tool, #save-button, #print-button,
+#edit-button, #clear-button, #search-button, #refresh-button{
+	-fx-min-height: 20.0px;
+    -fx-min-width: 23.0px;
+	-fx-background-color: #f5f5f0;
+	-fx-background-size: 18.0px 18.0px;
     -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
+	-fx-background-position: center 3.0px;
+}
+
+#plus-button{
+	-fx-background-image: url('add.png');
 }
 #left-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('left.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #pricelist-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('pricelist.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #select-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('select.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #draw-tool{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('draw.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #right-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('right.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #center-pane{
-	-fx-border-width: 1 0 1 1;
+	-fx-border-width: 1.0 0.0 1.0 1.0;
 	-fx-border-color: #d9d9d9;
-	-fx-background-color: #ffffff;
+	-fx-background-color: #f5f5f0;
 }
 #border-pane{
-	-fx-border-width: 1 1 1 1;
+	-fx-border-width: 1.0 1.0 1.0 1.0;
 	-fx-border-color: #d9d9d9;
 	-fx-background-color: #ffffff;
 }
 #delete-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('delete.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #save-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('save.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #print-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('print.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #edit-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('modify.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #search-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('search.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #refresh-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('refresh.png');
-	-fx-background-size: 18px 18px;
-    -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
 }
 #load-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
+	-fx-min-height: 20.0px;
+    -fx-min-width: 23.0px;
+	-fx-background-color: #f5f5f0;
 	-fx-background-image: url('load.png');
-	-fx-background-size: 25px 25px;
+	-fx-background-size: 25.0px 25.0px;
     -fx-background-repeat: no-repeat;
 }
 #clear-button{
-	-fx-min-height: 20px;
-    -fx-min-width: 23px;
-	-fx-background-color: #ffffff;
 	-fx-background-image: url('clear.png');
-	-fx-background-size: 18px 18px;
+}
+#catalogue-button, #basis-button, #sales-button, #tool-button, #employee-button, #regions-button, #logout-button{
+	-fx-min-height: 200.0px;
+    -fx-min-width: 200.0px;
+	-fx-background-color: #ffffff;
+	-fx-background-size: 128.0px 128.0px;
     -fx-background-repeat: no-repeat;
-	-fx-background-position: center 3px;
+	-fx-background-position: center 45.0px;
+}
+
+#catalogue-button{
+	-fx-background-image: url('catalogue.png');
+}
+
+#basis-button{
+	-fx-background-image: url('basis.png');
+}
+#sales-button{
+	-fx-background-image: url('sales.png');
+}
+#tool-button{
+	-fx-background-image: url('tool.png');
+}
+#employee-button{
+	-fx-background-image: url('worker.png');
+}
+#regions-button{
+	-fx-background-image: url('regions.png');
+}
+#logout-button{
+	-fx-background-image: url('logout.png');
 }
 #left-button:hover, #right-button:hover, #select-button:hover, #draw-tool:hover, #plus-button:hover, #delete-button:hover, #pricelist-button:hover, #edit-button:hover,
-#save-button:hover, #print-button:hover, #search-button:hover, #refresh-button:hover, #load-button:hover, #clear-button:hover{
+#save-button:hover, #print-button:hover, #search-button:hover, #refresh-button:hover, #load-button:hover, #clear-button:hover,
+#catalogue-button:hover, #basis-button:hover, #sales-button:hover, #tool-button:hover, #employee-button:hover, #regions-button:hover,
+#logout-button:hover{
 	-fx-background-color:  #b3d1ff;
 	-fx-cursor: hand;
 }
 .title{
-	-fx-font-size: 30;
+	-fx-font-size: 30.0;
 	-fx-font-family: Arial;
 	-fx-font-style: italic;
 }
 .common-name{
-	-fx-font-size: 18;
+	-fx-font-size: 18.0;
 	-fx-font-family: Arial;
 }
-/* .table-column{
-	-fx-background-color: #ffffff;
-	-fx-border-width: 1 1 1 1;
-	-fx-border-color: #d9d9d9;
-}*/
 .green-fill{
 	-fx-stroke: #2eb82e;
 	-fx-fill: #2eb82e;
 }
 .plantOwned{
-	-fx-font-size: 15;
+	-fx-font-size: 15.0;
 	-fx-font-family: Arial;
 	-fx-text-fill: #2eb82e;
 	-fx-font-weight: bold;
@@ -189,13 +150,13 @@
 	-fx-fill: #ff0000;
 }
 .plant-not-owned{
-	-fx-font-size: 15;
+	-fx-font-size: 15.0;
 	-fx-font-family: Arial;
 	-fx-text-fill: #ff0000;
 	-fx-font-weight: bold;
 }
 .prompt-label{
-	-fx-font-size: 14;
+	-fx-font-size: 14.0;
 }
 #pricelist-table .table-column{
 	-fx-alignment: center;
@@ -233,7 +194,38 @@
 	-fx-border-color: black;
 }
 .white-bck{
-	-fx-border-width: 1 1 1 1;
+	-fx-border-width: 1.0 1.0 1.0 1.0;
 	-fx-border-color: #d9d9d9;
 	-fx-background-color: #ffffff;
+}
+.tree-view {
+    -fx-background-color:#f5f5f0;
+}
+
+.tree-cell {
+    -fx-background-color:#f5f5f0;
+}
+
+.tree-view:focused .tree-cell:filled:selected {
+    -fx-background-color:#666666;
+}
+
+.tree-cell:filled:selected{
+    -fx-background-color:#bfbfbf;
+}
+.title-region{
+	-fx-alignment: center;
+	-fx-font-size: 14.0;
+	-fx-font-family: arial;
+	-fx-font-weight: bold;
+}
+.title-region-plant{
+	-fx-alignment: center;
+	-fx-font-weight: bold;
+	-fx-font-family: arial;
+}
+.region-plants-num{
+	-fx-font-size: 30.0;
+	-fx-font-weight: bold;
+	-fx-alignment: center;
 }

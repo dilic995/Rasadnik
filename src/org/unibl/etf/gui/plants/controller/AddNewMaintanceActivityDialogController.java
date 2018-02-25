@@ -37,7 +37,7 @@ public class AddNewMaintanceActivityDialogController extends BaseController {
     	item.setPlantMaintanceActivityId(null);
     	DAOFactory.getInstance().getPlantMaintanceActivityDAO().insert(item);
     	result = ButtonType.OK;
-    	DisplayUtil.showConfirmationDialog("Uspješno dodavanje.");
+    	DisplayUtil.showWarningDialog("Uspješno dodavanje.");
     	this.primaryStage.close();
     }
 
