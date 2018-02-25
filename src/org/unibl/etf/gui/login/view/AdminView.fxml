@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="252.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.login.controller.AdminController">
+<AnchorPane prefHeight="312.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.login.controller.AdminController">
    <children>
       <TableView fx:id="tblAccount" layoutX="14.0" layoutY="14.0" prefHeight="179.0" prefWidth="193.0">
         <columns>
@@ -26,5 +26,6 @@
             <Button fx:id="btnAddNewAccount" layoutX="154.0" layoutY="48.0" mnemonicParsing="false" onAction="#addNewAccount" prefHeight="39.0" prefWidth="193.0" text="Dodaj novog korisnika" />
          </children>
       </Pane>
+      <Button fx:id="btnRemoveAccount" layoutX="14.0" layoutY="259.0" mnemonicParsing="false" onAction="#deleteAccount" prefHeight="39.0" prefWidth="193.0" text="Obriši korisnika" />
    </children>
 </AnchorPane>

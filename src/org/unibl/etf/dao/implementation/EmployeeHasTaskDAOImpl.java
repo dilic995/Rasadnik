@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.unibl.etf.dao.interfaces.EmployeeHasTaskDAO;
 import org.unibl.etf.dto.EmployeeHasTask;
+import org.unibl.etf.util.ErrorLogger;
 
 public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 	//
@@ -70,6 +71,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -90,6 +92,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -120,6 +123,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -140,6 +144,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -170,6 +175,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -195,6 +201,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -228,6 +235,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -254,6 +262,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -279,6 +288,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -301,6 +311,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -323,6 +334,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -351,6 +363,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -373,6 +386,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -395,6 +409,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -418,6 +433,7 @@ public class EmployeeHasTaskDAOImpl implements EmployeeHasTaskDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

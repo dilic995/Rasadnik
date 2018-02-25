@@ -15,6 +15,7 @@ import org.unibl.etf.dto.Basis;
 import org.unibl.etf.dto.Plant;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
+import org.unibl.etf.util.ResourceBundleManager;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -74,13 +75,13 @@ public class AddBasisController extends BaseController {
 				String dateString = dpDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
 				basis = new Basis(null, date, plant.getPlantId(), plant, null, false);
-				String message = "Greska prilikom dodavanja";
+				String message = ResourceBundleManager.getString("insertNotOk");
 				if (DAOFactory.getInstance().getBasisDAO().insert(basis) > 0) {
-					message = "Dodavanje uspjesno";
+					message = ResourceBundleManager.getString("insertOk");
 				}
 				DisplayUtil.showMessageDialog(message);
 			} else {
-				lblError.setText("Datum ne moze biti poslije danasnjeg");
+				lblError.setText(ResourceBundleManager.getString("date"));
 				ok = false;
 			}
 		} catch (ParseException e) {

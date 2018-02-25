@@ -8,7 +8,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Customer;
 import org.unibl.etf.dto.Purchase;
@@ -20,7 +19,6 @@ import org.unibl.etf.dto.SaleTableItem;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
 import org.unibl.etf.util.ResourceBundleManager;
-
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +29,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -39,7 +39,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
 public class SalesController extends BaseController {
-	
+	@FXML
+	private Spinner<Integer> spinnerMonthSale;
+	@FXML
+	private Spinner<Integer> spinnerMonthPurchase;
+	@FXML
+	private Spinner<Integer> spinnerYearSale;
+	@FXML
+	private Spinner<Integer> spinnerYearPurchase;
 	@FXML
 	private Label lblError;
 	@FXML
@@ -104,14 +111,26 @@ public class SalesController extends BaseController {
 	private TextField txtDescription;
 	@FXML
 	private Button btnAddPurchase;
+	@FXML
+	private Button btnSearchSales;
 
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		buildTable();
+		populateTable();
+		populateTablePurchase();
+		prepareFields();
+	}
+	
 	@FXML
 	public void isplati(ActionEvent event) {
 		SaleTableItem sale = tblSales.getSelectionModel().getSelectedItem();
 		if (sale != null) {
-			sale.setPaidOff(!sale.getPaidOff());
-			DAOFactory.getInstance().getSaleDAO().update(sale.getSale());
-			tblSales.refresh();
+			if(!sale.getPaidOff()) {
+				sale.setPaidOff(true);
+				DAOFactory.getInstance().getSaleDAO().update(sale.getSale());
+				tblSales.refresh();
+			}
 		}
 	}
 
@@ -129,82 +148,17 @@ public class SalesController extends BaseController {
 		}
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		buildTable();
-		populateTable();
-		populateTablePurchase();
-		prepareFields();
-	}
-
-	private void prepareFields() {
-		lblError.setText("");
-		BooleanBinding bindExisting = datePicker.valueProperty().isNull().or(txtDescription.textProperty().isEmpty()
-				.or(txtPrice.textProperty().isEmpty().or(cbCustomer.valueProperty().isNull())));
-		BooleanBinding bindNew = datePicker.valueProperty().isNull()
-				.or(txtDescription.textProperty().isEmpty()
-						.or(txtPrice.textProperty().isEmpty().or(txtFirstName.textProperty().isEmpty()
-								.or(txtLastName.textProperty().isEmpty().or(txtAddress.textProperty().isEmpty())))));
-		btnAddPurchase.disableProperty()
-				.bind((rbNew.selectedProperty().and(bindNew)).or(rbExisting.selectedProperty().and(bindExisting)));
-		ToggleGroup group = new ToggleGroup();
-		rbExisting.setToggleGroup(group);
-		rbNew.setToggleGroup(group);
-		cbCustomer.disableProperty().bind(rbExisting.selectedProperty().not());
-		txtFirstName.disableProperty().bind(rbNew.selectedProperty().not());
-		txtLastName.disableProperty().bind(rbNew.selectedProperty().not());
-		txtAddress.disableProperty().bind(rbNew.selectedProperty().not());
-		Object[] pom = { true };
-		cbCustomer.setItems(FXCollections
-				.observableArrayList(DAOFactory.getInstance().getCustomerDAO().select("is_supplier=?", pom)));
-		cbCustomer.getSelectionModel().select(0);
-	}
-
-	private void buildTable() {
-		colDate.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("date"));
-		colPriceSale.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("price"));
-		colName.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("name"));
-		colAddress.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("address"));
-		colPaidOff.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("paidOff"));
-
-		colPlant.setCellValueFactory(new PropertyValueFactory<SaleItemTableItem, String>("plant"));
-		colHeight.setCellValueFactory(new PropertyValueFactory<SaleItemTableItem, String>("height"));
-		colCount.setCellValueFactory(new PropertyValueFactory<SaleItemTableItem, Integer>("count"));
-		colPriceItem.setCellValueFactory(new PropertyValueFactory<SaleItemTableItem, String>("price"));
-
-		colDatePurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("date"));
-		colPricePurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("price"));
-		colNamePurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("name"));
-		colAddressPurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("address"));
-		colPaidOffPurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("paidOff"));
-	}
-
-	private void populateTable() {
-		ObservableList<SaleTableItem> items = FXCollections.observableArrayList();
-		List<Sale> sales = DAOFactory.getInstance().getSaleDAO().selectAll();
-		for (Sale sale : sales) {
-			items.add(new SaleTableItem(sale));
-		}
-		tblSales.setItems(items);
-	}
-
-	private void populateTablePurchase() {
-		ObservableList<PurchaseTableItem> items = FXCollections.observableArrayList();
-		List<Purchase> purchases = DAOFactory.getInstance().getPurchaseDAO().selectAll();
-		for (Purchase purchase : purchases) {
-			items.add(new PurchaseTableItem(purchase));
-		}
-		tblPurchase.setItems(items);
-	}
 
 	// Event Listener on Button[#btnPaid].onAction
 	@FXML
 	public void payOffPurchase(ActionEvent event) {
 		PurchaseTableItem purchase = tblPurchase.getSelectionModel().getSelectedItem();
 		if (purchase != null) {
-			purchase.setPaidOff(!purchase.getPaidOff());
-			DAOFactory.getInstance().getPurchaseDAO().update(purchase.getPurchase());
-			tblPurchase.refresh();
+			if(!purchase.getPaidOff()) {
+				purchase.setPaidOff(!purchase.getPaidOff());
+				DAOFactory.getInstance().getPurchaseDAO().update(purchase.getPurchase());
+				tblPurchase.refresh();
+			}
 		}
 	}
 
@@ -213,8 +167,6 @@ public class SalesController extends BaseController {
 	public void previewDescription(ActionEvent event) {
 		PurchaseTableItem purchase = tblPurchase.getSelectionModel().getSelectedItem();
 		if (purchase != null) {
-			//Alert alert = new Alert(AlertType.INFORMATION, "Napomena: "+purchase.getPurchase().getDescription());
-			//alert.showAndWait();
 			DisplayUtil.showMessageDialog("Napomena: "+purchase.getPurchase().getDescription());
 		}
 	}
@@ -255,7 +207,41 @@ public class SalesController extends BaseController {
 		}
 
 	}
-
+	
+	public void searchSale() {
+		Integer month = spinnerMonthSale.getValue();
+		Integer year = spinnerYearSale.getValue();
+		List<Sale> sales = DAOFactory.getInstance().getSaleDAO().selectAll();
+		ObservableList<SaleTableItem> listSales = FXCollections.observableArrayList();
+		for(Sale s : sales) {
+			Date date = s.getDate();
+			LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			Integer monthSale = localDate.getMonthValue();
+			Integer yearSale = localDate.getYear();
+			if(monthSale.equals(month) && yearSale.equals(year)) 
+				listSales.add(new SaleTableItem(s));
+		}
+		tblSales.setItems(listSales);
+	}
+	
+	public void searchPurchase() {
+		Integer month = spinnerMonthPurchase.getValue();
+		Integer year = spinnerYearPurchase.getValue();
+		List<Purchase> purchases = DAOFactory.getInstance().getPurchaseDAO().selectAll();
+		ObservableList<PurchaseTableItem> listSales = FXCollections.observableArrayList();
+		for(Purchase s : purchases) {
+			Date date = s.getDate();
+			LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			Integer monthSale = localDate.getMonthValue();
+			Integer yearSale = localDate.getYear();
+			if(monthSale.equals(month) && yearSale.equals(year)) {
+				listSales.add(new PurchaseTableItem(s));
+			}
+		}
+		tblPurchase.setItems(listSales);
+		tblPurchase.refresh();
+	}
+	
 	private void clearTextFields() {
 		txtFirstName.setText("");
 		txtLastName.setText("");
@@ -263,5 +249,75 @@ public class SalesController extends BaseController {
 		txtDescription.setText("");
 		txtPrice.setText("");
 
+	}
+	
+	private void prepareFields() {
+		lblError.setText("");
+		BooleanBinding bindExisting = datePicker.valueProperty().isNull().or(txtDescription.textProperty().isEmpty()
+				.or(txtPrice.textProperty().isEmpty().or(cbCustomer.valueProperty().isNull())));
+		BooleanBinding bindNew = datePicker.valueProperty().isNull()
+				.or(txtDescription.textProperty().isEmpty()
+						.or(txtPrice.textProperty().isEmpty().or(txtFirstName.textProperty().isEmpty()
+								.or(txtLastName.textProperty().isEmpty().or(txtAddress.textProperty().isEmpty())))));
+		btnAddPurchase.disableProperty()
+				.bind((rbNew.selectedProperty().and(bindNew)).or(rbExisting.selectedProperty().and(bindExisting)));
+		ToggleGroup group = new ToggleGroup();
+		rbExisting.setToggleGroup(group);
+		rbNew.setToggleGroup(group);
+		cbCustomer.disableProperty().bind(rbExisting.selectedProperty().not());
+		txtFirstName.disableProperty().bind(rbNew.selectedProperty().not());
+		txtLastName.disableProperty().bind(rbNew.selectedProperty().not());
+		txtAddress.disableProperty().bind(rbNew.selectedProperty().not());
+		Object[] pom = { true };
+		cbCustomer.setItems(FXCollections
+				.observableArrayList(DAOFactory.getInstance().getCustomerDAO().select("is_supplier=?", pom)));
+		cbCustomer.getSelectionModel().select(0);
+		SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, 1);
+		SpinnerValueFactory<Integer> valueFactory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 12, 1);
+		SpinnerValueFactory<Integer> valueFactory1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(2010, 2018, 2014);
+		SpinnerValueFactory<Integer> valueFactory4 = new SpinnerValueFactory.IntegerSpinnerValueFactory(2010, 2018, 2014);
+		spinnerMonthPurchase.setValueFactory(valueFactory);
+		spinnerMonthSale.setValueFactory(valueFactory2);
+		spinnerYearPurchase.setValueFactory(valueFactory4);
+		spinnerYearSale.setValueFactory(valueFactory1);
+		
+		
+	}
+
+	private void buildTable() {
+		colDate.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("date"));
+		colPriceSale.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("price"));
+		colName.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("name"));
+		colAddress.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("address"));
+		colPaidOff.setCellValueFactory(new PropertyValueFactory<SaleTableItem, String>("paidOff"));
+
+		colPlant.setCellValueFactory(new PropertyValueFactory<SaleItemTableItem, String>("plant"));
+		colHeight.setCellValueFactory(new PropertyValueFactory<SaleItemTableItem, String>("height"));
+		colCount.setCellValueFactory(new PropertyValueFactory<SaleItemTableItem, Integer>("count"));
+		colPriceItem.setCellValueFactory(new PropertyValueFactory<SaleItemTableItem, String>("price"));
+
+		colDatePurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("date"));
+		colPricePurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("price"));
+		colNamePurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("name"));
+		colAddressPurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("address"));
+		colPaidOffPurchase.setCellValueFactory(new PropertyValueFactory<PurchaseTableItem, String>("paidOff"));
+	}
+
+	private void populateTable() {
+		ObservableList<SaleTableItem> items = FXCollections.observableArrayList();
+		List<Sale> sales = DAOFactory.getInstance().getSaleDAO().selectAll();
+		for (Sale sale : sales) {
+			items.add(new SaleTableItem(sale));
+		}
+		tblSales.setItems(items);
+	}
+
+	private void populateTablePurchase() {
+		ObservableList<PurchaseTableItem> items = FXCollections.observableArrayList();
+		List<Purchase> purchases = DAOFactory.getInstance().getPurchaseDAO().selectAll();
+		for (Purchase purchase : purchases) {
+			items.add(new PurchaseTableItem(purchase));
+		}
+		tblPurchase.setItems(items);
 	}
 }

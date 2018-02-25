@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.unibl.etf.dao.interfaces.PlantMaintanceActivityDAO;
 import org.unibl.etf.dto.PlantMaintanceActivity;
+import org.unibl.etf.util.ErrorLogger;
 
 public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO {
 	//
@@ -61,6 +62,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -81,6 +83,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -111,6 +114,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -131,6 +135,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -161,6 +166,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -186,6 +192,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -217,6 +224,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -240,6 +248,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -271,6 +280,7 @@ public class PlantMaintanceActivityDAOImpl implements PlantMaintanceActivityDAO 
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

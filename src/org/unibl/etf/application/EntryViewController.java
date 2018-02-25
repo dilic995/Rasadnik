@@ -11,6 +11,7 @@ import org.unibl.etf.gui.sales.controller.SalesController;
 import org.unibl.etf.gui.tool.controller.ToolViewController;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
+import org.unibl.etf.util.ErrorLogger;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,6 +42,7 @@ public class EntryViewController extends BaseController{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 		
 	}
@@ -57,6 +59,7 @@ public class EntryViewController extends BaseController{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 	}
 	// Event Listener on Button.onAction
@@ -72,6 +75,7 @@ public class EntryViewController extends BaseController{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 	}
 	
@@ -87,6 +91,7 @@ public class EntryViewController extends BaseController{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 	}
 	@FXML
@@ -101,6 +106,7 @@ public class EntryViewController extends BaseController{
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 	}
 	@Override

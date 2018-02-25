@@ -11,6 +11,7 @@ import java.util.List;
 import org.unibl.etf.dao.interfaces.RegionDAO;
 import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.Region;
+import org.unibl.etf.util.ErrorLogger;
 
 
 public class RegionDAOImpl implements RegionDAO {
@@ -96,6 +97,7 @@ public class RegionDAOImpl implements RegionDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -127,6 +129,7 @@ public class RegionDAOImpl implements RegionDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -147,6 +150,7 @@ public class RegionDAOImpl implements RegionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -177,6 +181,7 @@ public class RegionDAOImpl implements RegionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -202,6 +207,7 @@ public class RegionDAOImpl implements RegionDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -230,6 +236,7 @@ public class RegionDAOImpl implements RegionDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -255,6 +262,7 @@ public class RegionDAOImpl implements RegionDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -279,6 +287,7 @@ public class RegionDAOImpl implements RegionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -301,6 +310,7 @@ public class RegionDAOImpl implements RegionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -324,6 +334,7 @@ public class RegionDAOImpl implements RegionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -395,6 +406,7 @@ public class RegionDAOImpl implements RegionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

@@ -20,6 +20,7 @@ import org.unibl.etf.dto.Pricelist;
 import org.unibl.etf.dto.PricelistHasPlant;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.util.PDFCreator;
+import org.unibl.etf.util.ResourceBundleManager;
 
 import com.itextpdf.text.DocumentException;
 
@@ -83,7 +84,7 @@ public class PricelistController extends PlantBrowserController {
 
 	@FXML
 	public void save(ActionEvent event) {
-		if (DisplayUtil.showConfirmationDialog("Zelite li da sacuvate cjenovnik?").equals(ButtonType.YES)) {
+		if (DisplayUtil.showConfirmationDialog(ResourceBundleManager.getString("savePricelist")).equals(ButtonType.YES)) {
 			String message = "";
 			Pricelist pricelist = new Pricelist(null, Calendar.getInstance().getTime(), null, true, false);
 			if (DAOFactory.getInstance().getPricelistDAO().insert(pricelist) > 0) {
@@ -91,9 +92,9 @@ public class PricelistController extends PlantBrowserController {
 					DAOFactory.getInstance().getPricelistHasPlantDAO().insert(new PricelistHasPlant(pricelist, plant,
 							pricelist.getPricelistId(), plant.getPlantId(), false));
 				}
-				message = "Dodavanje uspjesno.";
+				message = ResourceBundleManager.getString("insertOk");
 			} else {
-				message = "Greska pri dodavanju.";
+				message = ResourceBundleManager.getString("insertNotOk");
 			}
 			DisplayUtil.showMessageDialog(message);
 		}
@@ -101,12 +102,12 @@ public class PricelistController extends PlantBrowserController {
 
 	@FXML
 	public void print(ActionEvent event) {
-		PDFCreator creator = new PDFCreator("./resources/cjenovnik_" + System.currentTimeMillis() + ".pdf");
+		PDFCreator creator = new PDFCreator(ResourceBundleManager.getString("pricelistPath") + System.currentTimeMillis() + ResourceBundleManager.getString("pdf"));
 		try {
 			creator.open();
 			creator.createPricelist(container.getPlants());
 			creator.close();
-			DisplayUtil.showMessageDialog("Stampanje zavrseno");
+			DisplayUtil.showMessageDialog(ResourceBundleManager.getString("printEnd"));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (DocumentException e) {

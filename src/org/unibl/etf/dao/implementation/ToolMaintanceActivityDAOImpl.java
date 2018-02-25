@@ -14,6 +14,7 @@ import java.util.List;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.ToolMaintanceActivityDAO;
 import org.unibl.etf.dto.ToolMaintanceActivity;
+import org.unibl.etf.util.ErrorLogger;
 
 import javafx.collections.FXCollections;
 
@@ -73,6 +74,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -93,6 +95,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -123,6 +126,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -143,6 +147,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -173,6 +178,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -197,6 +203,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -250,6 +257,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -274,6 +282,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -296,6 +305,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -324,6 +334,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -352,6 +363,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -380,6 +392,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -409,6 +422,7 @@ public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

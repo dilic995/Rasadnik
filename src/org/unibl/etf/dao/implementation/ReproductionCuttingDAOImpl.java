@@ -13,6 +13,7 @@ import java.util.List;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.ReproductionCuttingDAO;
 import org.unibl.etf.dto.ReproductionCutting;
+import org.unibl.etf.util.ErrorLogger;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
@@ -70,6 +71,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -90,6 +92,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -121,6 +124,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -141,6 +145,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -172,6 +177,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -197,6 +203,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -243,7 +250,8 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		} catch (SQLException e) {
 			if (e instanceof MySQLIntegrityConstraintViolationException) {
 				res = DBUtil.DUPLICATE_KEYS;
-			}
+			}else
+				new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -269,6 +277,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -293,6 +302,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -315,6 +325,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -338,6 +349,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -361,6 +373,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -384,6 +397,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
