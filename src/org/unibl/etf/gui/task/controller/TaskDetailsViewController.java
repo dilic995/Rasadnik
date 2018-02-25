@@ -165,10 +165,20 @@ public class TaskDetailsViewController extends BaseController {
 				task.getTaskId(), task, employeeTableItem.getEmployee().getEmployeeId(),
 				employeeTableItem.getEmployee(), false);
 		EngagementTableItem item = new EngagementTableItem(employeeHasTask);
-		tvEngagement.getItems().add(item);
 		int result = DAOFactory.getInstance().getEmployeeHasTaskDAO().insert(employeeHasTask);
-		if(result == 0)
+		if(result == 0) {
 			DAOFactory.getInstance().getEmployeeHasTaskDAO().update(employeeHasTask);
+			for(EngagementTableItem temp : tvEngagement.getItems()) {
+				if(temp.getId() == item.getId()) {
+					tvEngagement.getItems().remove(temp);
+					break;
+				}
+			}
+			tvEngagement.getItems().add(item);
+		}
+		else {
+			tvEngagement.getItems().add(item);
+		}
 		txtHourlyWage.clear();
 		dpDate.setValue(null);
 		tvEmployee.getSelectionModel().clearSelection();

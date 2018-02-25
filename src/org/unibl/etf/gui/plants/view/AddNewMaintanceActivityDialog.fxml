@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="180.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="org.unibl.etf.gui.plants.controller.AddNewMaintanceActivityDialogController">
+<AnchorPane prefHeight="180.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.plants.controller.AddNewMaintanceActivityDialogController">
    <children>
       <TextField fx:id="txtActivityName" layoutX="87.0" layoutY="85.0" prefHeight="31.0" prefWidth="290.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="85.0" />
       <Label layoutX="14.0" layoutY="14.0" text="Dodavanje aktivnosti" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0">
@@ -18,7 +17,7 @@
       </Label>
       <Separator layoutX="14.0" layoutY="49.0" prefHeight="7.0" prefWidth="328.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="50.0" />
       <Label layoutX="21.0" layoutY="90.0" text="Naziv:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="90.0" />
-      <Button fx:id="btnCancel" layoutX="311.0" layoutY="155.0" mnemonicParsing="false" onAction="#cancelAction" text="Otkažite" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-      <Button fx:id="btnAddNew" layoutX="228.0" layoutY="155.0" mnemonicParsing="false" onAction="#addNewAction" text="Dodajte" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="100.0" />
+      <Button fx:id="btnCancel" layoutX="311.0" layoutY="155.0" mnemonicParsing="false" onAction="#cancelAction" prefHeight="31.0" text="Otkažite" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <Button fx:id="btnAddNew" layoutX="265.0" layoutY="135.0" mnemonicParsing="false" onAction="#addNewAction" prefHeight="31.0" text="Dodajte" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="77.0" />
    </children>
 </AnchorPane>
