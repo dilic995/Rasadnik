@@ -280,7 +280,7 @@ public class TaskDetailsViewController extends BaseController {
 				variables.add(date);
 			}
 			if (dpDatumDo.getValue() != null) {
-				if (dpDatumDo.getValue() != null) {
+				if (dpDatumOd.getValue() != null) {
 					statement += " and";
 				}
 				statement += " date <= ?";

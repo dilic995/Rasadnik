@@ -157,8 +157,7 @@ public class EmployeeViewController extends BaseController implements Initializa
 		}
 		Employee newEmployee = new Employee(null, txtIme.getText(), txtPrezime.getText());
 		newEmployee.setDeleted(false);
-		int generatedId = DAOFactory.getInstance().getEmployeeDAO().insert(newEmployee);
-		newEmployee.setEmployeeId(generatedId);
+		DAOFactory.getInstance().getEmployeeDAO().insert(newEmployee);
 		
 		employeeList.add(new EmployeeTableItem(newEmployee)); 
 		

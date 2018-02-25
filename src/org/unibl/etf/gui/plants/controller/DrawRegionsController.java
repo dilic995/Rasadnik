@@ -425,7 +425,7 @@ public class DrawRegionsController extends BaseController {
 				variables.add(date);
 			}
 			if (dpDatumDoPretraga.getValue() != null) {
-				if (dpDatumDoPretraga.getValue() != null) {
+				if (dpDatumOdPretraga.getValue() != null) {
 					statement += " and";
 				}
 				statement += " date_to <= ?";
