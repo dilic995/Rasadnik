@@ -11,12 +11,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.ToolMaintanceActivityDAO;
 import org.unibl.etf.dto.ToolMaintanceActivity;
 import org.unibl.etf.util.ErrorLogger;
-
-import javafx.collections.FXCollections;
 
 public class ToolMaintanceActivityDAOImpl implements ToolMaintanceActivityDAO {
 	//

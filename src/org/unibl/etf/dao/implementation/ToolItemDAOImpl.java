@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.ToolItemDAO;
 import org.unibl.etf.dto.ToolItem;
 import org.unibl.etf.util.ErrorLogger;

@@ -32,8 +32,7 @@ public class EntryViewController extends BaseController{
 	public void logout(ActionEvent event) {
 		DisplayUtil.close(btnLogout);
 	}
-	
-	// Event Listener on Button.onAction
+
 	@FXML
 	public void showCatalogue(ActionEvent event) {
 		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
@@ -49,7 +48,7 @@ public class EntryViewController extends BaseController{
 		}
 		
 	}
-	// Event Listener on Button.onAction
+
 	@FXML
 	public void showBases(ActionEvent event) {
 		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
@@ -64,7 +63,7 @@ public class EntryViewController extends BaseController{
 			new ErrorLogger().log(e);
 		}
 	}
-	// Event Listener on Button.onAction
+
 	@FXML
 	public void showRegions(ActionEvent event) {
 		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),

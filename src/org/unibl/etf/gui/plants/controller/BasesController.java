@@ -118,9 +118,9 @@ public class BasesController extends BaseController {
 					item = tblBases.getSelectionModel().getSelectedItem().getBasis();
 				}
 				displayInfo(item);
-				message = "Brisanje uspjesno!";
+				message = "Brisanje uspješno!";
 			} else {
-				message = "Greska prilikom brisanja!";
+				message = "Greška prilikom brisanja!";
 			}
 			DisplayUtil.showMessageDialog(message);
 		}

@@ -53,7 +53,7 @@ public class EditBasisController extends BaseController {
 	// Event Listener on Button[#btnSave].onAction
 	@FXML
 	public void save(ActionEvent event) {
-		String message = "Doslo je do greske prilikom azuriranja.";
+		String message = "Došlo je do greške prilikom ažuriranja.";
 		boolean ok = true;
 		try {
 			if (dpDate.getValue().compareTo(LocalDate.now()) <= 0) {
@@ -61,10 +61,10 @@ public class EditBasisController extends BaseController {
 				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
 				basis.setPlantingDate(date);
 				if (DAOFactory.getInstance().getBasisDAO().update(basis) > 0) {
-					message = "Azuriranje uspjesno.";
+					message = "Ažuriranje uspješno.";
 				}
 			} else {
-				lblError.setText("Datum ne moze biti poslije danasnjeg");
+				lblError.setText("Datum ne može biti poslije današnjeg");
 				ok = false;
 			}
 		} catch (ParseException e) {
