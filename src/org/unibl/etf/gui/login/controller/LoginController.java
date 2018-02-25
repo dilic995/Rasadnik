@@ -76,7 +76,7 @@ public class LoginController extends BaseController {
 		FirstLoginController controller = DisplayUtil.<FirstLoginController>getController(loader);
 		controller.setAccount(account);
 		primaryStage.hide();
-		DisplayUtil.switchStage(root, 650, 600, true, "Promjenite lozinku", true);
+		DisplayUtil.switchStage(root, 400, 225, false, "Promjenite lozinku", true);
 		primaryStage.show();
 	}
 	public void mainForm() {
@@ -84,7 +84,7 @@ public class LoginController extends BaseController {
 				"org/unibl/etf/application/EntryView.fxml");
 		AnchorPane root = DisplayUtil.getAnchorPane(loader);
 		primaryStage.hide();
-		DisplayUtil.switchStage(root, 650, 600, true, "Glavna forma", true);
+		DisplayUtil.switchStage(root, 650, 600, false, "Glavna forma", true);
 		primaryStage.show();
 	}
 	public void adminForm() {
@@ -92,7 +92,7 @@ public class LoginController extends BaseController {
 				"org/unibl/etf/gui/login/view/AdminView.fxml");
 		AnchorPane root = DisplayUtil.getAnchorPane(loader);
 		primaryStage.hide();
-		DisplayUtil.switchStage(root, 650, 600, true, "Glavna forma", true);
+		DisplayUtil.switchStage(root, 346, 401, false, "Glavna forma", true);
 		primaryStage.show();
 	}
 	

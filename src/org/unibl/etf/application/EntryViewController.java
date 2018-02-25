@@ -8,6 +8,7 @@ import org.unibl.etf.gui.plants.controller.BasesController;
 import org.unibl.etf.gui.plants.controller.CatalogueController;
 import org.unibl.etf.gui.plants.controller.DrawRegionsController;
 import org.unibl.etf.gui.sales.controller.SalesController;
+import org.unibl.etf.gui.task.controller.EmployeeViewController;
 import org.unibl.etf.gui.tool.controller.ToolViewController;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
@@ -23,10 +24,13 @@ import javafx.scene.layout.BorderPane;
 public class EntryViewController extends BaseController{
 
 	@FXML
+	private Button btnEmployee;
+	
+	@FXML
 	private Button btnLogout;
 	@FXML
 	public void logout(ActionEvent event) {
-		
+		DisplayUtil.close(btnLogout);
 	}
 	
 	// Event Listener on Button.onAction
@@ -84,7 +88,7 @@ public class EntryViewController extends BaseController{
 		try {
 			root = (AnchorPane)loader.load();
 			SalesController controller = DisplayUtil.<SalesController>getController(loader);
-			DisplayUtil.switchStage(root, 800, 600, true, "Novčana sredstva", true);
+			DisplayUtil.switchStage(root, 800, 643, true, "Novčana sredstva", true);
 		} catch (IOException e) {
 			e.printStackTrace();
 			new ErrorLogger().log(e);
@@ -107,5 +111,19 @@ public class EntryViewController extends BaseController{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
+	}
+	@FXML
+	public void showEmployee(ActionEvent event) {
+		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
+				"org/unibl/etf/gui/task/view/EmployeeView.fxml");
+		AnchorPane root;
+		try {
+			root = (AnchorPane)loader.load();
+			EmployeeViewController controller = DisplayUtil.<EmployeeViewController>getController(loader);
+			DisplayUtil.switchStage(root, 1200, 800, true, "Pregled zaposlenih", true);
+		} catch (IOException e) {
+			e.printStackTrace();
+			new ErrorLogger().log(e);
+		}
 	}
 }

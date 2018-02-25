@@ -13,15 +13,16 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-		  BaseController.changeScene("/org/unibl/etf/application/EntryView.fxml", primaryStage);
+//		  BaseController.changeScene("/org/unibl/etf/application/EntryView.fxml", primaryStage);
 //			BaseController.changeScene("/org/unibl/etf/gui/tool/view/ToolView.fxml", primaryStage);
-//		  BaseController.changeScene("/org/unibl/etf/gui/login/view/LoginView.fxml", primaryStage);
+		  BaseController.changeScene("/org/unibl/etf/gui/login/view/LoginView.fxml", primaryStage);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println(e.getCause());
 			new ErrorLogger().log(e);
 		}
-		primaryStage.setResizable(true);
+		primaryStage.setResizable(false);
+		primaryStage.setTitle("Prijava");
 		primaryStage.show();
 
 	}

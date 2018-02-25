@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Basis;
+import org.unibl.etf.dto.Customer;
 import org.unibl.etf.dto.EmployeeHasTask;
 import org.unibl.etf.dto.MaintenancePlanItem;
 import org.unibl.etf.dto.Plan;
@@ -34,9 +35,12 @@ import org.unibl.etf.dto.Sale;
 import org.unibl.etf.dto.SaleItem;
 import org.unibl.etf.dto.Task;
 import org.unibl.etf.dto.TaskTableItem;
+import org.unibl.etf.gui.sales.controller.AddCustomerController;
+import org.unibl.etf.gui.sales.controller.ChooseCustomerController;
 import org.unibl.etf.gui.task.controller.TaskDetailsViewController;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.view.base.BaseController;
+import org.unibl.etf.util.ErrorLogger;
 import org.unibl.etf.util.ResourceBundleManager;
 
 import javafx.beans.binding.Bindings;
@@ -795,30 +799,49 @@ public class DrawRegionsController extends BaseController {
 
 	@FXML
 	public void addBuyer(ActionEvent event) {
-
+		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
+				"org/unibl/etf/gui/sales/view/ChooseCustomerView.fxml");
+		AnchorPane root;
+		try {
+			root = (AnchorPane) loader.load();
+			ChooseCustomerController controller = DisplayUtil.<ChooseCustomerController>getController(loader);
+			controller.setSale(sale);
+			DisplayUtil.switchStage(root, 400, 295, true, "Dodavanje kupca", true);
+		} catch (IOException e) {
+			e.printStackTrace();
+			new ErrorLogger().log(e);
+		}
 	}
 
 	@FXML
 	public void saveSale(ActionEvent event) {
-		BigDecimal price = BigDecimal.ZERO;
-		for (SaleItem item : lstSaleItems.getItems()) {
-			price = price.add(item.getPrice());
-		}
-		if (lstSaleItems.getItems().size() > 0) {
-			Sale sale = new Sale(null, Calendar.getInstance().getTime(), price, cbPaidOff.isSelected(), null, 1, false);
-			if (DAOFactory.getInstance().getSaleDAO().insert(sale) > 0) {
-				for (SaleItem item : lstSaleItems.getItems()) {
-					item.setSaleId(sale.getSaleId());
-					DAOFactory.getInstance().getSaleItemDAO().insert(item);
+		if (sale.getCustomerId() != null) {
+			BigDecimal price = BigDecimal.ZERO;
+			for (SaleItem item : lstSaleItems.getItems()) {
+				price = price.add(item.getPrice());
+			}
+			if (lstSaleItems.getItems().size() > 0) {
+				sale.setDate(Calendar.getInstance().getTime());
+				sale.setPrice(price);
+				sale.setPaidOff(cbPaidOff.isSelected());
+				sale.setDeleted(false);
+				if (DAOFactory.getInstance().getSaleDAO().insert(sale) > 0) {
+					for (SaleItem item : lstSaleItems.getItems()) {
+						item.setSaleId(sale.getSaleId());
+						DAOFactory.getInstance().getSaleItemDAO().insert(item);
+					}
+					for (Region reg : changedRegions) {
+						DAOFactory.getInstance().getRegionDAO().update(reg);
+					}
+					sale = new Sale();
 				}
 			}
-			for (Region reg : changedRegions) {
-				DAOFactory.getInstance().getRegionDAO().update(reg);
-			}
+			changedRegions.clear();
+			lstSaleItems.getItems().clear();
+			lstSaleItems.refresh();
+		} else {
+			lblErrorSale.setText("Niste dodali kupca");
 		}
-		changedRegions.clear();
-		lstSaleItems.getItems().clear();
-		lstSaleItems.refresh();
 	}
 
 	@FXML
@@ -980,4 +1003,5 @@ public class DrawRegionsController extends BaseController {
 	private Region selectedRegion;
 	private Set<Region> changedRegions = new HashSet<Region>();
 	private Plan currentPlan;
+	private Sale sale = new Sale();
 }
