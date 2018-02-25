@@ -17,7 +17,7 @@
    <children>
       <Label layoutX="34.0" layoutY="36.0" text="Odaberite tip alata ili mašine:" AnchorPane.leftAnchor="20.0" />
       <ComboBox fx:id="comboBoxTool" layoutX="201.0" layoutY="32.0" onAction="#selectToolItems" prefWidth="150.0" />
-      <Button fx:id="btnAddTool" layoutX="530.0" layoutY="32.0" mnemonicParsing="false" onAction="#addTool" text="+" AnchorPane.rightAnchor="197.0" />
+      <Button fx:id="btnAddTool" layoutX="530.0" layoutY="32.0" mnemonicParsing="false" onAction="#addTool" text="+" AnchorPane.leftAnchor="530.0" />
       <TableView fx:id="tableToolItems" layoutX="17.0" layoutY="144.0" onMouseClicked="#showActivities" prefHeight="246.0" prefWidth="354.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="378.0">
         <columns>
           <TableColumn fx:id="tableColumnId" prefWidth="75.0" text="Šifra" />
@@ -33,7 +33,7 @@
             <TableColumn fx:id="tableColumnAmount" prefWidth="108.0" text="Cijena" />
         </columns>
       </TableView>
-      <TextField fx:id="txtTool" layoutX="372.0" layoutY="32.0" AnchorPane.rightAnchor="231.0" />
+      <TextField fx:id="txtTool" layoutX="372.0" layoutY="32.0" AnchorPane.leftAnchor="372.0" />
       <Label layoutX="32.0" layoutY="80.0" text="Vrsta:" AnchorPane.leftAnchor="20.0" />
       <Label layoutX="149.0" layoutY="80.0" text="Količina:" />
       <Label fx:id="lblMachineTool" layoutX="61.0" layoutY="80.0" text="-" textFill="RED" />
@@ -50,10 +50,10 @@
       <DatePicker fx:id="datePicker" layoutX="484.0" layoutY="496.0" prefHeight="25.0" prefWidth="235.0" AnchorPane.rightAnchor="30.0" />
       <Label layoutX="359.0" layoutY="540.0" text="Iznos:" AnchorPane.rightAnchor="362.0" />
       <TextField fx:id="txtAmount" layoutX="402.0" layoutY="536.0" prefHeight="25.0" prefWidth="235.0" AnchorPane.rightAnchor="30.0" />
-      <Label layoutX="729.0" layoutY="540.0" text="KM" />
+      <Label layoutX="729.0" layoutY="540.0" text="KM" AnchorPane.rightAnchor="5.0" />
       <CheckBox fx:id="checkBoxService" layoutX="361.0" layoutY="577.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="248.0" text="Uključeno godišnje kompletno servisiranje" AnchorPane.rightAnchor="147.0" />
       <Label layoutX="361.0" layoutY="613.0" text="Opis:" AnchorPane.rightAnchor="364.0" />
-      <ScrollPane layoutX="405.0" layoutY="609.0">
+      <ScrollPane layoutX="405.0" layoutY="609.0" AnchorPane.rightAnchor="30.0">
          <content>
             <TextArea fx:id="txtDescription" prefHeight="64.0" prefWidth="315.0" />
          </content>
@@ -62,6 +62,6 @@
       <RadioButton fx:id="radioMachine" layoutX="373.0" layoutY="72.0" mnemonicParsing="false" text="Mašina" />
       <RadioButton fx:id="radioTool" layoutX="446.0" layoutY="72.0" mnemonicParsing="false" text="Alat" />
       <Button fx:id="btnDeleteActivity" layoutX="668.0" layoutY="401.0" mnemonicParsing="false" onAction="#deleteActivity" text="Obrišite aktivnost" AnchorPane.rightAnchor="20.0" />
-      <Label fx:id="lblError" layoutX="405.0" layoutY="690.0" prefHeight="17.0" prefWidth="175.0" text="Label" textFill="RED" AnchorPane.rightAnchor="172.0" />
+      <Label fx:id="lblError" layoutX="405.0" layoutY="690.0" prefHeight="17.0" prefWidth="317.0" text="Label" textFill="RED" AnchorPane.rightAnchor="30.0" />
    </children>
 </AnchorPane>
