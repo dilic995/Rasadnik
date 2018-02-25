@@ -134,7 +134,7 @@ public class BasesController extends BaseController {
 		AnchorPane root = DisplayUtil.getAnchorPane(loader);
 		EditBasisController controller = DisplayUtil.<EditBasisController>getController(loader);
 		controller.setBasis(basis);
-		DisplayUtil.switchStage(root, 250, 110, false, "Ažuriranje biljke iz matičnjaka", true);
+		DisplayUtil.switchStage(root, 250, 110, false, "AÅ¾uriranje biljke iz matiÄ�njaka", true);
 		tblBases.getSelectionModel().getSelectedItem().setBasis(basis);
 		tblBases.getSelectionModel().getSelectedItem().setdate(basis.getPlantingDate());
 		displayInfo(basis);

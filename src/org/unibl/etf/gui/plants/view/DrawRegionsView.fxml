@@ -83,9 +83,9 @@
 					<content>
 						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
 							<children>
-								<ListView fx:id="lstActivePlans" layoutX="14.0" layoutY="141.0" onMouseClicked="#selectActive" prefHeight="132.0" prefWidth="372.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="141.0" />
-								<ListView fx:id="lstDonePlans" layoutX="14.0" layoutY="343.0" onMouseClicked="#selectDone" prefHeight="134.0" prefWidth="372.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="343.0" />
-								<TableView fx:id="tblTasks" layoutX="14.0" layoutY="532.0" prefHeight="172.0" prefWidth="372.0" AnchorPane.bottomAnchor="57.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+								<ListView fx:id="lstActivePlans" layoutX="14.0" layoutY="129.0" onMouseClicked="#selectActive" prefHeight="90.0" prefWidth="372.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="129.0" />
+								<ListView fx:id="lstDonePlans" layoutX="14.0" layoutY="246.0" onMouseClicked="#selectDone" prefHeight="100.0" prefWidth="372.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="246.0" />
+								<TableView fx:id="tblTasks" layoutX="14.0" layoutY="388.0" prefHeight="136.0" prefWidth="375.0" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="388.0">
 									<columns>
 										<TableColumn fx:id="colActivity" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" text="Aktivnost" />
 										<TableColumn fx:id="colDateFrom" prefWidth="75.0" text="Datum od" />
@@ -99,25 +99,25 @@
 										<Insets />
 									</opaqueInsets>
 								</TableView>
-								<Button fx:id="btnZavrsiAktivnost" layoutX="250.0" layoutY="466.0" mnemonicParsing="false" onAction="#taskSetDone" text="Završite aktivnost" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-								<Button fx:id="btnAktivirajAktivnost" layoutX="93.0" layoutY="466.0" mnemonicParsing="false" onAction="#taskSetUndone" text="Aktivirajte aktivnost" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="157.0" />
-								<Button fx:id="btnDetalji" layoutX="14.0" layoutY="466.0" mnemonicParsing="false" onAction="#taskDetails" prefHeight="31.0" prefWidth="70.0" text="Detalji" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="316.0" />
-								<Button fx:id="btnZakljucitePlan" layoutX="270.0" layoutY="280.0" mnemonicParsing="false" onAction="#setPlanDone" text="Zaključite plan" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="280.0" />
-								<Button fx:id="btnObrisitePlan" layoutX="157.0" layoutY="280.0" mnemonicParsing="false" onAction="#deletePlan" text="Obrišite plan" AnchorPane.rightAnchor="138.0" AnchorPane.topAnchor="280.0">
+								<Button fx:id="btnZavrsiAktivnost" layoutX="280.0" layoutY="527.0" mnemonicParsing="false" onAction="#taskSetDone" prefHeight="31.0" text="Završite aktivnost" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="14.0" />
+								<Button fx:id="btnAktivirajAktivnost" layoutX="158.0" layoutY="527.0" mnemonicParsing="false" onAction="#taskSetUndone" prefHeight="31.0" text="Aktivirajte aktivnost" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="125.0" />
+								<Button fx:id="btnDetalji" layoutX="106.0" layoutY="527.0" mnemonicParsing="false" onAction="#taskDetails" prefHeight="31.0" text="Detalji" AnchorPane.bottomAnchor="13.0" AnchorPane.rightAnchor="247.0" />
+								<Button fx:id="btnZakljucitePlan" layoutX="297.0" layoutY="95.0" mnemonicParsing="false" onAction="#setPlanDone" prefHeight="31.0" text="Zaključite plan" AnchorPane.rightAnchor="13.0" AnchorPane.topAnchor="95.0" />
+								<Button fx:id="btnObrisitePlan" layoutX="211.0" layoutY="95.0" mnemonicParsing="false" onAction="#deletePlan" prefHeight="31.0" text="Obrišite plan" AnchorPane.rightAnchor="108.0" AnchorPane.topAnchor="95.0">
 									<opaqueInsets>
 										<Insets />
 									</opaqueInsets>
 								</Button>
-								<ComboBox fx:id="cbSearchCategory" layoutX="236.0" layoutY="488.0" onAction="#filterTasks" prefWidth="150.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="488.0" />
-								<Label layoutX="14.0" layoutY="493.0" text="Filtriranje po aktivnostima:" />
-								<DatePicker fx:id="dpDatumOdPretraga" layoutX="66.0" layoutY="22.0" prefHeight="31.0" prefWidth="222.0" AnchorPane.leftAnchor="66.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="22.0" />
-								<DatePicker fx:id="dpDatumDoPretraga" layoutX="66.0" layoutY="55.0" prefHeight="31.0" prefWidth="222.0" AnchorPane.leftAnchor="66.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="55.0" />
-								<RadioButton fx:id="rbAktivni" layoutX="14.0" layoutY="118.0" mnemonicParsing="false" text="Aktivni planovi" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="118.0" />
-								<RadioButton fx:id="rbZakljuceni" layoutX="14.0" layoutY="322.0" mnemonicParsing="false" text="Zaključeni planovi" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="322.0" />
-								<Label layoutX="14.0" layoutY="27.0" text="Od:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="27.0" />
-								<Label layoutX="15.0" layoutY="60.0" text="Do:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="60.0" />
-								<Button fx:id="btnPretrazitePlanove" layoutX="300.0" layoutY="55.0" mnemonicParsing="false" onAction="#pretragaPlanova" prefHeight="31.0" prefWidth="83.0" text="Pretražite" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="55.0" />
-								<Button fx:id="osvjezavanjePlanova" layoutX="300.0" layoutY="22.0" mnemonicParsing="false" onAction="#refreshTabOdrzavanje" prefHeight="31.0" prefWidth="83.0" text="Osvježite" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="22.0" />
+								<ComboBox fx:id="cbSearchCategory" layoutX="239.0" layoutY="357.0" onAction="#filterTasks" prefWidth="150.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="357.0" />
+								<Label layoutX="14.0" layoutY="362.0" text="Filtriranje po aktivnostima:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="362.0" />
+								<DatePicker fx:id="dpDatumOdPretraga" layoutX="66.0" layoutY="12.0" prefHeight="31.0" prefWidth="222.0" AnchorPane.leftAnchor="66.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="12.0" />
+								<DatePicker fx:id="dpDatumDoPretraga" layoutX="66.0" layoutY="45.0" prefHeight="31.0" prefWidth="222.0" AnchorPane.leftAnchor="66.0" AnchorPane.rightAnchor="112.0" AnchorPane.topAnchor="45.0" />
+								<RadioButton fx:id="rbAktivni" layoutX="14.0" layoutY="106.0" mnemonicParsing="false" text="Aktivni planovi" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="106.0" />
+								<RadioButton fx:id="rbZakljuceni" layoutX="14.0" layoutY="225.0" mnemonicParsing="false" text="Zaključeni planovi" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="225.0" />
+								<Label layoutX="14.0" layoutY="17.0" text="Od:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="17.0" />
+								<Label layoutX="15.0" layoutY="50.0" text="Do:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="50.0" />
+								<Button fx:id="btnPretrazitePlanove" layoutX="300.0" layoutY="45.0" mnemonicParsing="false" onAction="#pretragaPlanova" prefHeight="31.0" prefWidth="83.0" text="Pretražite" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="45.0" />
+								<Button fx:id="osvjezavanjePlanova" layoutX="300.0" layoutY="12.0" mnemonicParsing="false" onAction="#refreshTabOdrzavanje" prefHeight="31.0" prefWidth="83.0" text="Osvježite" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="17.0" AnchorPane.topAnchor="12.0" />
 							</children>
 						</AnchorPane>
 					</content>
@@ -130,21 +130,21 @@
 								<Label layoutX="14.0" layoutY="67.0" text="Planirani početak:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="67.0" />
 								<Label layoutX="14.0" layoutY="103.0" text="Planirani završetak:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="103.0" />
 								<TextField fx:id="txtPlanName" layoutX="164.0" layoutY="25.0" prefHeight="31.0" prefWidth="218.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="25.0" />
-								<DatePicker fx:id="dpPlanDateTo" layoutX="164.0" layoutY="62.0" prefHeight="31.0" prefWidth="218.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="98.0" />
 								<DatePicker fx:id="dpPlanDateFrom" layoutX="169.0" layoutY="62.0" prefHeight="31.0" prefWidth="218.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="62.0" />
+								<DatePicker fx:id="dpPlanDateTo" layoutX="164.0" layoutY="62.0" prefHeight="31.0" prefWidth="218.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="98.0" />
 								<Label layoutX="14.0" layoutY="188.0" text="Aktivnost:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="188.0" />
 								<Label layoutX="14.0" layoutY="230.0" text="Planirani početak:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="230.0" />
 								<Separator layoutX="14.0" layoutY="160.0" prefHeight="5.0" prefWidth="372.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="160.0" />
-								<DatePicker fx:id="dpTaskDateFrom" layoutX="164.0" layoutY="225.0" prefHeight="31.0" prefWidth="218.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="225.0" />
 								<ComboBox fx:id="cbActivity" layoutX="164.0" layoutY="183.0" prefHeight="31.0" prefWidth="188.0" AnchorPane.rightAnchor="44.0" AnchorPane.topAnchor="183.0" />
-								<Button fx:id="btnDodajAktivnost" layoutX="244.0" layoutY="413.0" mnemonicParsing="false" onAction="#addTaskInPlan" text="Dodajte aktivnost" AnchorPane.bottomAnchor="69.0" AnchorPane.rightAnchor="14.0" />
-								<Label layoutX="14.0" layoutY="270.0" text="Odabrani region:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="270.0" />
-								<Label fx:id="lblChosedRegion" layoutX="164.0" layoutY="270.0" prefHeight="21.0" prefWidth="217.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="270.0" />
-								<Button fx:id="btnDodajPlan" layoutX="275.0" layoutY="466.0" mnemonicParsing="false" onAction="#addPlan" text="Dodajte plan" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-								<Separator layoutX="14.0" layoutY="451.0" prefHeight="4.0" prefWidth="370.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+								<Button fx:id="btnAddMaintanceActivity" layoutX="359.0" layoutY="183.0" mnemonicParsing="false" onAction="#addMaintanceActivity" prefHeight="31.0" prefWidth="30.0" text="+" />
+								<DatePicker fx:id="dpTaskDateFrom" layoutX="164.0" layoutY="225.0" prefHeight="31.0" prefWidth="218.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="225.0" />
 								<ListView fx:id="lstChosedTasks" layoutX="14.0" layoutY="300.0" prefHeight="101.0" prefWidth="368.0" AnchorPane.bottomAnchor="110.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="300.0" />
-								<Button fx:id="btnUkloniAktivnost" layoutX="99.0" layoutY="411.0" mnemonicParsing="false" onAction="#deleteTaskFromPlan" text="Uklonite aktivnost" AnchorPane.bottomAnchor="69.0" AnchorPane.rightAnchor="161.0" />
-								<Button fx:id="btnAddMaintanceActivity" layoutX="356.0" layoutY="183.0" mnemonicParsing="false" onAction="#addMaintanceActivity" text="+" />
+								<Button fx:id="btnDodajAktivnost" layoutX="244.0" layoutY="413.0" mnemonicParsing="false" onAction="#addTaskInPlan" prefHeight="31.0" text="Dodajte aktivnost" AnchorPane.bottomAnchor="69.0" AnchorPane.rightAnchor="14.0" />
+								<Button fx:id="btnUkloniAktivnost" layoutX="167.0" layoutY="471.0" mnemonicParsing="false" onAction="#deleteTaskFromPlan" prefHeight="31.0" text="Uklonite aktivnost" AnchorPane.bottomAnchor="69.0" AnchorPane.rightAnchor="124.0" />
+								<Button fx:id="btnDodajPlan" layoutX="275.0" layoutY="466.0" mnemonicParsing="false" onAction="#addPlan" prefHeight="31.0" text="Dodajte plan" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+								<Label layoutX="14.0" layoutY="270.0" text="Odabrani region:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="270.0" />
+								<Label fx:id="lblChosedRegion" layoutX="172.0" layoutY="262.0" prefHeight="31.0" prefWidth="217.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="262.0" />
+								<Separator layoutX="14.0" layoutY="451.0" prefHeight="4.0" prefWidth="370.0" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
 							</children>
 						</AnchorPane>
 					</content>

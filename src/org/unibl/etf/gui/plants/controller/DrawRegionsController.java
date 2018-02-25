@@ -658,6 +658,7 @@ public class DrawRegionsController extends BaseController {
 			stage.setScene(scene);
 			stage.setTitle("Dodavanje aktivnosti");
 			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
 			stage.showAndWait();
 			if (control.getResult().equals(ButtonType.OK)) {
 				initializeComboBox();
@@ -890,7 +891,9 @@ public class DrawRegionsController extends BaseController {
 		dpPlanDateFrom.setConverter(DisplayUtil.datePickerConverter());
 		dpPlanDateTo.setConverter(DisplayUtil.datePickerConverter());
 		dpTaskDateFrom.setConverter(DisplayUtil.datePickerConverter());
-
+		dpDate.setConverter(DisplayUtil.datePickerConverter());
+		dpDatumDoPretraga.setConverter(DisplayUtil.datePickerConverter());
+		dpDatumOdPretraga.setConverter(DisplayUtil.datePickerConverter());
 	}
 
 	public void updateRegionLabel() {
