@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.Basis;
-import org.unibl.etf.dto.Customer;
 import org.unibl.etf.dto.EmployeeHasTask;
 import org.unibl.etf.dto.MaintenancePlanItem;
 import org.unibl.etf.dto.Plan;
@@ -35,7 +34,6 @@ import org.unibl.etf.dto.Sale;
 import org.unibl.etf.dto.SaleItem;
 import org.unibl.etf.dto.Task;
 import org.unibl.etf.dto.TaskTableItem;
-import org.unibl.etf.gui.sales.controller.AddCustomerController;
 import org.unibl.etf.gui.sales.controller.ChooseCustomerController;
 import org.unibl.etf.gui.task.controller.TaskDetailsViewController;
 import org.unibl.etf.gui.util.DisplayUtil;

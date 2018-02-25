@@ -9,8 +9,6 @@ import java.util.List;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.DecimalDV;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
@@ -29,7 +27,7 @@ public class ActivityTableItem {
 	private DoubleProperty hourlyWage;
 	private DoubleProperty payment;
 	private BooleanProperty paidOff;
-	
+
 	public ActivityTableItem() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -46,88 +44,104 @@ public class ActivityTableItem {
 		hourlyWage = new SimpleDoubleProperty(task.getHourlyWage().doubleValue());
 		payment = new SimpleDoubleProperty();
 		paidOff = new SimpleBooleanProperty(task.getPaidOff());
-		
+
 		payment.bind(hours.multiply(hourlyWage));
 	}
-	
-	
-	//properties
+
+	// properties
 	public IntegerProperty regionProperty() {
 		return region;
 	}
+
 	public StringProperty dateProperty() {
 		return date;
 	}
+
 	public StringProperty activityProperty() {
 		return activity;
 	}
-	
-	
-	//geteri
+
+	// geteri
 	public EmployeeHasTask getTask() {
 		return task;
 	}
+
 	public Integer getRegion() {
 		return region.getValue();
 	}
+
 	public String getDate() {
 		return date.getValue();
 	}
+
 	public String getActivity() {
 		return activity.getValue();
 	}
+
 	public Integer getHours() {
 		return hours.getValue();
 	}
+
 	public Double getHourlyWage() {
 		return hourlyWage.getValue();
 	}
+
 	public Double getPayment() {
 		return payment.getValue();
 	}
+
 	public Boolean getPaidOff() {
 		return paidOff.getValue();
 	}
-	
-	//seteri
+
+	// seteri
 	public void setTask(EmployeeHasTask task) {
 		this.task = task;
 	}
+
 	public void setRegion(Integer region) {
 		this.region.set(region);
 	}
+
 	public void setDate(String date) {
 		this.date.set(date);
 	}
+
 	public void setActivity(String activity) {
 		this.activity.set(activity);
 	}
+
 	public void setHours(Integer hours) {
 		this.task.setHours(hours);
 		this.hours.set(hours);
 	}
+
 	public void setHourlyWage(Double hourlyWage) {
 		this.task.setHourlyWage(BigDecimal.valueOf(hourlyWage));
 		this.hourlyWage.set(hourlyWage);
 	}
+
 	public void setPayment(Double payment) {
 		this.payment.set(payment);
 	}
+
 	public void setPaidOff(Boolean paidOff) {
 		this.task.setPaidOff(paidOff);
 		this.paidOff.set(paidOff);
 	}
-	
+
 	public void update() throws DAOException {
 		DAOFactory.getInstance().getEmployeeHasTaskDAO().update(task);
 	}
-	
+
 	public static List<ActivityTableItem> convert(List<EmployeeHasTask> list) {
 		List<ActivityTableItem> retVal = new ArrayList<>();
-		for(EmployeeHasTask task: list) {
-			retVal.add(new ActivityTableItem(task));
+		for (EmployeeHasTask task : list) {
+			if (task.getTask() != null) {
+				retVal.add(new ActivityTableItem(task));
+			}
 		}
 		return retVal;
 	}
-	
-}	
+
+}
