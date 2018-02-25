@@ -109,7 +109,6 @@ public class EntryViewController extends BaseController{
 	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
 	}
 	@FXML
 	public void showEmployee(ActionEvent event) {

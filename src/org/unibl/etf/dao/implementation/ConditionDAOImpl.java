@@ -128,7 +128,7 @@ public class ConditionDAOImpl implements ConditionDAO {
 		ResultSet rs = null;
 
 		try {
-			System.out.println(DBUtil.select(tableName, allColumns));
+			DBUtil.select(tableName, allColumns);
 			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns));
 			rs = ps.executeQuery();
 
