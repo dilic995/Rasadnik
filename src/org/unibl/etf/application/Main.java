@@ -17,11 +17,11 @@ public class Main extends Application {
 		try {
 			// BaseController.changeScene("/org/unibl/etf/application/EntryView.fxml",
 			// primaryStage);
-			// BaseController.changeScene("/org/unibl/etf/gui/tool/view/ToolView.fxml",
-			// primaryStage);
-			BaseController.changeScene("/org/unibl/etf/gui/login/view/LoginView.fxml", primaryStage);
-			primaryStage.getIcons().add(new Image(new FileInputStream("./resources/icon.ico")));
-			primaryStage.setResizable(false);
+			 BaseController.changeScene("/org/unibl/etf/gui/tool/view/ToolView.fxml",
+			 primaryStage);
+		//	BaseController.changeScene("/org/unibl/etf/gui/login/view/LoginView.fxml", primaryStage);
+		//	primaryStage.getIcons().add(new Image(new FileInputStream("./resources/icon.ico")));
+		//	primaryStage.setResizable(false);
 			primaryStage.setTitle("Prijava");
 			primaryStage.show();
 		} catch (IOException e) {
