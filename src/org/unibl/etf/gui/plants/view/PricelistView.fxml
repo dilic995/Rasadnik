@@ -11,76 +11,43 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane stylesheets="@../../../../../../../css/catalogue.css"
-	xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="org.unibl.etf.gui.plants.controller.PricelistController">
+<AnchorPane stylesheets="@../../../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.plants.controller.PricelistController">
 	<children>
-		<BorderPane maxHeight="-Infinity" maxWidth="-Infinity"
-			minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
-			prefWidth="800.0" AnchorPane.bottomAnchor="0.0"
-			AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-			AnchorPane.topAnchor="0.0">
+		<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<top>
-				<AnchorPane prefHeight="200.0" prefWidth="200.0"
-					styleClass="toolbarPane" BorderPane.alignment="CENTER">
+				<AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="toolbarPane" BorderPane.alignment="CENTER">
 					<children>
-						<ToolBar id="toolbar" layoutX="-18.0" prefHeight="40.0"
-							prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
-							AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-							AnchorPane.topAnchor="0.0">
+						<ToolBar id="toolbar" layoutX="-18.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 							<items>
-								<Button id="delete-button" fx:id="btnDelete"
-									mnemonicParsing="false" onAction="#delete" />
-								<Separator orientation="VERTICAL" prefHeight="0.0"
-									prefWidth="5.0" />
-								<Button id="save-button" fx:id="btnSave" mnemonicParsing="false"
-									onAction="#save" />
-								<Button id="print-button" fx:id="btnPrint"
-									mnemonicParsing="false" onAction="#print" />
+								<Button id="delete-button" fx:id="btnDelete" mnemonicParsing="false" onAction="#delete" />
+								<Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="5.0" />
+								<Button id="save-button" fx:id="btnSave" mnemonicParsing="false" onAction="#save" />
+								<Button id="print-button" fx:id="btnPrint" mnemonicParsing="false" onAction="#print" />
 							</items>
 						</ToolBar>
 					</children>
 				</AnchorPane>
 			</top>
 			<center>
-				<AnchorPane id="center-pane" prefHeight="200.0"
-					prefWidth="200.0" BorderPane.alignment="CENTER">
+				<AnchorPane id="center-pane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
 					<children>
-						<TableView id="pricelist-table" fx:id="tblPlants"
-							layoutX="17.0" layoutY="56.0" onMouseClicked="#selectItem"
-							prefHeight="353.0" prefWidth="770.0" AnchorPane.bottomAnchor="52.0"
-							AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="14.0"
-							AnchorPane.topAnchor="55.0">
+						<TableView id="pricelist-table" fx:id="tblPlants" layoutX="17.0" layoutY="56.0" onMouseClicked="#selectItem" prefHeight="353.0" prefWidth="770.0" AnchorPane.bottomAnchor="52.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="55.0">
 							<columns>
-								<TableColumn id="latin" fx:id="colScientificName"
-									prefWidth="75.0" text="Latinski naziv" />
-								<TableColumn id="common" fx:id="colKnownAs"
-									prefWidth="75.0" text="Domaci naziv" />
-								<TableColumn id="prices" fx:id="colPrices"
-									prefWidth="75.0" text="Cijene" />
+								<TableColumn id="latin" fx:id="colScientificName" prefWidth="75.0" text="Latinski naziv" />
+								<TableColumn id="common" fx:id="colKnownAs" prefWidth="75.0" text="Domaći naziv" />
+								<TableColumn id="prices" fx:id="colPrices" prefWidth="75.0" text="Cijene" />
 							</columns>
 							<columnResizePolicy>
 								<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
 							</columnResizePolicy>
 						</TableView>
-						<ComboBox fx:id="cmbPricelist" layoutX="586.0" layoutY="13.0"
-							onAction="#showPricelist" prefWidth="200.0"
-							AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="13.0" />
-						<Label layoutX="265.0" layoutY="19.0" text="Od:"
-							AnchorPane.rightAnchor="516.0" AnchorPane.topAnchor="17.0" />
-						<DatePicker fx:id="dpFrom" layoutX="299.0" layoutY="15.0"
-							prefHeight="25.0" prefWidth="103.0" AnchorPane.rightAnchor="398.0"
-							AnchorPane.topAnchor="14.0" />
-						<Label layoutX="412.0" layoutY="19.0" text="Do:"
-							AnchorPane.rightAnchor="369.0" AnchorPane.topAnchor="17.0" />
-						<DatePicker fx:id="dpTo" layoutX="444.0" layoutY="15.0"
-							prefHeight="25.0" prefWidth="103.0" AnchorPane.rightAnchor="253.0"
-							AnchorPane.topAnchor="14.0" />
-						<Button id="search-button" fx:id="btnSearch" layoutX="563.0"
-							layoutY="14.0" mnemonicParsing="false" onAction="#search"
-							AnchorPane.rightAnchor="220.0" AnchorPane.topAnchor="14.0" />
-						<Button id="refresh-button" fx:id="btnRefresh" layoutX="17.0"
-							layoutY="15.0" mnemonicParsing="false" onAction="#refresh" />
+						<ComboBox fx:id="cmbPricelist" layoutX="586.0" layoutY="13.0" onAction="#showPricelist" prefWidth="200.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="13.0" />
+						<Label layoutX="265.0" layoutY="19.0" text="Od:" AnchorPane.rightAnchor="516.0" AnchorPane.topAnchor="17.0" />
+						<DatePicker fx:id="dpFrom" layoutX="299.0" layoutY="15.0" prefHeight="25.0" prefWidth="103.0" AnchorPane.rightAnchor="398.0" AnchorPane.topAnchor="14.0" />
+						<Label layoutX="412.0" layoutY="19.0" text="Do:" AnchorPane.rightAnchor="369.0" AnchorPane.topAnchor="17.0" />
+						<DatePicker fx:id="dpTo" layoutX="444.0" layoutY="15.0" prefHeight="25.0" prefWidth="103.0" AnchorPane.rightAnchor="253.0" AnchorPane.topAnchor="14.0" />
+						<Button id="search-button" fx:id="btnSearch" layoutX="563.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" AnchorPane.rightAnchor="220.0" AnchorPane.topAnchor="14.0" />
+						<Button id="refresh-button" fx:id="btnRefresh" layoutX="17.0" layoutY="15.0" mnemonicParsing="false" onAction="#refresh" />
 					</children>
 				</AnchorPane>
 			</center>

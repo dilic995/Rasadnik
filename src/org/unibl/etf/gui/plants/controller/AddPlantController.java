@@ -26,6 +26,7 @@ import org.unibl.etf.dto.PriceHeightRatioComparatorFrom;
 import org.unibl.etf.gui.util.DisplayUtil;
 import org.unibl.etf.gui.util.OrBinder;
 import org.unibl.etf.gui.view.base.BaseController;
+import org.unibl.etf.util.ResourceBundleManager;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,13 +45,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-// TODO svuda gdje se prikazuje slika napraviti da se prikazuje default image ako je slika null
 
 public class AddPlantController extends BaseController {
 
 	public static final int INSERT = 1;
 	public static final int UPDATE = 2;
-
+	
 	@FXML
 	private ImageView imgPhoto;
 	@FXML
@@ -99,7 +99,6 @@ public class AddPlantController extends BaseController {
 		bindDisable();
 	}
 
-	// Event Listener on Button[#btnRemoveImage].onAction
 	@FXML
 	public void removeImage(ActionEvent event) {
 		imgPhoto.setImage(defaultImage);
@@ -123,7 +122,6 @@ public class AddPlantController extends BaseController {
 		}
 	}
 
-	// Event Listener on Button[#btnAddRatio].onAction
 	@FXML
 	public void addRatio(ActionEvent event) {
 		try {
@@ -131,11 +129,14 @@ public class AddPlantController extends BaseController {
 			BigDecimal to = "".equals(txtTo.getText()) ? null : new BigDecimal(txtTo.getText());
 			BigDecimal price = new BigDecimal(txtPrice.getText());
 			if (from.compareTo(BigDecimal.ZERO) < 0) {
-				errorLabel.setText("Pocetna visina ne moze biti manja od 0");
+				//errorLabel.setText("Pocetna visina ne moze biti manja od 0");
+				errorLabel.setText(ResourceBundleManager.getString("startHeight"));
 			} else if (to != null && to.compareTo(from) <= 0) {
-				errorLabel.setText("Krajnja visina ne moze biti manja od pocetne");
+				//errorLabel.setText("Krajnja visina ne moze biti manja od pocetne");
+				errorLabel.setText(ResourceBundleManager.getString("endHeight"));
 			} else if (price.compareTo(BigDecimal.ZERO) <= 0) {
-				errorLabel.setText("Cijena ne moze biti manja ili jednaka od 0");
+				//errorLabel.setText("Cijena ne moze biti manja ili jednaka od 0");
+				errorLabel.setText(ResourceBundleManager.getString("price"));
 			} else {
 				LocalDate today = LocalDate.now();
 				String todayString = today.getYear() + "-" + today.getMonthValue() + "-" + today.getDayOfMonth();
@@ -143,9 +144,11 @@ public class AddPlantController extends BaseController {
 				Date date = format.parse(todayString);
 				PriceHeightRatio ratio = new PriceHeightRatio(from, to, price, true, date, 0, null, false);
 				if (lstRatios.getItems().contains(ratio)) {
-					errorLabel.setText("Unos vec postoji");
+					//errorLabel.setText("Unos vec postoji");
+					errorLabel.setText(ResourceBundleManager.getString("inputExists"));
 				} else if (ratio.overlaps(lstRatios.getItems())) {
-					errorLabel.setText("Unos se preklapa sa postojecim");
+					//errorLabel.setText("Unos se preklapa sa postojecim");
+					errorLabel.setText(ResourceBundleManager.getString("inputOverrides"));
 				} else {
 					lstRatios.getItems().add(ratio);
 					Collections.sort(lstRatios.getItems(), new PriceHeightRatioComparatorFrom());
@@ -154,14 +157,14 @@ public class AddPlantController extends BaseController {
 				}
 			}
 		} catch (NumberFormatException e) {
-			errorLabel.setText("Pogresan format broja!");
+			//errorLabel.setText("Pogresan format broja!");
+			errorLabel.setText(ResourceBundleManager.getString("numberFormat"));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	// Event Listener on Button[#btnRemoveRatio].onAction
 	@FXML
 	public void removeRatio(ActionEvent event) {
 		PriceHeightRatio selected = lstRatios.getSelectionModel().getSelectedItem();
@@ -176,7 +179,6 @@ public class AddPlantController extends BaseController {
 		}
 	}
 
-	// Event Listener on Button[#btnSave].onAction
 	@FXML
 	public void save(ActionEvent event) {
 
@@ -199,7 +201,7 @@ public class AddPlantController extends BaseController {
 		if (type == INSERT) {
 			LocalDate today = LocalDate.now();
 			if (cbOwned.isSelected() && dpDateFrom.getValue().compareTo(today) > 0) {
-				message = "Datum ne moze biti poslije danasnjeg.";
+				message = ResourceBundleManager.getString("date");
 				ok = false;
 			} else {
 				if (DAOFactory.getInstance().getPlantDAO().insert(plant) > 0) {
@@ -220,9 +222,9 @@ public class AddPlantController extends BaseController {
 							e.printStackTrace();
 						}
 					}
-					message = "Dodavanje uspjesno!";
+					message =ResourceBundleManager.getString("insertOk");
 				} else {
-					message = "Doslo je do greske prilikom dodavanja!";
+					message = ResourceBundleManager.getString("insertNotOk");
 				}
 			}
 		} else {
@@ -237,9 +239,9 @@ public class AddPlantController extends BaseController {
 						DAOFactory.getInstance().getPriceHeightRatioDAO().update(ratio);
 					}
 				}
-				message = "Azuriranje uspjesno!";
+				message = ResourceBundleManager.getString("updateOk");
 			} else {
-				message = "Doslo je do greske prilikom azuriranja";
+				message = ResourceBundleManager.getString("updateNotOk");
 			}
 		}
 		DisplayUtil.showMessageDialog(message);

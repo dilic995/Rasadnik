@@ -13,7 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="650.0" prefWidth="650.0" stylesheets="@../../../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.plants.controller.AddPlantController">
+<AnchorPane prefHeight="650.0" prefWidth="650.0" stylesheets="@../../../../../../../css/catalogue.css" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.unibl.etf.gui.plants.controller.AddPlantController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" style="-fx-font-size: 25;" text="Dodavanje biljke" AnchorPane.leftAnchor="16.0" AnchorPane.topAnchor="10.0" />
       <Separator layoutX="16.0" layoutY="45.0" prefWidth="200.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="50.0" />
@@ -28,7 +28,7 @@
       <TextField fx:id="txtLatinName" layoutX="123.0" layoutY="110.0" prefHeight="25.0" prefWidth="230.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="247.0" AnchorPane.topAnchor="110.0" />
       <Label layoutX="29.0" layoutY="149.0" styleClass="prompt-label" text="Lokalni naziv:" AnchorPane.topAnchor="149.0" />
       <TextField fx:id="txtCommonName" layoutX="123.0" layoutY="146.0" prefHeight="25.0" prefWidth="230.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="247.0" AnchorPane.topAnchor="146.0" />
-      <Label layoutX="28.0" layoutY="193.0" text="Datum sadjenja:" />
+      <Label layoutX="28.0" layoutY="193.0" text="Datum sađenja:" />
       <DatePicker fx:id="dpDateFrom" layoutX="123.0" layoutY="189.0" AnchorPane.leftAnchor="123.0" AnchorPane.topAnchor="189.0" />
       <Label alignment="CENTER_RIGHT" layoutX="51.0" layoutY="246.0" prefHeight="20.0" prefWidth="41.0" styleClass="prompt-label" stylesheets="@../../../../../../../css/catalogue.css" text="Od:" AnchorPane.topAnchor="246.0" />
       <TextField fx:id="txtFrom" layoutX="101.0" layoutY="244.0" prefHeight="25.0" prefWidth="60.0" AnchorPane.topAnchor="244.0" />
@@ -47,7 +47,7 @@
             <ImageView fx:id="imgPhoto" fitHeight="200.0" fitWidth="200.0" layoutX="28.0" layoutY="53.0" onMouseClicked="#addImage" pickOnBounds="true" AnchorPane.bottomAnchor="3.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="3.0" />
          </children>
       </AnchorPane>
-      <Button fx:id="btnRemoveImage" layoutX="376.0" layoutY="288.0" mnemonicParsing="false" onAction="#removeImage" prefHeight="25.0" prefWidth="208.0" text="Obrisite sliku" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="288.0" />
+      <Button fx:id="btnRemoveImage" layoutX="376.0" layoutY="288.0" mnemonicParsing="false" onAction="#removeImage" prefHeight="25.0" prefWidth="208.0" text="Obrišite sliku" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="288.0" />
       <Label layoutX="35.0" layoutY="352.0" styleClass="prompt-label" text="Opis:" AnchorPane.topAnchor="352.0" />
       <TextArea fx:id="taDescription" layoutX="430.0" layoutY="382.0" prefHeight="218.0" prefWidth="618.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="382.0" />
       <Button fx:id="btnSave" layoutX="532.0" layoutY="561.0" mnemonicParsing="false" onAction="#save" text="Sačuvajte" AnchorPane.bottomAnchor="16.0" AnchorPane.rightAnchor="16.0" />

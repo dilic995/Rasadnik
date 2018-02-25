@@ -7,12 +7,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.unibl.etf.util.ConnectionPool;
+import org.unibl.etf.util.ErrorLogger;
+import org.unibl.etf.util.ResourceBundleManager;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -27,6 +32,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.StringConverter;
 
 public class DisplayUtil {
@@ -65,7 +71,7 @@ public class DisplayUtil {
 	public static FileChooser configureFileChooser(String title, Map<String, String> extensions) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(title);
-		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		fileChooser.setInitialDirectory(new File(System.getProperty(ResourceBundleManager.getString("home"))));
 		for (String key : extensions.keySet()) {
 			String value = extensions.get(key);
 			fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(key, value));
@@ -83,8 +89,10 @@ public class DisplayUtil {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 		return result;
 	}
@@ -98,8 +106,10 @@ public class DisplayUtil {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} catch (IOException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 		return result;
 	}
@@ -114,6 +124,7 @@ public class DisplayUtil {
 			result = (AnchorPane) loader.load();
 		} catch (IOException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		}
 		return result;
 	}
@@ -166,8 +177,8 @@ public class DisplayUtil {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setHeaderText("");
 		alert.setContentText(message);
-		alert.setTitle("Obavjestenje");
-		ButtonType okButton = new ButtonType("U redu", ButtonData.OK_DONE);
+		alert.setTitle(ResourceBundleManager.getString("information"));
+		ButtonType okButton = new ButtonType(ResourceBundleManager.getString("ok"), ButtonData.OK_DONE);
 		alert.getButtonTypes().clear();
 		alert.getButtonTypes().add(okButton);
 		alert.showAndWait();
@@ -175,11 +186,18 @@ public class DisplayUtil {
 
 	public static Image getDefaultImage() throws FileNotFoundException {
 		if (defaultImage == null) {
-			defaultImage = new Image(new FileInputStream("resources/images/add_image.png"));
+		//	defaultImage = new Image(new FileInputStream("resources/images/add_image.png"));
+			defaultImage = new Image(new FileInputStream(ResourceBundleManager.getString("defaultMessage")));
 		}
 		return defaultImage;
 	}
-
+	
+	public static Date convert(LocalDate date) throws ParseException {
+		String todayString = date.getYear() + "-" + date.getMonthValue() + "-" + date.getDayOfMonth();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		return format.parse(todayString);
+	}
+	
 	private static Image defaultImage = null;
-
+	
 }

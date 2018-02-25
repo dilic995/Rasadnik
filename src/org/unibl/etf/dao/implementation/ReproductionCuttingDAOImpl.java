@@ -9,8 +9,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dao.interfaces.ReproductionCuttingDAO;
 import org.unibl.etf.dto.ReproductionCutting;
+import org.unibl.etf.util.ErrorLogger;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 	//
@@ -66,6 +71,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -86,6 +92,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -104,7 +111,8 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		}
 
 		try {
-			ps = getConn().prepareStatement("select count(*) from " + tableName + whereStatement + " AND deleted=false");
+			ps = getConn()
+					.prepareStatement("select count(*) from " + tableName + whereStatement + " AND deleted=false");
 
 			for (int i = 0; i < bindVariables.length; i++)
 				DBUtil.bind(ps, i + 1, bindVariables[i]);
@@ -116,6 +124,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -136,6 +145,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -155,7 +165,8 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		}
 
 		try {
-			ps = getConn().prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement + " AND deleted=false");
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns) + whereStatement + " AND deleted=false");
 
 			for (int i = 0; i < bindVariables.length; i++)
 				DBUtil.bind(ps, i + 1, bindVariables[i]);
@@ -166,6 +177,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -191,6 +203,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -198,10 +211,25 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 	}
 
 	public Integer insert(ReproductionCutting obj) {
+		Integer res = 0;
+		res = tryInsert(obj);
+		if (res == DBUtil.DUPLICATE_KEYS) {
+			ReproductionCutting rep = DAOFactory.getInstance().getReproductionCuttingDAO()
+					.getByPrimaryKey(obj.getBasisId(), obj.getDate());
+			if (rep != null) {
+				rep.setProduces(rep.getProduces() + obj.getProduces());
+				rep.setTakeARoot(obj.getTakeARoot() + rep.getTakeARoot());
+				res = DAOFactory.getInstance().getReproductionCuttingDAO().update(rep);
+			}
+		}
+		return res;
+	}
+
+	private Integer tryInsert(ReproductionCutting obj) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int pos = 1;
-
+		int res = 0;
 		try {
 			ps = getConn().prepareStatement(DBUtil.insert(tableName, pkColumns, stdColumns),
 					PreparedStatement.RETURN_GENERATED_KEYS);
@@ -215,16 +243,19 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				obj.setDate(rs.getDate(2));
 			}
 			if (rowCount != 1) {
-				return 0;
+				res = 0;
 			}
 
-			return rowCount;
+			res = rowCount;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (e instanceof MySQLIntegrityConstraintViolationException) {
+				res = DBUtil.DUPLICATE_KEYS;
+			}else
+				new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
-		return 0;
+		return res;
 	}
 
 	public Integer delete(ReproductionCutting obj) {
@@ -246,6 +277,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -270,6 +302,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -292,6 +325,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -315,6 +349,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -338,13 +373,14 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
 
 		return ret;
 	}
-	
+
 	@Override
 	public List<ReproductionCutting> getByDeleted(Boolean deleted) {
 		PreparedStatement ps = null;
@@ -352,8 +388,8 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 		List<ReproductionCutting> ret = new ArrayList<>();
 
 		try {
-			ps = getConn().prepareStatement(
-					DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
+			ps = getConn()
+					.prepareStatement(DBUtil.select(tableName, allColumns, Arrays.asList(new String[] { "deleted" })));
 			DBUtil.bind(ps, 1, deleted);
 			rs = ps.executeQuery();
 
@@ -361,6 +397,7 @@ public class ReproductionCuttingDAOImpl implements ReproductionCuttingDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

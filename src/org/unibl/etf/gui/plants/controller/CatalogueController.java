@@ -17,6 +17,7 @@ import org.unibl.etf.dto.PriceHeightRatioComparatorFrom;
 import org.unibl.etf.dto.PriceHeightRatioTableItem;
 import org.unibl.etf.gui.util.CSSUtil;
 import org.unibl.etf.gui.util.DisplayUtil;
+import org.unibl.etf.util.ResourceBundleManager;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -118,7 +119,6 @@ public class CatalogueController extends PlantBrowserController {
 	// Event Listener on Button[#btnAdd].onAction
 	@FXML
 	public void addPlant(ActionEvent event) {
-		// TODO provjera za buildAll
 		buildAll = true;
 		FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
 				"org/unibl/etf/gui/plants/view/AddPlantView.fxml");
@@ -133,15 +133,17 @@ public class CatalogueController extends PlantBrowserController {
 	// Event Listener on Button[#btnRemove].onAction
 	@FXML
 	public void removePlant(ActionEvent event) {
-		String prompt = "Da li ste sigurni?";
+		String prompt = ResourceBundleManager.getString("confirmQuestion");
 		if (DisplayUtil.showConfirmationDialog(prompt) == ButtonType.YES) {
 			String message = "";
 			if(DAOFactory.getInstance().getPlantDAO().delete(container.current()) > 0) {
 				buildAll = true;
-				message = "Brisanje uspjesno!";
+				//message = "Brisanje uspjesno!";
+				message =  ResourceBundleManager.getString("deleteOk");
 				container.remove(container.current());
 			} else {
-				message = "Greska prilikom brisanja!";
+				//message = "Greska prilikom brisanja!";
+				 ResourceBundleManager.getString("deleteNotOk");
 			}
 			DisplayUtil.showMessageDialog(message);
 		}
@@ -165,16 +167,19 @@ public class CatalogueController extends PlantBrowserController {
 	public void setOwned(MouseEvent event) {
 		
 		if(!container.current().getOwned()) {
-			String message = "Biljka ne postoji u maticnjaku. Zelite li da je dodate?";
+			//String message = "Biljka ne postoji u maticnjaku. Zelite li da je dodate?";
+			String message =  ResourceBundleManager.getString("addPlantQuestion");;
 			if (DisplayUtil.showConfirmationDialog(message) == ButtonType.YES) {
 				container.current().setOwned(true);
 				DAOFactory.getInstance().getPlantDAO().update(container.current());
 				Basis basis = new Basis(null, Calendar.getInstance().getTime(), container.current().getPlantId(),
 						container.current(), null, false);
 				if (DAOFactory.getInstance().getBasisDAO().insert(basis) > 0) {
-					DisplayUtil.showMessageDialog("Dodavanje u maticnjak uspjesno");
+				//	DisplayUtil.showMessageDialog("Dodavanje u maticnjak uspjesno");
+					DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertOk"));
 				} else {
-					DisplayUtil.showMessageDialog("Dodavanje u maticnjak neuspjesno");
+				//	DisplayUtil.showMessageDialog("Dodavanje u maticnjak neuspjesno");
+					DisplayUtil.showMessageDialog(ResourceBundleManager.getString("insertNotOk"));
 				}
 				displaySelectedItem();
 			}
@@ -197,7 +202,6 @@ public class CatalogueController extends PlantBrowserController {
 	@Override
 	public void update() {
 		if (buildAll) {
-			// TODO napraviti dodavanje i brisanje iz treeviewA
 			populateTreeView();
 			buildAll = false;
 		}
@@ -215,17 +219,16 @@ public class CatalogueController extends PlantBrowserController {
 		if (condition) {
 			CSSUtil.setNewStyleClass(ownedIndicator, "green-fill");
 			CSSUtil.setNewStyleClass(lblOwned, "plantOwned");
-			lblOwned.setText("U maticnjaku");
+			lblOwned.setText("U matičnjaku");
 		} else {
 			CSSUtil.setNewStyleClass(ownedIndicator, "red-fill");
 			CSSUtil.setNewStyleClass(lblOwned, "plant-not-owned");
-			lblOwned.setText("Nije u maticnjaku");
+			lblOwned.setText("Nije u matičnjaku");
 		}
 	}
 	
 	private void displaySelectedItem() {
 		Plant plant = container.current();
-		// TODO dodati else kad je prazna
 		if (plant != null) {
 			lblLatinName.setText(plant.getScientificName());
 			lblCommonName.setText(plant.getKnownAs());

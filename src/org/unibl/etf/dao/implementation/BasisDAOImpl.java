@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.unibl.etf.dao.interfaces.BasisDAO;
 import org.unibl.etf.dto.Basis;
+import org.unibl.etf.util.ErrorLogger;
 
 public class BasisDAOImpl implements BasisDAO {
 	//
@@ -20,7 +21,10 @@ public class BasisDAOImpl implements BasisDAO {
 	protected static List<String> stdColumns = new ArrayList<>();
 	protected static List<String> allColumns = new ArrayList<>();
 	protected static String tableName = "basis";
-
+	protected static String SELECT_BY_NAME = "select b.basis_id, b.planting_date, b.deleted, b.plant_id "
+			+ "from basis b inner join plant p on b.plant_id=p.plant_id where ";
+	
+	
 	static {
 		pkColumns.add("basis_id");
 		stdColumns.add("planting_date");
@@ -64,6 +68,7 @@ public class BasisDAOImpl implements BasisDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -84,6 +89,7 @@ public class BasisDAOImpl implements BasisDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -114,6 +120,7 @@ public class BasisDAOImpl implements BasisDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -134,6 +141,7 @@ public class BasisDAOImpl implements BasisDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -164,6 +172,7 @@ public class BasisDAOImpl implements BasisDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -189,6 +198,7 @@ public class BasisDAOImpl implements BasisDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -221,6 +231,7 @@ public class BasisDAOImpl implements BasisDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -247,6 +258,7 @@ public class BasisDAOImpl implements BasisDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -278,6 +290,7 @@ public class BasisDAOImpl implements BasisDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -300,6 +313,7 @@ public class BasisDAOImpl implements BasisDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -322,6 +336,7 @@ public class BasisDAOImpl implements BasisDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -370,7 +385,7 @@ public class BasisDAOImpl implements BasisDAO {
 		Integer result = 0;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String querry = "select sum(" + type + ") as broj from " + tableName + " where basis_id=?";
+		String querry = "select sum(" + type + ") as broj from " + tableName + " where basis_id=? and deleted=false";
 		try {
 			ps = getConn().prepareStatement(querry);
 			DBUtil.bind(ps, 1, basis_id);
@@ -380,6 +395,7 @@ public class BasisDAOImpl implements BasisDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -402,10 +418,34 @@ public class BasisDAOImpl implements BasisDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<Basis> getByName(String name, Boolean scientific) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Basis> ret = new ArrayList<>();
+
+		try {
+			String sql = SELECT_BY_NAME + (scientific ? "scientific_name" : "known_as") + " like ? and b.deleted=false";
+			ps = getConn().prepareStatement(sql);
+			DBUtil.bind(ps, 1, "%" + name + "%");
+			rs = ps.executeQuery();
+
+			while (rs.next())
+				ret.add(fromResultSet(rs));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBUtil.close(ps, rs, conn);
+		}
+
+		return ret;
 	}
 }

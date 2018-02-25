@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.unibl.etf.dao.interfaces.CustomerDAO;
 import org.unibl.etf.dto.Customer;
+import org.unibl.etf.util.ErrorLogger;
 
 public class CustomerDAOImpl implements CustomerDAO {
 	//
@@ -65,6 +66,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -85,6 +87,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -115,6 +118,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -135,6 +139,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -165,6 +170,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -190,6 +196,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -221,6 +228,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -247,6 +255,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -278,6 +287,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -306,6 +316,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -334,6 +345,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -356,6 +368,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -379,6 +392,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

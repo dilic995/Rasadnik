@@ -6,7 +6,7 @@ public class Tool { //promijenjen toString, dodani konstruktori
 	private String toolName;
 	private Integer count;
 	private Boolean isMachine;
-	private Boolean deleted;
+	private Boolean deleted = false;
 
 	//
 	// getters / setters
@@ -50,6 +50,8 @@ public class Tool { //promijenjen toString, dodani konstruktori
 	public void setIsMachine(Boolean isMachine) {
 		this.isMachine = isMachine;
 	}
+
+
 
 	@Override
 	public int hashCode() {

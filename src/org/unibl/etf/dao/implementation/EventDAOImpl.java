@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.unibl.etf.dao.interfaces.EventDAO;
 import org.unibl.etf.dto.Event;
+import org.unibl.etf.util.ErrorLogger;
 
 public class EventDAOImpl implements EventDAO {
 	//
@@ -66,6 +67,7 @@ public class EventDAOImpl implements EventDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -86,6 +88,7 @@ public class EventDAOImpl implements EventDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -116,6 +119,7 @@ public class EventDAOImpl implements EventDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -136,6 +140,7 @@ public class EventDAOImpl implements EventDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -166,6 +171,7 @@ public class EventDAOImpl implements EventDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -191,6 +197,7 @@ public class EventDAOImpl implements EventDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -222,6 +229,7 @@ public class EventDAOImpl implements EventDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -248,6 +256,7 @@ public class EventDAOImpl implements EventDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -279,6 +288,7 @@ public class EventDAOImpl implements EventDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -307,6 +317,7 @@ public class EventDAOImpl implements EventDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -335,6 +346,7 @@ public class EventDAOImpl implements EventDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -357,6 +369,7 @@ public class EventDAOImpl implements EventDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -380,6 +393,7 @@ public class EventDAOImpl implements EventDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

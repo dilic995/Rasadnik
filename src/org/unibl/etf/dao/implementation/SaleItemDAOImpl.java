@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.unibl.etf.dao.interfaces.SaleItemDAO;
 import org.unibl.etf.dto.SaleItem;
+import org.unibl.etf.util.ErrorLogger;
 
 public class SaleItemDAOImpl implements SaleItemDAO {
 	//
@@ -68,6 +69,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -88,6 +90,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -118,6 +121,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -138,6 +142,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -168,6 +173,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -193,6 +199,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -222,6 +229,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -244,6 +252,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -268,6 +277,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -290,6 +300,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -312,6 +323,7 @@ public class SaleItemDAOImpl implements SaleItemDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}

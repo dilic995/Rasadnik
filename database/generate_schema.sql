@@ -7,6 +7,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema rasadnik_db
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `rasadnik_db` ;
 
 -- -----------------------------------------------------
 -- Schema rasadnik_db
@@ -101,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`region` (
   `x4` DOUBLE NOT NULL,
   `y4` DOUBLE NOT NULL,
   `deleted` TINYINT NOT NULL DEFAULT 0,
-  `basis_id` INT NOT NULL,
+  `basis_id` INT NULL,
   PRIMARY KEY (`region_id`),
   INDEX `fk_region_basis1_idx` (`basis_id` ASC),
   CONSTRAINT `fk_region_basis1`
@@ -304,21 +305,22 @@ ENGINE = InnoDB;
 -- Table `rasadnik_db`.`sale_item`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`sale_item` (
-  `pricelist_id` INT NOT NULL,
   `plant_id` INT NOT NULL,
   `sale_id` INT NOT NULL,
+  `height_min` DECIMAL(10,2) NOT NULL,
   `count` INT NOT NULL DEFAULT 1,
-  PRIMARY KEY (`pricelist_id`, `plant_id`, `sale_id`),
+  `price` DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (`plant_id`, `sale_id`, `height_min`),
   INDEX `fk_pricelist_has_plant_has_sale_sale1_idx` (`sale_id` ASC),
-  INDEX `fk_pricelist_has_plant_has_sale_pricelist_has_plant1_idx` (`pricelist_id` ASC, `plant_id` ASC),
-  CONSTRAINT `fk_pricelist_has_plant_has_sale_pricelist_has_plant1`
-    FOREIGN KEY (`pricelist_id` , `plant_id`)
-    REFERENCES `rasadnik_db`.`pricelist_has_plant` (`pricelist_id` , `plant_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  INDEX `fk_sale_item_plant1_idx` (`plant_id` ASC),
   CONSTRAINT `fk_pricelist_has_plant_has_sale_sale1`
     FOREIGN KEY (`sale_id`)
     REFERENCES `rasadnik_db`.`sale` (`sale_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_sale_item_plant1`
+    FOREIGN KEY (`plant_id`)
+    REFERENCES `rasadnik_db`.`plant` (`plant_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -417,6 +419,21 @@ CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool_maintance_activity` (
     REFERENCES `rasadnik_db`.`tool_item` (`tool_item_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `rasadnik_db`.`account`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `rasadnik_db`.`account` (
+  `account_id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(100) NOT NULL,
+  `hash` VARCHAR(100) NULL,
+  `first_login` TINYINT NOT NULL DEFAULT 1,
+  `is_admin` TINYINT NOT NULL DEFAULT 0,
+  `deleted` TINYINT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`account_id`),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC))
 ENGINE = InnoDB;
 
 

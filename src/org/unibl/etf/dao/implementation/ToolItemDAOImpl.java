@@ -13,6 +13,7 @@ import java.util.List;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.ToolItemDAO;
 import org.unibl.etf.dto.ToolItem;
+import org.unibl.etf.util.ErrorLogger;
 
 import javafx.collections.FXCollections;
 
@@ -71,6 +72,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -91,6 +93,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -121,6 +124,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -141,6 +145,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -171,6 +176,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -195,6 +201,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -221,6 +228,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -246,6 +254,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -276,6 +285,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -300,6 +310,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -322,6 +333,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -344,6 +356,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -376,7 +389,7 @@ public class ToolItemDAOImpl implements ToolItemDAO
     obj.setNextServiceDate(DBUtil.getDate(rs, "next_service_date"));
     obj.setDeleted(DBUtil.getBooleanObject(rs, "deleted"));
     obj.setToolId((DBUtil.getInt(rs, "tool_id")));
-    obj.setConditionId((DBUtil.getInt(rs, "condition_id")));
+    obj.setConditionId((DBUtil.getInt(rs, "item_condition_id")));
     return obj;
   }
 

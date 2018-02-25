@@ -32,5 +32,7 @@ public interface BasisDAO {
 
 	public List<Basis> getByPlantId(Integer plantId);
 	
+	public List<Basis> getByName(String name, Boolean scientific);
+	
 	public Integer getNum(int basis_id, String type, String tableName);
 }

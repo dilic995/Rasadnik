@@ -13,6 +13,7 @@ import java.util.List;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.TransactionDAO;
 import org.unibl.etf.dto.Transaction;
+import org.unibl.etf.util.ErrorLogger;
 
 public class TransactionDAOImpl implements TransactionDAO {
 	//
@@ -67,6 +68,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -87,6 +89,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -117,6 +120,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -137,6 +141,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -167,6 +172,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -192,6 +198,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -220,6 +227,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -245,6 +253,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 			return rowCount;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, null, conn);
 		}
@@ -275,6 +284,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -297,6 +307,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -326,6 +337,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
@@ -349,6 +361,7 @@ public class TransactionDAOImpl implements TransactionDAO {
 				ret.add(fromResultSet(rs));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			new ErrorLogger().log(e);
 		} finally {
 			DBUtil.close(ps, rs, conn);
 		}
