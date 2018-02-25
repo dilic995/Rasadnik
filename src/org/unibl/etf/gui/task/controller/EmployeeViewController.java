@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import org.controlsfx.control.table.TableRowExpanderColumn;
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
 import org.unibl.etf.dto.ActivityTableItem;
@@ -151,7 +150,7 @@ public class EmployeeViewController extends BaseController implements Initializa
 						ButtonType.YES, ButtonType.NO);
 				alert.setTitle("Upozorenje");
 				alert.setHeaderText("Upozorenje!");
-				if(alert.showAndWait().equals(ButtonType.NO))
+				if(alert.showAndWait().get().equals(ButtonType.NO))
 					return;
 				
 			}

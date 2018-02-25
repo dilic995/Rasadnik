@@ -66,7 +66,7 @@ public class LoginController extends BaseController {
 					return;
 				}
 		}
-		message.set("Pogresno korisnicko ime ili lozinka");
+		message.set("Pogrešno korisničko ime ili lozinka");
 	}
 
 	public void firstLogin(Account account) {

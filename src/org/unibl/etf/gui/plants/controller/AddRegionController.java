@@ -55,14 +55,15 @@ public class AddRegionController extends BaseController {
 			Integer numberOfPlants = Integer.parseInt(txtPlantsNum.getText());
 			Integer successFull = Integer.parseInt(txtSuccessful.getText());
 			Date date = DisplayUtil.convert(dpDate.getValue());
-			if (numberOfPlants <= 0) {
+			if (numberOfPlants <= 0 || successFull <= 0) {
 				ok = false;
-				lblError.setText("Broj biljaka ne moze biti manji od 1");
+				lblError.setText("Broj biljaka ne može biti manji od 1");
 			} else if (successFull > numberOfPlants) {
 				ok = false;
-				lblError.setText("Broj uspjelih biljaka ne moze biti veci od ukupnog broja");
+				lblError.setText("Broj uspjelih biljaka ne može biti veći od ukupnog broja");
 			} else if (dpDate.getValue().compareTo(LocalDate.now()) > 0) {
-				lblError.setText("Datum ne moze biti poslije danasnjeg");
+				lblError.setText("Datum ne može biti poslije današnjeg");
+				ok = false;
 			} else {
 				cutting.setBasis(cbBasis.getSelectionModel().getSelectedItem());
 				cutting.setDate(date);
@@ -76,7 +77,7 @@ public class AddRegionController extends BaseController {
 			}
 		} catch (NumberFormatException ex) {
 			ok = false;
-			lblError.setText("Format pogresan");
+			lblError.setText("Format pogrešan");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}

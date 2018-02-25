@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.DAOFactory;
-import org.unibl.etf.dto.ActivityTableItem;
 import org.unibl.etf.dto.Employee;
 import org.unibl.etf.dto.EmployeeHasTask;
 import org.unibl.etf.dto.EmployeeTableItem;
@@ -37,9 +36,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.InputMethodEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.util.StringConverter;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 

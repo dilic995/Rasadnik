@@ -9,14 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.swing.plaf.synth.SynthSpinnerUI;
-
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.ToolDAO;
 import org.unibl.etf.dto.Tool;
 import org.unibl.etf.util.ErrorLogger;
-
-import javafx.collections.FXCollections;
 
 
 

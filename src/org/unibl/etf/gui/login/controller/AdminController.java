@@ -53,7 +53,7 @@ public class AdminController extends BaseController{
 		if(DAOFactory.getInstance().getAccountDAO().insert(newAccount) != 0) {
 			tblAccount.getItems().add(newAccount);
 			tblAccount.refresh();
-			DisplayUtil.showMessageDialog("Uspjesno dodan novi korisnik.");
+			DisplayUtil.showMessageDialog("Uspješno dodan novi korisnik.");
 		}
 		
 		txtUsername.clear();
@@ -64,7 +64,7 @@ public class AdminController extends BaseController{
 		account.setHash(null);
 		account.setFirstLogin(true);
 		DAOFactory.getInstance().getAccountDAO().update(account);
-		DisplayUtil.showMessageDialog("Uspjesno resetovana lozinka.");
+		DisplayUtil.showMessageDialog("Uspješno resetovana lozinka.");
 	}
 	
 	public void deleteAccount() {
@@ -72,7 +72,7 @@ public class AdminController extends BaseController{
 		account.setDeleted(true);
 		DAOFactory.getInstance().getAccountDAO().update(account);
 		tblAccount.getItems().remove(account);
-		DisplayUtil.showMessageDialog("Uspjesno obrisan korisnik.");
+		DisplayUtil.showMessageDialog("Uspješno obrisan korisnik.");
 	}
 	
 	public void load() {

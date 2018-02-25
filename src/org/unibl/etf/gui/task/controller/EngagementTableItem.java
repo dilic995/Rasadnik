@@ -51,7 +51,6 @@ public class EngagementTableItem {
 
 	public EngagementTableItem() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public final StringProperty dateProperty() {

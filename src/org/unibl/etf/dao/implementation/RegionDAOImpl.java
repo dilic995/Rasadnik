@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.unibl.etf.dao.interfaces.RegionDAO;
-import org.unibl.etf.dto.Plant;
 import org.unibl.etf.dto.Region;
 import org.unibl.etf.util.ErrorLogger;
 

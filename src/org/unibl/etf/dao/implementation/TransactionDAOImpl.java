@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.unibl.etf.dao.interfaces.DAOException;
 import org.unibl.etf.dao.interfaces.TransactionDAO;
 import org.unibl.etf.dto.Transaction;
 import org.unibl.etf.util.ErrorLogger;

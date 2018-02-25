@@ -46,7 +46,7 @@ public class DrawCommand implements Command {
 		elements.getChildren().add(polygon);
 		Region region = new Region(null, 0, null, null, this.coordinates, false);
 		ReproductionCutting cutting = new ReproductionCutting();
-		if (DisplayUtil.showConfirmationDialog("Zelite li da dodate biljke u region?").equals(ButtonType.YES)) {
+		if (DisplayUtil.showConfirmationDialog("Želite li da dodate biljke u region?").equals(ButtonType.YES)) {
 			FXMLLoader loader = DisplayUtil.getLoader(getClass().getClassLoader(),
 					"org/unibl/etf/gui/plants/view/AddRegionView.fxml");
 			AnchorPane root = DisplayUtil.getAnchorPane(loader);

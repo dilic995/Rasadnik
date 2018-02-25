@@ -15,14 +15,10 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			// BaseController.changeScene("/org/unibl/etf/application/EntryView.fxml",
-			// primaryStage);
-			// BaseController.changeScene("/org/unibl/etf/gui/tool/view/ToolView.fxml",
-			// primaryStage);
 			BaseController.changeScene("/org/unibl/etf/gui/login/view/LoginView.fxml", primaryStage);
-			primaryStage.getIcons().add(new Image(new FileInputStream("./resources/icon.ico")));
-			primaryStage.setResizable(false);
+			primaryStage.getIcons().add(new Image(new FileInputStream("./resources/icon.png")));
 			primaryStage.setTitle("Prijava");
+			primaryStage.setResizable(false);
 			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();

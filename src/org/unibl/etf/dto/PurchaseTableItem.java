@@ -1,8 +1,6 @@
 package org.unibl.etf.dto;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

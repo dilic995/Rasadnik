@@ -110,7 +110,7 @@ public class ToolViewController extends BaseController{
 	public void selectToolItems() {
 		Tool tool = comboBoxTool.getSelectionModel().getSelectedItem();
 		if(tool!=null) {
-			lblMachineTool.setText(tool.getIsMachine()==true ? "Masina" : "Alat");
+			lblMachineTool.setText(tool.getIsMachine()==true ? "Mašina" : "Alat");
 			lblCount.setText(tool.getCount().toString());
 			Object[] pom = {tool.getToolId(),false};
 			listToolItems = FXCollections.observableArrayList();
