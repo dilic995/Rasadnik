@@ -340,20 +340,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `rasadnik_db`.`event`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `rasadnik_db`.`event` (
-  `event_id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(100) NOT NULL,
-  `description` VARCHAR(500) NOT NULL,
-  `date` DATE NOT NULL,
-  `done` TINYINT NOT NULL,
-  `deleted` TINYINT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`event_id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `rasadnik_db`.`tool`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `rasadnik_db`.`tool` (
